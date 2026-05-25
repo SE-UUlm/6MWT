@@ -1,0 +1,15 @@
+name: Gerneric Task
+description: Thing that need to be done but do not belong to bug or feature
+title: "[Task]: "
+labels: []
+projects: []
+
+body:
+    - type: textarea
+      id: description
+      attributes:
+          label: Description
+          description: What needs to be done?
+          placeholder: e.g. "Our outlier algorithm needs to be documented"
+      validations:
+          required: true
