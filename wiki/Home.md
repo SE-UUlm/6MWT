@@ -6,5 +6,5 @@ This wiki is our primary project documentation.
 
 ## Pages
 
-- [Getting Started](Getting Started.md)
+- [Getting Started](Getting-Started.md)
 - [Development](Development.md)
