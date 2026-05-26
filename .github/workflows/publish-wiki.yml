@@ -1,10 +1,10 @@
 name: Publish Wiki
-on: []
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - wiki/**
-  #     - .github/workflows/publish-wiki.yml
+on:
+  push:
+    branches: [main]
+    paths:
+      - wiki/**
+      - .github/workflows/publish-wiki.yml
 
 permissions:
   contents: write
