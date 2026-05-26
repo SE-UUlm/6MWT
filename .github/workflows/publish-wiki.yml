@@ -1,10 +1,10 @@
 name: Publish Wiki
-on:
-  push:
-    branches: [main]
-    paths:
-      - wiki/**
-      - .github/workflows/publish-wiki.yml
+on: []
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - wiki/**
+  #     - .github/workflows/publish-wiki.yml
 
 permissions:
   contents: write
@@ -21,5 +21,3 @@ jobs:
       - uses: actions/checkout@v6
 
       - uses: Andrew-Chen-Wang/github-wiki-action@v4
-        with:
-          dry-run: true # TODO: remove once Wiki is set up
