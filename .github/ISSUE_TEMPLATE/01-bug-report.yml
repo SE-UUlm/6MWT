@@ -1,0 +1,15 @@
+name: Bug report
+description: Report a bug
+title: "[Bug]: "
+labels: ["bug"]
+projects: []
+
+body:
+    - type: textarea
+      id: what-happened
+      attributes:
+          label: What happened?
+          description: A clear and concise description of what the bug is and steps to reproduce, if applicable.
+          placeholder: e.g. "When submitting a POST request, the server responds with a 500 error."
+      validations:
+          required: true
