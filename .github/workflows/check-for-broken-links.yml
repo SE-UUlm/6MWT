@@ -1,0 +1,24 @@
+name: Check for Broken Links
+on:
+  push:
+    paths:
+      - wiki/**
+      - .github/workflows/check-for-broken-links.yml
+      - README.md
+
+jobs:
+  check-for-broken-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Check for Broken Links in README
+        uses: becheran/mlc@v1
+        with:
+          args: README.md
+
+      - name: Check for Broken Links in Wiki
+        uses: becheran/mlc@v1
+        with:
+            args: wiki/
