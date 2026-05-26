@@ -5,4 +5,6 @@ The goal of our Software Engineering Project is to develop a flutter app to expl
 This wiki is our primary project documentation.
 
 ## Pages
-None
+
+- [Getting Started](Getting Started.md)
+- [Development](Development.md)
