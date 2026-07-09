@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/gps_test_screen.dart';
+import 'screens/walking_test_screen.dart';
 
 void main() {
   runApp(const SixMinuteWalkApp());
@@ -12,9 +12,9 @@ class SixMinuteWalkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "6MWT",
+      title: '6MWT',
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
-      home: const GpsTestScreen(),
+      home: const WalkingTestScreen(),
     );
   }
 }
