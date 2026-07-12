@@ -21,6 +21,27 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 12),
 
             OutlinedButton(
+              onPressed: () => context.go('/history'),
+              child: const Text('History'),
+            ),
+
+            const SizedBox(height: 12),
+
+            OutlinedButton(
+              onPressed: () => context.go('/profile'),
+              child: const Text('Profile'),
+            ),
+
+            const SizedBox(height: 12),
+
+            OutlinedButton(
+              onPressed: () => context.go('/debug/recordings'),
+              child: const Text('Recorded Data'),
+            ),
+
+            const SizedBox(height: 12),
+
+            OutlinedButton(
               onPressed: () => context.go('/debug/gps'),
               child: const Text('GPS Debug'),
             ),

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -35,12 +37,45 @@ class LocationService {
     );
   }
 
-  // Provides continuous GPS updates for tracking.
+  // Provides continuous GPS updates for tracking. The platform-specific
+  // settings keep the stream alive while the app is in the background or the
+  // screen is locked (Android: geolocator's foreground service with a
+  // notification; iOS: background location updates).
   Stream<Position> getPositionStream() {
-    const locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 1,
-    );
+    late final LocationSettings locationSettings;
+
+    if (Platform.isAndroid) {
+      locationSettings = AndroidSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+        foregroundNotificationConfig: const ForegroundNotificationConfig(
+          notificationTitle: 'Six Minute Walk Test',
+          notificationText: 'The walk test is running.',
+          notificationIcon: AndroidResource(
+            name: 'ic_launcher',
+            defType: 'mipmap',
+          ),
+          // Keeps the CPU awake so the test timer keeps ticking with the
+          // screen off.
+          enableWakeLock: true,
+          setOngoing: true,
+        ),
+      );
+    } else if (Platform.isIOS) {
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+        activityType: ActivityType.fitness,
+        allowBackgroundLocationUpdates: true,
+        pauseLocationUpdatesAutomatically: false,
+        showBackgroundLocationIndicator: true,
+      );
+    } else {
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+      );
+    }
 
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }

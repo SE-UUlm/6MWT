@@ -52,28 +52,33 @@ Feature-first with a shared core:
 
 ```
 lib/
+├── app/                    # MaterialApp + go_router setup
 ├── core/
 │   ├── sensors/            # SensorSource interface + implementations
+│   │   ├── sensor_source.dart      # the interface
 │   │   ├── gps_source.dart         # wraps the LocationService
+│   │   ├── location_service.dart   # geolocator wrapper (permissions, stream)
 │   │   ├── pedometer_source.dart   # later
 │   │   └── health_source.dart      # later (HealthKit/Health Connect)
 │   ├── domain/             # pure Dart logic, no Flutter imports
 │   │   ├── test_session.dart       # state machine of the test flow
+│   │   ├── sensor_sample.dart      # timestamped measurement (all sources)
+│   │   ├── sample_sink.dart        # recording interface used by the engine
 │   │   ├── distance_estimator.dart # interface + GPS implementation
-│   │   └── fitness_rating.dart     # reference values (e.g. Enright & Sherrill)
+│   │   └── fitness_rating.dart     # later: reference values (e.g. Enright & Sherrill)
 │   └── data/               # persistence
 │       ├── database.dart           # drift (SQLite)
 │       ├── test_repository.dart    # history: test results
-│       ├── sample_repository.dart  # raw-data recording + export
+│       ├── sample_repository.dart  # raw-data recording + export (implements SampleSink)
 │       └── profile_repository.dart # weight, height, age, sex
 ├── features/
-│   ├── onboarding/         # instructions
+│   ├── onboarding/         # later: instructions
 │   ├── test/               # test screen (display + start/stop only)
-│   ├── results/            # result + fitness rating
+│   ├── results/            # later: result + fitness rating
 │   ├── history/
 │   ├── profile/            # personal data
-│   ├── settings/
-│   └── debug/              # raw-data view, export
+│   ├── settings/           # later
+│   └── debug/              # raw-data view + CSV/JSON export, GPS test
 └── main.dart
 ```
 
@@ -86,7 +91,7 @@ The screens under `features/` are pure display and interaction layers: they obse
 | State management / DI | **Riverpod** | Connects the UI to the engine without the engine knowing Flutter; easy to test. |
 | Navigation | **go_router** | Declarative routes for the many screens. |
 | Database | **drift** (SQLite) | Type-safe queries; suited for the large sample table; export is trivial. `shared_preferences` only for settings. |
-| Background | **flutter_foreground_task** (Android), background location mode (iOS) | Requires a UI-free engine. |
+| Background | **geolocator's built-in foreground service** (Android), background location mode (iOS) | Requires a UI-free engine. geolocator's `ForegroundNotificationConfig` (with wake lock) keeps GPS and the test timer alive in the same isolate — no separate service isolate needed. |
 | Health data | **health** package | One API for HealthKit and Health Connect; fits behind `SensorSource`. |
 | Steps / acceleration | `pedometer` / `sensors_plus` | Each its own `SensorSource`. |
 
@@ -100,8 +105,8 @@ The existing code fits into the structure: `LocationService` → `GpsSource`, `D
 
 Order, each stage mergeable on its own:
 
-1. Extract the test engine from the screen, introduce Riverpod and go_router, create the folder structure
-2. Persistence: history and profile (drift)
-3. Sample recording and CSV/JSON export (debug mode)
-4. Background operation (foreground service / background location)
+1. ✅ Extract the test engine from the screen, introduce Riverpod and go_router, create the folder structure
+2. ✅ Persistence: history and profile (drift)
+3. ✅ Sample recording and CSV/JSON export (`SensorSource`/`SensorSample` pipeline, `SampleSink` → drift, share via share_plus)
+4. ✅ Background operation (geolocator foreground service on Android, background location on iOS)
 5. External sensor sources: step counter, health package, Gadgetbridge

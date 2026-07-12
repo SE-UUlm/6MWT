@@ -53,6 +53,11 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app uses your location to measure the distance during the 6-minute walk test.</string>
 
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:geolocator/geolocator.dart';
-
-import '../sensors/location_service.dart';
+import '../sensors/sensor_source.dart';
 import 'distance_estimator.dart';
+import 'sample_sink.dart';
+import 'sensor_sample.dart';
 
 enum TestPhase { idle, running, finished, aborted }
 
@@ -13,15 +13,25 @@ class TestSessionState {
     required this.phase,
     required this.remainingTime,
     this.distanceMeters = 0,
-    this.currentPosition,
+    this.lastPosition,
     this.errorMessage,
+    this.sessionId,
+    this.startedAt,
   });
 
   final TestPhase phase;
   final Duration remainingTime;
   final double distanceMeters;
-  final Position? currentPosition;
+
+  // Latest position sample, for display purposes.
+  final SensorSample? lastPosition;
+
   final String? errorMessage;
+
+  // Set while a test is running or after it ended; links the recorded raw
+  // samples and the stored result to this run.
+  final String? sessionId;
+  final DateTime? startedAt;
 
   bool get isRunning => phase == TestPhase.running;
 
@@ -33,27 +43,29 @@ class TestSessionState {
   }
 }
 
-// Runs the walk test (timer + position tracking) independently of any UI, so
-// the test survives navigation and can later run in a foreground service.
+// Runs the walk test (timer + sensor tracking) independently of any UI, so
+// the test survives navigation and keeps running in the background.
 class TestSession {
   TestSession({
-    required this._locationService,
+    required this._sources,
     required this._distanceEstimator,
+    this._sampleSink,
     this.testDuration = const Duration(minutes: 6),
   }) {
     _state = TestSessionState(phase: TestPhase.idle, remainingTime: testDuration);
   }
 
   final Duration testDuration;
-  final LocationService _locationService;
+  final List<SensorSource> _sources;
   final DistanceEstimator _distanceEstimator;
+  final SampleSink? _sampleSink;
 
   final StreamController<TestSessionState> _stateController =
       StreamController<TestSessionState>.broadcast();
 
   late TestSessionState _state;
 
-  StreamSubscription<Position>? _positionSubscription;
+  final List<StreamSubscription<SensorSample>> _sampleSubscriptions = [];
   Timer? _ticker;
 
   TestSessionState get state => _state;
@@ -69,58 +81,75 @@ class TestSession {
       return;
     }
 
-    final hasPermission = await _locationService.requestLocationPermission();
+    final startedAt = DateTime.now();
+    final sessionId = startedAt.millisecondsSinceEpoch.toString();
 
-    if (!hasPermission) {
+    _distanceEstimator.reset();
+
+    _emit(
+      TestSessionState(
+        phase: TestPhase.running,
+        remainingTime: testDuration,
+        sessionId: sessionId,
+        startedAt: startedAt,
+      ),
+    );
+
+    for (final source in _sources) {
+      _sampleSubscriptions.add(
+        source.samples.listen(_onSample, onError: _onSampleError),
+      );
+    }
+
+    try {
+      for (final source in _sources) {
+        await source.start();
+      }
+    } on Exception catch (exception) {
+      await _stopTracking();
+
       _emit(
         TestSessionState(
           phase: TestPhase.idle,
           remainingTime: testDuration,
-          errorMessage: 'Location permission denied or GPS disabled',
+          errorMessage: exception.toString(),
         ),
       );
       return;
     }
 
-    _cancelTracking();
-    _distanceEstimator.reset();
-
-    _emit(TestSessionState(phase: TestPhase.running, remainingTime: testDuration));
-
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
-    _positionSubscription = _locationService.getPositionStream().listen(
-      _onPosition,
-      onError: _onPositionError,
-    );
   }
 
-  void abort() {
+  Future<void> abort() async {
     if (!_state.isRunning) {
       return;
     }
 
-    _cancelTracking();
+    await _stopTracking();
 
     _emit(
       TestSessionState(
         phase: TestPhase.aborted,
         remainingTime: _state.remainingTime,
         distanceMeters: _state.distanceMeters,
-        currentPosition: _state.currentPosition,
+        lastPosition: _state.lastPosition,
+        sessionId: _state.sessionId,
+        startedAt: _state.startedAt,
       ),
     );
   }
 
-  void reset() {
-    _cancelTracking();
+  Future<void> reset() async {
+    await _stopTracking();
     _distanceEstimator.reset();
 
     _emit(TestSessionState(phase: TestPhase.idle, remainingTime: testDuration));
   }
 
-  void dispose() {
-    _cancelTracking();
-    _stateController.close();
+  Future<void> dispose() async {
+    await _stopTracking();
+    await _stateController.close();
   }
 
   void _onTick(Timer timer) {
@@ -136,59 +165,85 @@ class TestSession {
         phase: TestPhase.running,
         remainingTime: remaining,
         distanceMeters: _state.distanceMeters,
-        currentPosition: _state.currentPosition,
+        lastPosition: _state.lastPosition,
+        sessionId: _state.sessionId,
+        startedAt: _state.startedAt,
       ),
     );
   }
 
-  void _onPosition(Position position) {
-    if (!_state.isRunning) {
+  void _onSample(SensorSample sample) {
+    final sessionId = _state.sessionId;
+
+    if (!_state.isRunning || sessionId == null) {
       return;
     }
 
-    _distanceEstimator.addPosition(position);
+    _sampleSink?.addSample(sessionId, sample);
+    _distanceEstimator.addSample(sample);
 
     _emit(
       TestSessionState(
         phase: TestPhase.running,
         remainingTime: _state.remainingTime,
         distanceMeters: _distanceEstimator.totalDistance,
-        currentPosition: position,
+        lastPosition: sample.type == SampleTypes.position
+            ? sample
+            : _state.lastPosition,
+        sessionId: sessionId,
+        startedAt: _state.startedAt,
       ),
     );
   }
 
-  void _onPositionError(Object error) {
+  void _onSampleError(Object error) {
     _emit(
       TestSessionState(
         phase: _state.phase,
         remainingTime: _state.remainingTime,
         distanceMeters: _state.distanceMeters,
-        currentPosition: _state.currentPosition,
-        errorMessage: 'Location error: $error',
+        lastPosition: _state.lastPosition,
+        errorMessage: 'Sensor error: $error',
+        sessionId: _state.sessionId,
+        startedAt: _state.startedAt,
       ),
     );
   }
 
   void _finish() {
-    _cancelTracking();
+    unawaited(_stopTracking());
 
     _emit(
       TestSessionState(
         phase: TestPhase.finished,
         remainingTime: Duration.zero,
         distanceMeters: _state.distanceMeters,
-        currentPosition: _state.currentPosition,
+        lastPosition: _state.lastPosition,
+        sessionId: _state.sessionId,
+        startedAt: _state.startedAt,
       ),
     );
   }
 
-  void _cancelTracking() {
-    _positionSubscription?.cancel();
-    _positionSubscription = null;
-
+  Future<void> _stopTracking() async {
     _ticker?.cancel();
     _ticker = null;
+
+    // Not awaited: cancel() futures of broadcast subscriptions are bound to
+    // the root zone and never complete under fake_async; unsubscribing takes
+    // effect synchronously anyway.
+    for (final subscription in _sampleSubscriptions) {
+      unawaited(subscription.cancel());
+    }
+    _sampleSubscriptions.clear();
+
+    for (final source in _sources) {
+      try {
+        await source.stop();
+      } on Exception {
+        // Stopping a source that never started must not mask the real error.
+      }
+    }
   }
 
   void _emit(TestSessionState newState) {
