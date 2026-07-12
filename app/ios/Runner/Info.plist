@@ -58,6 +58,12 @@
 		<string>location</string>
 	</array>
 
+	<key>NSMotionUsageDescription</key>
+	<string>This app uses motion data to count your steps during the 6-minute walk test.</string>
+
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app reads heart rate and blood oxygen from Health to record them during the 6-minute walk test.</string>
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

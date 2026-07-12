@@ -22,6 +22,10 @@ class SensorSample {
 
 abstract final class SampleTypes {
   static const position = 'position';
+  static const steps = 'steps';
+  static const accelerometer = 'accelerometer';
+  static const heartRate = 'heart_rate';
+  static const spo2 = 'spo2';
 }
 
 // Value keys used by position samples.
@@ -32,4 +36,23 @@ abstract final class PositionKeys {
   static const altitude = 'altitude';
   static const speed = 'speed';
   static const heading = 'heading';
+}
+
+// Value keys used by step samples. The count is cumulative since device
+// boot (as delivered by the platform); per-test deltas are aggregator work.
+abstract final class StepKeys {
+  static const cumulativeSteps = 'cumulative_steps';
+}
+
+// Value keys used by accelerometer samples (m/s², including gravity).
+abstract final class AccelerometerKeys {
+  static const x = 'x';
+  static const y = 'y';
+  static const z = 'z';
+}
+
+// Value keys used by vital-sign samples from health APIs or wearables.
+abstract final class VitalKeys {
+  static const heartRateBpm = 'bpm';
+  static const spo2Percent = 'percent';
 }

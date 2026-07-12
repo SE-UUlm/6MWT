@@ -98,8 +98,8 @@ void main() {
       repository.addSample('session-1', createSample(DateTime(2026, 7, 1), 2));
       repository.addSample('session-2', createSample(DateTime(2026, 7, 2), 3));
 
-      // addSample is fire-and-forget; let the inserts complete.
-      await db.select(db.sensorSamples).get();
+      // Samples are buffered; flush writes them to the database.
+      await repository.flush();
 
       final recordings = await repository.watchRecordings().first;
 
@@ -117,7 +117,7 @@ void main() {
         'session-1',
         createSample(DateTime.utc(2026, 7, 1, 12), 48.5),
       );
-      await db.select(db.sensorSamples).get();
+      await repository.flush();
 
       final csv = await repository.exportSessionAsCsv('session-1');
       final lines = csv.trim().split('\n');
@@ -128,6 +128,23 @@ void main() {
       expect(lines.last, contains('48.5'));
     });
 
+    test('writes a full buffer to the database on its own', () async {
+      final repository = SampleRepository(db);
+
+      for (var i = 0; i < 100; i++) {
+        repository.addSample(
+          'session-1',
+          createSample(DateTime(2026, 7, 1).add(Duration(seconds: i)), 1),
+        );
+      }
+
+      // The 100th sample triggers an automatic batch insert — no flush call.
+      await Future<void>.delayed(Duration.zero);
+
+      final rows = await db.select(db.sensorSamples).get();
+      expect(rows, hasLength(100));
+    });
+
     test('exports a session as JSON with decoded values', () async {
       final repository = SampleRepository(db);
 
@@ -135,7 +152,7 @@ void main() {
         'session-1',
         createSample(DateTime.utc(2026, 7, 1, 12), 48.5),
       );
-      await db.select(db.sensorSamples).get();
+      await repository.flush();
 
       final json = await repository.exportSessionAsJson('session-1');
 

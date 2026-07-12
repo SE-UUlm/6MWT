@@ -23,24 +23,42 @@ class RecordingSummary {
 class SampleRepository implements SampleSink {
   SampleRepository(this._db);
 
+  // High-frequency sources (accelerometer at ~50 Hz) would overwhelm
+  // row-by-row inserts, so samples are buffered and written in batches.
+  static const _batchSize = 100;
+
   final AppDatabase _db;
+
+  final List<SensorSamplesCompanion> _buffer = [];
 
   @override
   void addSample(String sessionId, SensorSample sample) {
-    // Fire-and-forget: recording must never block or fail the running test.
-    unawaited(
-      _db
-          .into(_db.sensorSamples)
-          .insert(
-            SensorSamplesCompanion.insert(
-              sessionId: sessionId,
-              timestamp: sample.timestamp,
-              sensorId: sample.sensorId,
-              sampleType: sample.type,
-              valuesJson: jsonEncode(sample.values),
-            ),
-          ),
+    _buffer.add(
+      SensorSamplesCompanion.insert(
+        sessionId: sessionId,
+        timestamp: sample.timestamp,
+        sensorId: sample.sensorId,
+        sampleType: sample.type,
+        valuesJson: jsonEncode(sample.values),
+      ),
     );
+
+    if (_buffer.length >= _batchSize) {
+      // Fire-and-forget: recording must never block the running test.
+      unawaited(flush());
+    }
+  }
+
+  @override
+  Future<void> flush() async {
+    if (_buffer.isEmpty) {
+      return;
+    }
+
+    final rows = List.of(_buffer);
+    _buffer.clear();
+
+    await _db.batch((batch) => batch.insertAll(_db.sensorSamples, rows));
   }
 
   Stream<List<RecordingSummary>> watchRecordings() {

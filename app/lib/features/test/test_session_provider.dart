@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/data/data_providers.dart';
 import '../../core/domain/distance_estimator.dart';
 import '../../core/domain/test_session.dart';
+import '../../core/sensors/accelerometer_source.dart';
 import '../../core/sensors/gps_source.dart';
+import '../../core/sensors/health_source.dart';
 import '../../core/sensors/location_service.dart';
+import '../../core/sensors/pedometer_source.dart';
 
 final locationServiceProvider = Provider<LocationService>(
   (ref) => LocationService(),
@@ -16,6 +19,13 @@ final testSessionProvider = Provider<TestSession>((ref) {
   final session = TestSession(
     sources: [
       GpsSource(locationService: ref.watch(locationServiceProvider)),
+    ],
+    // Recorded when available, silently skipped when not (no wearable, no
+    // permission, unsupported platform).
+    optionalSources: [
+      PedometerSource(),
+      AccelerometerSource(),
+      HealthSource(),
     ],
     distanceEstimator: GpsDistanceEstimator(),
     sampleSink: ref.watch(sampleRepositoryProvider),

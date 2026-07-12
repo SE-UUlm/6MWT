@@ -40,10 +40,16 @@ class FakeSensorSource implements SensorSource {
 
 class RecordingSink implements SampleSink {
   final List<(String, SensorSample)> recorded = [];
+  int flushCount = 0;
 
   @override
   void addSample(String sessionId, SensorSample sample) {
     recorded.add((sessionId, sample));
+  }
+
+  @override
+  Future<void> flush() async {
+    flushCount++;
   }
 }
 
@@ -142,6 +148,77 @@ void main() {
 
       expect(sink.recorded, hasLength(2));
       expect(sink.recorded.first.$1, session.state.sessionId);
+    });
+  });
+
+  test('an unavailable optional source does not prevent the test', () {
+    fakeAsync((async) {
+      final optionalSource = FakeSensorSource(available: false);
+      final session = TestSession(
+        sources: [FakeSensorSource()],
+        optionalSources: [optionalSource],
+        distanceEstimator: GpsDistanceEstimator(),
+        testDuration: const Duration(seconds: 3),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      expect(session.state.phase, TestPhase.running);
+      expect(session.state.errorMessage, isNull);
+    });
+  });
+
+  test('samples from optional sources reach the sink', () {
+    fakeAsync((async) {
+      final optionalSource = FakeSensorSource();
+      final sink = RecordingSink();
+      final session = TestSession(
+        sources: [FakeSensorSource()],
+        optionalSources: [optionalSource],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        testDuration: const Duration(seconds: 30),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      optionalSource.controller.add(
+        SensorSample(
+          timestamp: DateTime.now(),
+          sensorId: 'fake',
+          type: SampleTypes.heartRate,
+          values: const {VitalKeys.heartRateBpm: 98},
+        ),
+      );
+      async.flushMicrotasks();
+
+      expect(sink.recorded, hasLength(1));
+      expect(session.state.lastSamples[SampleTypes.heartRate], isNotNull);
+
+      // Distance must be unaffected by non-position samples.
+      expect(session.state.distanceMeters, 0);
+    });
+  });
+
+  test('flushes the sink when the test ends', () {
+    fakeAsync((async) {
+      final sink = RecordingSink();
+      final session = TestSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        testDuration: const Duration(seconds: 2),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      async.elapse(const Duration(seconds: 2));
+
+      expect(session.state.phase, TestPhase.finished);
+      expect(sink.flushCount, greaterThan(0));
     });
   });
 

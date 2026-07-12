@@ -67,6 +67,22 @@ class WalkingTestScreen extends ConsumerWidget {
 
               const SizedBox(height: 16),
 
+              if (state.lastSamples[SampleTypes.heartRate] != null ||
+                  state.lastSamples[SampleTypes.spo2] != null) ...[
+                _InfoCard(
+                  title: 'Vitals',
+                  value: [
+                    if (state.lastSamples[SampleTypes.heartRate]
+                        case final heartRate?)
+                      '${heartRate.values[VitalKeys.heartRateBpm]?.toStringAsFixed(0)} bpm',
+                    if (state.lastSamples[SampleTypes.spo2] case final spo2?)
+                      'SpO2 ${spo2.values[VitalKeys.spo2Percent]?.toStringAsFixed(0)} %',
+                  ].join(' · '),
+                ),
+
+                const SizedBox(height: 16),
+              ],
+
               if (lastPosition != null)
                 _InfoCard(
                   title: 'Current Position',

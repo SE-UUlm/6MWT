@@ -13,7 +13,7 @@ class TestSessionState {
     required this.phase,
     required this.remainingTime,
     this.distanceMeters = 0,
-    this.lastPosition,
+    this.lastSamples = const {},
     this.errorMessage,
     this.sessionId,
     this.startedAt,
@@ -23,8 +23,8 @@ class TestSessionState {
   final Duration remainingTime;
   final double distanceMeters;
 
-  // Latest position sample, for display purposes.
-  final SensorSample? lastPosition;
+  // Latest sample per sample type, for display purposes.
+  final Map<String, SensorSample> lastSamples;
 
   final String? errorMessage;
 
@@ -34,6 +34,8 @@ class TestSessionState {
   final DateTime? startedAt;
 
   bool get isRunning => phase == TestPhase.running;
+
+  SensorSample? get lastPosition => lastSamples[SampleTypes.position];
 
   String get formattedRemainingTime {
     final minutes = remainingTime.inMinutes;
@@ -49,6 +51,7 @@ class TestSession {
   TestSession({
     required this._sources,
     required this._distanceEstimator,
+    this._optionalSources = const [],
     this._sampleSink,
     this.testDuration = const Duration(minutes: 6),
   }) {
@@ -56,7 +59,14 @@ class TestSession {
   }
 
   final Duration testDuration;
+
+  // The test cannot start when one of these is unavailable (e.g. GPS).
   final List<SensorSource> _sources;
+
+  // Nice-to-have sources (steps, health data): recorded when available,
+  // silently skipped when not.
+  final List<SensorSource> _optionalSources;
+
   final DistanceEstimator _distanceEstimator;
   final SampleSink? _sampleSink;
 
@@ -66,6 +76,7 @@ class TestSession {
   late TestSessionState _state;
 
   final List<StreamSubscription<SensorSample>> _sampleSubscriptions = [];
+  final List<SensorSource> _activeSources = [];
   Timer? _ticker;
 
   TestSessionState get state => _state;
@@ -95,7 +106,7 @@ class TestSession {
       ),
     );
 
-    for (final source in _sources) {
+    for (final source in [..._sources, ..._optionalSources]) {
       _sampleSubscriptions.add(
         source.samples.listen(_onSample, onError: _onSampleError),
       );
@@ -104,6 +115,7 @@ class TestSession {
     try {
       for (final source in _sources) {
         await source.start();
+        _activeSources.add(source);
       }
     } on Exception catch (exception) {
       await _stopTracking();
@@ -116,6 +128,16 @@ class TestSession {
         ),
       );
       return;
+    }
+
+    for (final source in _optionalSources) {
+      try {
+        await source.start();
+        _activeSources.add(source);
+      } on Exception {
+        // Optional sources may be missing (no wearable, no permission,
+        // unsupported platform) — the walk test itself is unaffected.
+      }
     }
 
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
@@ -133,7 +155,7 @@ class TestSession {
         phase: TestPhase.aborted,
         remainingTime: _state.remainingTime,
         distanceMeters: _state.distanceMeters,
-        lastPosition: _state.lastPosition,
+        lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),
@@ -165,7 +187,7 @@ class TestSession {
         phase: TestPhase.running,
         remainingTime: remaining,
         distanceMeters: _state.distanceMeters,
-        lastPosition: _state.lastPosition,
+        lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),
@@ -187,9 +209,7 @@ class TestSession {
         phase: TestPhase.running,
         remainingTime: _state.remainingTime,
         distanceMeters: _distanceEstimator.totalDistance,
-        lastPosition: sample.type == SampleTypes.position
-            ? sample
-            : _state.lastPosition,
+        lastSamples: {..._state.lastSamples, sample.type: sample},
         sessionId: sessionId,
         startedAt: _state.startedAt,
       ),
@@ -202,7 +222,7 @@ class TestSession {
         phase: _state.phase,
         remainingTime: _state.remainingTime,
         distanceMeters: _state.distanceMeters,
-        lastPosition: _state.lastPosition,
+        lastSamples: _state.lastSamples,
         errorMessage: 'Sensor error: $error',
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -218,7 +238,7 @@ class TestSession {
         phase: TestPhase.finished,
         remainingTime: Duration.zero,
         distanceMeters: _state.distanceMeters,
-        lastPosition: _state.lastPosition,
+        lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),
@@ -237,13 +257,16 @@ class TestSession {
     }
     _sampleSubscriptions.clear();
 
-    for (final source in _sources) {
+    for (final source in _activeSources) {
       try {
         await source.stop();
       } on Exception {
-        // Stopping a source that never started must not mask the real error.
+        // Stopping one source must not prevent stopping the others.
       }
     }
+    _activeSources.clear();
+
+    await _sampleSink?.flush();
   }
 
   void _emit(TestSessionState newState) {

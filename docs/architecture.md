@@ -58,8 +58,9 @@ lib/
 │   │   ├── sensor_source.dart      # the interface
 │   │   ├── gps_source.dart         # wraps the LocationService
 │   │   ├── location_service.dart   # geolocator wrapper (permissions, stream)
-│   │   ├── pedometer_source.dart   # later
-│   │   └── health_source.dart      # later (HealthKit/Health Connect)
+│   │   ├── pedometer_source.dart   # step counter (cumulative since boot)
+│   │   ├── accelerometer_source.dart # raw accelerometer at ~50 Hz
+│   │   └── health_source.dart      # HealthKit/Health Connect (HR, SpO2), polling
 │   ├── domain/             # pure Dart logic, no Flutter imports
 │   │   ├── test_session.dart       # state machine of the test flow
 │   │   ├── sensor_sample.dart      # timestamped measurement (all sources)
@@ -109,4 +110,10 @@ Order, each stage mergeable on its own:
 2. ✅ Persistence: history and profile (drift)
 3. ✅ Sample recording and CSV/JSON export (`SensorSource`/`SensorSample` pipeline, `SampleSink` → drift, share via share_plus)
 4. ✅ Background operation (geolocator foreground service on Android, background location on iOS)
-5. External sensor sources: step counter, health package, Gadgetbridge
+5. ✅ External sensor sources: step counter, accelerometer, health package (heart rate + SpO2)
+
+The engine distinguishes required sources (GPS — the test fails without it) from optional ones (steps, accelerometer, health): optional sources that are unavailable (no wearable, no permission, unsupported platform) are skipped silently and the walk test runs unaffected.
+
+Gadgetbridge needs no dedicated source for now: wearables that Gadgetbridge syncs into Health Connect arrive through the `HealthSource`. A direct Gadgetbridge integration (intent broadcasts / BLE) and the watch-only test mode remain future work.
+
+Note: the `health` package requires Android minSdk 26; on iOS the HealthKit capability must additionally be enabled once in Xcode (Signing & Capabilities → HealthKit).

@@ -19,7 +19,8 @@ android {
         applicationId = "com.example.six_minute_walk_test"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        // health (Health Connect) requires at least Android 8.0.
+        minSdk = 26
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
