@@ -1,30 +1,29 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:six_minute_walk_test/main.dart';
+import 'package:six_minute_walk_test/app/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const SixMinuteWalkApp());
+  testWidgets('home screen offers navigation to the walking test', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const ProviderScope(child: SixMinuteWalkApp()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Six Minute Walk Test'), findsOneWidget);
+    expect(find.text('Start Walking Test'), findsOneWidget);
+    expect(find.text('GPS Debug'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('navigating to the walking test shows the test screen', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const ProviderScope(child: SixMinuteWalkApp()));
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.tap(find.text('Start Walking Test'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Walking Test'), findsOneWidget);
+    expect(find.text('06:00'), findsOneWidget);
+    expect(find.text('Start Test'), findsOneWidget);
   });
 }
