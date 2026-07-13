@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/domain/walk_session.dart';
+import '../domain/walk_session.dart';
 import 'walk_session_provider.dart';
 
 class WalkScreen extends ConsumerWidget {

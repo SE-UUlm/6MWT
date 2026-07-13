@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:six_minute_walk_test/core/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/core/domain/walk_session.dart';
+import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/core/sensors/location_service.dart';
 
 class FakeLocationService extends LocationService {

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
 
-import '../sensors/location_service.dart';
+import '../../../core/sensors/location_service.dart';
 import 'distance_estimator.dart';
 
 enum WalkPhase { idle, running, finished, aborted }
