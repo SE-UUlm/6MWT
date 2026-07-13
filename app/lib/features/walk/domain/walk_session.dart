@@ -41,7 +41,10 @@ class WalkSession {
     required this._distanceEstimator,
     this.walkDuration = const Duration(minutes: 6),
   }) {
-    _state = WalkSessionState(phase: WalkPhase.idle, remainingTime: walkDuration);
+    _state = WalkSessionState(
+      phase: WalkPhase.idle,
+      remainingTime: walkDuration,
+    );
   }
 
   final Duration walkDuration;
@@ -85,7 +88,9 @@ class WalkSession {
     _cancelTracking();
     _distanceEstimator.reset();
 
-    _emit(WalkSessionState(phase: WalkPhase.running, remainingTime: walkDuration));
+    _emit(
+      WalkSessionState(phase: WalkPhase.running, remainingTime: walkDuration),
+    );
 
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
     _positionSubscription = _locationService.getPositionStream().listen(
