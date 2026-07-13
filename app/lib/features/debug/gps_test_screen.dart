@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../services/location_service.dart';
+import '../../core/sensors/location_service_provider.dart';
 
-class GpsTestScreen extends StatefulWidget {
+class GpsTestScreen extends ConsumerStatefulWidget {
   const GpsTestScreen({super.key});
 
   @override
-  State<GpsTestScreen> createState() => _GpsTestScreenState();
+  ConsumerState<GpsTestScreen> createState() => _GpsTestScreenState();
 }
 
-class _GpsTestScreenState extends State<GpsTestScreen> {
-  final LocationService _locationService = LocationService();
-
+class _GpsTestScreenState extends ConsumerState<GpsTestScreen> {
   Position? _position;
   String _status = 'No location loaded yet.';
   bool _isLoading = false;
 
   Future<void> _loadCurrentPosition() async {
+    final locationService = ref.read(locationServiceProvider);
+
     setState(() {
       _isLoading = true;
       _status = 'Checking location permission...';
     });
 
-    final hasPermission = await _locationService.requestLocationPermission();
+    final hasPermission = await locationService.requestLocationPermission();
 
     if (!hasPermission) {
       setState(() {
@@ -34,7 +35,7 @@ class _GpsTestScreenState extends State<GpsTestScreen> {
     }
 
     try {
-      final position = await _locationService.getCurrentPosition();
+      final position = await locationService.getCurrentPosition();
 
       setState(() {
         _position = position;

@@ -1,43 +1,43 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:six_minute_walk_test/services/distance_calculator.dart';
+import 'package:six_minute_walk_test/core/domain/distance_estimator.dart';
 
 void main() {
   test('first position does not increase total distance', () {
-    final calculator = DistanceCalculator();
+    final estimator = GpsDistanceEstimator();
 
     final firstPosition = createPosition(latitude: 0, longitude: 0);
 
-    calculator.addPosition(firstPosition);
+    estimator.addPosition(firstPosition);
 
-    expect(calculator.totalDistance, 0);
+    expect(estimator.totalDistance, 0);
   });
 
   test('calculates distance between two positions', () {
-    final calculator = DistanceCalculator();
+    final estimator = GpsDistanceEstimator();
 
     final firstPosition = createPosition(latitude: 0, longitude: 0);
 
     final secondPosition = createPosition(latitude: 0, longitude: 0.001);
 
-    calculator.addPosition(firstPosition);
-    calculator.addPosition(secondPosition);
+    estimator.addPosition(firstPosition);
+    estimator.addPosition(secondPosition);
 
-    expect(calculator.totalDistance, closeTo(111, 2));
+    expect(estimator.totalDistance, closeTo(111, 2));
   });
 
   test('reset sets total distance back to zero', () {
-    final calculator = DistanceCalculator();
+    final estimator = GpsDistanceEstimator();
 
-    calculator.addPosition(createPosition(latitude: 0, longitude: 0));
+    estimator.addPosition(createPosition(latitude: 0, longitude: 0));
 
-    calculator.addPosition(createPosition(latitude: 0, longitude: 0.001));
+    estimator.addPosition(createPosition(latitude: 0, longitude: 0.001));
 
-    expect(calculator.totalDistance, greaterThan(0));
+    expect(estimator.totalDistance, greaterThan(0));
 
-    calculator.reset();
+    estimator.reset();
 
-    expect(calculator.totalDistance, 0);
+    expect(estimator.totalDistance, 0);
   });
 }
 
