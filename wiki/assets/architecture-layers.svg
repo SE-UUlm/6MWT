@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 470" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="860" height="470" fill="#ffffff"/>
+
+  <!-- Presentation Layer -->
+  <rect x="180" y="30" width="500" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="430" y="65" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Presentation Layer</text>
+  <text x="430" y="90" text-anchor="middle" font-size="13" fill="#334155">Flutter: screens, widgets, Riverpod providers</text>
+
+  <!-- Domain Layer -->
+  <rect x="180" y="190" width="500" height="80" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="430" y="225" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Domain Layer</text>
+  <text x="430" y="250" text-anchor="middle" font-size="13" fill="#334155">Pure Dart application logic — no Flutter UI</text>
+
+  <!-- Sensors -->
+  <rect x="90" y="350" width="330" height="80" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="255" y="385" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Sensors</text>
+  <text x="255" y="410" text-anchor="middle" font-size="13" fill="#334155">Sensor sources: GPS, steps / health</text>
+
+  <!-- Data Layer -->
+  <rect x="440" y="350" width="330" height="80" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="605" y="385" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Data Layer</text>
+  <text x="605" y="410" text-anchor="middle" font-size="13" fill="#334155">Persistence: SQLite, sample recording</text>
+
+  <!-- Arrows: A -> B means A may know B -->
+  <line x1="430" y1="110" x2="430" y2="184" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="350" y1="270" x2="278" y2="344" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="510" y1="270" x2="582" y2="344" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 180 70 C 60 80, 45 250, 84 372" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path d="M 680 70 C 800 80, 815 250, 776 372" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+</svg>

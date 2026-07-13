@@ -1,6 +1,9 @@
 # Architecture of the 6MWT App
 
 ## Layers
+![Layer dependencies](assets/architecture-layers.svg) 
+
+
 * Presentation Layer: Flutter GUI. 
   * Allowed to interact with Data Layer directly
   * Riverpod-Provider go here
