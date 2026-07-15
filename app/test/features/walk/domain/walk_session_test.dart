@@ -2,84 +2,116 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
+import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
-import 'package:six_minute_walk_test/core/sensors/location_service.dart';
 
-class FakeLocationService extends LocationService {
-  FakeLocationService({this.hasPermission = true, Stream<Position>? positions})
-    : _positions = positions ?? const Stream.empty();
+class FakeSensorSource implements SensorSource {
+  FakeSensorSource({this.available = true});
 
-  final bool hasPermission;
-  final Stream<Position> _positions;
+  final bool available;
+  final StreamController<SensorSample> controller =
+      StreamController<SensorSample>.broadcast();
+
+  bool started = false;
+  bool stopped = false;
 
   @override
-  Future<bool> requestLocationPermission() async => hasPermission;
+  String get sourceId => 'fake';
 
   @override
-  Stream<Position> getPositionStream() => _positions;
+  Stream<SensorSample> get samples => controller.stream;
+
+  @override
+  Future<void> start() async {
+    if (!available) {
+      throw const SensorUnavailableException('sensor unavailable');
+    }
+    started = true;
+  }
+
+  @override
+  Future<void> stop() async {
+    stopped = true;
+  }
 }
 
-WalkSession createSession({
-  bool hasPermission = true,
-  Stream<Position>? positions,
-  Duration walkDuration = const Duration(seconds: 3),
+class RecordingSink implements SampleSink {
+  final List<(String, SensorSample)> recorded = [];
+  int flushCount = 0;
+
+  @override
+  void addSample(String sessionId, SensorSample sample) {
+    recorded.add((sessionId, sample));
+  }
+
+  @override
+  Future<void> flush() async {
+    flushCount++;
+  }
+}
+
+SensorSample createPositionSample({
+  required double latitude,
+  required double longitude,
 }) {
-  return WalkSession(
-    locationService: FakeLocationService(
-      hasPermission: hasPermission,
-      positions: positions,
-    ),
-    distanceEstimator: GpsDistanceEstimator(),
-    walkDuration: walkDuration,
-  );
-}
-
-Position createPosition({required double latitude, required double longitude}) {
-  return Position(
-    latitude: latitude,
-    longitude: longitude,
+  return SensorSample(
     timestamp: DateTime.now(),
-    accuracy: 0,
-    altitude: 0,
-    altitudeAccuracy: 0,
-    heading: 0,
-    headingAccuracy: 0,
-    speed: 0,
-    speedAccuracy: 0,
+    sourceId: 'fake',
+    type: SampleType.position,
+    values: {
+      PositionKeys.latitude: latitude,
+      PositionKeys.longitude: longitude,
+      PositionKeys.accuracy: 0,
+    },
   );
 }
 
 void main() {
   test('starts in idle phase with full remaining time', () {
-    final session = createSession(walkDuration: const Duration(minutes: 6));
+    final session = WalkSession(
+      sources: [FakeSensorSource()],
+      distanceEstimator: GpsDistanceEstimator(),
+      walkDuration: const Duration(minutes: 6),
+    );
 
     expect(session.state.phase, WalkPhase.idle);
     expect(session.state.remainingTime, const Duration(minutes: 6));
     expect(session.state.distanceMeters, 0);
   });
 
-  test('stays idle with an error message when permission is denied', () {
+  test('stays idle with an error message when a source is unavailable', () {
     fakeAsync((async) {
-      final session = createSession(hasPermission: false);
+      final session = WalkSession(
+        sources: [FakeSensorSource(available: false)],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 3),
+      );
 
       session.start();
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.idle);
-      expect(session.state.errorMessage, isNotNull);
+      expect(session.state.errorMessage, 'sensor unavailable');
     });
   });
 
   test('counts down and finishes after the configured duration', () {
     fakeAsync((async) {
-      final session = createSession(walkDuration: const Duration(seconds: 3));
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 3),
+      );
 
       session.start();
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.running);
+      expect(source.started, isTrue);
 
       async.elapse(const Duration(seconds: 1));
       expect(session.state.remainingTime, const Duration(seconds: 2));
@@ -87,42 +119,133 @@ void main() {
       async.elapse(const Duration(seconds: 2));
       expect(session.state.phase, WalkPhase.finished);
       expect(session.state.remainingTime, Duration.zero);
+      expect(source.stopped, isTrue);
     });
   });
 
-  test('accumulates distance from incoming positions', () {
+  test('accumulates distance and forwards every sample to the sink', () {
     fakeAsync((async) {
-      final positions = StreamController<Position>();
-      final session = createSession(positions: positions.stream);
+      final source = FakeSensorSource();
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        walkDuration: const Duration(seconds: 30),
+      );
 
       session.start();
       async.flushMicrotasks();
 
-      positions.add(createPosition(latitude: 0, longitude: 0));
-      positions.add(createPosition(latitude: 0, longitude: 0.001));
+      source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+      source.controller.add(
+        createPositionSample(latitude: 0, longitude: 0.001),
+      );
       async.flushMicrotasks();
 
       expect(session.state.distanceMeters, closeTo(111, 2));
-      expect(session.state.currentPosition, isNotNull);
+      expect(session.state.lastSamples[SampleType.position], isNotNull);
+
+      expect(sink.recorded, hasLength(2));
+      expect(sink.recorded.first.$1, session.state.sessionId);
+    });
+  });
+
+  test('an unavailable optional source does not prevent the test', () {
+    fakeAsync((async) {
+      final optionalSource = FakeSensorSource(available: false);
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        optionalSources: [optionalSource],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 3),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      expect(session.state.phase, WalkPhase.running);
+      expect(session.state.errorMessage, isNull);
+    });
+  });
+
+  test('samples from optional sources reach the sink', () {
+    fakeAsync((async) {
+      final optionalSource = FakeSensorSource();
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        optionalSources: [optionalSource],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        walkDuration: const Duration(seconds: 30),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      optionalSource.controller.add(
+        SensorSample(
+          timestamp: DateTime.now(),
+          sourceId: 'fake',
+          type: SampleType.heartRate,
+          values: const {"bpm": 98},
+        ),
+      );
+      async.flushMicrotasks();
+
+      expect(sink.recorded, hasLength(1));
+      expect(session.state.lastSamples[SampleType.heartRate], isNotNull);
+
+      // Distance must be unaffected by non-position samples.
+      expect(session.state.distanceMeters, 0);
+    });
+  });
+
+  test('flushes the sink when the test ends', () {
+    fakeAsync((async) {
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        walkDuration: const Duration(seconds: 2),
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      async.elapse(const Duration(seconds: 2));
+
+      expect(session.state.phase, WalkPhase.finished);
+      expect(sink.flushCount, greaterThan(0));
     });
   });
 
   test('abort stops the test and keeps the distance', () {
     fakeAsync((async) {
-      final positions = StreamController<Position>();
-      final session = createSession(positions: positions.stream);
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 30),
+      );
 
       session.start();
       async.flushMicrotasks();
 
-      positions.add(createPosition(latitude: 0, longitude: 0));
-      positions.add(createPosition(latitude: 0, longitude: 0.001));
+      source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+      source.controller.add(
+        createPositionSample(latitude: 0, longitude: 0.001),
+      );
       async.flushMicrotasks();
 
       session.abort();
+      async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.aborted);
       expect(session.state.distanceMeters, greaterThan(0));
+      expect(source.stopped, isTrue);
 
       // Timer must be cancelled: elapsing time changes nothing anymore.
       final remainingAfterAbort = session.state.remainingTime;
@@ -133,13 +256,18 @@ void main() {
 
   test('reset returns to idle with full remaining time', () {
     fakeAsync((async) {
-      final session = createSession(walkDuration: const Duration(seconds: 3));
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 3),
+      );
 
       session.start();
       async.flushMicrotasks();
       async.elapse(const Duration(seconds: 1));
 
       session.reset();
+      async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.idle);
       expect(session.state.remainingTime, const Duration(seconds: 3));

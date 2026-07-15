@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-
-import '../../core/sensors/location_service_provider.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/walk_session_provider.dart';
 
 class GpsTestScreen extends ConsumerStatefulWidget {
   const GpsTestScreen({super.key});

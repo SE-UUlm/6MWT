@@ -1,17 +1,19 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
 // Turns a stream of positions into a walked distance. Implementations can use
 // different strategies (GPS, step-based, sensor fusion) interchangeably.
 abstract class DistanceEstimator {
   double get totalDistance;
 
-  void addPosition(Position position);
+  void addSample(SensorSample sample);
 
   void reset();
 }
 
 class GpsDistanceEstimator implements DistanceEstimator {
-  Position? _previousPosition;
+  double? _previousLatitude;
+  double? _previousLongitude;
   double _totalDistance = 0;
 
   @override
@@ -19,26 +21,40 @@ class GpsDistanceEstimator implements DistanceEstimator {
 
   // Adds a new position and calculates the distance from the previous position.
   @override
-  void addPosition(Position position) {
-    final previousPosition = _previousPosition;
+  void addSample(SensorSample sample) {
+    if (sample.type != SampleType.position) {
+      return;
+    }
 
-    if (previousPosition != null) {
+    final latitude = sample.values[PositionKeys.latitude];
+    final longitude = sample.values[PositionKeys.longitude];
+
+    if (latitude == null || longitude == null) {
+      return;
+    }
+
+    final previousLatitude = _previousLatitude;
+    final previousLongitude = _previousLongitude;
+
+    if (previousLatitude != null && previousLongitude != null) {
       final distance = Geolocator.distanceBetween(
-        previousPosition.latitude,
-        previousPosition.longitude,
-        position.latitude,
-        position.longitude,
+        previousLatitude,
+        previousLongitude,
+        latitude,
+        longitude,
       );
 
       _totalDistance += distance;
     }
 
-    _previousPosition = position;
+    _previousLatitude = latitude;
+    _previousLongitude = longitude;
   }
 
   @override
   void reset() {
-    _previousPosition = null;
+    _previousLatitude = null;
+    _previousLongitude = null;
     _totalDistance = 0;
   }
 }
