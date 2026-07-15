@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
 import '../domain/walk_session.dart';
 import 'walk_session_provider.dart';
@@ -18,7 +19,7 @@ class WalkScreen extends ConsumerWidget {
       case WalkPhase.idle:
         return 'Test not started';
       case WalkPhase.running:
-        return state.currentPosition == null
+        return state.lastSamples[SampleType.position] == null
             ? 'Waiting for GPS positions...'
             : 'Receiving GPS positions';
       case WalkPhase.finished:
@@ -34,7 +35,7 @@ class WalkScreen extends ConsumerWidget {
     final state = // Fallback needed because on first frame walkSessionStateProvider does not have a value yet
         ref.watch(walkSessionStateProvider).value ?? session.state;
 
-    final currentPosition = state.currentPosition;
+    final lastPosition = state.lastSamples[SampleType.position];
 
     return Scaffold(
       appBar: AppBar(title: const Text('Walking Test')),
@@ -66,13 +67,13 @@ class WalkScreen extends ConsumerWidget {
 
               const SizedBox(height: 16),
 
-              if (currentPosition != null)
+              if (lastPosition != null)
                 _InfoCard(
                   title: 'Current Position',
                   value:
-                      'Lat: ${currentPosition.latitude.toStringAsFixed(6)}\n'
-                      'Lng: ${currentPosition.longitude.toStringAsFixed(6)}\n'
-                      'Accuracy: ${currentPosition.accuracy.toStringAsFixed(1)} m',
+                      'Lat: ${lastPosition.values[PositionKeys.latitude]?.toStringAsFixed(6)}\n'
+                      'Lng: ${lastPosition.values[PositionKeys.longitude]?.toStringAsFixed(6)}\n'
+                      'Accuracy: ${lastPosition.values[PositionKeys.accuracy]?.toStringAsFixed(1)} m',
                 )
               else
                 const _InfoCard(
