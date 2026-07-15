@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
 
 import 'package:six_minute_walk_test/core/sensors/location_service.dart';
@@ -18,6 +19,7 @@ final walkSessionProvider = Provider<WalkSession>((ref) {
     // permission, unsupported platform).
     optionalSources: [],
     distanceEstimator: GpsDistanceEstimator(),
+    sampleSink: ref.watch(sampleRepositoryProvider),
   );
 
   ref.onDispose(session.dispose);
