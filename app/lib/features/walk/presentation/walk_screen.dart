@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
 import '../domain/walk_session.dart';
-import 'walk_session_provider.dart';
+import '../domain/walk_session_provider.dart';
 
 class WalkScreen extends ConsumerWidget {
   const WalkScreen({super.key});

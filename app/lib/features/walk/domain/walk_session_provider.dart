@@ -1,18 +1,20 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
 
 import 'package:six_minute_walk_test/core/sensors/location_service.dart';
-import '../domain/distance_estimator.dart';
-import '../domain/walk_session.dart';
+import 'distance_estimator.dart';
+import 'walk_session.dart';
 
-final locationServiceProvider = Provider<LocationService>(
-  (ref) => LocationService(),
-);
+part 'walk_session_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+LocationService locationService(Ref ref) => LocationService();
 
 // Kept alive for the whole app lifetime, so a running walk test survives
 // navigating between screens.
-final walkSessionProvider = Provider<WalkSession>((ref) {
+@Riverpod(keepAlive: true)
+WalkSession walkSession(Ref ref) {
   final session = WalkSession(
     sources: [GpsSource(locationService: ref.watch(locationServiceProvider))],
     // Recorded when available, silently skipped when not (no wearable, no
@@ -25,8 +27,8 @@ final walkSessionProvider = Provider<WalkSession>((ref) {
   ref.onDispose(session.dispose);
 
   return session;
-});
+}
 
-final walkSessionStateProvider = StreamProvider<WalkSessionState>(
-  (ref) => ref.watch(walkSessionProvider).states,
-);
+@Riverpod(keepAlive: true)
+Stream<WalkSessionState> walkSessionState(Ref ref) =>
+    ref.watch(walkSessionProvider).states;
