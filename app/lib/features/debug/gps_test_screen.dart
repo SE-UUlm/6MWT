@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:six_minute_walk_test/features/walk/presentation/walk_session_provider.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
 class GpsTestScreen extends ConsumerStatefulWidget {
   const GpsTestScreen({super.key});
@@ -16,6 +16,7 @@ class _GpsTestScreenState extends ConsumerState<GpsTestScreen> {
   bool _isLoading = false;
 
   Future<void> _loadCurrentPosition() async {
+    // TODO: Maybe remove this screen because locationServiceProvider violates feature architecture. Or move walk_session etc. to core
     final locationService = ref.read(locationServiceProvider);
 
     setState(() {

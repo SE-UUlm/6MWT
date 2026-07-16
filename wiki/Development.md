@@ -12,6 +12,12 @@ Steps:
 * Merge PR if ready and checks passed
 * Issue should automatically close
 
+## Useful Commands
+* Run code generation: `dart run build_runner build`
+    * Needed after changes to riverpod providers and drift database
+* Format all code: `dart format .`
+* Run linter/code analyzer: `dart analyze`
+* Run tests: `flutter test`
 
 ## Commit Messages
 
