@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
@@ -26,6 +27,21 @@ class WalkScreen extends ConsumerWidget {
         return 'Test finished';
       case WalkPhase.aborted:
         return 'Test stopped';
+    }
+  }
+
+  String _assessmentMesage(WalkSessionState state, WalkSession session) {
+    if (session.walkDuration - state.remainingTime > Duration.zero) {
+      final assessment = assessFitness(
+        duration: session.walkDuration - state.remainingTime,
+        distanceInMeters: state.distanceMeters,
+        ageInYears: 27,
+        heightInCm: 189.0,
+      );
+
+      return 'Percentage: ${assessment.percentOfExpected.round().toString()} %\nCategory: ${assessment.category.name}';
+    } else {
+      return 'Not started yet';
     }
   }
 
@@ -80,6 +96,13 @@ class WalkScreen extends ConsumerWidget {
                   title: 'Current Position',
                   value: 'No position yet',
                 ),
+
+              const SizedBox(height: 16),
+
+              _InfoCard(
+                title: 'Assessment:',
+                value: _assessmentMesage(state, session),
+              ),
 
               const SizedBox(height: 24),
 
