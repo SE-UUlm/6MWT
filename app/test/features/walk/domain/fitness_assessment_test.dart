@@ -207,7 +207,7 @@ void main() {
     for (final c in cases) {
       test('Test for combination $c', () {
         final assessment = assessFitness(
-          duration: Duration(minutes: 6),
+          duration: const Duration(minutes: 6),
           distanceInMeters: c.distance.toDouble(),
           ageInYears: c.age,
           heightInCm: c.height.toDouble(),

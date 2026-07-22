@@ -93,7 +93,10 @@ FitnessAssessment assessFitness({
 
 // The expected (50th percentile) six-minute walking distance for a healthy
 // subject of the given age and height.
-double _expectedDistance({required int ageInYears, required double heightInCm}) {
+double _expectedDistance({
+  required int ageInYears,
+  required double heightInCm,
+}) {
   final age = ageInYears.clamp(_minAgeYears, _maxAgeYears);
   final height = heightInCm.clamp(_minHeightCm, _maxHeightCm);
 

@@ -30,7 +30,7 @@ class WalkScreen extends ConsumerWidget {
     }
   }
 
-  String _assessmentMesage(WalkSessionState state, WalkSession session) {
+  String _assessmentMessage(WalkSessionState state, WalkSession session) {
     if (session.walkDuration - state.remainingTime > Duration.zero) {
       final assessment = assessFitness(
         duration: session.walkDuration - state.remainingTime,
@@ -101,7 +101,7 @@ class WalkScreen extends ConsumerWidget {
 
               _InfoCard(
                 title: 'Assessment:',
-                value: _assessmentMesage(state, session),
+                value: _assessmentMessage(state, session),
               ),
 
               const SizedBox(height: 24),
