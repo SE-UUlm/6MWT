@@ -221,6 +221,7 @@ class WalkSession {
   }
 
   void _onSampleError(Object error) {
+    print('Sample Error $error');
     _emit(
       WalkSessionState(
         phase: _state.phase,

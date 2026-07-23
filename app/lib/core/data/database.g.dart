@@ -415,6 +415,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     sensorSamples,
     sampleSessionId,
   ];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
 typedef $$SensorSamplesTableCreateCompanionBuilder =

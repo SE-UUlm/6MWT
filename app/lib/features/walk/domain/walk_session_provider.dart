@@ -3,6 +3,7 @@ import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
 
 import 'package:six_minute_walk_test/core/sensors/location_service.dart';
+import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'distance_estimator.dart';
 import 'walk_session.dart';
 
@@ -19,7 +20,7 @@ WalkSession walkSession(Ref ref) {
     sources: [GpsSource(locationService: ref.watch(locationServiceProvider))],
     // Recorded when available, silently skipped when not (no wearable, no
     // permission, unsupported platform).
-    optionalSources: [],
+    optionalSources: [PedometerSource()],
     distanceEstimator: GpsDistanceEstimator(),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );

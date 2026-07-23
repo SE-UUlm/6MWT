@@ -41,3 +41,9 @@ abstract final class PositionKeys {
   static const speed = 'speed';
   static const heading = 'heading';
 }
+
+// Value keys used by step samples
+abstract final class StepKeys {
+  static const cumulativeSteps = 'cumulative_steps';
+  static const pedestrianStatus = 'pedestrian_status';
+}
