@@ -105,14 +105,16 @@ The application shall allow the user to export recorded session data (e.g. as CS
 
 ### FR14 – Error Handling
 
+*Nice to have*
+
 The application shall handle unexpected errors (e.g. application crash, unexpected termination) during an active walk test gracefully.
 
 If the application is restarted after an unexpected termination during an active session, it shall inform the user about the interrupted session and shall not silently lose already recorded data (see [FR5](#fr5--sensor-data-recording)).
 
 
-### FR15 – Session Management (Deletion)
+### FR15 – Session Management
 
-The application shall allow the user to view a list of previously recorded sessions and to delete individual sessions and their associated data.
+The application shall allow the user to view a list of previously recorded sessions including their results and to delete individual sessions and their associated data.
 
 
 ### FR16 – Onboarding / Instructions
@@ -148,6 +150,10 @@ During an active walk test, the application shall provide a screen displaying th
 ### FR21 – Test Results Screen
 
 After completion of a walk test, the application shall provide a screen displaying the test results, including the walked distance and the fitness assessment defined in [FR12](#fr12--fitness-assessment).
+
+### FR22 – Test Abort
+
+A walk test can be aborted by the user. In this case the test data shall still be saved but marked as incomplete. A fitness assessment shall potentially be skipped.
 
 
 ## Non-Functional Requirements
@@ -216,3 +222,8 @@ Continuous GPS tracking and background execution ([FR11](#fr11--background-execu
 
 The application shall support a defined minimum set of Android and iOS versions.
 
+### NFR12 – Multi Language Support
+
+*Nice to have*
+
+The application shall support multiple languages.
