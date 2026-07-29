@@ -13,11 +13,21 @@ concurrency:
   group: publish-wiki
   cancel-in-progress: true
 
-jobs:  
+jobs:
   publish-wiki:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
+
+      - name: Add auto-generated hint
+        run: |
+          TIMESTAMP=$(date -u +"%Y-%m-%d, %H:%M:%S UTC")
+          NOTICE="_This document was generated on $TIMESTAMP. Please do not edit this page directly._"
+
+          find "./wiki" -type f -name "*.md" ! -name "_*" | while read -r file; do
+            echo "Processing $file..."
+            sed -i "1s/^/$NOTICE\n\n/" "$file"
+          done
 
       - uses: Andrew-Chen-Wang/github-wiki-action@v5
