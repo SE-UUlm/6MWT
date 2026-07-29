@@ -3,9 +3,12 @@ import 'dart:math';
 
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
 import 'distance_estimator.dart';
+
+final _log = appLogger('WalkSession');
 
 enum WalkPhase { idle, running, finished, aborted }
 
@@ -137,8 +140,8 @@ class WalkSession {
       try {
         await source.start();
         _activeSources.add(source);
-      } on Exception {
-        print("Cannot start source ${source.sourceId}");
+      } on Exception catch (e) {
+        _log.w('Cannot start optional source ${source.sourceId}', error: e);
         // Optional sources may be missing (no wearable, no permission,
         // unsupported platform) — the walk test itself is unaffected.
       }
@@ -221,7 +224,7 @@ class WalkSession {
   }
 
   void _onSampleError(Object error) {
-    print('Sample Error $error');
+    _log.w('Sample error', error: error);
     _emit(
       WalkSessionState(
         phase: _state.phase,
