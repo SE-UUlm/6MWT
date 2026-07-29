@@ -17,7 +17,16 @@ class SensorSamples extends Table {
   TextColumn get values => text()(); // Values Map as json
 }
 
-@DriftDatabase(tables: [SensorSamples])
+class Profiles extends Table {
+  IntColumn get id => integer().autoIncrement()();
+
+  TextColumn get name => text().nullable()();
+  DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
+  IntColumn get height => integer()();
+  IntColumn get age => integer()();
+}
+
+@DriftDatabase(tables: [SensorSamples, Profiles])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
