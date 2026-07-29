@@ -5,7 +5,10 @@ import 'package:pedometer/pedometer.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../domain/sensor_sample.dart';
+import '../../app/log.dart';
 import 'sensor_source.dart';
+
+final _log = appLogger('PedometerSource');
 
 // Step counts from the phone's built-in step sensor. The platform delivers
 // counts cumulative since device boot; they are recorded as-is.
@@ -39,7 +42,7 @@ class PedometerSource implements SensorSource {
     }
 
     runZonedGuarded(
-      // Not sure why this is neede but otherwise errors from the Pedometer streams are unhandled exceptions, even though they have working onError handlers
+      // Not sure why this is needed but otherwise errors from the Pedometer streams are unhandled exceptions, even though they have working onError handlers
       () {
         _stepCountSubscription = Pedometer.stepCountStream.listen(
           (stepCount) => _controller.add(
@@ -51,7 +54,7 @@ class PedometerSource implements SensorSource {
             ),
           ),
           onError: (err) {
-            print("On Error ${_controller.hasListener}");
+            _log.w('onError');
             _controller.addError(err);
           },
         );
@@ -74,7 +77,11 @@ class PedometerSource implements SensorSource {
       },
       (error, stack) {
         // Really only needed so the debugger is not paused every time
-        print("Exception caught in Pedometer: $error");
+        _log.w(
+          'Exception caught in Pedometer',
+          error: error,
+          stackTrace: stack,
+        );
       },
     );
   }
