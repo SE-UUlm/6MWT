@@ -95,3 +95,98 @@ final class SampleRepositoryProvider
 }
 
 String _$sampleRepositoryHash() => r'9fe7c0b2fb1e62a0b5127f154ba821e54c8ebf45';
+
+@ProviderFor(profileRepository)
+final profileRepositoryProvider = ProfileRepositoryProvider._();
+
+final class ProfileRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ProfileRepository,
+          ProfileRepository,
+          ProfileRepository
+        >
+    with $Provider<ProfileRepository> {
+  ProfileRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'profileRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$profileRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ProfileRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ProfileRepository create(Ref ref) {
+    return profileRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ProfileRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ProfileRepository>(value),
+    );
+  }
+}
+
+String _$profileRepositoryHash() => r'4b207e74f8e386bcbc56bdd6ac9baeb0640d2710';
+
+@ProviderFor(walkSessionRepository)
+final walkSessionRepositoryProvider = WalkSessionRepositoryProvider._();
+
+final class WalkSessionRepositoryProvider
+    extends
+        $FunctionalProvider<
+          WalkSessionRepository,
+          WalkSessionRepository,
+          WalkSessionRepository
+        >
+    with $Provider<WalkSessionRepository> {
+  WalkSessionRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'walkSessionRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$walkSessionRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<WalkSessionRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  WalkSessionRepository create(Ref ref) {
+    return walkSessionRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(WalkSessionRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<WalkSessionRepository>(value),
+    );
+  }
+}
+
+String _$walkSessionRepositoryHash() =>
+    r'090be2dbce0d98fceb59431ee6992655246442f6';

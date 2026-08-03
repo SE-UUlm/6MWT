@@ -59,11 +59,11 @@ class FitnessAssessment {
   final FitnessCategory category;
 }
 
-// Assesses a walk test. [duration] and [distanceInMeters] describe the actual
+// Assesses a walk test. [duration] and [distance] describe the actual
 // walk; [ageInYears] and [heightInCm] describe the subject.
 FitnessAssessment assessFitness({
   required Duration duration,
-  required double distanceInMeters,
+  required double distance,
   required int ageInYears,
   required double heightInCm,
 }) {
@@ -77,7 +77,7 @@ FitnessAssessment assessFitness({
 
   // Scale the walk to what it would have been over a full six minutes.
   final sixMinuteDistance =
-      distanceInMeters *
+      distance *
       (_referenceTestDuration.inMilliseconds / duration.inMilliseconds);
 
   final expectedDistance = _expectedDistance(

@@ -39,22 +39,25 @@ void main() {
       expect(profile.age, 30);
     });
 
-    test('returns existing id when profile with same name, height and age exists', () async {
-      final repository = ProfileRepository(db);
+    test(
+      'returns existing id when profile with same name, height and age exists',
+      () async {
+        final repository = ProfileRepository(db);
 
-      final firstId = await repository.ensureProfile(
-        name: 'Bob',
-        height: 180,
-        age: 25,
-      );
-      final secondId = await repository.ensureProfile(
-        name: 'Bob',
-        height: 180,
-        age: 25,
-      );
+        final firstId = await repository.ensureProfile(
+          name: 'Bob',
+          height: 180,
+          age: 25,
+        );
+        final secondId = await repository.ensureProfile(
+          name: 'Bob',
+          height: 180,
+          age: 25,
+        );
 
-      expect(secondId, equals(firstId));
-    });
+        expect(secondId, equals(firstId));
+      },
+    );
 
     test('creates separate profiles when name differs', () async {
       final repository = ProfileRepository(db);
@@ -110,14 +113,8 @@ void main() {
     test('handles null name correctly and deduplicates', () async {
       final repository = ProfileRepository(db);
 
-      final id1 = await repository.ensureProfile(
-        height: 165,
-        age: 40,
-      );
-      final id2 = await repository.ensureProfile(
-        height: 165,
-        age: 40,
-      );
+      final id1 = await repository.ensureProfile(height: 165, age: 40);
+      final id2 = await repository.ensureProfile(height: 165, age: 40);
 
       expect(id1, equals(id2));
 
@@ -126,21 +123,24 @@ void main() {
       expect(profile!.name, isNull);
     });
 
-    test('null name and non-null name are treated as different profiles', () async {
-      final repository = ProfileRepository(db);
+    test(
+      'null name and non-null name are treated as different profiles',
+      () async {
+        final repository = ProfileRepository(db);
 
-      final idWithoutName = await repository.ensureProfile(
-        height: 170,
-        age: 30,
-      );
-      final idWithName = await repository.ensureProfile(
-        name: 'Alice',
-        height: 170,
-        age: 30,
-      );
+        final idWithoutName = await repository.ensureProfile(
+          height: 170,
+          age: 30,
+        );
+        final idWithName = await repository.ensureProfile(
+          name: 'Alice',
+          height: 170,
+          age: 30,
+        );
 
-      expect(idWithoutName, isNot(equals(idWithName)));
-    });
+        expect(idWithoutName, isNot(equals(idWithName)));
+      },
+    );
 
     test('does not create duplicate rows in the database', () async {
       final repository = ProfileRepository(db);

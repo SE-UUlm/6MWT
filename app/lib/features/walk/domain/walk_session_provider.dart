@@ -1,13 +1,15 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
-
 import 'package:six_minute_walk_test/core/sensors/location_service.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'distance_estimator.dart';
 import 'walk_session.dart';
 
 part 'walk_session_provider.g.dart';
+
+final _log = appLogger('WalkSessionProvider');
 
 @Riverpod(keepAlive: true)
 LocationService locationService(Ref ref) => LocationService();
@@ -25,7 +27,38 @@ WalkSession walkSession(Ref ref) {
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 
-  ref.onDispose(session.dispose);
+  // Persist every walkSession that was started
+  final walkSessionRepository = ref.watch(walkSessionRepositoryProvider);
+
+  final subscription = session.states.listen((state) {
+    final sessionId = state.sessionId;
+    final startedAt = state.startedAt;
+
+    if (sessionId == null || startedAt == null) {
+      return;
+    }
+
+    final profileId = session.profileId;
+
+    if (profileId == null) {
+      _log.w('ProfileId is null. Cannot save Walk Session');
+      return;
+    }
+
+    walkSessionRepository.saveResult(
+      id: sessionId,
+      startedAt: startedAt,
+      duration: session.walkDuration - state.remainingTime,
+      distance: state.distance,
+      phase: state.phase,
+      profileId: profileId,
+    );
+  });
+
+  ref.onDispose(() {
+    subscription.cancel();
+    session.dispose();
+  });
 
   return session;
 }

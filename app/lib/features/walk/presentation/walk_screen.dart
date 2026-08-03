@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import 'package:six_minute_walk_test/core/data/database.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
+
+bool _debugInitialized = false;
 
 class WalkScreen extends ConsumerWidget {
   const WalkScreen({super.key});
@@ -34,7 +38,7 @@ class WalkScreen extends ConsumerWidget {
     if (session.walkDuration - state.remainingTime > Duration.zero) {
       final assessment = assessFitness(
         duration: session.walkDuration - state.remainingTime,
-        distanceInMeters: state.distanceMeters,
+        distance: state.distance,
         ageInYears: 27,
         heightInCm: 189.0,
       );
@@ -50,6 +54,20 @@ class WalkScreen extends ConsumerWidget {
     final session = ref.watch(walkSessionProvider);
     final state = // Fallback needed because on first frame walkSessionStateProvider does not have a value yet
         ref.watch(walkSessionStateProvider).value ?? session.state;
+
+    // For debug purposes while profile is not created in the gui:
+    final profile = ref.watch(profileRepositoryProvider);
+    if (!_debugInitialized) {
+      _debugInitialized = true;
+      Future.microtask(() async {
+        final profileId = await profile.ensureProfile(
+          height: 189,
+          age: 27,
+          name: "Frank",
+        );
+        session.profileId = profileId;
+      });
+    }
 
     final lastPosition = state.lastSamples[SampleType.position];
 
@@ -74,7 +92,7 @@ class WalkScreen extends ConsumerWidget {
 
               _InfoCard(
                 title: 'Distance',
-                value: '${state.distanceMeters.toStringAsFixed(1)} m',
+                value: '${state.distance.toStringAsFixed(1)} m',
               ),
 
               const SizedBox(height: 16),

@@ -9,7 +9,7 @@ void main() {
   test('walking exactly the expected distance yields 100%', () {
     final result = assessFitness(
       duration: const Duration(minutes: 6),
-      distanceInMeters: expectedAt40And150,
+      distance: expectedAt40And150,
       ageInYears: 40,
       heightInCm: 150,
     );
@@ -21,7 +21,7 @@ void main() {
   test('percentage scales linearly below the expected distance', () {
     final result = assessFitness(
       duration: const Duration(minutes: 6),
-      distanceInMeters: expectedAt40And150 / 2,
+      distance: expectedAt40And150 / 2,
       ageInYears: 40,
       heightInCm: 150,
     );
@@ -33,7 +33,7 @@ void main() {
     // 30 cm taller -> expected distance grows by 30 * 1.857 = 55.71 m.
     final result = assessFitness(
       duration: const Duration(minutes: 6),
-      distanceInMeters: expectedAt40And150 + 55.71,
+      distance: expectedAt40And150 + 55.71,
       ageInYears: 40,
       heightInCm: 180,
     );
@@ -46,7 +46,7 @@ void main() {
     // expected six-minute distance.
     final result = assessFitness(
       duration: const Duration(minutes: 1),
-      distanceInMeters: expectedAt40And150 / 6,
+      distance: expectedAt40And150 / 6,
       ageInYears: 40,
       heightInCm: 150,
     );
@@ -58,7 +58,7 @@ void main() {
   group('categories', () {
     FitnessCategory categoryFor(double distance) => assessFitness(
       duration: const Duration(minutes: 6),
-      distanceInMeters: distance,
+      distance: distance,
       ageInYears: 40,
       heightInCm: 150,
     ).category;
@@ -86,7 +86,7 @@ void main() {
     test('age below 40 is treated as 40', () {
       final young = assessFitness(
         duration: const Duration(minutes: 6),
-        distanceInMeters: expectedAt40And150,
+        distance: expectedAt40And150,
         ageInYears: 25,
         heightInCm: 150,
       );
@@ -97,13 +97,13 @@ void main() {
     test('height above 210 is treated as 210', () {
       final tall = assessFitness(
         duration: const Duration(minutes: 6),
-        distanceInMeters: 100,
+        distance: 100,
         ageInYears: 40,
         heightInCm: 230,
       );
       final clamped = assessFitness(
         duration: const Duration(minutes: 6),
-        distanceInMeters: 100,
+        distance: 100,
         ageInYears: 40,
         heightInCm: 210,
       );
@@ -116,7 +116,7 @@ void main() {
     expect(
       () => assessFitness(
         duration: Duration.zero,
-        distanceInMeters: 500,
+        distance: 500,
         ageInYears: 40,
         heightInCm: 150,
       ),
@@ -208,7 +208,7 @@ void main() {
       test('Test for combination $c', () {
         final assessment = assessFitness(
           duration: const Duration(minutes: 6),
-          distanceInMeters: c.distance.toDouble(),
+          distance: c.distance.toDouble(),
           ageInYears: c.age,
           heightInCm: c.height.toDouble(),
         );

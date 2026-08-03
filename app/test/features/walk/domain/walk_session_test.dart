@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:logger/logger.dart';
+import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
@@ -80,7 +81,7 @@ void main() {
 
     expect(session.state.phase, WalkPhase.idle);
     expect(session.state.remainingTime, const Duration(minutes: 6));
-    expect(session.state.distanceMeters, 0);
+    expect(session.state.distance, 0);
   });
 
   test('stays idle with an error message when a source is unavailable', () {
@@ -144,7 +145,7 @@ void main() {
       );
       async.flushMicrotasks();
 
-      expect(session.state.distanceMeters, closeTo(111, 2));
+      expect(session.state.distance, closeTo(111, 2));
       expect(session.state.lastSamples[SampleType.position], isNotNull);
 
       expect(sink.recorded, hasLength(2));
@@ -205,7 +206,7 @@ void main() {
       expect(session.state.lastSamples[SampleType.heartRate], isNotNull);
 
       // Distance must be unaffected by non-position samples.
-      expect(session.state.distanceMeters, 0);
+      expect(session.state.distance, 0);
     });
   });
 
@@ -251,7 +252,7 @@ void main() {
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.aborted);
-      expect(session.state.distanceMeters, greaterThan(0));
+      expect(session.state.distance, greaterThan(0));
       expect(source.stopped, isTrue);
 
       // Timer must be cancelled: elapsing time changes nothing anymore.
@@ -278,7 +279,7 @@ void main() {
 
       expect(session.state.phase, WalkPhase.idle);
       expect(session.state.remainingTime, const Duration(seconds: 3));
-      expect(session.state.distanceMeters, 0);
+      expect(session.state.distance, 0);
     });
   });
 }

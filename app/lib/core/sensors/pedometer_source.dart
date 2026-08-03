@@ -54,7 +54,6 @@ class PedometerSource implements SensorSource {
             ),
           ),
           onError: (err) {
-            _log.w('onError');
             _controller.addError(err);
           },
         );

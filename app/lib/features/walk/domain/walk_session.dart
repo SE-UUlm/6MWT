@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
@@ -10,14 +11,12 @@ import 'distance_estimator.dart';
 
 final _log = appLogger('WalkSession');
 
-enum WalkPhase { idle, running, finished, aborted }
-
 // Immutable snapshot of a walk test at one point in time.
 class WalkSessionState {
   const WalkSessionState({
     required this.phase,
     required this.remainingTime,
-    this.distanceMeters = 0,
+    this.distance = 0, // In meters
     this.lastSamples = const {},
     this.errorMessage,
     this.sessionId,
@@ -26,7 +25,7 @@ class WalkSessionState {
 
   final WalkPhase phase;
   final Duration remainingTime;
-  final double distanceMeters;
+  final double distance;
 
   // Latest sample per sample type, for display purposes.
   final Map<SampleType, SensorSample> lastSamples;
@@ -84,6 +83,8 @@ class WalkSession {
   final List<StreamSubscription<SensorSample>> _sampleSubscriptions = [];
   final List<SensorSource> _activeSources = [];
   Timer? _ticker;
+
+  int? profileId;
 
   WalkSessionState get state => _state;
 
@@ -161,7 +162,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.aborted,
         remainingTime: _state.remainingTime,
-        distanceMeters: _state.distanceMeters,
+        distance: _state.distance,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -193,7 +194,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: remaining,
-        distanceMeters: _state.distanceMeters,
+        distance: _state.distance,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -215,7 +216,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: _state.remainingTime,
-        distanceMeters: _distanceEstimator.totalDistance,
+        distance: _distanceEstimator.totalDistance,
         lastSamples: {..._state.lastSamples, sample.type: sample},
         sessionId: sessionId,
         startedAt: _state.startedAt,
@@ -229,7 +230,7 @@ class WalkSession {
       WalkSessionState(
         phase: _state.phase,
         remainingTime: _state.remainingTime,
-        distanceMeters: _state.distanceMeters,
+        distance: _state.distance,
         lastSamples: _state.lastSamples,
         errorMessage: 'Sensor error: $error',
         sessionId: _state.sessionId,
@@ -245,7 +246,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.finished,
         remainingTime: Duration.zero,
-        distanceMeters: _state.distanceMeters,
+        distance: _state.distance,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
