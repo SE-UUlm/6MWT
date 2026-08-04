@@ -6,6 +6,16 @@ part 'database.g.dart';
 
 enum WalkPhase { idle, running, finished, aborted }
 
+class DurationConverter extends TypeConverter<Duration, int> {
+  const DurationConverter();
+
+  @override
+  Duration fromSql(int fromDb) => Duration(seconds: fromDb);
+
+  @override
+  int toSql(Duration value) => value.inSeconds;
+}
+
 // Use SensorSampleRow for generated datatypes so it does not conflict with our SensorSample class
 @DataClassName('SensorSampleRow')
 // Add index for sessionId because we will always query SensorSamples by sessionId
@@ -33,7 +43,7 @@ class WalkSessions extends Table {
   TextColumn get id => text()();
 
   DateTimeColumn get startedAt => dateTime()();
-  IntColumn get duration => integer()(); // In seconds
+  Column<int> get duration => integer().map(const DurationConverter())();
   RealColumn get distance => real()(); // In meters
 
   TextColumn get phase => textEnum<WalkPhase>()();

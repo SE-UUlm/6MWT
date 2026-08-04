@@ -7,30 +7,12 @@ class WalkSessionRepository {
 
   final AppDatabase _db;
 
-  Future<void> saveResult({
-    required String id,
-    required DateTime startedAt,
-    required Duration duration,
-    required double distance,
-    required WalkPhase phase,
-    required int profileId,
-  }) {
-    return _db
-        .into(_db.walkSessions)
-        .insertOnConflictUpdate(
-          WalkSessionsCompanion.insert(
-            id: id,
-            startedAt: startedAt,
-            duration: duration.inSeconds,
-            distance: distance,
-            phase: phase,
-            profileId: profileId,
-          ),
-        );
+  Future<void> saveSession(WalkSessionRow session) {
+    return _db.into(_db.walkSessions).insertOnConflictUpdate(session);
   }
 
   // Newest first, for the history screen.
-  Stream<List<WalkSessionRow>> watchResults() {
+  Stream<List<WalkSessionRow>> watchSessions() {
     final query = _db.select(_db.walkSessions)
       ..orderBy([(row) => OrderingTerm.desc(row.startedAt)]);
 

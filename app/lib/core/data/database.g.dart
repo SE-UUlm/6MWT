@@ -365,17 +365,15 @@ class $WalkSessionsTable extends WalkSessions
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _durationMeta = const VerificationMeta(
-    'duration',
-  );
   @override
-  late final GeneratedColumn<int> duration = GeneratedColumn<int>(
-    'duration',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
+  late final GeneratedColumnWithTypeConverter<Duration, int> duration =
+      GeneratedColumn<int>(
+        'duration',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      ).withConverter<Duration>($WalkSessionsTable.$converterduration);
   static const VerificationMeta _distanceMeta = const VerificationMeta(
     'distance',
   );
@@ -444,14 +442,6 @@ class $WalkSessionsTable extends WalkSessions
     } else if (isInserting) {
       context.missing(_startedAtMeta);
     }
-    if (data.containsKey('duration')) {
-      context.handle(
-        _durationMeta,
-        duration.isAcceptableOrUnknown(data['duration']!, _durationMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_durationMeta);
-    }
     if (data.containsKey('distance')) {
       context.handle(
         _distanceMeta,
@@ -485,10 +475,12 @@ class $WalkSessionsTable extends WalkSessions
         DriftSqlType.dateTime,
         data['${effectivePrefix}started_at'],
       )!,
-      duration: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}duration'],
-      )!,
+      duration: $WalkSessionsTable.$converterduration.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}duration'],
+        )!,
+      ),
       distance: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}distance'],
@@ -511,6 +503,8 @@ class $WalkSessionsTable extends WalkSessions
     return $WalkSessionsTable(attachedDatabase, alias);
   }
 
+  static TypeConverter<Duration, int> $converterduration =
+      const DurationConverter();
   static JsonTypeConverter2<WalkPhase, String, String> $converterphase =
       const EnumNameConverter<WalkPhase>(WalkPhase.values);
 }
@@ -518,7 +512,7 @@ class $WalkSessionsTable extends WalkSessions
 class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
   final String id;
   final DateTime startedAt;
-  final int duration;
+  final Duration duration;
   final double distance;
   final WalkPhase phase;
   final int profileId;
@@ -535,7 +529,11 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['started_at'] = Variable<DateTime>(startedAt);
-    map['duration'] = Variable<int>(duration);
+    {
+      map['duration'] = Variable<int>(
+        $WalkSessionsTable.$converterduration.toSql(duration),
+      );
+    }
     map['distance'] = Variable<double>(distance);
     {
       map['phase'] = Variable<String>(
@@ -565,7 +563,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     return WalkSessionRow(
       id: serializer.fromJson<String>(json['id']),
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
-      duration: serializer.fromJson<int>(json['duration']),
+      duration: serializer.fromJson<Duration>(json['duration']),
       distance: serializer.fromJson<double>(json['distance']),
       phase: $WalkSessionsTable.$converterphase.fromJson(
         serializer.fromJson<String>(json['phase']),
@@ -579,7 +577,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'startedAt': serializer.toJson<DateTime>(startedAt),
-      'duration': serializer.toJson<int>(duration),
+      'duration': serializer.toJson<Duration>(duration),
       'distance': serializer.toJson<double>(distance),
       'phase': serializer.toJson<String>(
         $WalkSessionsTable.$converterphase.toJson(phase),
@@ -591,7 +589,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
   WalkSessionRow copyWith({
     String? id,
     DateTime? startedAt,
-    int? duration,
+    Duration? duration,
     double? distance,
     WalkPhase? phase,
     int? profileId,
@@ -645,7 +643,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
 class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
   final Value<String> id;
   final Value<DateTime> startedAt;
-  final Value<int> duration;
+  final Value<Duration> duration;
   final Value<double> distance;
   final Value<WalkPhase> phase;
   final Value<int> profileId;
@@ -662,7 +660,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
   WalkSessionsCompanion.insert({
     required String id,
     required DateTime startedAt,
-    required int duration,
+    required Duration duration,
     required double distance,
     required WalkPhase phase,
     required int profileId,
@@ -696,7 +694,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
   WalkSessionsCompanion copyWith({
     Value<String>? id,
     Value<DateTime>? startedAt,
-    Value<int>? duration,
+    Value<Duration>? duration,
     Value<double>? distance,
     Value<WalkPhase>? phase,
     Value<int>? profileId,
@@ -723,7 +721,9 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
       map['started_at'] = Variable<DateTime>(startedAt.value);
     }
     if (duration.present) {
-      map['duration'] = Variable<int>(duration.value);
+      map['duration'] = Variable<int>(
+        $WalkSessionsTable.$converterduration.toSql(duration.value),
+      );
     }
     if (distance.present) {
       map['distance'] = Variable<double>(distance.value);
@@ -1479,7 +1479,7 @@ typedef $$WalkSessionsTableCreateCompanionBuilder =
     WalkSessionsCompanion Function({
       required String id,
       required DateTime startedAt,
-      required int duration,
+      required Duration duration,
       required double distance,
       required WalkPhase phase,
       required int profileId,
@@ -1489,7 +1489,7 @@ typedef $$WalkSessionsTableUpdateCompanionBuilder =
     WalkSessionsCompanion Function({
       Value<String> id,
       Value<DateTime> startedAt,
-      Value<int> duration,
+      Value<Duration> duration,
       Value<double> distance,
       Value<WalkPhase> phase,
       Value<int> profileId,
@@ -1555,10 +1555,11 @@ class $$WalkSessionsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get duration => $composableBuilder(
-    column: $table.duration,
-    builder: (column) => ColumnFilters(column),
-  );
+  ColumnWithTypeConverterFilters<Duration, Duration, int> get duration =>
+      $composableBuilder(
+        column: $table.duration,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
 
   ColumnFilters<double> get distance => $composableBuilder(
     column: $table.distance,
@@ -1693,7 +1694,7 @@ class $$WalkSessionsTableAnnotationComposer
   GeneratedColumn<DateTime> get startedAt =>
       $composableBuilder(column: $table.startedAt, builder: (column) => column);
 
-  GeneratedColumn<int> get duration =>
+  GeneratedColumnWithTypeConverter<Duration, int> get duration =>
       $composableBuilder(column: $table.duration, builder: (column) => column);
 
   GeneratedColumn<double> get distance =>
@@ -1781,7 +1782,7 @@ class $$WalkSessionsTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<DateTime> startedAt = const Value.absent(),
-                Value<int> duration = const Value.absent(),
+                Value<Duration> duration = const Value.absent(),
                 Value<double> distance = const Value.absent(),
                 Value<WalkPhase> phase = const Value.absent(),
                 Value<int> profileId = const Value.absent(),
@@ -1799,7 +1800,7 @@ class $$WalkSessionsTableTableManager
               ({
                 required String id,
                 required DateTime startedAt,
-                required int duration,
+                required Duration duration,
                 required double distance,
                 required WalkPhase phase,
                 required int profileId,
