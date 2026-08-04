@@ -30,20 +30,16 @@ class ProfileRepository {
             row.age.equals(age),
       );
 
-    final existing = await query.getSingleOrNull();
-    if (existing != null) {
-      return existing.id;
+    final existing = await query.get();
+    if (existing.isNotEmpty) {
+      return existing.first.id;
     }
 
     // No matching profile found – create a new one.
     return _db
         .into(_db.profiles)
         .insert(
-          ProfilesCompanion.insert(
-            height: height,
-            age: age,
-            name: Value(name),
-          ),
+          ProfilesCompanion.insert(height: height, age: age, name: Value(name)),
         );
   }
 }

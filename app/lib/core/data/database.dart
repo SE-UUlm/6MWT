@@ -4,6 +4,18 @@ import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
+enum WalkPhase { idle, running, finished, aborted }
+
+class DurationConverter extends TypeConverter<Duration, int> {
+  const DurationConverter();
+
+  @override
+  Duration fromSql(int fromDb) => Duration(seconds: fromDb);
+
+  @override
+  int toSql(Duration value) => value.inSeconds;
+}
+
 // Use SensorSampleRow for generated datatypes so it does not conflict with our SensorSample class
 @DataClassName('SensorSampleRow')
 // Add index for sessionId because we will always query SensorSamples by sessionId
@@ -11,7 +23,7 @@ part 'database.g.dart';
 class SensorSamples extends Table {
   IntColumn get id => integer().autoIncrement()();
   DateTimeColumn get timestamp => dateTime()();
-  TextColumn get sessionId => text()();
+  TextColumn get sessionId => text().references(WalkSessions, #id)();
   TextColumn get type => text()();
   TextColumn get sourceId => text()();
   TextColumn get values => text()(); // Values Map as json
@@ -26,7 +38,23 @@ class Profiles extends Table {
   IntColumn get age => integer()();
 }
 
-@DriftDatabase(tables: [SensorSamples, Profiles])
+@DataClassName('WalkSessionRow')
+class WalkSessions extends Table {
+  TextColumn get id => text()();
+
+  DateTimeColumn get startedAt => dateTime()();
+  Column<int> get duration => integer().map(const DurationConverter())();
+  RealColumn get distance => real()(); // In meters
+
+  TextColumn get phase => textEnum<WalkPhase>()();
+
+  IntColumn get profileId => integer().references(Profiles, #id)();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DriftDatabase(tables: [SensorSamples, Profiles, WalkSessions])
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
