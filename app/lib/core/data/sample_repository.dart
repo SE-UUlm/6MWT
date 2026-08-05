@@ -55,17 +55,33 @@ class SampleRepository implements SampleSink {
     return query.get();
   }
 
-  Future<String> exportSessionAsJson(String sessionId) async {
-    final rows = await _loadSession(sessionId);
+  static Map<String, dynamic> _rowToMap(SensorSampleRow row) => {
+    'id': row.id,
+    'timestamp': row.timestamp.toIso8601String(),
+    'sourceId': row.sourceId,
+    'type': row.type,
+    'values': jsonDecode(row.values),
+  };
 
-    return const JsonEncoder().convert([
-      for (final row in rows)
-        {
-          'timestamp': row.timestamp.millisecondsSinceEpoch,
-          'sourceId': row.sourceId,
-          'type': row.type,
-          'values': jsonDecode(row.values),
-        },
-    ]);
+  Future<List<Map<String, dynamic>>> exportSession(String sessionId) async {
+    final rows = await _loadSession(sessionId);
+    return [for (final row in rows) _rowToMap(row)];
+  }
+
+  /// Returns all samples grouped by sessionId.
+  Future<Map<String, List<Map<String, dynamic>>>> exportAllSessions() async {
+    final query = _db.select(_db.sensorSamples)
+      ..orderBy([
+        (row) => OrderingTerm.asc(row.sessionId),
+        (row) => OrderingTerm.asc(row.timestamp),
+      ]);
+    final rows = await query.get();
+    final grouped = <String, List<Map<String, dynamic>>>{};
+
+    for (final row in rows) {
+      grouped.putIfAbsent(row.sessionId, () => []).add(_rowToMap(row));
+    }
+
+    return grouped;
   }
 }

@@ -42,4 +42,22 @@ class ProfileRepository {
           ProfilesCompanion.insert(height: height, age: age, name: Value(name)),
         );
   }
+
+  static Map<String, dynamic> _rowToMap(Profile row) => {
+    'id': row.id,
+    'name': row.name,
+    'timestamp': row.timestamp.toIso8601String(),
+    'height': row.height,
+    'age': row.age,
+  };
+
+  Future<Map<String, dynamic>?> exportProfile(int profileId) async {
+    final row = await loadProfile(profileId);
+    return row == null ? null : _rowToMap(row);
+  }
+
+  Future<List<Map<String, dynamic>>> exportAllProfiles() async {
+    final rows = await _db.select(_db.profiles).get();
+    return [for (final row in rows) _rowToMap(row)];
+  }
 }
