@@ -70,7 +70,12 @@ class SampleRepository implements SampleSink {
 
   /// Returns all samples grouped by sessionId.
   Future<Map<String, List<Map<String, dynamic>>>> exportAllSessions() async {
-    final rows = await _db.select(_db.sensorSamples).get();
+    final query = _db.select(_db.sensorSamples)
+      ..orderBy([
+        (row) => OrderingTerm.asc(row.sessionId),
+        (row) => OrderingTerm.asc(row.timestamp),
+      ]);
+    final rows = await query.get();
     final grouped = <String, List<Map<String, dynamic>>>{};
 
     for (final row in rows) {
