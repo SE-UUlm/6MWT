@@ -173,6 +173,76 @@ void main() {
     expect(results.single.duration, const Duration(seconds: 5));
     expect(results.single.phase, WalkPhase.aborted);
   });
+
+  test('exportSession returns a map with the correct fields', () async {
+    await repository.saveSession(
+      WalkSessionRow(
+        id: 'export-1',
+        startedAt: _july1,
+        duration: const Duration(minutes: 6),
+        distance: 500,
+        phase: WalkPhase.finished,
+        profileId: 1,
+      ),
+    );
+
+    final result = await repository.exportSession('export-1');
+
+    expect(result, isNotNull);
+    expect(result!['id'], 'export-1');
+    expect(result['startedAt'], _july1.toIso8601String());
+    expect(result['duration'], 360);
+    expect(result['distance'], 500.0);
+    expect(result['phase'], 'finished');
+    expect(result['profileId'], 1);
+  });
+
+  test('exportSession returns null for unknown session id', () async {
+    final result = await repository.exportSession('nonexistent');
+
+    expect(result, isNull);
+  });
+
+  test('exportAllSessions returns all sessions as list of maps', () async {
+    await repository.saveSession(
+      WalkSessionRow(
+        id: 'session-a',
+        startedAt: _july1,
+        duration: const Duration(minutes: 6),
+        distance: 420,
+        phase: WalkPhase.finished,
+        profileId: 1,
+      ),
+    );
+    await repository.saveSession(
+      WalkSessionRow(
+        id: 'session-b',
+        startedAt: _july2,
+        duration: const Duration(minutes: 2),
+        distance: 150,
+        phase: WalkPhase.aborted,
+        profileId: 1,
+      ),
+    );
+
+    final result = await repository.exportAllSessions();
+
+    expect(result, hasLength(2));
+
+    final ids = result.map((m) => m['id']).toSet();
+    expect(ids, containsAll(['session-a', 'session-b']));
+
+    final sessionB = result.firstWhere((m) => m['id'] == 'session-b');
+    expect(sessionB['distance'], 150.0);
+    expect(sessionB['phase'], 'aborted');
+    expect(sessionB['duration'], 120);
+  });
+
+  test('exportAllSessions returns empty list when no sessions exist', () async {
+    final result = await repository.exportAllSessions();
+
+    expect(result, isEmpty);
+  });
 }
 
 // Shared test dates — DateTime can't be const, but top-level finals keep
