@@ -5,3 +5,5 @@ There is a pre-existing app that uses step counting to perform the test.
 The goal of our Software Engineering Project is to explore other options for measuring the distance traveled, e.g. GPS, smartwach sensors.
 
 More information regarding the test: [6mwt.org](https://www.6mwt.org/)
+
+This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later). See the LICENSE file for details.
