@@ -26,6 +26,8 @@ class HomeScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+
+          // Image
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 7, 0),
             child: SizedBox(
@@ -61,10 +63,7 @@ class HomeScreen extends ConsumerWidget {
                         children: [
                           const SizedBox(height: 2),
 
-                          // ------------------------------------
-                          // Title + Subtitle (eigene Padding-Var)
-                          // ------------------------------------
-
+                          // Titel + Icon + Info Box
                           Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: textHorizontalPadding,
@@ -95,7 +94,7 @@ class HomeScreen extends ConsumerWidget {
                                           padding: EdgeInsets.all(12),
                                           child: Icon(
                                             Icons.info_outline,
-                                            size: 30,
+                                            size: 25,
                                             color: Color(0xFF6B6B70),
                                           ),
                                         ),
@@ -122,10 +121,6 @@ class HomeScreen extends ConsumerWidget {
                           ),
 
                           const SizedBox(height: 30),
-
-                          // ------------------------------------
-                          // Information panel (eigene Padding-Var)
-                          // ------------------------------------
 
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -172,10 +167,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  // --------------------------------------------
-                  // Continue button
-                  // --------------------------------------------
-
+                  // Continue - Button
                   Padding(
                     padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
                     child: SizedBox(
