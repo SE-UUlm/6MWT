@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
 class LocationService {
@@ -35,12 +36,29 @@ class LocationService {
     );
   }
 
-  // Provides continuous GPS updates for tracking.
+  // Provides platform-specific location settings for continuous GPS tracking.
   Stream<Position> getPositionStream() {
-    const locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 1,
-    );
+    final LocationSettings locationSettings;
+
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      locationSettings = AndroidSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+
+        // Keeps location tracking active during a walk test when  the app
+        // is backgrounded or the screen is locked.
+        foregroundNotificationConfig: const ForegroundNotificationConfig(
+          notificationTitle: 'Walk test in progress',
+          notificationText: 'Location tracking is active.',
+          setOngoing: true,
+        ),
+      );
+    } else {
+      locationSettings = const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+      );
+    }
 
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }
