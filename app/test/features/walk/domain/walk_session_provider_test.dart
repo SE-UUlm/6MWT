@@ -89,10 +89,12 @@ void main() {
     test('emits when distance, duration, or phase change', () {
       fakeAsync((async) {
         final source = FakeSensorSource();
+        var now = DateTime(2026);
         final session = WalkSession(
           sources: [source],
           distanceEstimator: GpsDistanceEstimator(),
           walkDuration: const Duration(seconds: 3),
+          now: () => now,
         )..profileId = 1;
 
         final rows = <WalkSessionRow>[];
@@ -103,6 +105,7 @@ void main() {
         final afterStart = rows.length;
 
         // Timer tick → duration changes.
+        now = now.add(const Duration(seconds: 1));
         async.elapse(const Duration(seconds: 1));
         expect(rows.length, greaterThan(afterStart));
         expect(rows.last.duration, const Duration(seconds: 1));
@@ -116,6 +119,7 @@ void main() {
         expect(rows.last.distance, greaterThan(0));
 
         // Let the test finish → phase changes to finished.
+        now = now.add(const Duration(seconds: 2));
         async.elapse(const Duration(seconds: 2));
         expect(rows.last.phase, WalkPhase.finished);
 

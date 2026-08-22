@@ -55,6 +55,18 @@ class RecordingSink implements SampleSink {
   }
 }
 
+class TestClock {
+  TestClock(this.now);
+
+  DateTime now;
+
+  DateTime call() => now;
+
+  void advance(Duration duration) {
+    now = now.add(duration);
+  }
+}
+
 SensorSample createPositionSample({
   required double latitude,
   required double longitude,
@@ -103,10 +115,12 @@ void main() {
   test('counts down and finishes after the configured duration', () {
     fakeAsync((async) {
       final source = FakeSensorSource();
+      final clock = TestClock(DateTime(2026));
       final session = WalkSession(
         sources: [source],
         distanceEstimator: GpsDistanceEstimator(),
         walkDuration: const Duration(seconds: 3),
+        now: clock.call,
       );
 
       session.start();
@@ -115,13 +129,64 @@ void main() {
       expect(session.state.phase, WalkPhase.running);
       expect(source.started, isTrue);
 
+      clock.advance(const Duration(seconds: 1));
       async.elapse(const Duration(seconds: 1));
       expect(session.state.remainingTime, const Duration(seconds: 2));
 
+      clock.advance(const Duration(seconds: 2));
       async.elapse(const Duration(seconds: 2));
       expect(session.state.phase, WalkPhase.finished);
       expect(session.state.remainingTime, Duration.zero);
       expect(source.stopped, isTrue);
+    });
+  });
+
+  test('uses elapsed wall-clock time when a timer callback is delayed', () {
+    fakeAsync((async) {
+      final clock = TestClock(DateTime(2026));
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 3),
+        now: clock.call,
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      // Simulate the app being paused for longer than the test duration before
+      // the next periodic callback is allowed to run.
+      clock.advance(const Duration(seconds: 4));
+      async.elapse(const Duration(seconds: 1));
+
+      expect(session.state.phase, WalkPhase.finished);
+      expect(session.state.remainingTime, Duration.zero);
+    });
+  });
+
+  test('counts wall-clock time while periodic callbacks are delayed', () {
+    fakeAsync((async) {
+      final clock = TestClock(DateTime(2026));
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 5),
+        now: clock.call,
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      clock.advance(const Duration(seconds: 1));
+      async.elapse(const Duration(seconds: 1));
+      expect(session.state.remainingTime, const Duration(seconds: 4));
+
+      // The app is effectively paused: wall-clock time advances while the
+      // periodic callback does not run.
+      clock.advance(const Duration(seconds: 2));
+
+      async.elapse(const Duration(seconds: 1));
+      expect(session.state.remainingTime, const Duration(seconds: 2));
     });
   });
 
@@ -150,6 +215,42 @@ void main() {
 
       expect(sink.recorded, hasLength(2));
       expect(sink.recorded.first.$1, session.state.sessionId);
+    });
+  });
+
+  test('ignores a GPS sample received after the deadline', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final sink = RecordingSink();
+      final clock = TestClock(DateTime(2026));
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+        walkDuration: const Duration(seconds: 3),
+        now: clock.call,
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+      source.controller.add(
+        createPositionSample(latitude: 0, longitude: 0.001),
+      );
+      async.flushMicrotasks();
+      final distanceAtDeadline = session.state.distance;
+
+      clock.advance(const Duration(seconds: 3));
+      source.controller.add(
+        createPositionSample(latitude: 0, longitude: 0.002),
+      );
+      async.flushMicrotasks();
+
+      expect(session.state.phase, WalkPhase.finished);
+      expect(session.state.remainingTime, Duration.zero);
+      expect(session.state.distance, distanceAtDeadline);
+      expect(sink.recorded, hasLength(2));
     });
   });
 
@@ -213,16 +314,19 @@ void main() {
   test('flushes the sink when the test ends', () {
     fakeAsync((async) {
       final sink = RecordingSink();
+      final clock = TestClock(DateTime(2026));
       final session = WalkSession(
         sources: [FakeSensorSource()],
         distanceEstimator: GpsDistanceEstimator(),
         sampleSink: sink,
         walkDuration: const Duration(seconds: 2),
+        now: clock.call,
       );
 
       session.start();
       async.flushMicrotasks();
 
+      clock.advance(const Duration(seconds: 2));
       async.elapse(const Duration(seconds: 2));
 
       expect(session.state.phase, WalkPhase.finished);
@@ -264,14 +368,17 @@ void main() {
 
   test('reset returns to idle with full remaining time', () {
     fakeAsync((async) {
+      final clock = TestClock(DateTime(2026));
       final session = WalkSession(
         sources: [FakeSensorSource()],
         distanceEstimator: GpsDistanceEstimator(),
         walkDuration: const Duration(seconds: 3),
+        now: clock.call,
       );
 
       session.start();
       async.flushMicrotasks();
+      clock.advance(const Duration(seconds: 1));
       async.elapse(const Duration(seconds: 1));
 
       session.reset();
