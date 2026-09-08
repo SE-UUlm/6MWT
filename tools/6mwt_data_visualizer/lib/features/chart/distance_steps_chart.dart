@@ -131,7 +131,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
 
     if (lineBarsData.isEmpty) {
       return const Center(
-        child: Text('Keine Signale ausgewählt.'),
+        child: Text('No signals selected.'),
       );
     }
 
@@ -293,7 +293,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
 
             String valText = '${metersVal.toStringAsFixed(1)} m';
             if (rawSteps != null) {
-              valText += ' (${rawSteps.round()} Schritte)';
+              valText += ' (${rawSteps.round()} steps)';
             }
 
             spans.add(
@@ -309,7 +309,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
           }
 
           final firstItem = LineTooltipItem(
-            'Zeit: $timeStr',
+            'Time: $timeStr',
             TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 12,
@@ -376,7 +376,7 @@ class _ChartToolbar extends StatelessWidget {
           Icon(Icons.show_chart, size: 20, color: colorScheme.primary),
           const SizedBox(width: 8),
           Text(
-            'Signalverlauf (Distanz & Schritte in Metern)',
+            'Signal Timeline (Distance & Steps in Meters)',
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -411,7 +411,7 @@ class _ChartToolbar extends StatelessWidget {
           // Estimated Median Step Length Badge
           Tooltip(
             message:
-                'Aus der Session berechnete Median-Schrittlänge über rollende Zeitfenster.\nSchritte werden mit diesem Faktor multipliziert, um eine Distanz in Metern zu erhalten.',
+                'Median step length estimated from session data using\nrolling time windows. Steps are multiplied by this\nfactor to obtain a distance in meters.',
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
@@ -428,7 +428,7 @@ class _ChartToolbar extends StatelessWidget {
                   Icon(Icons.straighten, size: 14, color: colorScheme.primary),
                   const SizedBox(width: 5),
                   Text(
-                    'Schrittlänge: ~${(medianStepLength * 100).toStringAsFixed(0)} cm',
+                    'Step length: ~${(medianStepLength * 100).toStringAsFixed(0)} cm',
                     style: theme.textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w600,
                       fontSize: 11,
@@ -442,7 +442,7 @@ class _ChartToolbar extends StatelessWidget {
             const SizedBox(width: 8),
             IconButton(
               icon: const Icon(Icons.close, size: 18),
-              tooltip: 'Diagramm schließen',
+              tooltip: 'Close chart',
               visualDensity: VisualDensity.compact,
               onPressed: onClose,
             ),

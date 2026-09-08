@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/domain/session.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/utils/date_formatters.dart';
 
 class SessionInfoPanel extends StatelessWidget {
   const SessionInfoPanel({super.key, required this.session});
@@ -28,7 +30,7 @@ class SessionInfoPanel extends StatelessWidget {
           _InfoRow(
             icon: Icons.timer_outlined,
             label: 'Duration',
-            value: _formatDuration(session.duration),
+            value: formatDuration(session.duration),
           ),
           _InfoRow(
             icon: Icons.straighten,
@@ -38,7 +40,7 @@ class SessionInfoPanel extends StatelessWidget {
           _InfoRow(
             icon: Icons.calendar_today_outlined,
             label: 'Start',
-            value: _formatDateTime(session.startedAt),
+            value: formatDateTime(session.startedAt),
           ),
           if (session.notes.isNotEmpty)
             _InfoRow(
@@ -84,17 +86,6 @@ class SessionInfoPanel extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatDuration(int seconds) {
-    final m = seconds ~/ 60;
-    final s = seconds % 60;
-    return '${m}m ${s.toString().padLeft(2, '0')}s';
-  }
-
-  String _formatDateTime(DateTime dt) {
-    return '${dt.day.toString().padLeft(2, '0')}.${dt.month.toString().padLeft(2, '0')}.${dt.year} '
-        '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
   }
 
   Color _phaseColor(String phase) => switch (phase) {
@@ -402,13 +393,13 @@ class _MetricComparisonRow extends StatelessWidget {
             Expanded(
               child: Text(
                 'App: $appValue',
-                style: const TextStyle(fontSize: 11, color: Color(0xFF1E88E5)),
+                style: const TextStyle(fontSize: 11, color: AppColors.appMetricBlue),
               ),
             ),
             Expanded(
               child: Text(
                 'Ref: $refValue',
-                style: const TextStyle(fontSize: 11, color: Color(0xFFE65100)),
+                style: const TextStyle(fontSize: 11, color: AppColors.refMetricOrange),
                 textAlign: TextAlign.end,
               ),
             ),

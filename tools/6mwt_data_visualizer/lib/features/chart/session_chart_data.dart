@@ -1,10 +1,12 @@
 import 'dart:math' as math;
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/domain/haversine.dart';
 import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
+import '../../core/domain/step_length_estimator.dart';
 
 enum ChartSeriesId {
   appGps,
@@ -58,7 +60,8 @@ class SessionChartData {
 
       for (int i = 0; i < posSamples.length; i++) {
         final s = posSamples[i];
-        final t = s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t =
+            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
         final lat = s.values[PositionKeys.latitude]!;
         final lon = s.values[PositionKeys.longitude]!;
 
@@ -77,17 +80,20 @@ class SessionChartData {
       }
     }
 
-    // 2. Compute median step length from App data + Reference data
-    final medianStepLength = _computeMedianStepLength(session);
+    // 2. Compute median step length
+    final medianStepLength =
+        StepLengthEstimator.computeMedianStepLength(session);
 
-    // 3. App Step Spots (multiplied by medianStepLength to convert steps to meters)
+    // 3. App Step Spots (steps x medianStepLength -> meters)
     final appStepSpots = <FlSpot>[];
     final appRawStepCounts = <FlSpot>[];
     final stepSamples = session.stepSamples;
     if (stepSamples.isNotEmpty) {
-      final firstStep = stepSamples.first.values[StepKeys.cumulativeSteps] ?? 0.0;
+      final firstStep =
+          stepSamples.first.values[StepKeys.cumulativeSteps] ?? 0.0;
       for (final s in stepSamples) {
-        final t = s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t =
+            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
         final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstStep;
         final steps = math.max(0.0, rawVal - firstStep);
         final distanceMeters = steps * medianStepLength;
@@ -110,7 +116,8 @@ class SessionChartData {
       double? prevLon;
 
       for (final s in refPos) {
-        final t = s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t =
+            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
         final lat = s.values[PositionKeys.latitude]!;
         final lon = s.values[PositionKeys.longitude]!;
         final dVal = s.values[PositionKeys.distance];
@@ -134,14 +141,16 @@ class SessionChartData {
       }
     }
 
-    // 5. Reference Step Spots (multiplied by same medianStepLength)
+    // 5. Reference Step Spots (steps x same medianStepLength)
     final refStepSpots = <FlSpot>[];
     final refRawStepCounts = <FlSpot>[];
     if (trimmedRef != null && trimmedRef.stepSamples.isNotEmpty) {
       final refSteps = trimmedRef.stepSamples;
-      final firstRefStep = refSteps.first.values[StepKeys.cumulativeSteps] ?? 0.0;
+      final firstRefStep =
+          refSteps.first.values[StepKeys.cumulativeSteps] ?? 0.0;
       for (final s in refSteps) {
-        final t = s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t =
+            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
         final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstRefStep;
         final steps = math.max(0.0, rawVal - firstRefStep);
         final distanceMeters = steps * medianStepLength;
@@ -154,14 +163,24 @@ class SessionChartData {
 
     // Compute max values
     double maxT = session.duration.toDouble();
-    for (final list in [appGpsSpots, appStepSpots, refGpsSpots, refStepSpots]) {
+    for (final list in [
+      appGpsSpots,
+      appStepSpots,
+      refGpsSpots,
+      refStepSpots,
+    ]) {
       if (list.isNotEmpty) {
         maxT = math.max(maxT, list.last.x);
       }
     }
 
     double maxMeters = 100.0;
-    for (final list in [appGpsSpots, appStepSpots, refGpsSpots, refStepSpots]) {
+    for (final list in [
+      appGpsSpots,
+      appStepSpots,
+      refGpsSpots,
+      refStepSpots,
+    ]) {
       for (final spot in list) {
         maxMeters = math.max(maxMeters, spot.y);
       }
@@ -192,39 +211,38 @@ class SessionChartData {
   final double maxTimeSeconds;
   final double maxDistanceMeters;
 
-  bool get hasReference =>
-      refGpsSpots.isNotEmpty || refStepSpots.isNotEmpty;
+  bool get hasReference => refGpsSpots.isNotEmpty || refStepSpots.isNotEmpty;
 
   static const descriptors = {
     ChartSeriesId.appGps: SeriesDescriptor(
       id: ChartSeriesId.appGps,
-      name: 'App GPS Distanz',
+      name: 'App GPS Distance',
       shortName: 'App GPS',
-      color: Color(0xFF2196F3), // Blue
+      color: Color(0xFF2196F3),
       unit: 'm',
       isDashed: false,
     ),
     ChartSeriesId.appSteps: SeriesDescriptor(
       id: ChartSeriesId.appSteps,
-      name: 'App Schritte (m)',
-      shortName: 'App Schritte',
-      color: Color(0xFFFF9800), // Orange
+      name: 'App Steps (m)',
+      shortName: 'App Steps',
+      color: Color(0xFFFF9800),
       unit: 'm',
       isDashed: false,
     ),
     ChartSeriesId.refGps: SeriesDescriptor(
       id: ChartSeriesId.refGps,
-      name: 'Referenz GPS Distanz',
+      name: 'Reference GPS Distance',
       shortName: 'Ref GPS',
-      color: Color(0xFF4CAF50), // Green
+      color: Color(0xFF4CAF50),
       unit: 'm',
       isDashed: true,
     ),
     ChartSeriesId.refSteps: SeriesDescriptor(
       id: ChartSeriesId.refSteps,
-      name: 'Referenz Schritte (m)',
-      shortName: 'Ref Schritte',
-      color: Color(0xFFAB47BC), // Purple
+      name: 'Reference Steps (m)',
+      shortName: 'Ref Steps',
+      color: Color(0xFFAB47BC),
       unit: 'm',
       isDashed: true,
     ),
@@ -237,175 +255,44 @@ class SessionChartData {
         ChartSeriesId.refSteps => refStepSpots,
       };
 
+  /// Linearly interpolates the Y value at [timeSeconds] in the given series.
   double? valueAtTime(ChartSeriesId id, double timeSeconds) {
-    final spots = getSpots(id);
-    if (spots.isEmpty) return null;
-    if (timeSeconds <= spots.first.x) return spots.first.y;
-    if (timeSeconds >= spots.last.x) return spots.last.y;
-
-    for (int i = 0; i < spots.length - 1; i++) {
-      final p1 = spots[i];
-      final p2 = spots[i + 1];
-      if (p1.x <= timeSeconds && timeSeconds <= p2.x) {
-        final dt = p2.x - p1.x;
-        if (dt == 0) return p1.y;
-        final factor = (timeSeconds - p1.x) / dt;
-        return p1.y + factor * (p2.y - p1.y);
-      }
-    }
-    return spots.last.y;
+    return _interpolate(getSpots(id), timeSeconds);
   }
 
+  /// Returns the raw step count (before step-length conversion) at a given
+  /// time. Returns `null` for non-step series.
   double? rawStepsAtTime(ChartSeriesId id, double timeSeconds) {
-    final spots = id == ChartSeriesId.appSteps
-        ? appRawStepCounts
-        : id == ChartSeriesId.refSteps
-            ? refRawStepCounts
-            : null;
-    if (spots == null || spots.isEmpty) return null;
-    if (timeSeconds <= spots.first.x) return spots.first.y;
-    if (timeSeconds >= spots.last.x) return spots.last.y;
+    final spots = switch (id) {
+      ChartSeriesId.appSteps => appRawStepCounts,
+      ChartSeriesId.refSteps => refRawStepCounts,
+      _ => null,
+    };
+    if (spots == null) return null;
+    return _interpolate(spots, timeSeconds);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
+
+  /// Linearly interpolates between spot points at the given [x] value.
+  static double? _interpolate(List<FlSpot> spots, double x) {
+    if (spots.isEmpty) return null;
+    if (x <= spots.first.x) return spots.first.y;
+    if (x >= spots.last.x) return spots.last.y;
 
     for (int i = 0; i < spots.length - 1; i++) {
       final p1 = spots[i];
       final p2 = spots[i + 1];
-      if (p1.x <= timeSeconds && timeSeconds <= p2.x) {
+      if (p1.x <= x && x <= p2.x) {
         final dt = p2.x - p1.x;
         if (dt == 0) return p1.y;
-        final factor = (timeSeconds - p1.x) / dt;
+        final factor = (x - p1.x) / dt;
         return p1.y + factor * (p2.y - p1.y);
       }
     }
     return spots.last.y;
-  }
-
-  /// Estimates the median step length across App and Reference data
-  /// using rolling time windows to mitigate GPS noise and outliers.
-  static double _computeMedianStepLength(Session session) {
-    final samples = <double>[];
-
-    // Collect windowed step lengths from App data
-    _collectWindowedStepLengths(
-      session.positionSamples,
-      session.stepSamples,
-      samples,
-    );
-
-    // Also collect from Reference data if present
-    final ref = session.trimmedReferenceSession;
-    if (ref != null) {
-      _collectWindowedStepLengths(
-        ref.positionSamples,
-        ref.stepSamples,
-        samples,
-      );
-    }
-
-    if (samples.isNotEmpty) {
-      samples.sort();
-      // Median of the rolling samples
-      final median = samples[samples.length ~/ 2];
-      // Clamp to realistic adult walking step length range (0.3m to 1.4m)
-      return median.clamp(0.35, 1.35);
-    }
-
-    // Fallback: total session distance / total steps
-    if (session.totalSteps != null && session.totalSteps! > 20 && session.distance > 10) {
-      final avg = session.distance / session.totalSteps!;
-      return avg.clamp(0.35, 1.35);
-    }
-
-    // Default average adult step length
-    return 0.75;
-  }
-
-  static void _collectWindowedStepLengths(
-    List<SensorSample> posList,
-    List<SensorSample> stepList,
-    List<double> outputSamples, {
-    int windowSeconds = 10,
-    int strideSeconds = 5,
-  }) {
-    if (posList.length < 2 || stepList.length < 2) return;
-
-    final posT0 = posList.first.timestamp;
-    final stepT0 = stepList.first.timestamp;
-
-    // Build cumulative GPS distance curve
-    final gpsTimeDist = <({double t, double d})>[];
-    final firstDist = posList.first.values[PositionKeys.distance];
-    double cumDist = 0.0;
-    for (int i = 0; i < posList.length; i++) {
-      final t = posList[i].timestamp.difference(posT0).inMilliseconds / 1000.0;
-      final dVal = posList[i].values[PositionKeys.distance];
-
-      if (firstDist != null && dVal != null) {
-        cumDist = math.max(0.0, dVal - firstDist);
-      } else if (i > 0) {
-        cumDist += haversineDistance(
-          lat1: posList[i - 1].values[PositionKeys.latitude]!,
-          lon1: posList[i - 1].values[PositionKeys.longitude]!,
-          lat2: posList[i].values[PositionKeys.latitude]!,
-          lon2: posList[i].values[PositionKeys.longitude]!,
-        );
-      }
-      gpsTimeDist.add((t: math.max(0.0, t), d: cumDist));
-    }
-
-    double getGpsDistAt(double t) {
-      if (t <= gpsTimeDist.first.t) return gpsTimeDist.first.d;
-      if (t >= gpsTimeDist.last.t) return gpsTimeDist.last.d;
-      for (int i = 0; i < gpsTimeDist.length - 1; i++) {
-        final p1 = gpsTimeDist[i];
-        final p2 = gpsTimeDist[i + 1];
-        if (p1.t <= t && t <= p2.t) {
-          final dt = p2.t - p1.t;
-          if (dt <= 0) return p1.d;
-          return p1.d + (t - p1.t) / dt * (p2.d - p1.d);
-        }
-      }
-      return gpsTimeDist.last.d;
-    }
-
-    // Build cumulative steps curve
-    final stepTimeDist = <({double t, double steps})>[];
-    final firstStep = stepList.first.values[StepKeys.cumulativeSteps] ?? 0.0;
-    for (int i = 0; i < stepList.length; i++) {
-      final t = stepList[i].timestamp.difference(stepT0).inMilliseconds / 1000.0;
-      final rawVal = stepList[i].values[StepKeys.cumulativeSteps] ?? firstStep;
-      stepTimeDist.add((t: math.max(0.0, t), steps: math.max(0.0, rawVal - firstStep)));
-    }
-
-    double getStepCountAt(double t) {
-      if (t <= stepTimeDist.first.t) return stepTimeDist.first.steps;
-      if (t >= stepTimeDist.last.t) return stepTimeDist.last.steps;
-      for (int i = 0; i < stepTimeDist.length - 1; i++) {
-        final p1 = stepTimeDist[i];
-        final p2 = stepTimeDist[i + 1];
-        if (p1.t <= t && t <= p2.t) {
-          final dt = p2.t - p1.t;
-          if (dt <= 0) return p1.steps;
-          return p1.steps + (t - p1.t) / dt * (p2.steps - p1.steps);
-        }
-      }
-      return stepTimeDist.last.steps;
-    }
-
-    final maxT = math.min(gpsTimeDist.last.t, stepTimeDist.last.t).toInt();
-
-    for (int wStart = 0; wStart < maxT - windowSeconds; wStart += strideSeconds) {
-      final wEnd = wStart + windowSeconds;
-      final dGps = getGpsDistAt(wEnd.toDouble()) - getGpsDistAt(wStart.toDouble());
-      final dSteps = getStepCountAt(wEnd.toDouble()) - getStepCountAt(wStart.toDouble());
-
-      if (dGps > 0 && dSteps > 1.5) { // At least ~2 steps in window
-        final stepLen = dGps / dSteps;
-        // Exclude extreme GPS drift anomalies
-        if (stepLen >= 0.25 && stepLen <= 2.0) {
-          outputSamples.add(stepLen);
-        }
-      }
-    }
   }
 
   static void _addOrUpdateSpot(List<FlSpot> list, double x, double y) {

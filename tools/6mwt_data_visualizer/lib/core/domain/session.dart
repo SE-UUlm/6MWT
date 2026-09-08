@@ -28,7 +28,7 @@ class Profile {
 }
 
 class Session {
-  const Session({
+  Session({
     required this.id,
     required this.notes,
     required this.startedAt,
@@ -51,6 +51,10 @@ class Session {
   final List<SensorSample> samples;
   final Profile? profile;
   final Session? referenceSession;
+
+  // Cached filtered sample lists (lazily computed).
+  List<SensorSample>? _positionSamplesCache;
+  List<SensorSample>? _stepSamplesCache;
 
   /// True if a reference recording (reference.json) is attached.
   bool get hasReference => referenceSession != null;
@@ -191,16 +195,18 @@ class Session {
 
   /// All GPS position samples, in order.
   List<SensorSample> get positionSamples =>
-      samples.where((s) => s.type == SampleType.position).toList();
+      _positionSamplesCache ??=
+          samples.where((s) => s.type == SampleType.position).toList();
 
   /// All step samples that contain cumulative_steps.
-  List<SensorSample> get stepSamples => samples
-      .where(
-        (s) =>
-            s.type == SampleType.steps &&
-            s.values.containsKey(StepKeys.cumulativeSteps),
-      )
-      .toList();
+  List<SensorSample> get stepSamples =>
+      _stepSamplesCache ??= samples
+          .where(
+            (s) =>
+                s.type == SampleType.steps &&
+                s.values.containsKey(StepKeys.cumulativeSteps),
+          )
+          .toList();
 
   /// Total steps walked during the session.
   int? get totalSteps {

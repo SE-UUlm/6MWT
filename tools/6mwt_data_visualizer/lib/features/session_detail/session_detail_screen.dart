@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/domain/session.dart';
+import '../../core/utils/date_formatters.dart';
 import '../chart/distance_steps_chart.dart';
 import '../map/session_map.dart';
 import 'session_info_panel.dart';
@@ -127,7 +128,7 @@ class _TitleBar extends StatelessWidget {
                         const Icon(Icons.watch_outlined, size: 12, color: Colors.green),
                         const SizedBox(width: 4),
                         Text(
-                          'Referenz',
+                          'Reference',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.green.shade300,
                             fontSize: 10,
@@ -142,7 +143,7 @@ class _TitleBar extends StatelessWidget {
             ),
           ),
           Text(
-            _formatDateTime(session.startedAt),
+            formatDateTime(session.startedAt),
             style: theme.textTheme.bodySmall?.copyWith(
               color: colorScheme.onSurfaceVariant,
             ),
@@ -154,17 +155,12 @@ class _TitleBar extends StatelessWidget {
               color: showChart ? colorScheme.primary : colorScheme.onSurfaceVariant,
               size: 20,
             ),
-            tooltip: showChart ? 'Diagramm ausblenden' : 'Diagramm einblenden',
+            tooltip: showChart ? 'Hide chart' : 'Show chart',
             visualDensity: VisualDensity.compact,
             onPressed: onToggleChart,
           ),
         ],
       ),
     );
-  }
-
-  String _formatDateTime(DateTime dt) {
-    return '${dt.day.toString().padLeft(2, '0')}.${dt.month.toString().padLeft(2, '0')}.${dt.year}  '
-        '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
   }
 }

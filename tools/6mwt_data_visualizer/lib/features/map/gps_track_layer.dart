@@ -4,13 +4,14 @@ import 'package:latlong2/latlong.dart';
 
 import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
+import '../../core/theme/app_colors.dart';
 
 class GpsTrackLayer extends StatelessWidget {
   const GpsTrackLayer({
     super.key,
     required this.session,
     required this.gpsPoints,
-    this.trackColor = const Color(0xFF42A5F5), // Blue shade 400
+    this.trackColor = AppColors.appTrackBlue,
     this.startColor = Colors.green,
     this.endColor = Colors.red,
     this.startLabel = 'Start',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/domain/export_data.dart';
+import '../../core/domain/session.dart';
 import '../../providers/providers.dart';
 import 'session_list_tile.dart';
 
@@ -135,7 +136,7 @@ class _SessionList extends StatelessWidget {
 
   final ExportData exportData;
   final String? selectedId;
-  final void Function(dynamic session) onSelect;
+  final void Function(Session session) onSelect;
 
   @override
   Widget build(BuildContext context) {

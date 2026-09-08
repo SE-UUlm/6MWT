@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/domain/session.dart';
+import '../../core/utils/date_formatters.dart';
 
 class SessionListTile extends StatelessWidget {
   const SessionListTile({
@@ -75,7 +76,7 @@ class SessionListTile extends StatelessWidget {
         ],
       ),
       subtitle: Text(
-        '${_formatDate(session.startedAt)}  ·  '
+        '${formatDate(session.startedAt)}  ·  '
         '$distText  ·  '
         '$posCount GPS  ·  ${session.stepSamples.length} Steps',
         style: textTheme.bodySmall?.copyWith(
@@ -85,10 +86,6 @@ class SessionListTile extends StatelessWidget {
       trailing: _PhaseBadge(phase: session.phase),
       onTap: onTap,
     );
-  }
-
-  String _formatDate(DateTime dt) {
-    return '${dt.day.toString().padLeft(2, '0')}.${dt.month.toString().padLeft(2, '0')}.${dt.year}';
   }
 }
 

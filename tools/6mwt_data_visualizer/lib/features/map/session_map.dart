@@ -4,7 +4,10 @@ import 'package:latlong2/latlong.dart';
 
 import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
+import '../../core/theme/app_colors.dart';
 import 'gps_track_layer.dart';
+import 'map_controls.dart';
+import 'map_legend.dart';
 import 'step_marker_layer.dart';
 
 class SessionMap extends StatefulWidget {
@@ -41,7 +44,8 @@ class _SessionMapState extends State<SessionMap> {
   Session? get _effectiveReference {
     if (!widget.session.hasReference) return null;
     return _trimReference
-        ? (widget.session.trimmedReferenceSession ?? widget.session.referenceSession)
+        ? (widget.session.trimmedReferenceSession ??
+            widget.session.referenceSession)
         : widget.session.referenceSession;
   }
 
@@ -80,7 +84,8 @@ class _SessionMapState extends State<SessionMap> {
   Widget build(BuildContext context) {
     final appPoints = _gpsPoints(widget.session);
     final refSession = _effectiveReference;
-    final refPoints = refSession != null ? _gpsPoints(refSession) : const <LatLng>[];
+    final refPoints =
+        refSession != null ? _gpsPoints(refSession) : const <LatLng>[];
 
     final allPoints = _allPoints();
     if (allPoints.isEmpty) {
@@ -100,21 +105,21 @@ class _SessionMapState extends State<SessionMap> {
             ),
           ),
           children: [
-            // Esri World Imagery – kostenlos, kein API-Key
+            // Esri World Imagery (free, no API key required)
             TileLayer(
               urlTemplate:
                   'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
               userAgentPackageName: 'de.uni_ulm.six_mwt_visualizer',
               tileBuilder: _darkModeTileBuilder,
             ),
-            // Reference track (drawn below app track so app track stays prominent)
+            // Reference track (drawn below app track)
             if (_showRefTrack && refSession != null && refPoints.isNotEmpty)
               GpsTrackLayer(
                 session: refSession,
                 gpsPoints: refPoints,
-                trackColor: const Color(0xFFFF6D00), // Vibrant Orange
-                startColor: const Color(0xFFFF9800),
-                endColor: const Color(0xFFD84315),
+                trackColor: AppColors.referenceOrange,
+                startColor: AppColors.referenceStartOrange,
+                endColor: AppColors.referenceEndRed,
                 startLabel: 'Reference Start',
                 endLabel: 'Reference End',
                 isReference: true,
@@ -125,7 +130,7 @@ class _SessionMapState extends State<SessionMap> {
               GpsTrackLayer(
                 session: widget.session,
                 gpsPoints: appPoints,
-                trackColor: const Color(0xFF42A5F5), // Vibrant Blue
+                trackColor: AppColors.appTrackBlue,
                 startColor: Colors.green,
                 endColor: Colors.red,
                 startLabel: 'App Start',
@@ -133,11 +138,12 @@ class _SessionMapState extends State<SessionMap> {
                 isReference: false,
                 showAccuracyCircles: _showAccuracyCircles,
               ),
-            // Step markers for app track (toggleable)
+            // Step markers (toggleable)
             if (_showStepMarkers && _showAppTrack && appPoints.isNotEmpty)
-              StepMarkerLayer(session: widget.session, gpsPoints: appPoints),
+              StepMarkerLayer(
+                  session: widget.session, gpsPoints: appPoints),
             // Esri attribution
-            const _EsriAttribution(),
+            const EsriAttribution(),
           ],
         ),
 
@@ -145,7 +151,7 @@ class _SessionMapState extends State<SessionMap> {
         Positioned(
           left: 12,
           top: 12,
-          child: _MapLegend(
+          child: MapLegend(
             session: widget.session,
             refSession: refSession,
             appPointsCount: appPoints.length,
@@ -158,19 +164,23 @@ class _SessionMapState extends State<SessionMap> {
         Positioned(
           right: 12,
           top: 12,
-          child: _MapControls(
+          child: MapControls(
             hasReference: widget.session.hasReference,
             showAppTrack: _showAppTrack,
             showRefTrack: _showRefTrack,
             showStepMarkers: _showStepMarkers,
             showAccuracyCircles: _showAccuracyCircles,
             isTrimmed: _trimReference,
-            onToggleAppTrack: () => setState(() => _showAppTrack = !_showAppTrack),
-            onToggleRefTrack: () => setState(() => _showRefTrack = !_showRefTrack),
-            onToggleStepMarkers: () => setState(() => _showStepMarkers = !_showStepMarkers),
+            onToggleAppTrack: () =>
+                setState(() => _showAppTrack = !_showAppTrack),
+            onToggleRefTrack: () =>
+                setState(() => _showRefTrack = !_showRefTrack),
+            onToggleStepMarkers: () =>
+                setState(() => _showStepMarkers = !_showStepMarkers),
             onToggleAccuracyCircles: () =>
                 setState(() => _showAccuracyCircles = !_showAccuracyCircles),
-            onToggleTrim: () => setState(() => _trimReference = !_trimReference),
+            onToggleTrim: () =>
+                setState(() => _trimReference = !_trimReference),
             onFitBounds: _fitBounds,
           ),
         ),
@@ -186,254 +196,12 @@ class _SessionMapState extends State<SessionMap> {
   ) {
     return ColorFiltered(
       colorFilter: const ColorFilter.matrix([
-        0.85, 0, 0, 0, 0,
-        0, 0.85, 0, 0, 0,
-        0, 0, 0.85, 0, 0,
-        0, 0, 0, 1, 0,
+        0.85, 0, 0, 0, 0, //
+        0, 0.85, 0, 0, 0, //
+        0, 0, 0.85, 0, 0, //
+        0, 0, 0, 1, 0, //
       ]),
       child: tileWidget,
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Controls overlay
-// ---------------------------------------------------------------------------
-
-class _MapControls extends StatelessWidget {
-  const _MapControls({
-    required this.hasReference,
-    required this.showAppTrack,
-    required this.showRefTrack,
-    required this.showStepMarkers,
-    required this.showAccuracyCircles,
-    required this.isTrimmed,
-    required this.onToggleAppTrack,
-    required this.onToggleRefTrack,
-    required this.onToggleStepMarkers,
-    required this.onToggleAccuracyCircles,
-    required this.onToggleTrim,
-    required this.onFitBounds,
-  });
-
-  final bool hasReference;
-  final bool showAppTrack;
-  final bool showRefTrack;
-  final bool showStepMarkers;
-  final bool showAccuracyCircles;
-  final bool isTrimmed;
-  final VoidCallback onToggleAppTrack;
-  final VoidCallback onToggleRefTrack;
-  final VoidCallback onToggleStepMarkers;
-  final VoidCallback onToggleAccuracyCircles;
-  final VoidCallback onToggleTrim;
-  final VoidCallback onFitBounds;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.fit_screen, size: 20),
-              tooltip: 'Center / fit tracks',
-              onPressed: onFitBounds,
-            ),
-            const Divider(height: 1),
-            IconButton(
-              icon: Icon(
-                Icons.phone_android,
-                size: 20,
-                color: showAppTrack ? const Color(0xFF42A5F5) : Colors.grey,
-              ),
-              tooltip: showAppTrack
-                  ? 'Hide 6MWT app track'
-                  : 'Show 6MWT app track',
-              onPressed: onToggleAppTrack,
-            ),
-            if (hasReference) ...[
-              IconButton(
-                icon: Icon(
-                  Icons.track_changes,
-                  size: 20,
-                  color: showRefTrack ? const Color(0xFFFF6D00) : Colors.grey,
-                ),
-                tooltip: showRefTrack
-                    ? 'Hide reference track'
-                    : 'Show reference track',
-                onPressed: onToggleRefTrack,
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.content_cut,
-                  size: 20,
-                  color: isTrimmed ? const Color(0xFFFF6D00) : Colors.grey,
-                ),
-                tooltip: isTrimmed
-                    ? 'Reference trimmed to 6MWT time window (Click for full)'
-                    : 'Reference untrimmed (Click to trim to test duration)',
-                onPressed: onToggleTrim,
-              ),
-            ],
-            const Divider(height: 1),
-            IconButton(
-              icon: Icon(
-                Icons.directions_walk,
-                size: 20,
-                color: showStepMarkers ? Colors.blue.shade200 : Colors.grey,
-              ),
-              tooltip: showStepMarkers
-                  ? 'Hide step markers'
-                  : 'Show step markers',
-              onPressed: onToggleStepMarkers,
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.adjust,
-                size: 20,
-                color: showAccuracyCircles ? Colors.blue.shade200 : Colors.grey,
-              ),
-              tooltip: showAccuracyCircles
-                  ? 'Hide accuracy circles'
-                  : 'Show accuracy circles',
-              onPressed: onToggleAccuracyCircles,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Map Legend overlay
-// ---------------------------------------------------------------------------
-
-class _MapLegend extends StatelessWidget {
-  const _MapLegend({
-    required this.session,
-    required this.refSession,
-    required this.appPointsCount,
-    required this.refPointsCount,
-    required this.isTrimmed,
-  });
-
-  final Session session;
-  final Session? refSession;
-  final int appPointsCount;
-  final int refPointsCount;
-  final bool isTrimmed;
-
-  @override
-  Widget build(BuildContext context) {
-    final deltaDist = refSession != null ? session.distance - refSession!.distance : 0.0;
-    final deltaPct = refSession != null && refSession!.distance > 0
-        ? ((session.distance - refSession!.distance) / refSession!.distance) * 100
-        : 0.0;
-
-    return Card(
-      elevation: 4,
-      color: Colors.black.withValues(alpha: 0.75),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // App row
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 14,
-                  height: 3.5,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF42A5F5),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '📱 6MWT App: ${session.distance.toStringAsFixed(1)} m ($appPointsCount GPS)',
-                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500),
-                ),
-              ],
-            ),
-            if (refSession != null) ...[
-              const SizedBox(height: 5),
-              // Reference row
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    width: 14,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF6D00),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '🎯 Reference${isTrimmed ? ' (trimmed)' : ' (full)'}: ${refSession!.distance.toStringAsFixed(1)} m ($refPointsCount GPS)',
-                    style: const TextStyle(
-                      color: Color(0xFFFFB74D),
-                      fontSize: 11,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 5),
-              // Delta row
-              Padding(
-                padding: const EdgeInsets.only(left: 22),
-                child: Text(
-                  'Δ Distance: ${deltaDist >= 0 ? '+' : ''}${deltaDist.toStringAsFixed(1)} m (${deltaPct >= 0 ? '+' : ''}${deltaPct.toStringAsFixed(1)}%)',
-                  style: TextStyle(
-                    color: deltaDist.abs() <= 15 ? Colors.lightGreenAccent : Colors.orangeAccent,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Esri attribution (required by Esri ToS)
-// ---------------------------------------------------------------------------
-
-class _EsriAttribution extends StatelessWidget {
-  const _EsriAttribution();
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: Container(
-        margin: const EdgeInsets.all(4),
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-        decoration: BoxDecoration(
-          color: Colors.black.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: const Text(
-          'Powered by Esri',
-          style: TextStyle(color: Colors.white, fontSize: 10),
-        ),
-      ),
     );
   }
 }
