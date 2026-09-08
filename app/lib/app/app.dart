@@ -29,6 +29,16 @@ class SixMinuteWalkApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
 
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (final supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+
+        return const Locale('de');
+      },
+
       routerConfig: router,
     );
   }
