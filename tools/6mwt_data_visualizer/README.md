@@ -25,9 +25,19 @@ A Flutter desktop development tool for visualizing recorded 6-minute walk test s
 - **Folder structure auto-load** – on startup the tool automatically scans `data/` subfolders for `session.json` and automatically attaches `reference.json` when present
 - **Folder & file picker** – buttons in the sidebar header to reload data, pick a custom session folder, or open individual JSON files
 
-### Phase 2 (planned)
+### Phase 2 (implemented)
 
-- Line chart: cumulative GPS distance vs. cumulative step count over time, to identify discrepancies between the two signals
+- **Distance & steps line chart**:
+  - Interactive line chart plotted over relative session time (`mm:ss`)
+  - **App GPS Distance** (meters) vs. **App Steps** (count)
+  - **Reference GPS Distance** vs. **Reference Steps** (when reference data is present)
+  - **Unified distance scale (meters)**:
+    - Step count curves are converted to distance (meters) using an automatically computed **median step length** across rolling time windows (comparing \(\Delta \text{GPS}\) to \(\Delta \text{Steps}\))
+    - The identical step length is applied to both App and Reference curves, enabling direct visual comparison with GPS tracks on the same axis
+    - Step length badge in the toolbar displays the computed value (e.g. `~78 cm`) with detailed calculation info in tooltip
+  - **Interactive legend & filter chips**: Click chips to toggle individual signals on/off
+  - **Rich tooltip**: Hovering reveals exact time `mm:ss (Xs)` and precise interpolated values for every active signal
+  - **Collapsible layout**: Toggle the chart on/off via the title bar button to switch between split view and full-height map
 
 ### Phase 3 (planned)
 
@@ -80,6 +90,9 @@ lib/
 │       ├── sensor_sample.dart        # SensorSample model (mirrored from main app)
 │       └── session.dart              # Session & Profile models
 ├── features/
+│   ├── chart/
+│   │   ├── distance_steps_chart.dart # Interactive fl_chart widget
+│   │   └── session_chart_data.dart   # Series calculation & normalization
 │   ├── home/
 │   │   └── home_screen.dart          # Root layout (sidebar + detail)
 │   ├── map/
