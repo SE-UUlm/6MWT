@@ -137,9 +137,7 @@ def convert_fit_to_6mwt_dict(
         filtered_records.append(r)
 
     if not filtered_records:
-        raise ValueError(
-            "All records were filtered out. Check filter arguments."
-        )
+        raise ValueError("All records were filtered out. Check filter arguments.")
 
     # 4. Integrate cadence over time to obtain cumulative steps for each record
     raw_step_counts = []
@@ -338,13 +336,17 @@ def main():
 
     print(f"\nSuccessfully converted FIT -> JSON:")
     print(f"  Output: {output_file}")
-    print(f"  Duration: {session['duration']} s ({session['duration'] // 60}m {session['duration'] % 60}s)")
+    print(
+        f"  Duration: {session['duration']} s ({session['duration'] // 60}m {session['duration'] % 60}s)"
+    )
     print(f"  Distance: {session['distance']} m")
     print(f"  Steps: {final_step}")
     print(f"  Position samples: {pos_count}")
     print(f"  Step samples: {step_count}")
     print(f"  Filtering: Disabled (all {pos_count} raw GPS positions preserved).")
-    print(f"  Sensitive telemetry stripped: Heart rate, power, calories, personal data.")
+    print(
+        f"  Sensitive telemetry stripped: Heart rate, power, calories, personal data."
+    )
 
 
 if __name__ == "__main__":
