@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class InstructionsScreen5 extends StatelessWidget {
   const InstructionsScreen5({super.key});
 
@@ -55,9 +57,9 @@ class InstructionsScreen5 extends StatelessWidget {
 
                   const SizedBox(width: 18),
 
-                  const Text(
-                    'Instructions',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.instructions,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF111111),
@@ -69,9 +71,9 @@ class InstructionsScreen5 extends StatelessWidget {
               const SizedBox(height: 55),
 
               // Page - Content
-              const Text(
-                'Cancel the test',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.instructions_5_welc,
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF111111),
@@ -80,11 +82,11 @@ class InstructionsScreen5 extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 50),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 50),
                 child: Text(
-                  'If necessary, you can cancel the test at any time and then choose how you wish to proceed:',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.instructions_5_text,
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Color(0xFF2B2B2B),
                     height: 1.4,
@@ -125,7 +127,7 @@ class InstructionsScreen5 extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           Text(
-                            '• Intermediate results are saved',
+                            AppLocalizations.of(context)!.instructions_5_c1,
                             style: TextStyle(
                               fontSize: 17,
                               color: textGrey,
@@ -136,7 +138,7 @@ class InstructionsScreen5 extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           Text(
-                            '• Results are displayed',
+                            AppLocalizations.of(context)!.instructions_5_c2,
                             style: TextStyle(
                               fontSize: 17,
                               color: textGrey,
@@ -147,7 +149,7 @@ class InstructionsScreen5 extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           Text(
-                            '• The informative value may be limited',
+                            AppLocalizations.of(context)!.instructions_5_c3,
                             style: TextStyle(
                               fontSize: 17,
                               color: textGrey,
@@ -189,7 +191,7 @@ class InstructionsScreen5 extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           Text(
-                            '• All previous data will be discarded',
+                            AppLocalizations.of(context)!.instructions_5_f1,
                             style: TextStyle(
                               fontSize: 17,
                               color: textGrey,
@@ -200,7 +202,7 @@ class InstructionsScreen5 extends StatelessWidget {
                           const SizedBox(height: 30),
 
                           Text(
-                            '• You can start the test again',
+                            AppLocalizations.of(context)!.instructions_5_f2,
                             style: TextStyle(
                               fontSize: 17,
                               color: textGrey,
@@ -233,9 +235,9 @@ class InstructionsScreen5 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  child: Text(
+                    AppLocalizations.of(context)!.continueButton,
+                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

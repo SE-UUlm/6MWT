@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class InstructionsScreen1 extends StatelessWidget {
   const InstructionsScreen1({super.key});
 
@@ -51,8 +53,8 @@ class InstructionsScreen1 extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 14),
-                  const Text(
-                    'Instructions',
+                  Text(
+                    AppLocalizations.of(context)!.instructions,
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w400,
@@ -65,9 +67,9 @@ class InstructionsScreen1 extends StatelessWidget {
               const SizedBox(height: 55),
 
               // Page - Content
-              const Text(
-                'Welcome!',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.instructions_1_welc,
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF111111),
@@ -76,14 +78,11 @@ class InstructionsScreen1 extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 50),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 50),
                 child: Text(
-                  'This app guides you step-by-step through the '
-                      '6-Minute Walk Test (6MWT). The test helps assess '
-                      'your physical performance based on the distance '
-                      'walked in six minutes.',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.instructions_1_text,
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Color(0xFF2B2B2B),
                     height: 1.4,
@@ -119,9 +118,9 @@ class InstructionsScreen1 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.continueButton,
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                     ),

@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -15,7 +17,7 @@ class HomeScreen extends ConsumerWidget {
   static const Color panelBlue = Color(0xFFDCE6FB);
 
   static const double textHorizontalPadding = 50;
-  static const double panelHorizontalPadding = 120;
+  static const double panelHorizontalPadding = 80;
 
   static const double illustrationHeight = 300;
   static const double illustrationWidth = 500;
@@ -26,7 +28,6 @@ class HomeScreen extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-
           // Image
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 7, 0),
@@ -74,9 +75,9 @@ class HomeScreen extends ConsumerWidget {
                                   clipBehavior: Clip.none,
                                   alignment: Alignment.center,
                                   children: [
-                                    const Text(
-                                      '6-Minute Walk Test',
-                                      style: TextStyle(
+                                    Text(
+                                      AppLocalizations.of(context)!.appTitle,
+                                      style: const TextStyle(
                                         fontSize: 36,
                                         fontWeight: FontWeight.w200,
                                         color: Color(0xFF111111),
@@ -89,7 +90,8 @@ class HomeScreen extends ConsumerWidget {
                                       top: -25,
                                       child: GestureDetector(
                                         behavior: HitTestBehavior.opaque,
-                                        onTap: () => context.push('/instructions-1'),
+                                        onTap: () =>
+                                            context.push('/instructions-1'),
                                         child: const Padding(
                                           padding: EdgeInsets.all(12),
                                           child: Icon(
@@ -105,9 +107,8 @@ class HomeScreen extends ConsumerWidget {
 
                                 const SizedBox(height: 8),
 
-                                const Text(
-                                  'Standardized assessment of functional\n'
-                                      'exercise capacity',
+                                Text(
+                                  AppLocalizations.of(context)!.appSubTitle,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: 17,
@@ -120,7 +121,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                           ),
 
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 50),
 
                           Padding(
                             padding: const EdgeInsets.symmetric(
@@ -128,6 +129,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             child: Container(
                               width: double.infinity,
+                              height: 160,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
@@ -136,27 +138,33 @@ class HomeScreen extends ConsumerWidget {
                                 color: panelBlue,
                                 borderRadius: BorderRadius.circular(18),
                               ),
-                              child: const Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.center,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   _FeatureRow(
                                     icon: Icons.person_outline,
-                                    iconColor: Color(0xFF6B6B70),
-                                    text: 'Patient profile setup',
+                                    iconColor: const Color(0xFF6B6B70),
+                                    text: AppLocalizations.of(
+                                      context,
+                                    )!.appProfile,
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   _FeatureRow(
                                     icon: Icons.favorite_border,
-                                    iconColor: Color(0xFFE05C5C),
-                                    text: '6-minute countdown',
+                                    iconColor: const Color(0xFFE05C5C),
+                                    text: AppLocalizations.of(
+                                      context,
+                                    )!.appCountdown,
                                   ),
-                                  SizedBox(height: 20),
+                                  const SizedBox(height: 20),
                                   _FeatureRow(
                                     icon: Icons.bar_chart_rounded,
                                     iconColor: Color(0xFFE0A45C),
-                                    text: 'Results and values',
+                                    text: AppLocalizations.of(
+                                      context,
+                                    )!.appResult,
                                   ),
                                 ],
                               ),
@@ -184,8 +192,8 @@ class HomeScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        child: const Text(
-                          'Continue',
+                        child: Text(
+                          AppLocalizations.of(context)!.startTest,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -203,10 +211,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _exportData(
-      BuildContext context,
-      WidgetRef ref,
-      ) async {
+  Future<void> _exportData(BuildContext context, WidgetRef ref) async {
     try {
       final sessions = await ref
           .read(walkSessionRepositoryProvider)
@@ -237,23 +242,17 @@ class HomeScreen extends ConsumerWidget {
 
       final file = File(
         '${dir.path}/6mwt_export_'
-            '${DateTime.now().millisecondsSinceEpoch}.json',
+        '${DateTime.now().millisecondsSinceEpoch}.json',
       );
 
       await file.writeAsString(jsonString);
 
-      await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile(file.path)],
-        ),
-      );
+      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Export failed: $e'),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
       }
     }
   }
