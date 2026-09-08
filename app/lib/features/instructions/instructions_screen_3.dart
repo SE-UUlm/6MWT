@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class InstructionsScreen3 extends StatelessWidget {
   const InstructionsScreen3({super.key});
 
@@ -51,9 +53,9 @@ class InstructionsScreen3 extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 14),
-                  const Text(
-                    'Instructions',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.instructions,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF111111),
@@ -76,12 +78,11 @@ class InstructionsScreen3 extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 50),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 50),
                 child: Text(
-                  'For the most accurate analysis possible, we require some information such as age, height, weight, and gender. '
-                      'This data is used to better contextualize your results.',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.instructions_3_text,
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Color(0xFF2B2B2B),
                     height: 1.4,
@@ -119,8 +120,8 @@ class InstructionsScreen3 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
+                  child: Text(
+                    AppLocalizations.of(context)!.continueButton,
                     style: TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,

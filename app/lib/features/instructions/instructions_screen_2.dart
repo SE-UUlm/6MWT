@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class InstructionsScreen2 extends StatelessWidget {
   const InstructionsScreen2({super.key});
 
@@ -55,8 +57,8 @@ class InstructionsScreen2 extends StatelessWidget {
 
                   const SizedBox(width: 18),
 
-                  const Text(
-                    'Instructions',
+                  Text(
+                    AppLocalizations.of(context)!.instructions,
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w400,
@@ -69,8 +71,8 @@ class InstructionsScreen2 extends StatelessWidget {
               const SizedBox(height: 55),
 
               // Page - Content
-              const Text(
-                'Test procedure',
+              Text(
+                AppLocalizations.of(context)!.instructions_2_welc,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
@@ -85,7 +87,7 @@ class InstructionsScreen2 extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 child: _StepRow(
                   number: '1',
-                  text: 'Enter personal details',
+                  text: AppLocalizations.of(context)!.bulletPoint_1,
                 ),
               ),
 
@@ -95,7 +97,7 @@ class InstructionsScreen2 extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 child: _StepRow(
                   number: '2',
-                  text: 'Start Test',
+                  text: AppLocalizations.of(context)!.bulletPoint_2,
                 ),
               ),
 
@@ -105,7 +107,7 @@ class InstructionsScreen2 extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 child: _StepRow(
                   number: '3',
-                  text: 'Walk for 6 minutes',
+                  text: AppLocalizations.of(context)!.bulletPoint_3,
                 ),
               ),
 
@@ -115,7 +117,7 @@ class InstructionsScreen2 extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 20),
                 child: _StepRow(
                   number: '4',
-                  text: 'Results',
+                  text: AppLocalizations.of(context)!.bulletPoint_4,
                 ),
               ),
 
@@ -153,9 +155,7 @@ class InstructionsScreen2 extends StatelessWidget {
 
                     Expanded(
                       child: Text(
-                        'The test takes only six minutes. During '
-                            'this time, the app measures the distance '
-                            'you have covered and the remaining time.',
+                        AppLocalizations.of(context)!.instructions_2_text,
                         style: TextStyle(
                           fontSize: 17,
                           color: textGrey,
@@ -187,9 +187,9 @@ class InstructionsScreen2 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.continueButton,
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                     ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../l10n/app_localizations.dart';
+
 class InstructionsScreen7 extends StatelessWidget {
   const InstructionsScreen7({super.key});
 
@@ -51,9 +53,9 @@ class InstructionsScreen7 extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 14),
-                  const Text(
-                    'Instructions',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.instructions,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.w400,
                       color: Color(0xFF111111),
@@ -65,9 +67,9 @@ class InstructionsScreen7 extends StatelessWidget {
               const SizedBox(height: 55),
 
               // Page - Content
-              const Text(
-                'Your all set up!',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.instructions_7_welc,
+                style: const TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF111111),
@@ -76,11 +78,11 @@ class InstructionsScreen7 extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              const Padding(
-                padding: EdgeInsets.only(left: 15, right: 50),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 50),
                 child: Text(
-                  'Now that you know how it works, you can start and complete a test at any time!',
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.instructions_7_text,
+                  style: const TextStyle(
                     fontSize: 17,
                     color: Color(0xFF2B2B2B),
                     height: 1.4,
@@ -118,9 +120,9 @@ class InstructionsScreen7 extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.continueButton,
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                     ),
