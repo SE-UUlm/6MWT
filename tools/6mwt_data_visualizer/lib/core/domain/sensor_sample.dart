@@ -6,6 +6,7 @@ abstract final class PositionKeys {
   static const altitude = 'altitude';
   static const speed = 'speed';
   static const heading = 'heading';
+  static const distance = 'distance';
 }
 
 // Value keys used by step samples

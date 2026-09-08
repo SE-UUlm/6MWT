@@ -23,19 +23,60 @@ class SessionListTile extends StatelessWidget {
 
     final posCount = session.positionSamples.length;
 
+    final refSession = session.referenceSession;
+    final distText = refSession != null
+        ? '${session.distance.toStringAsFixed(0)} m (Ref: ${refSession.distance.toStringAsFixed(0)} m)'
+        : '${session.distance.toStringAsFixed(0)} m';
+
     return ListTile(
       selected: isSelected,
       selectedTileColor: colorScheme.primaryContainer.withValues(alpha: 0.3),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      title: Text(
-        session.notes.isNotEmpty ? session.notes : session.id.substring(0, 8),
-        style: textTheme.bodyMedium?.copyWith(
-          fontWeight: isSelected ? FontWeight.bold : null,
-        ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              session.notes.isNotEmpty ? session.notes : session.id.substring(0, 8),
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: isSelected ? FontWeight.bold : null,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (session.hasReference) ...[
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+              decoration: BoxDecoration(
+                color: Colors.deepOrange.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(4),
+                border: Border.all(
+                  color: Colors.deepOrange.withValues(alpha: 0.5),
+                  width: 0.8,
+                ),
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.track_changes, size: 12, color: Colors.deepOrange),
+                  SizedBox(width: 3),
+                  Text(
+                    'Referenz',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepOrange,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
       ),
       subtitle: Text(
         '${_formatDate(session.startedAt)}  ·  '
-        '${session.distance.toStringAsFixed(0)} m  ·  '
+        '$distText  ·  '
         '$posCount GPS  ·  ${session.stepSamples.length} Steps',
         style: textTheme.bodySmall?.copyWith(
           color: colorScheme.onSurfaceVariant,

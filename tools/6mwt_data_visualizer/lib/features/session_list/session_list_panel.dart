@@ -37,9 +37,17 @@ class _SessionListPanelState extends ConsumerState<SessionListPanel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _Header(onPickFile: () async {
-          await ref.read(exportDataProvider.notifier).pickAndLoad();
-        }),
+        _Header(
+          onPickFolder: () async {
+            await ref.read(exportDataProvider.notifier).pickDirectoryAndLoad();
+          },
+          onPickFile: () async {
+            await ref.read(exportDataProvider.notifier).pickAndLoad();
+          },
+          onReload: () async {
+            await _tryAutoLoad();
+          },
+        ),
         const Divider(height: 1),
         Expanded(
           child: exportState.when(
@@ -69,14 +77,20 @@ class _SessionListPanelState extends ConsumerState<SessionListPanel> {
 // ---------------------------------------------------------------------------
 
 class _Header extends StatelessWidget {
-  const _Header({required this.onPickFile});
+  const _Header({
+    required this.onPickFolder,
+    required this.onPickFile,
+    required this.onReload,
+  });
 
+  final VoidCallback onPickFolder;
   final VoidCallback onPickFile;
+  final VoidCallback onReload;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+      padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
       child: Row(
         children: [
           Expanded(
@@ -88,7 +102,17 @@ class _Header extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.folder_open_outlined),
+            icon: const Icon(Icons.refresh, size: 20),
+            tooltip: 'Neu laden',
+            onPressed: onReload,
+          ),
+          IconButton(
+            icon: const Icon(Icons.folder_open_outlined, size: 20),
+            tooltip: 'Ordner öffnen',
+            onPressed: onPickFolder,
+          ),
+          IconButton(
+            icon: const Icon(Icons.file_open_outlined, size: 20),
             tooltip: 'JSON-Datei öffnen',
             onPressed: onPickFile,
           ),

@@ -20,6 +20,13 @@ class ExportDataNotifier extends _$ExportDataNotifier {
     state = await AsyncValue.guard(() => SessionLoader.load(path));
   }
 
+  Future<void> pickDirectoryAndLoad() async {
+    final path = await SessionLoader.pickDirectory();
+    if (path != null) {
+      await loadFromPath(path);
+    }
+  }
+
   Future<void> pickAndLoad() async {
     final path = await SessionLoader.pickFile();
     if (path != null) {
@@ -29,14 +36,14 @@ class ExportDataNotifier extends _$ExportDataNotifier {
 }
 
 // ---------------------------------------------------------------------------
-// Auto-detected default files
+// Auto-detected default directory / files
 // ---------------------------------------------------------------------------
 
 @riverpod
 Future<List<String>> defaultJsonFiles(Ref ref) async {
   final dir = await SessionLoader.findDefaultDataDirectory();
   if (dir == null) return [];
-  return SessionLoader.findJsonFilesInDirectory(dir);
+  return [dir];
 }
 
 // ---------------------------------------------------------------------------
