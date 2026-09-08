@@ -10,7 +10,7 @@ import '../../core/domain/session.dart';
 ///
 /// Each label displays:
 ///   +X.X m    – GPS distance from the previous GPS sample (Haversine)
-///   +Y Schritte – cumulative-step delta since the previous GPS sample
+///   +Y steps  – cumulative-step delta since the previous GPS sample
 ///
 /// The marker density adapts automatically to the current zoom level:
 ///   zoom ≥ 19  → every point
@@ -129,10 +129,10 @@ class _SegmentLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gpsText = '+${gpsDelta.toStringAsFixed(1)} m';
-    final stepsText = stepDelta != null ? '+$stepDelta Schritte' : null;
+    final stepsText = stepDelta != null ? '+$stepDelta steps' : null;
 
     return Tooltip(
-      message: 'GPS-Segment: $gpsText'
+      message: 'GPS segment: $gpsText'
           '${stepsText != null ? '\n$stepsText' : ''}',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),

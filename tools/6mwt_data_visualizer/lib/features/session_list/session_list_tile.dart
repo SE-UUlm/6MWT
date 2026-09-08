@@ -61,7 +61,7 @@ class SessionListTile extends StatelessWidget {
                   Icon(Icons.track_changes, size: 12, color: Colors.deepOrange),
                   SizedBox(width: 3),
                   Text(
-                    'Referenz',
+                    'Reference',
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,

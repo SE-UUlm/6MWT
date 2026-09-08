@@ -84,7 +84,7 @@ class _SessionMapState extends State<SessionMap> {
 
     final allPoints = _allPoints();
     if (allPoints.isEmpty) {
-      return const Center(child: Text('Keine GPS-Daten für diese Session.'));
+      return const Center(child: Text('No GPS data for this session.'));
     }
 
     final bounds = LatLngBounds.fromPoints(allPoints);
@@ -115,8 +115,8 @@ class _SessionMapState extends State<SessionMap> {
                 trackColor: const Color(0xFFFF6D00), // Vibrant Orange
                 startColor: const Color(0xFFFF9800),
                 endColor: const Color(0xFFD84315),
-                startLabel: 'Referenz Start',
-                endLabel: 'Referenz Ende',
+                startLabel: 'Reference Start',
+                endLabel: 'Reference End',
                 isReference: true,
                 showAccuracyCircles: false,
               ),
@@ -129,7 +129,7 @@ class _SessionMapState extends State<SessionMap> {
                 startColor: Colors.green,
                 endColor: Colors.red,
                 startLabel: 'App Start',
-                endLabel: 'App Ende',
+                endLabel: 'App End',
                 isReference: false,
                 showAccuracyCircles: _showAccuracyCircles,
               ),
@@ -241,7 +241,7 @@ class _MapControls extends StatelessWidget {
           children: [
             IconButton(
               icon: const Icon(Icons.fit_screen, size: 20),
-              tooltip: 'Tracks zentrieren / einpassen',
+              tooltip: 'Center / fit tracks',
               onPressed: onFitBounds,
             ),
             const Divider(height: 1),
@@ -252,8 +252,8 @@ class _MapControls extends StatelessWidget {
                 color: showAppTrack ? const Color(0xFF42A5F5) : Colors.grey,
               ),
               tooltip: showAppTrack
-                  ? '6MWT App-Track ausblenden'
-                  : '6MWT App-Track einblenden',
+                  ? 'Hide 6MWT app track'
+                  : 'Show 6MWT app track',
               onPressed: onToggleAppTrack,
             ),
             if (hasReference) ...[
@@ -264,8 +264,8 @@ class _MapControls extends StatelessWidget {
                   color: showRefTrack ? const Color(0xFFFF6D00) : Colors.grey,
                 ),
                 tooltip: showRefTrack
-                    ? 'Referenz-Track ausblenden'
-                    : 'Referenz-Track einblenden',
+                    ? 'Hide reference track'
+                    : 'Show reference track',
                 onPressed: onToggleRefTrack,
               ),
               IconButton(
@@ -275,8 +275,8 @@ class _MapControls extends StatelessWidget {
                   color: isTrimmed ? const Color(0xFFFF6D00) : Colors.grey,
                 ),
                 tooltip: isTrimmed
-                    ? 'Referenz auf 6MWT-Zeitfenster zugeschnitten (Klicken für ungekürzt)'
-                    : 'Referenz ungekürzt (Klicken für Zuschnitt auf Testdauer)',
+                    ? 'Reference trimmed to 6MWT time window (Click for full)'
+                    : 'Reference untrimmed (Click to trim to test duration)',
                 onPressed: onToggleTrim,
               ),
             ],
@@ -288,8 +288,8 @@ class _MapControls extends StatelessWidget {
                 color: showStepMarkers ? Colors.blue.shade200 : Colors.grey,
               ),
               tooltip: showStepMarkers
-                  ? 'Schritt-Marker ausblenden'
-                  : 'Schritt-Marker einblenden',
+                  ? 'Hide step markers'
+                  : 'Show step markers',
               onPressed: onToggleStepMarkers,
             ),
             IconButton(
@@ -299,8 +299,8 @@ class _MapControls extends StatelessWidget {
                 color: showAccuracyCircles ? Colors.blue.shade200 : Colors.grey,
               ),
               tooltip: showAccuracyCircles
-                  ? 'Genauigkeitskreise ausblenden'
-                  : 'Genauigkeitskreise einblenden',
+                  ? 'Hide accuracy circles'
+                  : 'Show accuracy circles',
               onPressed: onToggleAccuracyCircles,
             ),
           ],
@@ -381,7 +381,7 @@ class _MapLegend extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '🎯 Referenz${isTrimmed ? ' (gekürzt)' : ' (voll)'}: ${refSession!.distance.toStringAsFixed(1)} m ($refPointsCount GPS)',
+                    '🎯 Reference${isTrimmed ? ' (trimmed)' : ' (full)'}: ${refSession!.distance.toStringAsFixed(1)} m ($refPointsCount GPS)',
                     style: const TextStyle(
                       color: Color(0xFFFFB74D),
                       fontSize: 11,
@@ -395,7 +395,7 @@ class _MapLegend extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 22),
                 child: Text(
-                  'Δ Distanz: ${deltaDist >= 0 ? '+' : ''}${deltaDist.toStringAsFixed(1)} m (${deltaPct >= 0 ? '+' : ''}${deltaPct.toStringAsFixed(1)}%)',
+                  'Δ Distance: ${deltaDist >= 0 ? '+' : ''}${deltaDist.toStringAsFixed(1)} m (${deltaPct >= 0 ? '+' : ''}${deltaPct.toStringAsFixed(1)}%)',
                   style: TextStyle(
                     color: deltaDist.abs() <= 15 ? Colors.lightGreenAccent : Colors.orangeAccent,
                     fontSize: 10,

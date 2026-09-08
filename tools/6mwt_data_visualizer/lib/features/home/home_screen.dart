@@ -58,7 +58,7 @@ class _EmptyState extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
           Text(
-            'Lade eine JSON-Exportdatei\nund wähle eine Session aus.',
+            'Load session data\nand select a session.',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,

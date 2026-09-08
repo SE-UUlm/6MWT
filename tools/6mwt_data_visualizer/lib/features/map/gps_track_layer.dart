@@ -14,7 +14,7 @@ class GpsTrackLayer extends StatelessWidget {
     this.startColor = Colors.green,
     this.endColor = Colors.red,
     this.startLabel = 'Start',
-    this.endLabel = 'Ende',
+    this.endLabel = 'End',
     this.showAccuracyCircles = true,
     this.isReference = false,
   });

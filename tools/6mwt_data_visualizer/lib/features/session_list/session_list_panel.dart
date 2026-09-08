@@ -103,17 +103,17 @@ class _Header extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.refresh, size: 20),
-            tooltip: 'Neu laden',
+            tooltip: 'Reload',
             onPressed: onReload,
           ),
           IconButton(
             icon: const Icon(Icons.folder_open_outlined, size: 20),
-            tooltip: 'Ordner öffnen',
+            tooltip: 'Open directory',
             onPressed: onPickFolder,
           ),
           IconButton(
             icon: const Icon(Icons.file_open_outlined, size: 20),
-            tooltip: 'JSON-Datei öffnen',
+            tooltip: 'Open JSON file',
             onPressed: onPickFile,
           ),
         ],
@@ -169,7 +169,7 @@ class _NoDataView extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Text(
-          'Keine Datei geladen.\nKlicke auf das Ordner-Symbol.',
+          'No data loaded.\nClick on a folder or file icon.',
           textAlign: TextAlign.center,
         ),
       ),
@@ -191,7 +191,7 @@ class _ErrorView extends StatelessWidget {
           Icon(Icons.error_outline,
               color: Theme.of(context).colorScheme.error, size: 40),
           const SizedBox(height: 8),
-          Text('Fehler beim Laden:\n$error',
+          Text('Error loading data:\n$error',
               textAlign: TextAlign.center,
               style: TextStyle(color: Theme.of(context).colorScheme.error)),
         ],

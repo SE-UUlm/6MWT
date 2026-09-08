@@ -18,7 +18,7 @@ class SessionInfoPanel extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 4,
         children: [
-          _SectionHeader('Übersicht'),
+          _SectionHeader('Overview'),
           _InfoRow(
             icon: Icons.flag_outlined,
             label: 'Phase',
@@ -27,12 +27,12 @@ class SessionInfoPanel extends StatelessWidget {
           ),
           _InfoRow(
             icon: Icons.timer_outlined,
-            label: 'Dauer',
+            label: 'Duration',
             value: _formatDuration(session.duration),
           ),
           _InfoRow(
             icon: Icons.straighten,
-            label: 'Distanz (gespeichert)',
+            label: 'Distance (recorded)',
             value: '${session.distance.toStringAsFixed(1)} m',
           ),
           _InfoRow(
@@ -43,12 +43,12 @@ class SessionInfoPanel extends StatelessWidget {
           if (session.notes.isNotEmpty)
             _InfoRow(
               icon: Icons.notes_outlined,
-              label: 'Notizen',
+              label: 'Notes',
               value: session.notes,
             ),
           if (session.profile != null) ...[
             const SizedBox(height: 10),
-            _SectionHeader('Teilnehmer'),
+            _SectionHeader('Participant'),
             _InfoRow(
               icon: Icons.person_outline,
               label: 'Name',
@@ -56,30 +56,30 @@ class SessionInfoPanel extends StatelessWidget {
             ),
             _InfoRow(
               icon: Icons.cake_outlined,
-              label: 'Alter / Größe',
-              value: '${session.profile!.age} Jahre · ${session.profile!.height} cm',
+              label: 'Age / Height',
+              value: '${session.profile!.age} years · ${session.profile!.height} cm',
             ),
           ],
           const SizedBox(height: 10),
-          _SectionHeader('Sensordaten (App)'),
+          _SectionHeader('Sensor Data (App)'),
           _InfoRow(
             icon: Icons.gps_fixed,
-            label: 'GPS-Punkte',
+            label: 'GPS points',
             value: '$posCount',
           ),
           if (totalSteps != null)
             _InfoRow(
               icon: Icons.directions_walk,
-              label: 'Schritte (Session)',
+              label: 'Steps (session)',
               value: '$totalSteps',
             ),
           _InfoRow(
             icon: Icons.sensors,
-            label: 'Samples gesamt',
+            label: 'Total samples',
             value: '${session.samples.length}',
           ),
           const SizedBox(height: 10),
-          _SectionHeader('Referenzvergleich'),
+          _SectionHeader('Reference Comparison'),
           _ReferenceComparisonCard(session: session),
         ],
       ),
@@ -206,7 +206,7 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
             const SizedBox(width: 8),
             Expanded(
               child: Text(
-                'Keine Referenzdaten (reference.json) vorhanden.',
+                'No reference data (reference.json) available.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
@@ -250,7 +250,7 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  'Referenzmessung',
+                  'Reference Measurement',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: Colors.deepOrange,
                         fontWeight: FontWeight.bold,
@@ -282,7 +282,7 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
                       ),
                       const SizedBox(width: 3),
                       Text(
-                        _trimmed ? 'Gekürzt' : 'Voll',
+                        _trimmed ? 'Trimmed' : 'Full',
                         style: TextStyle(
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
@@ -298,15 +298,15 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
           const SizedBox(height: 4),
           Text(
             _trimmed
-                ? 'Auf 6MWT-Zeitfenster zugeschnitten (+1 Puffer)'
-                : 'Gesamte Aufzeichnung ungekürzt',
+                ? 'Trimmed to 6MWT time window (+1 buffer)'
+                : 'Full recorded duration',
             style: TextStyle(fontSize: 9, color: Colors.grey.shade600),
           ),
           const SizedBox(height: 8),
 
-          // Distanz
+          // Distance
           _MetricComparisonRow(
-            label: 'Distanz',
+            label: 'Distance',
             appValue: '${widget.session.distance.toStringAsFixed(1)} m',
             refValue: '${ref.distance.toStringAsFixed(1)} m',
             deltaText:
@@ -316,10 +316,10 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
 
           const Divider(height: 12),
 
-          // Schritte
+          // Steps
           if (appSteps != null || refSteps != null) ...[
             _MetricComparisonRow(
-              label: 'Schritte',
+              label: 'Steps',
               appValue: appSteps != null ? '$appSteps' : '–',
               refValue: refSteps != null ? '$refSteps' : '–',
               deltaText: deltaSteps != null
@@ -332,9 +332,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
             const Divider(height: 12),
           ],
 
-          // Dauer
+          // Duration
           _MetricComparisonRow(
-            label: 'Dauer',
+            label: 'Duration',
             appValue: '${widget.session.duration}s',
             refValue: '${ref.duration}s',
             deltaText: '${deltaDuration >= 0 ? '+' : ''}${deltaDuration}s',
@@ -343,9 +343,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
 
           const Divider(height: 12),
 
-          // GPS Punkte
+          // GPS Points
           _MetricComparisonRow(
-            label: 'GPS-Punkte',
+            label: 'GPS points',
             appValue: '${widget.session.positionSamples.length}',
             refValue: '${ref.positionSamples.length}',
             deltaText: null,

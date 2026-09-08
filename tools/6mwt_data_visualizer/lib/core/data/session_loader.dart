@@ -150,7 +150,7 @@ class SessionLoader {
   /// Opens a system directory-picker dialog and returns the chosen directory path.
   static Future<String?> pickDirectory() async {
     return await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Datenordner auswählen',
+      dialogTitle: 'Select data directory',
     );
   }
 
@@ -160,7 +160,7 @@ class SessionLoader {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
-      dialogTitle: '6MWT Export-Datei auswählen',
+      dialogTitle: 'Select 6MWT JSON export file',
     );
     return result?.files.single.path;
   }
