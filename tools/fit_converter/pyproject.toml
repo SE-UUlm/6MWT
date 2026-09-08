@@ -1,0 +1,12 @@
+[project]
+name = "fit-converter"
+version = "0.1.0"
+description = "Converts Garmin / Gadgetbridge FIT workout files to sanitized 6MWT JSON format"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fitparse>=1.2.0",
+]
+
+[project.scripts]
+convert-fit = "convert_fit:main"
