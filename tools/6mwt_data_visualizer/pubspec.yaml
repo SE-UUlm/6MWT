@@ -1,0 +1,36 @@
+name: six_mwt_visualizer
+description: "Development tool for visualizing 6MWT session data."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Map
+  flutter_map: ^8.0.0
+  latlong2: ^0.9.0
+
+  # State management
+  flutter_riverpod: ^3.0.0
+  riverpod_annotation: ^4.0.3
+
+  # File picking
+  file_picker: ^8.1.2
+
+  # Misc
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^4.0.4
+  riverpod_lint: ^3.1.0
+  build_runner: ^2.15.1
+
+flutter:
+  uses-material-design: true
