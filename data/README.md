@@ -16,12 +16,12 @@ Each walk session has its own folder inside `data/`, named after the session's d
 An example session folder contains:
 
 - **`session.json` (Required)**: The walk test session recorded by the **6MWT mobile app** running on the phone. Contains participant metadata, calculated distance, duration, and time-series sensor samples (`gps` positions and `pedometer` step counts).
-- **`garmin.json` (Optional Reference)**: A reference dataset recorded simultaneously with a smartwatch. Follows a matching JSON schema for direct comparison, containing watch-measured GPS positions, speed, altitude, Garmin distance, and step counts. All sensitive health telemetry has been stripped.
-  *(Note: Sessions without a watch recording, such as Basauri, do not include a `garmin.json`).*
+- **`reference.json` (Optional Reference)**: A reference dataset recorded simultaneously with a smartwatch. Follows a matching JSON schema for direct comparison, containing watch-measured GPS positions, speed, altitude, Garmin distance, and step counts. All sensitive health telemetry has been stripped.
+  *(Note: Sessions without a watch recording, such as Basauri, do not include a `reference.json`).*
 
 ## Converting Reference FIT Files
 
-To convert new `.fit` files into sanitized `garmin.json` files, use the scripts provided in [`tools/fit_converter/`](../tools/fit_converter/README.md).
+To convert new `.fit` files into sanitized `reference.json` files, use the scripts provided in [`tools/fit_converter/`](../tools/fit_converter/README.md).
 
 Currently, this conversion pipeline has been tested with Garmin smartwatch workouts exported via **Gadgetbridge**.
 

@@ -28,7 +28,7 @@ def parse_fit_filename_timestamp(fit_path: Path) -> datetime:
 
 
 def main():
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     data_dir = repo_root / "data"
     fit_dir = data_dir / "fit-files"
 
@@ -75,7 +75,7 @@ def main():
 
         target_dir = best_session["dir"]
         session_notes = best_session["notes"]
-        output_file = target_dir / f"{fit.stem}.json"
+        output_file = target_dir / "reference.json"
 
         notes_text = f"Garmin Referenz: {session_notes}"
 
@@ -93,13 +93,18 @@ def main():
         with open(output_file, "w", encoding="utf-8") as out:
             json.dump(json_data, out, indent=2, ensure_ascii=False)
 
-        sess = json_data["sessions"][0]
+        sess = json_data
         pos_count = sum(1 for sm in sess["samples"] if sm["type"] == "position")
         steps = (
             sess["samples"][-2]["values"]["cumulative_steps"]
             if len(sess["samples"]) >= 2
             else 0
         )
+
+        # Remove old Workout-gehen-*.json in target_dir if present
+        old_fit_json = target_dir / f"{fit.stem}.json"
+        if old_fit_json.exists():
+            old_fit_json.unlink()
 
         print(
             f"  -> Saved: {output_file.name} ({pos_count} GPS points, {steps:.0f} steps, {sess['distance']:.1f}m)\n"

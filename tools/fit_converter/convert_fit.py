@@ -231,31 +231,24 @@ def convert_fit_to_6mwt_dict(
     session_id = f"garmin_{first_time.strftime('%Y%m%dT%H%M%SZ')}"
 
     session_data = {
-        "id": session_id,
         "notes": notes,
+        "id": session_id,
         "startedAt": first_time.replace(tzinfo=timezone.utc).isoformat(),
         "duration": duration_sec,
         "distance": round(float(final_distance), 2),
         "phase": "finished",
         "profileId": 1,
         "samples": samples,
+        "profile": {
+            "id": 1,
+            "name": "Garmin Watch",
+            "timestamp": first_time.replace(tzinfo=timezone.utc).isoformat(),
+            "height": 0,
+            "age": 0,
+        },
     }
 
-    export_json = {
-        "exportedAt": datetime.now(timezone.utc).isoformat(),
-        "profiles": [
-            {
-                "id": 1,
-                "name": "Garmin Watch",
-                "timestamp": first_time.replace(tzinfo=timezone.utc).isoformat(),
-                "height": 0,
-                "age": 0,
-            }
-        ],
-        "sessions": [session_data],
-    }
-
-    return export_json
+    return session_data
 
 
 def main():
@@ -325,7 +318,7 @@ def main():
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-    session = data["sessions"][0]
+    session = data
     pos_count = sum(1 for s in session["samples"] if s["type"] == "position")
     step_count = sum(1 for s in session["samples"] if s["type"] == "steps")
     final_step = (
