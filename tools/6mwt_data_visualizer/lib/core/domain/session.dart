@@ -68,7 +68,29 @@ class Session {
   }
 
   /// Calculated end time of the active session in UTC.
+  /// Based on the latest sample timestamp of this session (or sessionStartUtc + duration if no samples).
   DateTime get sessionEndUtc {
+    DateTime? latest;
+
+    if (positionSamples.isNotEmpty) {
+      latest = positionSamples.last.timestamp.toUtc();
+    }
+
+    if (stepSamples.isNotEmpty) {
+      // Step samples may have local timestamps without timezone indicator,
+      // so compute elapsed duration relative to their own stream start.
+      final stepDuration =
+          stepSamples.last.timestamp.difference(stepSamples.first.timestamp);
+      final stepEnd = sessionStartUtc.add(stepDuration);
+      if (latest == null || stepEnd.isAfter(latest)) {
+        latest = stepEnd;
+      }
+    }
+
+    if (latest != null) {
+      return latest;
+    }
+
     return sessionStartUtc.add(Duration(seconds: duration));
   }
 

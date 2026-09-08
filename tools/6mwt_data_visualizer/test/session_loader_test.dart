@@ -56,4 +56,19 @@ void main() {
     expect(trimmedRef.positionSamples.length, 75);
     expect(trimmedRef.duration, inInclusiveRange(355, 365));
   });
+
+  test('Trims reference to the last sample of app session when recording extends beyond 6 minutes', () async {
+    const filePath = '../../data/Pletzia Wanderung/session.json';
+    if (!File(filePath).existsSync()) return;
+
+    final data = await SessionLoader.load(filePath);
+    final session = data.sessions.first;
+    expect(session.hasReference, isTrue);
+
+    // App recording extends to ~397s (6:37)
+    final trimmedRef = session.trimmedReferenceSession;
+    expect(trimmedRef, isNotNull);
+    expect(trimmedRef!.duration, greaterThan(390));
+    expect(trimmedRef.positionSamples.length, greaterThan(120));
+  });
 }
