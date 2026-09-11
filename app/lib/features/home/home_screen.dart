@@ -17,7 +17,7 @@ class HomeScreen extends ConsumerWidget {
   static const Color panelBlue = Color(0xFFDCE6FB);
 
   static const double textHorizontalPadding = 50;
-  static const double panelHorizontalPadding = 80;
+  static const double panelHorizontalPadding = 55;
 
   static const double illustrationHeight = 300;
   static const double illustrationWidth = 500;
@@ -129,7 +129,7 @@ class HomeScreen extends ConsumerWidget {
                             ),
                             child: Container(
                               width: double.infinity,
-                              height: 160,
+                              height: 200,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 20,
@@ -182,7 +182,7 @@ class HomeScreen extends ConsumerWidget {
                       width: double.infinity,
                       height: 54,
                       child: ElevatedButton(
-                        onPressed: () => context.push('/walk'),
+                        onPressed: () => context.push('/profile'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryBlue,
                           foregroundColor: Colors.white,

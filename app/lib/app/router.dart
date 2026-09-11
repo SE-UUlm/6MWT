@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
 import '../features/debug/gps_test_screen.dart';
 import '../features/home/home_screen.dart';
@@ -11,14 +14,42 @@ import '../features/instructions/instructions_screen_6.dart';
 import '../features/instructions/instructions_screen_7.dart';
 import '../features/walk/presentation/walk_screen.dart';
 import '../features/instructions/instructions_screen_1.dart';
+import '../features/walk/presentation/information_screen.dart';
 
 final router = GoRouter(
   routes: [
     GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-    GoRoute(path: '/walk', builder: (context, state) => const WalkScreen()),
+    GoRoute(
+      path: '/walk',
+      builder: (context, state) {
+        final profileId = state.extra as int;
+
+        return WalkScreen(profileId: profileId);
+      },
+    ),
     GoRoute(
       path: '/debug/gps',
       builder: (context, state) => const GpsTestScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/video',
+      builder: (context, state) {
+        final profileId = state.extra as int;
+
+        return VideoScreen(profileId: profileId);
+      },
+    ),
+    GoRoute(
+      path: '/result',
+      builder: (context, state) {
+        final profileId = state.extra as int;
+
+        return ResultScreen(profileId: profileId);
+      },
     ),
 
     // Route +  Animation - Instructions-1 Page
@@ -50,22 +81,13 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const InstructionsScreen2(),
-          transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-              ) {
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: animation.drive(
                 Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).chain(
-                  CurveTween(
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+                ).chain(CurveTween(curve: Curves.easeInOut)),
               ),
               child: child,
             );
@@ -105,22 +127,13 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const InstructionsScreen4(),
-          transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-              ) {
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: animation.drive(
                 Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).chain(
-                  CurveTween(
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+                ).chain(CurveTween(curve: Curves.easeInOut)),
               ),
               child: child,
             );
@@ -135,22 +148,13 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const InstructionsScreen5(),
-          transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-              ) {
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: animation.drive(
                 Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).chain(
-                  CurveTween(
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+                ).chain(CurveTween(curve: Curves.easeInOut)),
               ),
               child: child,
             );
@@ -165,22 +169,13 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const InstructionsScreen6(),
-          transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-              ) {
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: animation.drive(
                 Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).chain(
-                  CurveTween(
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+                ).chain(CurveTween(curve: Curves.easeInOut)),
               ),
               child: child,
             );
@@ -195,22 +190,13 @@ final router = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const InstructionsScreen7(),
-          transitionsBuilder: (
-              context,
-              animation,
-              secondaryAnimation,
-              child,
-              ) {
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return SlideTransition(
               position: animation.drive(
                 Tween<Offset>(
                   begin: const Offset(1, 0),
                   end: Offset.zero,
-                ).chain(
-                  CurveTween(
-                    curve: Curves.easeInOut,
-                  ),
-                ),
+                ).chain(CurveTween(curve: Curves.easeInOut)),
               ),
               child: child,
             );
