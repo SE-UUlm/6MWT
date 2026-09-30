@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
@@ -58,8 +58,9 @@ class HistoryScreen extends ConsumerWidget {
           return ListView.builder(
             itemCount: sessions.length,
             itemBuilder: (context, index) {
-              final session = sessions[index].session;
-              final profile = sessions[index].profile;
+              final sessionWithProfile = sessions[index];
+              final session = sessionWithProfile.session;
+              final profile = sessionWithProfile.profile;
 
               final finished = session.phase == WalkPhase.finished;
 
@@ -85,6 +86,9 @@ class HistoryScreen extends ConsumerWidget {
                       ),
                   ],
                 ),
+                onTap: () {
+                  context.push('/result', extra: sessionWithProfile);
+                },
               );
             },
           );

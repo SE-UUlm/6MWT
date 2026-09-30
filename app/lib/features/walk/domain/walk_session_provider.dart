@@ -12,6 +12,29 @@ part 'walk_session_provider.g.dart';
 
 final _log = appLogger('WalkSessionProvider');
 
+/// Creates the database representation of the current walk session state.
+WalkSessionRow? createWalkSessionRow(
+  WalkSession session,
+  WalkSessionState state,
+) {
+  final sessionId = state.sessionId;
+  final startedAt = state.startedAt;
+  final profileId = session.profileId;
+
+  if (sessionId == null || startedAt == null || profileId == null) {
+    return null;
+  }
+
+  return WalkSessionRow(
+    id: sessionId,
+    startedAt: startedAt,
+    duration: session.walkDuration - state.remainingTime,
+    distance: state.distance,
+    phase: state.phase,
+    profileId: profileId,
+  );
+}
+
 /// Transforms [session.states] into a stream of [WalkSessionRow]s, skipping
 /// emissions where none of the persisted fields have changed. So there we
 /// prevent db writes on every sample
@@ -19,27 +42,14 @@ Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
   WalkSessionRow? last;
 
   return session.states.expand((state) {
-    final sessionId = state.sessionId;
-    final startedAt = state.startedAt;
+    final current = createWalkSessionRow(session, state);
+    if (current == null) {
+      if (state.sessionId != null && session.profileId == null) {
+        _log.w('ProfileId is null. Cannot save Walk Session');
+      }
 
-    if (sessionId == null || startedAt == null) {
       return [];
     }
-
-    final profileId = session.profileId;
-    if (profileId == null) {
-      _log.w('ProfileId is null. Cannot save Walk Session');
-      return [];
-    }
-
-    final current = WalkSessionRow(
-      id: sessionId,
-      startedAt: startedAt,
-      duration: session.walkDuration - state.remainingTime,
-      distance: state.distance,
-      phase: state.phase,
-      profileId: profileId,
-    );
 
     if (current == last) {
       return [];
