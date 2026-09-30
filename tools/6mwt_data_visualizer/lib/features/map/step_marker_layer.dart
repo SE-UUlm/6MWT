@@ -84,8 +84,26 @@ class StepMarkerLayer extends StatelessWidget {
 
       // Only emit a marker every [stride] samples.
       if (i % stride != 0) continue;
-      // No label on the very first point (no delta yet).
-      if (gpsDelta == null) continue;
+
+      // The first point has no segment or step delta, but should still expose
+      // its accuracy when hovered.
+      if (gpsDelta == null) {
+        final accuracy = sample.values[PositionKeys.accuracy];
+        if (accuracy != null) {
+          markers.add(
+            Marker(
+              point: LatLng(lat, lon),
+              width: 20,
+              height: 20,
+              child: Tooltip(
+                message: 'Accuracy: ${accuracy.toStringAsFixed(1)} m',
+                child: const ColoredBox(color: Colors.transparent),
+              ),
+            ),
+          );
+        }
+        continue;
+      }
 
       markers.add(
         Marker(
