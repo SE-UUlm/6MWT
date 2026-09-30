@@ -71,13 +71,13 @@ jobs:
         run: flutter pub get
 
       - name: Build Android APK
-        run: flutter build apk --debug
+        run: flutter build apk
 
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-debug-apk
-          path: app/build/app/outputs/flutter-apk/app-debug.apk
+          name: android-release-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
 
   build-ios:
     name: Build iOS Simulator App
