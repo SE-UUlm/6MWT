@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/features/history/history_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
@@ -50,6 +51,11 @@ final router = GoRouter(
 
         return ResultScreen(profileId: profileId);
       },
+    ),
+
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const HistoryScreen(),
     ),
 
     // Route +  Animation - Instructions-1 Page

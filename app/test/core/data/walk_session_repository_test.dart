@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
@@ -127,6 +128,48 @@ void main() {
     final sessionA = results.firstWhere((r) => r.id == 'session-a');
     expect(sessionA.profileId, profileA);
     expect(sessionB.profileId, profileB);
+  });
+
+  test('watches sessions together with their associated profiles', () async {
+    final profileId = await db
+        .into(db.profiles)
+        .insert(
+          ProfilesCompanion.insert(
+            height: 165,
+            age: 40,
+            name: const Value('Ada'),
+          ),
+        );
+
+    await repository.saveSession(
+      WalkSessionRow(
+        id: 'older',
+        startedAt: _july1,
+        duration: const Duration(minutes: 6),
+        distance: 420,
+        phase: WalkPhase.finished,
+        profileId: profileId,
+      ),
+    );
+    await repository.saveSession(
+      WalkSessionRow(
+        id: 'newer',
+        startedAt: _july2,
+        duration: const Duration(minutes: 6),
+        distance: 450,
+        phase: WalkPhase.finished,
+        profileId: 1,
+      ),
+    );
+
+    final entries = await repository.watchSessionsWithProfiles().first;
+
+    expect(entries, hasLength(2));
+    expect(entries.first.session.id, 'newer');
+    expect(entries.first.profile.id, 1);
+    expect(entries.last.session.id, 'older');
+    expect(entries.last.profile.id, profileId);
+    expect(entries.last.profile.name, 'Ada');
   });
 
   test('watchSessions emits updates when a new session is saved', () async {

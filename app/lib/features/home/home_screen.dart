@@ -95,6 +95,16 @@ class HomeScreen extends ConsumerWidget {
                               height: 1.45,
                             ),
                           ),
+
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextButton(
+                              onPressed: () => context.push('/history'),
+                              child: Text(
+                                "Show History of previous Walk Tests",
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
