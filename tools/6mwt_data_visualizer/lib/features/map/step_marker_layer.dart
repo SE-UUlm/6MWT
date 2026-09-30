@@ -11,6 +11,7 @@ import '../../core/domain/session.dart';
 /// Each label displays:
 ///   +X.X m    – GPS distance from the previous GPS sample (Haversine)
 ///   +Y steps  – cumulative-step delta since the previous GPS sample
+/// Its hover tooltip additionally displays the GPS sample's accuracy.
 ///
 /// The marker density adapts automatically to the current zoom level:
 ///   zoom ≥ 19  → every point
@@ -95,6 +96,7 @@ class StepMarkerLayer extends StatelessWidget {
           child: _SegmentLabel(
             gpsDelta: gpsDelta,
             stepDelta: stepDelta,
+            accuracy: sample.values[PositionKeys.accuracy],
           ),
         ),
       );
@@ -121,19 +123,25 @@ class StepMarkerLayer extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _SegmentLabel extends StatelessWidget {
-  const _SegmentLabel({required this.gpsDelta, this.stepDelta});
+  const _SegmentLabel({required this.gpsDelta, this.stepDelta, this.accuracy});
 
   final double gpsDelta;
   final int? stepDelta;
+  final double? accuracy;
 
   @override
   Widget build(BuildContext context) {
     final gpsText = '+${gpsDelta.toStringAsFixed(1)} m';
     final stepsText = stepDelta != null ? '+$stepDelta steps' : null;
+    final accuracyText = accuracy != null
+        ? 'Accuracy: ${accuracy!.toStringAsFixed(1)} m'
+        : null;
 
     return Tooltip(
-      message: 'GPS segment: $gpsText'
-          '${stepsText != null ? '\n$stepsText' : ''}',
+      message:
+          'GPS segment: $gpsText'
+          '${stepsText != null ? '\n$stepsText' : ''}'
+          '${accuracyText != null ? '\n$accuracyText' : ''}',
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
         decoration: BoxDecoration(
