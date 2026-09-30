@@ -57,6 +57,29 @@ flutter run -d linux    # or: -d macos / -d windows
 
 On startup the tool automatically looks for `data/*.json` relative to the repository root. If no file is found, a 📂 button is shown in the sidebar for manual selection.
 
+For reliable satellite-tile access, create an ArcGIS access token with the
+`premium:user:basemaps` privilege. Store it in a local
+`arcgis.local.json` file:
+
+```json
+{
+  "ARCGIS_ACCESS_TOKEN": "YOUR_TOKEN"
+}
+```
+
+Then start the visualizer with:
+
+```bash
+flutter run -d linux \
+  --dart-define-from-file=arcgis.local.json
+```
+
+This is the recommended way to run the tool. `arcgis.local.json` is ignored by
+Git and must never be committed.
+
+Without a token, the visualizer falls back to ArcGIS's anonymous legacy
+endpoint, which may be slow or throttle requests.
+
 ## Release build
 
 ```bash
@@ -69,7 +92,7 @@ The binary is placed under `build/linux/x64/release/bundle/`.
 
 | Area | Package |
 |---|---|
-| Map | [`flutter_map`](https://pub.dev/packages/flutter_map) + Esri World Imagery (free, no API key required) |
+| Map | [`flutter_map`](https://pub.dev/packages/flutter_map) + Esri World Imagery |
 | Coordinates | [`latlong2`](https://pub.dev/packages/latlong2) |
 | State management | [`flutter_riverpod`](https://pub.dev/packages/flutter_riverpod) + `riverpod_annotation` |
 | File picker | [`file_picker`](https://pub.dev/packages/file_picker) |

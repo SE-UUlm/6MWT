@@ -10,6 +10,14 @@ import 'map_controls.dart';
 import 'map_legend.dart';
 import 'step_marker_layer.dart';
 
+const _arcGisAccessToken = String.fromEnvironment('ARCGIS_ACCESS_TOKEN');
+const _anonymousArcGisTileUrl =
+    'https://services.arcgisonline.com/arcgis/rest/services/'
+    'World_Imagery/MapServer/tile/{z}/{y}/{x}';
+const _authenticatedArcGisTileUrl =
+    'https://ibasemaps-api.arcgis.com/arcgis/rest/services/'
+    'World_Imagery/MapServer/tile/{z}/{y}/{x}?token={accessToken}';
+
 class SessionMap extends StatefulWidget {
   const SessionMap({super.key, required this.session});
 
@@ -21,6 +29,7 @@ class SessionMap extends StatefulWidget {
 
 class _SessionMapState extends State<SessionMap> {
   final _mapController = MapController();
+  final _tileProvider = NetworkTileProvider();
   bool _showAppTrack = true;
   bool _showRefTrack = true;
   bool _showStepMarkers = true;
@@ -45,7 +54,7 @@ class _SessionMapState extends State<SessionMap> {
     if (!widget.session.hasReference) return null;
     return _trimReference
         ? (widget.session.trimmedReferenceSession ??
-            widget.session.referenceSession)
+              widget.session.referenceSession)
         : widget.session.referenceSession;
   }
 
@@ -65,10 +74,7 @@ class _SessionMapState extends State<SessionMap> {
 
     final bounds = LatLngBounds.fromPoints(points);
     _mapController.fitCamera(
-      CameraFit.bounds(
-        bounds: bounds,
-        padding: const EdgeInsets.all(48),
-      ),
+      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(48)),
     );
   }
 
@@ -84,8 +90,9 @@ class _SessionMapState extends State<SessionMap> {
   Widget build(BuildContext context) {
     final appPoints = _gpsPoints(widget.session);
     final refSession = _effectiveReference;
-    final refPoints =
-        refSession != null ? _gpsPoints(refSession) : const <LatLng>[];
+    final refPoints = refSession != null
+        ? _gpsPoints(refSession)
+        : const <LatLng>[];
 
     final allPoints = _allPoints();
     if (allPoints.isEmpty) {
@@ -105,11 +112,22 @@ class _SessionMapState extends State<SessionMap> {
             ),
           ),
           children: [
-            // Esri World Imagery (free, no API key required)
+            // Esri World Imagery. For reliable access, provide an ArcGIS token
+            // through --dart-define=ARCGIS_ACCESS_TOKEN=...
             TileLayer(
-              urlTemplate:
-                  'https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+              urlTemplate: _arcGisAccessToken.isEmpty
+                  ? _anonymousArcGisTileUrl
+                  : _authenticatedArcGisTileUrl,
+              additionalOptions: {
+                if (_arcGisAccessToken.isNotEmpty)
+                  'accessToken': _arcGisAccessToken,
+              },
+              tileProvider: _tileProvider,
               userAgentPackageName: 'de.uni_ulm.six_mwt_visualizer',
+              panBuffer: 0,
+              errorTileCallback: (tile, error, stackTrace) {
+                debugPrint('Failed to load an ArcGIS tile: $error');
+              },
               tileBuilder: _darkModeTileBuilder,
             ),
             // Reference track (drawn below app track)
@@ -140,8 +158,7 @@ class _SessionMapState extends State<SessionMap> {
               ),
             // Step markers (toggleable)
             if (_showStepMarkers && _showAppTrack && appPoints.isNotEmpty)
-              StepMarkerLayer(
-                  session: widget.session, gpsPoints: appPoints),
+              StepMarkerLayer(session: widget.session, gpsPoints: appPoints),
             // Esri attribution
             const EsriAttribution(),
           ],
