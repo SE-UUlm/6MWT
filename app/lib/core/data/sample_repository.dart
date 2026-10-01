@@ -57,7 +57,8 @@ class SampleRepository implements SampleSink {
 
   static Map<String, dynamic> _rowToMap(SensorSampleRow row) => {
     'id': row.id,
-    'timestamp': row.timestamp.toIso8601String(),
+    // Older recordings may still contain local timestamps with an offset.
+    'timestamp': row.timestamp.toUtc().toIso8601String(),
     'sourceId': row.sourceId,
     'type': row.type,
     'values': jsonDecode(row.values),

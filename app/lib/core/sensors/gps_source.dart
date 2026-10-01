@@ -48,7 +48,7 @@ class GpsSource implements SensorSource {
 
   SensorSample _toSample(Position position) {
     return SensorSample(
-      timestamp: position.timestamp,
+      timestamp: position.timestamp.toUtc(),
       sourceId: sourceId,
       type: SampleType.position,
       values: {
