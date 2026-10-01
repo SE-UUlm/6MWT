@@ -35,6 +35,8 @@ class WalkSessionState {
   // Set while a test is running or after it ended; links the recorded raw
   // samples and the stored result to this run.
   final String? sessionId;
+
+  /// Session start in UTC. Convert with toLocal() when displaying a wall-clock time.
   final DateTime? startedAt;
 
   bool get isRunning => phase == WalkPhase.running;
@@ -99,7 +101,7 @@ class WalkSession {
       return;
     }
 
-    final startedAt = DateTime.now();
+    final startedAt = DateTime.now().toUtc();
     final sessionId = _generateSessionId();
 
     _distanceEstimator.reset();

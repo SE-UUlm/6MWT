@@ -190,7 +190,7 @@ void main() {
 
     expect(result, isNotNull);
     expect(result!['id'], 'export-1');
-    expect(result['startedAt'], _july1.toIso8601String());
+    expect(result['startedAt'], _july1.toUtc().toIso8601String());
     expect(result['duration'], 360);
     expect(result['distance'], 500.0);
     expect(result['phase'], 'finished');
@@ -233,6 +233,7 @@ void main() {
     expect(ids, containsAll(['session-a', 'session-b']));
 
     final sessionB = result.firstWhere((m) => m['id'] == 'session-b');
+    expect(sessionB['startedAt'], _july2.toUtc().toIso8601String());
     expect(sessionB['distance'], 150.0);
     expect(sessionB['phase'], 'aborted');
     expect(sessionB['duration'], 120);

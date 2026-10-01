@@ -21,7 +21,8 @@ class WalkSessionRepository {
 
   static Map<String, dynamic> _rowToMap(WalkSessionRow row) => {
     'id': row.id,
-    'startedAt': row.startedAt.toIso8601String(),
+    // Normalize old recordings as well as new UTC session starts.
+    'startedAt': row.startedAt.toUtc().toIso8601String(),
     'duration': row.duration.inSeconds,
     'distance': row.distance,
     'phase': row.phase.name,

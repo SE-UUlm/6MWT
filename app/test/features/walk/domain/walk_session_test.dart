@@ -113,6 +113,7 @@ void main() {
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.running);
+      expect(session.state.startedAt!.isUtc, isTrue);
       expect(source.started, isTrue);
 
       async.elapse(const Duration(seconds: 1));

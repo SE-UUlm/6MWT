@@ -33,6 +33,7 @@ class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get name => text().nullable()();
+  // SQLite generates this timestamp in UTC; Drift reads the text value as UTC.
   DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
   IntColumn get height => integer()();
   IntColumn get age => integer()();
