@@ -116,9 +116,8 @@ class SessionLoader {
 
       // If notes is empty, fallback to folder name
       if (session.notes.isEmpty) {
-        final folderName = folder.uri.pathSegments
-            .where((s) => s.isNotEmpty)
-            .lastOrNull ??
+        final folderName =
+            folder.uri.pathSegments.where((s) => s.isNotEmpty).lastOrNull ??
             'Session';
         session = Session(
           id: session.id,

@@ -37,7 +37,9 @@ class SessionListTile extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              session.notes.isNotEmpty ? session.notes : session.id.substring(0, 8),
+              session.notes.isNotEmpty
+                  ? session.notes
+                  : session.id.substring(0, 8),
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: isSelected ? FontWeight.bold : null,
               ),

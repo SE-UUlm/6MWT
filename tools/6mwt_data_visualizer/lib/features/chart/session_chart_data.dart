@@ -8,12 +8,7 @@ import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
 import '../../core/domain/step_length_estimator.dart';
 
-enum ChartSeriesId {
-  appGps,
-  appSteps,
-  refGps,
-  refSteps,
-}
+enum ChartSeriesId { appGps, appSteps, refGps, refSteps }
 
 class SeriesDescriptor {
   const SeriesDescriptor({
@@ -60,8 +55,7 @@ class SessionChartData {
 
       for (int i = 0; i < posSamples.length; i++) {
         final s = posSamples[i];
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final lat = s.values[PositionKeys.latitude]!;
         final lon = s.values[PositionKeys.longitude]!;
 
@@ -81,8 +75,9 @@ class SessionChartData {
     }
 
     // 2. Compute median step length
-    final medianStepLength =
-        StepLengthEstimator.computeMedianStepLength(session);
+    final medianStepLength = StepLengthEstimator.computeMedianStepLength(
+      session,
+    );
 
     // 3. App Step Spots (steps x medianStepLength -> meters)
     final appStepSpots = <FlSpot>[];
@@ -92,8 +87,7 @@ class SessionChartData {
       final firstStep =
           stepSamples.first.values[StepKeys.cumulativeSteps] ?? 0.0;
       for (final s in stepSamples) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstStep;
         final steps = math.max(0.0, rawVal - firstStep);
         final distanceMeters = steps * medianStepLength;
@@ -116,8 +110,7 @@ class SessionChartData {
       double? prevLon;
 
       for (final s in refPos) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final lat = s.values[PositionKeys.latitude]!;
         final lon = s.values[PositionKeys.longitude]!;
         final dVal = s.values[PositionKeys.distance];
@@ -149,8 +142,7 @@ class SessionChartData {
       final firstRefStep =
           refSteps.first.values[StepKeys.cumulativeSteps] ?? 0.0;
       for (final s in refSteps) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstRefStep;
         final steps = math.max(0.0, rawVal - firstRefStep);
         final distanceMeters = steps * medianStepLength;
@@ -163,24 +155,14 @@ class SessionChartData {
 
     // Compute max values
     double maxT = session.duration.toDouble();
-    for (final list in [
-      appGpsSpots,
-      appStepSpots,
-      refGpsSpots,
-      refStepSpots,
-    ]) {
+    for (final list in [appGpsSpots, appStepSpots, refGpsSpots, refStepSpots]) {
       if (list.isNotEmpty) {
         maxT = math.max(maxT, list.last.x);
       }
     }
 
     double maxMeters = 100.0;
-    for (final list in [
-      appGpsSpots,
-      appStepSpots,
-      refGpsSpots,
-      refStepSpots,
-    ]) {
+    for (final list in [appGpsSpots, appStepSpots, refGpsSpots, refStepSpots]) {
       for (final spot in list) {
         maxMeters = math.max(maxMeters, spot.y);
       }
@@ -249,11 +231,11 @@ class SessionChartData {
   };
 
   List<FlSpot> getSpots(ChartSeriesId id) => switch (id) {
-        ChartSeriesId.appGps => appGpsSpots,
-        ChartSeriesId.appSteps => appStepSpots,
-        ChartSeriesId.refGps => refGpsSpots,
-        ChartSeriesId.refSteps => refStepSpots,
-      };
+    ChartSeriesId.appGps => appGpsSpots,
+    ChartSeriesId.appSteps => appStepSpots,
+    ChartSeriesId.refGps => refGpsSpots,
+    ChartSeriesId.refSteps => refStepSpots,
+  };
 
   /// Linearly interpolates the Y value at [timeSeconds] in the given series.
   double? valueAtTime(ChartSeriesId id, double timeSeconds) {

@@ -59,7 +59,8 @@ class SessionInfoPanel extends StatelessWidget {
             _InfoRow(
               icon: Icons.cake_outlined,
               label: 'Age / Height',
-              value: '${session.profile!.age} years · ${session.profile!.height} cm',
+              value:
+                  '${session.profile!.age} years · ${session.profile!.height} cm',
             ),
           ],
           const SizedBox(height: 10),
@@ -89,10 +90,10 @@ class SessionInfoPanel extends StatelessWidget {
   }
 
   Color _phaseColor(String phase) => switch (phase) {
-        'finished' => Colors.green,
-        'aborted' => Colors.orange,
-        _ => Colors.grey,
-      };
+    'finished' => Colors.green,
+    'aborted' => Colors.orange,
+    _ => Colors.grey,
+  };
 }
 
 class _SectionHeader extends StatelessWidget {
@@ -106,10 +107,10 @@ class _SectionHeader extends StatelessWidget {
       child: Text(
         title,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.2,
-            ),
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1.2,
+        ),
       ),
     );
   }
@@ -135,9 +136,11 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon,
-              size: 16,
-              color: Theme.of(context).colorScheme.onSurfaceVariant),
+          Icon(
+            icon,
+            size: 16,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -146,15 +149,15 @@ class _InfoRow extends StatelessWidget {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                      ),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 Text(
                   value,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: valueColor,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    color: valueColor,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -171,7 +174,8 @@ class _ReferenceComparisonCard extends StatefulWidget {
   final Session session;
 
   @override
-  State<_ReferenceComparisonCard> createState() => _ReferenceComparisonCardState();
+  State<_ReferenceComparisonCard> createState() =>
+      _ReferenceComparisonCardState();
 }
 
 class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
@@ -184,7 +188,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
         margin: const EdgeInsets.only(top: 4),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+          color: Theme.of(
+            context,
+          ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -199,8 +205,8 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
               child: Text(
                 'No reference data (reference.json) available.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
             ),
           ],
@@ -209,15 +215,20 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
     }
 
     final ref = _trimmed
-        ? (widget.session.trimmedReferenceSession ?? widget.session.referenceSession!)
+        ? (widget.session.trimmedReferenceSession ??
+              widget.session.referenceSession!)
         : widget.session.referenceSession!;
 
     final deltaDist = widget.session.distance - ref.distance;
-    final deltaDistPct = ref.distance > 0 ? (deltaDist / ref.distance) * 100 : 0.0;
+    final deltaDistPct = ref.distance > 0
+        ? (deltaDist / ref.distance) * 100
+        : 0.0;
 
     final appSteps = widget.session.totalSteps;
     final refSteps = ref.totalSteps;
-    final deltaSteps = (appSteps != null && refSteps != null) ? appSteps - refSteps : null;
+    final deltaSteps = (appSteps != null && refSteps != null)
+        ? appSteps - refSteps
+        : null;
 
     final deltaDuration = widget.session.duration - ref.duration;
 
@@ -237,22 +248,29 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
         children: [
           Row(
             children: [
-              const Icon(Icons.track_changes, size: 16, color: Colors.deepOrange),
+              const Icon(
+                Icons.track_changes,
+                size: 16,
+                color: Colors.deepOrange,
+              ),
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
                   'Reference Measurement',
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: Colors.deepOrange,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: Colors.deepOrange,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               InkWell(
                 borderRadius: BorderRadius.circular(4),
                 onTap: () => setState(() => _trimmed = !_trimmed),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: _trimmed
                         ? Colors.deepOrange.withValues(alpha: 0.15)
@@ -269,7 +287,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
                       Icon(
                         _trimmed ? Icons.content_cut : Icons.all_inclusive,
                         size: 11,
-                        color: _trimmed ? Colors.deepOrange : Colors.grey.shade700,
+                        color: _trimmed
+                            ? Colors.deepOrange
+                            : Colors.grey.shade700,
                       ),
                       const SizedBox(width: 3),
                       Text(
@@ -277,7 +297,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
                         style: TextStyle(
                           fontSize: 9,
                           fontWeight: FontWeight.bold,
-                          color: _trimmed ? Colors.deepOrange : Colors.grey.shade700,
+                          color: _trimmed
+                              ? Colors.deepOrange
+                              : Colors.grey.shade700,
                         ),
                       ),
                     ],
@@ -302,7 +324,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
             refValue: '${ref.distance.toStringAsFixed(1)} m',
             deltaText:
                 '${deltaDist >= 0 ? '+' : ''}${deltaDist.toStringAsFixed(1)} m (${deltaDistPct >= 0 ? '+' : ''}${deltaDistPct.toStringAsFixed(1)}%)',
-            deltaColor: deltaDist.abs() <= 15 ? Colors.green : Colors.orange.shade800,
+            deltaColor: deltaDist.abs() <= 15
+                ? Colors.green
+                : Colors.orange.shade800,
           ),
 
           const Divider(height: 12),
@@ -329,7 +353,9 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
             appValue: '${widget.session.duration}s',
             refValue: '${ref.duration}s',
             deltaText: '${deltaDuration >= 0 ? '+' : ''}${deltaDuration}s',
-            deltaColor: deltaDuration.abs() <= 5 ? Colors.green : Colors.orange.shade800,
+            deltaColor: deltaDuration.abs() <= 5
+                ? Colors.green
+                : Colors.orange.shade800,
           ),
 
           const Divider(height: 12),
@@ -372,9 +398,9 @@ class _MetricComparisonRow extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
             ),
             if (deltaText != null)
               Text(
@@ -393,13 +419,19 @@ class _MetricComparisonRow extends StatelessWidget {
             Expanded(
               child: Text(
                 'App: $appValue',
-                style: const TextStyle(fontSize: 11, color: AppColors.appMetricBlue),
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AppColors.appMetricBlue,
+                ),
               ),
             ),
             Expanded(
               child: Text(
                 'Ref: $refValue',
-                style: const TextStyle(fontSize: 11, color: AppColors.refMetricOrange),
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AppColors.refMetricOrange,
+                ),
                 textAlign: TextAlign.end,
               ),
             ),

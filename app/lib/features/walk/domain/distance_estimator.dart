@@ -6,12 +6,16 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 abstract class DistanceEstimator {
   double get totalDistance;
 
+  /// Human-readable diagnostics for development tools, read after a calculation.
+  /// Implementations can report counters or settings; reset must clear run state.
+  Map<String, String> get additionalInfo => const {};
+
   void addSample(SensorSample sample);
 
   void reset();
 }
 
-class GpsDistanceEstimator implements DistanceEstimator {
+class GpsDistanceEstimator extends DistanceEstimator {
   double? _previousLatitude;
   double? _previousLongitude;
   double _totalDistance = 0;

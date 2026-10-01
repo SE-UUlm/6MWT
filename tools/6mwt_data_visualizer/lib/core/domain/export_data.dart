@@ -26,7 +26,8 @@ class ExportData {
         exportedAt: json['exportedAt'] != null
             ? DateTime.parse(json['exportedAt'] as String)
             : DateTime.now(),
-        profiles: (json['profiles'] as List<dynamic>?)
+        profiles:
+            (json['profiles'] as List<dynamic>?)
                 ?.map((p) => Profile.fromJson(p as Map<String, dynamic>))
                 .toList() ??
             const [],

@@ -6,11 +6,7 @@ import '../../core/domain/session.dart';
 import 'session_chart_data.dart';
 
 class DistanceStepsChart extends StatefulWidget {
-  const DistanceStepsChart({
-    super.key,
-    required this.session,
-    this.onClose,
-  });
+  const DistanceStepsChart({super.key, required this.session, this.onClose});
 
   final Session session;
   final VoidCallback? onClose;
@@ -130,9 +126,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
     }
 
     if (lineBarsData.isEmpty) {
-      return const Center(
-        child: Text('No signals selected.'),
-      );
+      return const Center(child: Text('No signals selected.'));
     }
 
     return LineChart(
@@ -235,28 +229,29 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
       enabled: true,
       handleBuiltInTouches: true,
       touchSpotThreshold: 50,
-      getTouchedSpotIndicator: (LineChartBarData barData, List<int> spotIndexes) {
-        return spotIndexes.map((spotIndex) {
-          return TouchedSpotIndicatorData(
-            FlLine(
-              color: colorScheme.outlineVariant.withValues(alpha: 0.8),
-              strokeWidth: 1.5,
-              dashArray: [4, 4],
-            ),
-            FlDotData(
-              show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                return FlDotCirclePainter(
-                  radius: 5,
-                  color: barData.color ?? colorScheme.primary,
-                  strokeWidth: 2,
-                  strokeColor: colorScheme.surface,
-                );
-              },
-            ),
-          );
-        }).toList();
-      },
+      getTouchedSpotIndicator:
+          (LineChartBarData barData, List<int> spotIndexes) {
+            return spotIndexes.map((spotIndex) {
+              return TouchedSpotIndicatorData(
+                FlLine(
+                  color: colorScheme.outlineVariant.withValues(alpha: 0.8),
+                  strokeWidth: 1.5,
+                  dashArray: [4, 4],
+                ),
+                FlDotData(
+                  show: true,
+                  getDotPainter: (spot, percent, barData, index) {
+                    return FlDotCirclePainter(
+                      radius: 5,
+                      color: barData.color ?? colorScheme.primary,
+                      strokeWidth: 2,
+                      strokeColor: colorScheme.surface,
+                    );
+                  },
+                ),
+              );
+            }).toList();
+          },
       touchTooltipData: LineTouchTooltipData(
         getTooltipColor: (spot) =>
             colorScheme.surfaceContainerHighest.withValues(alpha: 0.95),
@@ -268,7 +263,10 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
         fitInsideHorizontally: true,
         fitInsideVertically: true,
         maxContentWidth: 280,
-        tooltipPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        tooltipPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 10,
+        ),
         getTooltipItems: (touchedSpots) {
           if (touchedSpots.isEmpty) return [];
 
@@ -463,7 +461,9 @@ class _ChartToolbar extends StatelessWidget {
       selectedColor: desc.color.withValues(alpha: 0.25),
       checkmarkColor: desc.color,
       side: BorderSide(
-        color: isSelected ? desc.color : Theme.of(context).colorScheme.outlineVariant,
+        color: isSelected
+            ? desc.color
+            : Theme.of(context).colorScheme.outlineVariant,
         width: isSelected ? 1.2 : 0.8,
       ),
       visualDensity: VisualDensity.compact,
@@ -471,10 +471,7 @@ class _ChartToolbar extends StatelessWidget {
       avatar: Container(
         width: 8,
         height: 8,
-        decoration: BoxDecoration(
-          color: desc.color,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: desc.color, shape: BoxShape.circle),
       ),
     );
   }

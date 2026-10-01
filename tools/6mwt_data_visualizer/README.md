@@ -39,9 +39,71 @@ A Flutter desktop development tool for visualizing recorded 6-minute walk test s
   - **Rich tooltip**: Hovering reveals exact time `mm:ss (Xs)` and precise interpolated values for every active signal
   - **Collapsible layout**: Toggle the chart on/off via the title bar button to switch between split view and full-height map
 
-### Phase 3 (planned)
+### Phase 3 (implemented)
 
-- Integration of the `DistanceEstimator` from the main app: run distance calculations directly in the tool and tune parameters (e.g. outlier detection for GPS data, step-count fusion)
+- **Estimator Lab** – replay previously recorded sessions through the actual `DistanceEstimator` interface from the main app, imported through a local package dependency on `../../app`.
+- **Multiple estimators and parameter variants** – compare the original app `GpsDistanceEstimator`, experimental filtered GPS and fixed step length simultaneously.
+- **Configuration in code** – select estimators and parameters in the `List<DistanceEstimator>` returned by `lib/features/estimator_lab/estimators.dart`. The GUI contains only the graph with its legend and the results table.
+- **Comparison timeline and table** – toggle curves, inspect values on hover, compare final distance against the stored app distance and the reference in meters and percent, and inspect rejected GPS counts.
+- **Deterministic replay** – fresh/reset estimators, recorded UTC timestamps, stable chronological sample order, isolated errors, and automatic reruns when switching or reloading sessions.
+
+## Using the Estimator Lab
+
+1. Select a recorded session and open **Estimator Lab** above the map.
+2. All estimators configured in `estimators.dart` run automatically. Use the graph legend to toggle curves and the table to compare distances and additional diagnostics.
+3. To test another algorithm or parameter variant, edit the list in `createEstimators()` and hot restart the tool. Multiple instances of the same class with different parameters are allowed.
+
+The replay feeds **all recorded app sensor samples** to each estimator, from the earliest to the latest recorded timestamp. It uses subsecond timing, preserves file order for timestamp ties, and does not run in real time. It does not use the reference recording or a whole-session step-length estimate to calibrate algorithms. The original estimator runs unchanged; replay totals can differ from the stored distance if historical app versions, sample arrival order, or incomplete recordings differ.
+
+Reference distance uses the reference's cumulative `distance` values when available throughout the track, otherwise a GPS Haversine sum. The available overlap with the replay is displayed, interpolated at its boundaries and rebased to zero at the overlap start. A later start or earlier end does not hide the reference. Table reference deltas compare both distances over this shared interval only; hover the reference legend for its time range. A reference with no overlap or invalid/decreasing cumulative distance is unavailable. A zero reference distance has no percentage delta. Tooltips interpolate every visible curve at the same time in estimator order, with the reference last; times outside a curve's coverage show a dash rather than extrapolated values. The recording/map view retains its existing reference-window behavior.
+
+### Experimental algorithms
+
+- **Filtered GPS:** rejects invalid coordinates, reported accuracy radii above the threshold, nonpositive time intervals, and segment speeds above the threshold. Rejected fixes do not become the next segment's anchor. Missing accuracy is accepted. This simple filter can remain anchored at a bad first fix; it is a development baseline.
+- **Steps:** cumulative step deltas multiplied by a fixed length. Uses the first valid cumulative-step source, ignores status-only events, and treats a counter decrease as a new baseline. No steps before the first sample are inferred.
+
+These implementations are experiments and do not change the estimator selected in the main app.
+
+### Adding your own DistanceEstimator
+
+Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `lib/features/estimator_lab/experimental_estimators.dart`. Keep the algorithm independent of widgets, replay state and reference data so it can later be moved to `app/lib/features/walk/domain/` without changing its interface.
+
+Add the instance to the list in `estimators.dart`, for example:
+
+```dart
+List<DistanceEstimator> createEstimators() => [
+  GpsDistanceEstimator(),
+  MyDistanceEstimator(threshold: 10),
+  MyDistanceEstimator(threshold: 20),
+];
+```
+
+The tool uses the class name and list position to identify each curve. New instances are created for every session, and replay calls `reset()` before feeding samples. Failures are caught separately for each estimator. The app GPS implementation is imported directly, so changes to it are available after a hot restart/rebuild.
+
+Optionally override `additionalInfo` to expose settings and calculation diagnostics:
+
+```dart
+@override
+Map<String, String> get additionalInfo => {
+  'Rejected GPS': '$rejected',
+  'Threshold': '$threshold m',
+};
+```
+
+The default getter returns an empty map. The tool snapshots the map after calculation and displays every entry in the **Additional info** column. No UI or replay changes are needed for new diagnostics. Clear any per-run counters in `reset()`.
+
+The local app dependency also resolves its transitive plugins; generated desktop plugin registrations are therefore part of the tool. Replays themselves require no sensor permissions or live sensor access.
+
+### Verification
+
+```bash
+flutter pub get
+flutter analyze
+flutter test
+flutter build linux
+```
+
+Tests cover deterministic replay, production-estimator parity, outliers, step counter resets, exact reference boundaries, error isolation, diagnostic snapshots, matching curve/table/tooltip colors in light/dark themes and every recording in the repository's `data/` directory. Run them from `tools/6mwt_data_visualizer` within this repository.
 
 ## Prerequisites
 
@@ -57,7 +119,7 @@ flutter run -d linux    # or: -d macos / -d windows
 
 On startup the tool automatically looks for `data/*.json` relative to the repository root. If no file is found, a 📂 button is shown in the sidebar for manual selection.
 
-For reliable satellite-tile access, create an ArcGIS access token with the
+Not really necessary: For reliable satellite-tile access, create an ArcGIS access token with the
 `premium:user:basemaps` privilege. Store it in a local
 `arcgis.local.json` file:
 
@@ -113,6 +175,11 @@ lib/
 │       ├── sensor_sample.dart        # SensorSample model (mirrored from main app)
 │       └── session.dart              # Session & Profile models
 ├── features/
+│   ├── estimator_lab/
+│   │   ├── estimator_lab.dart        # Comparison chart/table
+│   │   ├── estimators.dart           # List of algorithms and parameters to compare
+│   │   ├── estimator_replay.dart     # App sample adapter, replay and reference alignment
+│   │   └── experimental_estimators.dart # Portable DistanceEstimator implementations
 │   ├── chart/
 │   │   ├── distance_steps_chart.dart # Interactive fl_chart widget
 │   │   └── session_chart_data.dart   # Series calculation & normalization

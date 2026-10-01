@@ -26,9 +26,8 @@ class MapLegend extends StatelessWidget {
         ? session.distance - refSession!.distance
         : 0.0;
     final deltaPct = refSession != null && refSession!.distance > 0
-        ? ((session.distance - refSession!.distance) /
-                refSession!.distance) *
-            100
+        ? ((session.distance - refSession!.distance) / refSession!.distance) *
+              100
         : 0.0;
 
     return Card(
