@@ -18,6 +18,8 @@ class DistanceStepsChart extends StatefulWidget {
 class _DistanceStepsChartState extends State<DistanceStepsChart> {
   late SessionChartData _chartData;
 
+  final Set<int> _hiddenReferences = {};
+
   // Active series toggles
   final Set<ChartSeriesId> _activeSeries = {
     ChartSeriesId.appGps,
@@ -35,8 +37,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
   @override
   void didUpdateWidget(DistanceStepsChart oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.session.id != widget.session.id ||
-        oldWidget.session.hasReference != widget.session.hasReference) {
+    if (!identical(oldWidget.session, widget.session)) {
       _chartData = SessionChartData.fromSession(widget.session);
     }
   }
@@ -71,6 +72,33 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
             onToggleSeries: _toggleSeries,
             onClose: widget.onClose,
           ),
+          if (_chartData.hasReference)
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  for (final reference in _chartData.referenceSeries)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: FilterChip(
+                        avatar: CircleAvatar(
+                          backgroundColor: reference.color,
+                          radius: 5,
+                        ),
+                        label: Text(reference.label),
+                        selected: !_hiddenReferences.contains(reference.index),
+                        onSelected: (selected) => setState(() {
+                          if (selected) {
+                            _hiddenReferences.remove(reference.index);
+                          } else {
+                            _hiddenReferences.add(reference.index);
+                          }
+                        }),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           const Divider(height: 1),
           // Chart view
           Expanded(
@@ -90,10 +118,20 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
 
     // Calculate Y-axis boundaries in meters
     double maxVal = 50.0;
-    for (final id in _activeSeries) {
+    for (final id in [ChartSeriesId.appGps, ChartSeriesId.appSteps]) {
+      if (!_activeSeries.contains(id)) continue;
       final spots = _chartData.getSpots(id);
       for (final s in spots) {
         maxVal = math.max(maxVal, s.y);
+      }
+    }
+    for (final reference in _chartData.referenceSeries) {
+      if (_hiddenReferences.contains(reference.index)) continue;
+      for (final spot in [
+        if (_activeSeries.contains(ChartSeriesId.refGps)) ...reference.gps,
+        if (_activeSeries.contains(ChartSeriesId.refSteps)) ...reference.steps,
+      ]) {
+        maxVal = math.max(maxVal, spot.y);
       }
     }
     final maxY = (maxVal * 1.1).ceilToDouble();
@@ -102,7 +140,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
     // Build bars for active series
     final lineBarsData = <LineChartBarData>[];
 
-    for (final id in ChartSeriesId.values) {
+    for (final id in [ChartSeriesId.appGps, ChartSeriesId.appSteps]) {
       if (!_activeSeries.contains(id)) continue;
       final desc = SessionChartData.descriptors[id]!;
       final spots = _chartData.getSpots(id);
@@ -123,6 +161,28 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
           ),
         ),
       );
+    }
+
+    for (final reference in _chartData.referenceSeries) {
+      if (_hiddenReferences.contains(reference.index)) continue;
+      for (final step in [false, true]) {
+        if (!_activeSeries.contains(
+          step ? ChartSeriesId.refSteps : ChartSeriesId.refGps,
+        )) {
+          continue;
+        }
+        final spots = step ? reference.steps : reference.gps;
+        if (spots.isEmpty) continue;
+        lineBarsData.add(
+          LineChartBarData(
+            spots: spots,
+            color: reference.color,
+            barWidth: 2.2,
+            dashArray: step ? [2, 4] : [6, 4],
+            dotData: const FlDotData(show: false),
+          ),
+        );
+      }
     }
 
     if (lineBarsData.isEmpty) {
@@ -281,7 +341,7 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
           // We put all formatted values into the first item and fill the rest with null.
           final spans = <TextSpan>[];
 
-          for (final id in ChartSeriesId.values) {
+          for (final id in [ChartSeriesId.appGps, ChartSeriesId.appSteps]) {
             if (!_activeSeries.contains(id)) continue;
             final desc = SessionChartData.descriptors[id]!;
             final metersVal = _chartData.valueAtTime(id, x);
@@ -304,6 +364,28 @@ class _DistanceStepsChartState extends State<DistanceStepsChart> {
                 ),
               ),
             );
+          }
+
+          for (final reference in _chartData.referenceSeries) {
+            if (_hiddenReferences.contains(reference.index)) continue;
+            for (final step in [false, true]) {
+              if (!_activeSeries.contains(
+                step ? ChartSeriesId.refSteps : ChartSeriesId.refGps,
+              )) {
+                continue;
+              }
+              final value = reference.valueAtTime(x, step: step);
+              if (value == null) continue;
+              final rawSteps = step ? reference.rawStepsAtTime(x) : null;
+              spans.add(
+                TextSpan(
+                  text:
+                      '\n● ${reference.label}${step ? " Steps" : ""}: ${value.toStringAsFixed(1)} m'
+                      '${rawSteps == null ? "" : " (${rawSteps.round()} steps)"}',
+                  style: TextStyle(color: reference.color, fontSize: 11),
+                ),
+              );
+            }
           }
 
           final firstItem = LineTooltipItem(

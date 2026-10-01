@@ -58,14 +58,18 @@ class SessionListTile extends StatelessWidget {
                   width: 0.8,
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.track_changes, size: 12, color: Colors.deepOrange),
-                  SizedBox(width: 3),
+                  const Icon(
+                    Icons.track_changes,
+                    size: 12,
+                    color: Colors.deepOrange,
+                  ),
+                  const SizedBox(width: 3),
                   Text(
-                    'Reference',
-                    style: TextStyle(
+                    '${session.references.length} reference(s)',
+                    style: const TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
                       color: Colors.deepOrange,

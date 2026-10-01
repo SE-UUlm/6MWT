@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/providers.dart';
 
 import '../../core/domain/session.dart';
 import '../../core/utils/date_formatters.dart';
@@ -7,16 +9,17 @@ import '../estimator_lab/estimator_lab.dart';
 import '../map/session_map.dart';
 import 'session_info_panel.dart';
 
-class SessionDetailScreen extends StatefulWidget {
+class SessionDetailScreen extends ConsumerStatefulWidget {
   const SessionDetailScreen({super.key, required this.session});
 
   final Session session;
 
   @override
-  State<SessionDetailScreen> createState() => _SessionDetailScreenState();
+  ConsumerState<SessionDetailScreen> createState() =>
+      _SessionDetailScreenState();
 }
 
-class _SessionDetailScreenState extends State<SessionDetailScreen> {
+class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   bool _showChart = true;
   bool _showLab = false;
 
@@ -71,7 +74,12 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
                         // Map view
                         Expanded(
                           flex: _showChart ? 3 : 1,
-                          child: SessionMap(session: session),
+                          child: SessionMap(
+                            session: session,
+                            onReferenceSaved: (updated) => ref
+                                .read(exportDataProvider.notifier)
+                                .replaceSession(session, updated),
+                          ),
                         ),
                         // Chart view (Phase 2)
                         if (_showChart) ...[
@@ -164,7 +172,7 @@ class _TitleBar extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'Reference',
+                          '${session.references.length} reference(s)',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.green.shade300,
                             fontSize: 10,

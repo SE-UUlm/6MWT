@@ -8,7 +8,11 @@ void main() {
     if (!Directory(dataDir).existsSync()) return;
 
     final data = await SessionLoader.loadFromDataDirectory(dataDir);
-    expect(data.sessions.length, 10);
+    final sessionFolders = Directory(dataDir)
+        .listSync()
+        .whereType<Directory>()
+        .where((folder) => File('${folder.path}/session.json').existsSync());
+    expect(data.sessions.length, sessionFolders.length);
 
     // Basauri should not have a reference
     final basauri = data.sessions.firstWhere(

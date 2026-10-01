@@ -47,6 +47,32 @@ A Flutter desktop development tool for visualizing recorded 6-minute walk test s
 - **Comparison timeline and table** – toggle curves, inspect values on hover, compare final distance against the stored app distance and the reference in meters and percent, and inspect rejected GPS counts.
 - **Deterministic replay** – fresh/reset estimators, recorded UTC timestamps, stable chronological sample order, isolated errors, and automatic reruns when switching or reloading sessions.
 
+## Drawing and comparing references
+
+In **Recording**, click **Draw reference**, then click the map in walking order.
+Pan and zoom as usual, use **Undo last point** for corrections, enter a name and
+choose **Save reference**. **Cancel** discards the draft. You can draw and save
+several alternative routes for the same recording.
+
+Route distance is the sum of the geographic segments between clicked points.
+Manual routes have no measured timestamps: their timeline assumes **constant
+speed over the recording's active window**, with waypoint times proportional to
+distance. They are labeled accordingly in both charts and are comparison data
+only; they never enter the Estimator Lab's sensor replay.
+
+Each reference has a name and the same color in the map, recording graph and Lab.
+The graph legends toggle individual reference curves; the Lab table includes
+meter and percentage differences for each reference over its own overlap.
+Select a reference in the recording's information panel for detailed metrics.
+
+Existing `reference.json` files remain supported. Session folders also load
+`reference_*.json` and every JSON recording in `references/`. New drawn routes
+are saved as separate JSON files in `references/`; the original files are not
+modified. Standalone or multi-session JSON exports use an adjacent
+`<export filename>.references/<encoded session id>/` directory. Keep these
+sidecar directories with the recordings when moving them. Saved references
+appear immediately and load again the next time the recording is opened.
+
 ## Using the Estimator Lab
 
 1. Select a recorded session and open **Estimator Lab** above the map.

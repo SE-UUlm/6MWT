@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/domain/session.dart';
+import '../../core/theme/reference_colors.dart';
 import 'estimator_replay.dart';
 import 'estimators.dart';
 
@@ -18,6 +19,7 @@ class EstimatorLab extends StatefulWidget {
 
 class _EstimatorLabState extends State<EstimatorLab> {
   final Set<int> _hidden = {};
+  final Set<int> _hiddenReferences = {};
   late EstimatorReplay _replay;
   late List<ReplayResult> _results;
   static const _colors = [
@@ -52,20 +54,19 @@ class _EstimatorLabState extends State<EstimatorLab> {
 
   @override
   Widget build(BuildContext context) {
-    final ref = _replay.reference?.last.meters;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        _buildLegend(ref),
+        _buildLegend(),
         const SizedBox(height: 16),
         SizedBox(height: 320, child: _buildChart()),
         const SizedBox(height: 16),
-        _buildResultsTable(ref),
+        _buildResultsTable(),
       ],
     );
   }
 
-  Widget _buildLegend(double? referenceDistance) {
+  Widget _buildLegend() {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
@@ -86,66 +87,65 @@ class _EstimatorLabState extends State<EstimatorLab> {
               }
             }),
           ),
-        if (referenceDistance != null)
+        for (final (i, reference) in _replay.references.indexed)
           Tooltip(
-            message:
-                'Reference coverage: ${_replay.reference!.first.seconds.toStringAsFixed(1)}–'
-                '${_replay.reference!.last.seconds.toStringAsFixed(1)} s. '
-                'Reference distance starts at zero at the beginning of this interval; '
-                'table deltas compare distances within this interval only.',
-            child: const Chip(
-              avatar: CircleAvatar(backgroundColor: Colors.green, radius: 5),
-              label: Text('Reference (dashed)'),
+            message: reference.points == null
+                ? 'No valid overlap with this recording.'
+                : 'Reference coverage: ${reference.points!.first.seconds.toStringAsFixed(1)}–'
+                      '${reference.points!.last.seconds.toStringAsFixed(1)} s. '
+                      'Table deltas compare distances within this interval only.'
+                      '${reference.manual ? " Timing is assumed constant speed, not measured." : ""}',
+            child: FilterChip(
+              avatar: CircleAvatar(
+                backgroundColor: referenceColor(i),
+                radius: 5,
+              ),
+              label: Text(
+                '${reference.label} (${reference.points == null ? "unavailable" : "dashed"})',
+              ),
+              selected: !_hiddenReferences.contains(i),
+              onSelected: (selected) => setState(() {
+                if (selected) {
+                  _hiddenReferences.remove(i);
+                } else {
+                  _hiddenReferences.add(i);
+                }
+              }),
             ),
           ),
       ],
     );
   }
 
-  Widget _buildResultsTable(double? referenceDistance) {
+  Widget _buildResultsTable() {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         dataRowMinHeight: 56,
         dataRowMaxHeight: double.infinity,
-        columns: const [
+        columns: [
           DataColumn(label: Text('Estimator')),
           DataColumn(label: Text('Distance (m)'), numeric: true),
           DataColumn(label: Text('Δ stored (m)'), numeric: true),
-          DataColumn(
-            label: Text('Δ reference (m)'),
-            numeric: true,
-            tooltip:
-                'Distance difference within the shared recording interval only.',
-          ),
-          DataColumn(
-            label: Text('Δ reference (%)'),
-            numeric: true,
-            tooltip:
-                'Percentage difference within the shared recording interval only.',
-          ),
+          for (final reference in _replay.references) ...[
+            DataColumn(
+              label: Text('Δ ${reference.name} (m)'),
+              numeric: true,
+              tooltip:
+                  'Distance difference within the shared recording interval only.',
+            ),
+            DataColumn(label: Text('Δ ${reference.name} (%)'), numeric: true),
+          ],
           DataColumn(label: Text('Additional info')),
         ],
-        rows: [
-          for (var i = 0; i < _results.length; i++)
-            _buildResultRow(i, referenceDistance),
-        ],
+        rows: [for (var i = 0; i < _results.length; i++) _buildResultRow(i)],
       ),
     );
   }
 
-  DataRow _buildResultRow(int i, double? reference) {
+  DataRow _buildResultRow(int i) {
     final result = _results[i];
     final distance = result.distance;
-    final referencePoints = _replay.reference;
-    // Compare equal intervals even if the reference starts late or ends early.
-    final overlapDistance = distance == null || referencePoints == null
-        ? null
-        : interpolateDistance(result.points, referencePoints.last.seconds) -
-              interpolateDistance(result.points, referencePoints.first.seconds);
-    final delta = overlapDistance == null || reference == null
-        ? null
-        : overlapDistance - reference;
     String number(double? value) => value?.toStringAsFixed(2) ?? '—';
     return DataRow(
       cells: [
@@ -169,14 +169,8 @@ class _EstimatorLabState extends State<EstimatorLab> {
             ),
           ),
         ),
-        DataCell(Text(number(delta))),
-        DataCell(
-          Text(
-            number(
-              delta == null || reference == 0 ? null : delta / reference! * 100,
-            ),
-          ),
-        ),
+        for (final reference in _replay.references)
+          ..._referenceCells(result, reference),
         DataCell(
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -193,6 +187,24 @@ class _EstimatorLabState extends State<EstimatorLab> {
     );
   }
 
+  List<DataCell> _referenceCells(
+    ReplayResult result,
+    ReplayReference reference,
+  ) {
+    final points = reference.points;
+    final total = points?.last.meters;
+    final delta = result.distance == null || points == null
+        ? null
+        : interpolateDistance(result.points, points.last.seconds) -
+              interpolateDistance(result.points, points.first.seconds) -
+              total!;
+    final percent = delta == null || total == 0 ? null : delta / total! * 100;
+    return [
+      DataCell(Text(delta?.toStringAsFixed(2) ?? '—')),
+      DataCell(Text(percent?.toStringAsFixed(2) ?? '—')),
+    ];
+  }
+
   Widget _buildChart() {
     final colors = Theme.of(context).colorScheme;
     final curves =
@@ -205,13 +217,14 @@ class _EstimatorLabState extends State<EstimatorLab> {
                 points: _results[i].chartPoints,
                 dashed: false,
               ),
-          if (_replay.reference != null)
-            (
-              name: 'Reference',
-              color: Colors.green,
-              points: _replay.reference!,
-              dashed: true,
-            ),
+          for (final (i, reference) in _replay.references.indexed)
+            if (reference.points != null && !_hiddenReferences.contains(i))
+              (
+                name: reference.label,
+                color: referenceColor(i),
+                points: reference.points!,
+                dashed: true,
+              ),
         ];
     if (curves.isEmpty) {
       return const Center(child: Text('No replay data to display.'));

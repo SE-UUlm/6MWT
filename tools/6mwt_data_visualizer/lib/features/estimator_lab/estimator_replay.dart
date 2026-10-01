@@ -71,7 +71,14 @@ class EstimatorReplay {
     duration = samples.isEmpty
         ? 0
         : samples.last.timestamp.difference(start).inMicroseconds / 1e6;
-    reference = _referenceCurve(session.referenceSession, start, duration);
+    references = [
+      for (var i = 0; i < session.references.length; i++)
+        ReplayReference(
+          session.referenceLabel(i),
+          session.references[i].isManualReference,
+          _referenceCurve(session.references[i], start, duration),
+        ),
+    ];
   }
 
   late final List<app.SensorSample> samples;
@@ -79,7 +86,8 @@ class EstimatorReplay {
   late final double duration;
 
   /// Available overlap with the replay, or null if no valid overlap exists.
-  late final List<DistancePoint>? reference;
+  late final List<ReplayReference> references;
+  List<DistancePoint>? get reference => references.firstOrNull?.points;
 
   /// Runs synchronously using recorded timestamps, without wall-clock delays.
   ReplayResult run(DistanceEstimator estimator) {
@@ -191,4 +199,12 @@ double interpolateDistance(List<DistancePoint> points, double time) {
     }
   }
   return points.last.meters;
+}
+
+class ReplayReference {
+  const ReplayReference(this.name, this.manual, this.points);
+  final String name;
+  final bool manual;
+  final List<DistancePoint>? points;
+  String get label => manual ? '$name (constant speed)' : name;
 }

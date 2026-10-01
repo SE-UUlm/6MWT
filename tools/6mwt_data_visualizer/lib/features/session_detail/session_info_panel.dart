@@ -180,6 +180,7 @@ class _ReferenceComparisonCard extends StatefulWidget {
 
 class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
   bool _trimmed = true;
+  int _referenceIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -214,10 +215,12 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
       );
     }
 
-    final ref = _trimmed
-        ? (widget.session.trimmedReferenceSession ??
-              widget.session.referenceSession!)
-        : widget.session.referenceSession!;
+    final index = _referenceIndex < widget.session.references.length
+        ? _referenceIndex
+        : 0;
+    final ref = (_trimmed
+        ? widget.session.trimmedReferences
+        : widget.session.references)[index];
 
     final deltaDist = widget.session.distance - ref.distance;
     final deltaDistPct = ref.distance > 0
@@ -246,6 +249,21 @@ class _ReferenceComparisonCardState extends State<_ReferenceComparisonCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          DropdownButton<int>(
+            value: index,
+            isExpanded: true,
+            items: [
+              for (var i = 0; i < widget.session.references.length; i++)
+                DropdownMenuItem(
+                  value: i,
+                  child: Text(
+                    widget.session.referenceLabel(i),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+            ],
+            onChanged: (value) => setState(() => _referenceIndex = value!),
+          ),
           Row(
             children: [
               const Icon(

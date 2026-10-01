@@ -38,8 +38,14 @@ class Session {
     required this.profileId,
     required this.samples,
     this.profile,
-    this.referenceSession,
-  });
+    Session? referenceSession,
+    List<Session>? references,
+    this.referenceDirectory,
+    this.referenceName,
+    this.isManualReference = false,
+  }) : references = List.unmodifiable(
+         references ?? (referenceSession == null ? [] : [referenceSession]),
+       );
 
   final String id;
   final String notes;
@@ -50,14 +56,29 @@ class Session {
   final int profileId;
   final List<SensorSample> samples;
   final Profile? profile;
-  final Session? referenceSession;
+  final List<Session> references;
+  final String? referenceDirectory;
+  final String? referenceName;
+  final bool isManualReference;
+
+  /// Compatibility accessor for callers displaying the first reference.
+  Session? get referenceSession => references.firstOrNull;
+
+  String referenceLabel(int index) =>
+      references[index].referenceName ??
+      (index == 0 ? 'Reference' : 'Reference ${index + 1}');
+
+  List<Session> get trimmedReferences => [
+    for (final reference in references)
+      reference.trimToWindow(start: sessionStartUtc, end: sessionEndUtc),
+  ];
 
   // Cached filtered sample lists (lazily computed).
   List<SensorSample>? _positionSamplesCache;
   List<SensorSample>? _stepSamplesCache;
 
-  /// True if a reference recording (reference.json) is attached.
-  bool get hasReference => referenceSession != null;
+  /// True if at least one measured or manual reference is attached.
+  bool get hasReference => references.isNotEmpty;
 
   /// Start time of the session in UTC (based on first GPS timestamp or startedAt).
   DateTime get sessionStartUtc {
@@ -186,13 +207,22 @@ class Session {
       profileId: profileId,
       samples: trimmedSamples,
       profile: profile,
+      referenceName: referenceName,
+      isManualReference: isManualReference,
     );
   }
 
-  Session copyWith({Session? referenceSession, Profile? profile}) {
+  Session copyWith({
+    Session? referenceSession,
+    List<Session>? references,
+    Profile? profile,
+    String? referenceDirectory,
+    String? referenceName,
+    String? notes,
+  }) {
     return Session(
       id: id,
-      notes: notes,
+      notes: notes ?? this.notes,
       startedAt: startedAt,
       duration: duration,
       distance: distance,
@@ -200,7 +230,12 @@ class Session {
       profileId: profileId,
       samples: samples,
       profile: profile ?? this.profile,
-      referenceSession: referenceSession ?? this.referenceSession,
+      references:
+          references ??
+          (referenceSession == null ? this.references : [referenceSession]),
+      referenceDirectory: referenceDirectory ?? this.referenceDirectory,
+      referenceName: referenceName ?? this.referenceName,
+      isManualReference: isManualReference,
     );
   }
 
@@ -268,6 +303,33 @@ class Session {
       profileId: (json['profileId'] as num?)?.toInt() ?? 0,
       samples: samples,
       profile: profile,
+      referenceName: json['referenceName'] as String?,
+      isManualReference: json['referenceKind'] == 'manual',
     );
   }
+
+  Map<String, dynamic> toReferenceJson() => {
+    'id': id,
+    'notes': notes,
+    'startedAt': startedAt.toIso8601String(),
+    'duration': duration,
+    'distance': distance,
+    'phase': phase,
+    'profileId': profileId,
+    if (referenceName != null) 'referenceName': referenceName,
+    if (isManualReference) ...{
+      'referenceKind': 'manual',
+      'timingModel': 'constant_speed',
+    },
+    'samples': [
+      for (final s in samples)
+        {
+          'id': s.id,
+          'timestamp': s.timestamp.toIso8601String(),
+          'type': s.type.wireName,
+          'sourceId': s.sourceId,
+          'values': s.values,
+        },
+    ],
+  };
 }

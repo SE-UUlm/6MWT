@@ -23,8 +23,7 @@ class StepLengthEstimator {
       samples,
     );
 
-    final ref = session.trimmedReferenceSession;
-    if (ref != null) {
+    for (final ref in session.trimmedReferences) {
       _collectWindowedStepLengths(
         ref.positionSamples,
         ref.stepSamples,
