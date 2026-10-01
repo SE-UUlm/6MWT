@@ -119,7 +119,7 @@ class HistoryScreen extends ConsumerWidget {
       }
 
       final export = {
-        'exportedAt': DateTime.now().toIso8601String(),
+        'exportedAt': DateTime.now().toUtc().toIso8601String(),
         'profiles': profiles,
         'sessions': sessions,
       };

@@ -205,7 +205,7 @@ class ResultScreen extends ConsumerWidget {
 
       export['samples'] = samples;
       export['profile'] = profile;
-      export['exportedAt'] = DateTime.now().toIso8601String();
+      export['exportedAt'] = DateTime.now().toUtc().toIso8601String();
 
       final jsonString = const JsonEncoder().convert(export);
 
