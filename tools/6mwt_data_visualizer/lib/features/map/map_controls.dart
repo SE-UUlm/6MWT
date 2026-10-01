@@ -65,8 +65,7 @@ class MapControls extends StatelessWidget {
                 icon: Icon(
                   Icons.track_changes,
                   size: 20,
-                  color:
-                      showRefTrack ? AppColors.referenceOrange : Colors.grey,
+                  color: showRefTrack ? AppColors.referenceOrange : Colors.grey,
                 ),
                 tooltip: showRefTrack
                     ? 'Hide reference track'
@@ -101,8 +100,7 @@ class MapControls extends StatelessWidget {
               icon: Icon(
                 Icons.adjust,
                 size: 20,
-                color:
-                    showAccuracyCircles ? Colors.blue.shade200 : Colors.grey,
+                color: showAccuracyCircles ? Colors.blue.shade200 : Colors.grey,
               ),
               tooltip: showAccuracyCircles
                   ? 'Hide accuracy circles'

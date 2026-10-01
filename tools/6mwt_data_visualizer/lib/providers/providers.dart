@@ -20,6 +20,23 @@ class ExportDataNotifier extends _$ExportDataNotifier {
     state = await AsyncValue.guard(() => SessionLoader.load(path));
   }
 
+  void replaceSession(Session previous, Session updated) {
+    final data = state.asData?.value;
+    if (data == null) return;
+    state = AsyncValue.data(
+      ExportData(
+        exportedAt: data.exportedAt,
+        profiles: data.profiles,
+        sessions: [
+          for (final s in data.sessions) identical(s, previous) ? updated : s,
+        ],
+      ),
+    );
+    if (identical(ref.read(selectedSessionProvider), previous)) {
+      ref.read(selectedSessionProvider.notifier).select(updated);
+    }
+  }
+
   Future<void> pickDirectoryAndLoad() async {
     final path = await SessionLoader.pickDirectory();
     if (path != null) {

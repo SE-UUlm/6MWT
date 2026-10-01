@@ -4,16 +4,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/domain/haversine.dart';
+import '../../core/theme/reference_colors.dart';
 import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
 import '../../core/domain/step_length_estimator.dart';
 
-enum ChartSeriesId {
-  appGps,
-  appSteps,
-  refGps,
-  refSteps,
-}
+enum ChartSeriesId { appGps, appSteps, refGps, refSteps }
 
 class SeriesDescriptor {
   const SeriesDescriptor({
@@ -45,6 +41,7 @@ class SessionChartData {
     required this.medianStepLength,
     required this.maxTimeSeconds,
     required this.maxDistanceMeters,
+    required this.referenceSeries,
   });
 
   factory SessionChartData.fromSession(Session session) {
@@ -60,8 +57,7 @@ class SessionChartData {
 
       for (int i = 0; i < posSamples.length; i++) {
         final s = posSamples[i];
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final lat = s.values[PositionKeys.latitude]!;
         final lon = s.values[PositionKeys.longitude]!;
 
@@ -81,8 +77,9 @@ class SessionChartData {
     }
 
     // 2. Compute median step length
-    final medianStepLength =
-        StepLengthEstimator.computeMedianStepLength(session);
+    final medianStepLength = StepLengthEstimator.computeMedianStepLength(
+      session,
+    );
 
     // 3. App Step Spots (steps x medianStepLength -> meters)
     final appStepSpots = <FlSpot>[];
@@ -92,8 +89,7 @@ class SessionChartData {
       final firstStep =
           stepSamples.first.values[StepKeys.cumulativeSteps] ?? 0.0;
       for (final s in stepSamples) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
+        final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
         final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstStep;
         final steps = math.max(0.0, rawVal - firstStep);
         final distanceMeters = steps * medianStepLength;
@@ -104,70 +100,85 @@ class SessionChartData {
       }
     }
 
-    // 4. Reference GPS Distance Spots
-    final refGpsSpots = <FlSpot>[];
-    final trimmedRef = session.trimmedReferenceSession;
-    if (trimmedRef != null && trimmedRef.positionSamples.isNotEmpty) {
-      final refPos = trimmedRef.positionSamples;
-      final firstRefDist = refPos.first.values[PositionKeys.distance];
+    final referenceSeries = <ReferenceChartSeries>[];
+    for (final (index, reference) in session.trimmedReferences.indexed) {
+      // 4. Reference GPS Distance Spots
+      final refGpsSpots = <FlSpot>[];
+      final trimmedRef = reference;
+      if (trimmedRef.positionSamples.isNotEmpty) {
+        final refPos = trimmedRef.positionSamples;
+        final firstRefDist = refPos.first.values[PositionKeys.distance];
 
-      double cumDist = 0.0;
-      double? prevLat;
-      double? prevLon;
+        double cumDist = 0.0;
+        double? prevLat;
+        double? prevLon;
 
-      for (final s in refPos) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
-        final lat = s.values[PositionKeys.latitude]!;
-        final lon = s.values[PositionKeys.longitude]!;
-        final dVal = s.values[PositionKeys.distance];
+        for (final s in refPos) {
+          final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
+          final lat = s.values[PositionKeys.latitude]!;
+          final lon = s.values[PositionKeys.longitude]!;
+          final dVal = s.values[PositionKeys.distance];
 
-        if (firstRefDist != null && dVal != null) {
-          cumDist = math.max(0.0, dVal - firstRefDist);
-        } else {
-          if (prevLat != null && prevLon != null) {
-            cumDist += haversineDistance(
-              lat1: prevLat,
-              lon1: prevLon,
-              lat2: lat,
-              lon2: lon,
-            );
+          if (firstRefDist != null && dVal != null) {
+            cumDist = math.max(0.0, dVal - firstRefDist);
+          } else {
+            if (prevLat != null && prevLon != null) {
+              cumDist += haversineDistance(
+                lat1: prevLat,
+                lon1: prevLon,
+                lat2: lat,
+                lon2: lon,
+              );
+            }
           }
+          prevLat = lat;
+          prevLon = lon;
+
+          _addOrUpdateSpot(refGpsSpots, math.max(0.0, t), cumDist);
         }
-        prevLat = lat;
-        prevLon = lon;
-
-        _addOrUpdateSpot(refGpsSpots, math.max(0.0, t), cumDist);
       }
-    }
 
-    // 5. Reference Step Spots (steps x same medianStepLength)
-    final refStepSpots = <FlSpot>[];
-    final refRawStepCounts = <FlSpot>[];
-    if (trimmedRef != null && trimmedRef.stepSamples.isNotEmpty) {
-      final refSteps = trimmedRef.stepSamples;
-      final firstRefStep =
-          refSteps.first.values[StepKeys.cumulativeSteps] ?? 0.0;
-      for (final s in refSteps) {
-        final t =
-            s.timestamp.toUtc().difference(startUtc).inMilliseconds / 1000.0;
-        final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstRefStep;
-        final steps = math.max(0.0, rawVal - firstRefStep);
-        final distanceMeters = steps * medianStepLength;
-        final timeX = math.max(0.0, t);
+      // 5. Reference Step Spots (steps x same medianStepLength)
+      final refStepSpots = <FlSpot>[];
+      final refRawStepCounts = <FlSpot>[];
+      if (trimmedRef.stepSamples.isNotEmpty) {
+        final refSteps = trimmedRef.stepSamples;
+        final firstRefStep =
+            refSteps.first.values[StepKeys.cumulativeSteps] ?? 0.0;
+        for (final s in refSteps) {
+          final t = s.timestamp.difference(startUtc).inMilliseconds / 1000.0;
+          final rawVal = s.values[StepKeys.cumulativeSteps] ?? firstRefStep;
+          final steps = math.max(0.0, rawVal - firstRefStep);
+          final distanceMeters = steps * medianStepLength;
+          final timeX = math.max(0.0, t);
 
-        _addOrUpdateSpot(refRawStepCounts, timeX, steps);
-        _addOrUpdateSpot(refStepSpots, timeX, distanceMeters);
+          _addOrUpdateSpot(refRawStepCounts, timeX, steps);
+          _addOrUpdateSpot(refStepSpots, timeX, distanceMeters);
+        }
       }
+
+      referenceSeries.add(
+        ReferenceChartSeries(
+          index: index,
+          name: session.referenceLabel(index),
+          manual: reference.isManualReference,
+          gps: refGpsSpots,
+          steps: refStepSpots,
+          rawSteps: refRawStepCounts,
+        ),
+      );
     }
+    final refGpsSpots = referenceSeries.firstOrNull?.gps ?? <FlSpot>[];
+    final refStepSpots = referenceSeries.firstOrNull?.steps ?? <FlSpot>[];
+    final refRawStepCounts =
+        referenceSeries.firstOrNull?.rawSteps ?? <FlSpot>[];
 
     // Compute max values
     double maxT = session.duration.toDouble();
     for (final list in [
       appGpsSpots,
       appStepSpots,
-      refGpsSpots,
-      refStepSpots,
+      ...referenceSeries.expand((r) => [r.gps, r.steps]),
     ]) {
       if (list.isNotEmpty) {
         maxT = math.max(maxT, list.last.x);
@@ -178,8 +189,7 @@ class SessionChartData {
     for (final list in [
       appGpsSpots,
       appStepSpots,
-      refGpsSpots,
-      refStepSpots,
+      ...referenceSeries.expand((r) => [r.gps, r.steps]),
     ]) {
       for (final spot in list) {
         maxMeters = math.max(maxMeters, spot.y);
@@ -188,6 +198,7 @@ class SessionChartData {
 
     return SessionChartData._(
       session: session,
+      referenceSeries: referenceSeries,
       appGpsSpots: appGpsSpots,
       appStepSpots: appStepSpots,
       appRawStepCounts: appRawStepCounts,
@@ -201,6 +212,7 @@ class SessionChartData {
   }
 
   final Session session;
+  final List<ReferenceChartSeries> referenceSeries;
   final List<FlSpot> appGpsSpots;
   final List<FlSpot> appStepSpots;
   final List<FlSpot> appRawStepCounts;
@@ -211,7 +223,8 @@ class SessionChartData {
   final double maxTimeSeconds;
   final double maxDistanceMeters;
 
-  bool get hasReference => refGpsSpots.isNotEmpty || refStepSpots.isNotEmpty;
+  bool get hasReference =>
+      referenceSeries.any((r) => r.gps.isNotEmpty || r.steps.isNotEmpty);
 
   static const descriptors = {
     ChartSeriesId.appGps: SeriesDescriptor(
@@ -232,7 +245,7 @@ class SessionChartData {
     ),
     ChartSeriesId.refGps: SeriesDescriptor(
       id: ChartSeriesId.refGps,
-      name: 'Reference GPS Distance',
+      name: 'Reference distances',
       shortName: 'Ref GPS',
       color: Color(0xFF4CAF50),
       unit: 'm',
@@ -240,7 +253,7 @@ class SessionChartData {
     ),
     ChartSeriesId.refSteps: SeriesDescriptor(
       id: ChartSeriesId.refSteps,
-      name: 'Reference Steps (m)',
+      name: 'Reference steps (m)',
       shortName: 'Ref Steps',
       color: Color(0xFFAB47BC),
       unit: 'm',
@@ -249,11 +262,11 @@ class SessionChartData {
   };
 
   List<FlSpot> getSpots(ChartSeriesId id) => switch (id) {
-        ChartSeriesId.appGps => appGpsSpots,
-        ChartSeriesId.appSteps => appStepSpots,
-        ChartSeriesId.refGps => refGpsSpots,
-        ChartSeriesId.refSteps => refStepSpots,
-      };
+    ChartSeriesId.appGps => appGpsSpots,
+    ChartSeriesId.appSteps => appStepSpots,
+    ChartSeriesId.refGps => refGpsSpots,
+    ChartSeriesId.refSteps => refStepSpots,
+  };
 
   /// Linearly interpolates the Y value at [timeSeconds] in the given series.
   double? valueAtTime(ChartSeriesId id, double timeSeconds) {
@@ -302,4 +315,28 @@ class SessionChartData {
       list.add(FlSpot(x, y));
     }
   }
+}
+
+class ReferenceChartSeries {
+  const ReferenceChartSeries({
+    required this.index,
+    required this.name,
+    required this.manual,
+    required this.gps,
+    required this.steps,
+    required this.rawSteps,
+  });
+  final int index;
+  final String name;
+  final bool manual;
+  final List<FlSpot> gps;
+  final List<FlSpot> steps;
+  final List<FlSpot> rawSteps;
+  Color get color => referenceColor(index);
+  String get label => manual ? '$name (constant speed)' : name;
+  double? rawStepsAtTime(double time) =>
+      SessionChartData._interpolate(rawSteps, time);
+
+  double? valueAtTime(double time, {bool step = false}) =>
+      SessionChartData._interpolate(step ? steps : gps, time);
 }

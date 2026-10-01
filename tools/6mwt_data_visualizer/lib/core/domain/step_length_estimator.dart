@@ -23,8 +23,7 @@ class StepLengthEstimator {
       samples,
     );
 
-    final ref = session.trimmedReferenceSession;
-    if (ref != null) {
+    for (final ref in session.trimmedReferences) {
       _collectWindowedStepLengths(
         ref.positionSamples,
         ref.stepSamples,
@@ -67,8 +66,7 @@ class StepLengthEstimator {
     final firstDist = posList.first.values[PositionKeys.distance];
     double cumDist = 0.0;
     for (int i = 0; i < posList.length; i++) {
-      final t =
-          posList[i].timestamp.difference(posT0).inMilliseconds / 1000.0;
+      final t = posList[i].timestamp.difference(posT0).inMilliseconds / 1000.0;
       final dVal = posList[i].values[PositionKeys.distance];
 
       if (firstDist != null && dVal != null) {
@@ -101,16 +99,15 @@ class StepLengthEstimator {
 
     // Build cumulative steps curve
     final stepTimeDist = <({double t, double steps})>[];
-    final firstStep =
-        stepList.first.values[StepKeys.cumulativeSteps] ?? 0.0;
+    final firstStep = stepList.first.values[StepKeys.cumulativeSteps] ?? 0.0;
     for (int i = 0; i < stepList.length; i++) {
       final t =
           stepList[i].timestamp.difference(stepT0).inMilliseconds / 1000.0;
-      final rawVal =
-          stepList[i].values[StepKeys.cumulativeSteps] ?? firstStep;
-      stepTimeDist.add(
-        (t: math.max(0.0, t), steps: math.max(0.0, rawVal - firstStep)),
-      );
+      final rawVal = stepList[i].values[StepKeys.cumulativeSteps] ?? firstStep;
+      stepTimeDist.add((
+        t: math.max(0.0, t),
+        steps: math.max(0.0, rawVal - firstStep),
+      ));
     }
 
     double getStepCountAt(double t) {
@@ -128,17 +125,18 @@ class StepLengthEstimator {
       return stepTimeDist.last.steps;
     }
 
-    final maxT =
-        math.min(gpsTimeDist.last.t, stepTimeDist.last.t).toInt();
+    final maxT = math.min(gpsTimeDist.last.t, stepTimeDist.last.t).toInt();
 
-    for (int wStart = 0;
-        wStart < maxT - windowSeconds;
-        wStart += strideSeconds) {
+    for (
+      int wStart = 0;
+      wStart < maxT - windowSeconds;
+      wStart += strideSeconds
+    ) {
       final wEnd = wStart + windowSeconds;
       final dGps =
           getGpsDistAt(wEnd.toDouble()) - getGpsDistAt(wStart.toDouble());
-      final dSteps = getStepCountAt(wEnd.toDouble()) -
-          getStepCountAt(wStart.toDouble());
+      final dSteps =
+          getStepCountAt(wEnd.toDouble()) - getStepCountAt(wStart.toDouble());
 
       if (dGps > 0 && dSteps > 1.5) {
         final stepLen = dGps / dSteps;

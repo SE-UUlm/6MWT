@@ -47,7 +47,7 @@ class PedometerSource implements SensorSource {
         _stepCountSubscription = Pedometer.stepCountStream.listen(
           (stepCount) => _controller.add(
             SensorSample(
-              timestamp: stepCount.timeStamp,
+              timestamp: stepCount.timeStamp.toUtc(),
               sourceId: sourceId,
               type: SampleType.steps,
               values: {StepKeys.cumulativeSteps: stepCount.steps.toDouble()},
@@ -61,7 +61,7 @@ class PedometerSource implements SensorSource {
         _pedestrianStatusSubscription = Pedometer.pedestrianStatusStream.listen(
           (pedestrianStatus) => _controller.add(
             SensorSample(
-              timestamp: pedestrianStatus.timeStamp,
+              timestamp: pedestrianStatus.timeStamp.toUtc(),
               sourceId: sourceId,
               type: SampleType.steps,
               values: {

@@ -5,7 +5,8 @@ import 'package:six_mwt_visualizer/features/chart/session_chart_data.dart';
 
 void main() {
   test('Calculates chart series data for session without reference', () async {
-    const filePath = '../../data/Basauri (fehlende Uhraufzeichnung)/session.json';
+    const filePath =
+        '../../data/Basauri (fehlende Uhraufzeichnung)/session.json';
     if (!File(filePath).existsSync()) return;
 
     final data = await SessionLoader.load(filePath);
@@ -33,7 +34,10 @@ void main() {
     // Steps curve is converted to meters via medianStepLength
     final lastStepMeters = chartData.appStepSpots.last.y;
     final lastRawSteps = chartData.appRawStepCounts.last.y;
-    expect(lastStepMeters, closeTo(lastRawSteps * chartData.medianStepLength, 0.001));
+    expect(
+      lastStepMeters,
+      closeTo(lastRawSteps * chartData.medianStepLength, 0.001),
+    );
 
     // Raw step lookup
     final lastRawLookup = chartData.rawStepsAtTime(
@@ -78,34 +82,43 @@ void main() {
     expect(midRefSteps!, greaterThan(0.0));
 
     // Raw step lookup for both App and Reference
-    final rawAppSteps = chartData.rawStepsAtTime(ChartSeriesId.appSteps, midTime);
-    final rawRefSteps = chartData.rawStepsAtTime(ChartSeriesId.refSteps, midTime);
+    final rawAppSteps = chartData.rawStepsAtTime(
+      ChartSeriesId.appSteps,
+      midTime,
+    );
+    final rawRefSteps = chartData.rawStepsAtTime(
+      ChartSeriesId.refSteps,
+      midTime,
+    );
     expect(rawAppSteps, isNotNull);
     expect(rawAppSteps!, greaterThan(0.0));
     expect(rawRefSteps, isNotNull);
     expect(rawRefSteps!, greaterThan(0.0));
   });
 
-  test('Calculates realistic step length (~90 cm) for Gasteiz sessions', () async {
-    for (final name in ['Gasteiz 1', 'Gasteiz 2']) {
-      final filePath = '../../data/$name/session.json';
-      if (!File(filePath).existsSync()) continue;
+  test(
+    'Calculates realistic step length (~90 cm) for Gasteiz sessions',
+    () async {
+      for (final name in ['Gasteiz 1', 'Gasteiz 2']) {
+        final filePath = '../../data/$name/session.json';
+        if (!File(filePath).existsSync()) continue;
 
-      final data = await SessionLoader.load(filePath);
-      final session = data.sessions.first;
-      final chartData = SessionChartData.fromSession(session);
+        final data = await SessionLoader.load(filePath);
+        final session = data.sessions.first;
+        final chartData = SessionChartData.fromSession(session);
 
-      // Gasteiz step length should be ~0.91m (~91 cm), not over 1.0m
-      expect(
-        chartData.medianStepLength,
-        greaterThanOrEqualTo(0.88),
-        reason: '$name step length too small: ${chartData.medianStepLength}',
-      );
-      expect(
-        chartData.medianStepLength,
-        lessThanOrEqualTo(0.95),
-        reason: '$name step length too large: ${chartData.medianStepLength}',
-      );
-    }
-  });
+        // Gasteiz step length should be ~0.91m (~91 cm), not over 1.0m
+        expect(
+          chartData.medianStepLength,
+          greaterThanOrEqualTo(0.88),
+          reason: '$name step length too small: ${chartData.medianStepLength}',
+        );
+        expect(
+          chartData.medianStepLength,
+          lessThanOrEqualTo(0.95),
+          reason: '$name step length too large: ${chartData.medianStepLength}',
+        );
+      }
+    },
+  );
 }

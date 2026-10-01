@@ -27,8 +27,8 @@ class SessionLoader {
 
   /// Loads all sessions from the given [dataDirPath].
   ///
-  /// Scans for subdirectories containing `session.json`. If a `reference.json`
-  /// is also found in the same subfolder, it is attached as [Session.referenceSession].
+  /// Scans for subdirectories containing `session.json`, attaching
+  /// `reference.json`, `reference_*.json` and `references/*.json`.
   /// Also handles direct session folders or legacy export files.
   static Future<ExportData> loadFromDataDirectory(String dataDirPath) async {
     final dir = Directory(dataDirPath);
@@ -89,7 +89,7 @@ class SessionLoader {
     );
   }
 
-  /// Loads a session and optional reference.json from a session directory.
+  /// Loads a session and all reference recordings from a session directory.
   static Future<Session?> _loadSessionFolder(Directory folder) async {
     final sessionFile = File('${folder.path}/session.json');
     if (!await sessionFile.exists()) {
@@ -101,38 +101,13 @@ class SessionLoader {
       final sessionJson = jsonDecode(sessionContent) as Map<String, dynamic>;
       var session = Session.fromJson(sessionJson);
 
-      // Check for reference.json in the same folder
-      final refFile = File('${folder.path}/reference.json');
-      if (await refFile.exists()) {
-        try {
-          final refContent = await refFile.readAsString();
-          final refJson = jsonDecode(refContent) as Map<String, dynamic>;
-          final refSession = Session.fromJson(refJson);
-          session = session.copyWith(referenceSession: refSession);
-        } catch (e) {
-          debugPrint('Error parsing reference.json in ${folder.path}: $e');
-        }
-      }
-
-      // If notes is empty, fallback to folder name
-      if (session.notes.isEmpty) {
-        final folderName = folder.uri.pathSegments
-            .where((s) => s.isNotEmpty)
-            .lastOrNull ??
-            'Session';
-        session = Session(
-          id: session.id,
-          notes: folderName,
-          startedAt: session.startedAt,
-          duration: session.duration,
-          distance: session.distance,
-          phase: session.phase,
-          profileId: session.profileId,
-          samples: session.samples,
-          profile: session.profile,
-          referenceSession: session.referenceSession,
-        );
-      }
+      session = session.copyWith(
+        referenceDirectory: '${folder.path}/references',
+        references: await _loadReferences(folder, includeLegacy: true),
+        notes: session.notes.isEmpty
+            ? folder.uri.pathSegments.where((s) => s.isNotEmpty).last
+            : session.notes,
+      );
 
       return session;
     } catch (e) {
@@ -144,7 +119,7 @@ class SessionLoader {
   static Future<ExportData> _loadLegacyExportFile(File file) async {
     final content = await file.readAsString();
     final json = jsonDecode(content) as Map<String, dynamic>;
-    return ExportData.fromJson(json);
+    return _attachFileReferences(ExportData.fromJson(json), file);
   }
 
   /// Opens a system directory-picker dialog and returns the chosen directory path.
@@ -201,7 +176,99 @@ class SessionLoader {
     // Default file parse
     final content = await file.readAsString();
     final json = await compute(_parseJson, content);
-    return ExportData.fromJson(json);
+    return _attachFileReferences(ExportData.fromJson(json), file);
+  }
+
+  static Future<List<Session>> _loadReferences(
+    Directory directory, {
+    bool includeLegacy = false,
+  }) async {
+    final files = <File>[];
+    if (await directory.exists()) {
+      await for (final entry in directory.list()) {
+        if (entry is! File) continue;
+        final name = entry.uri.pathSegments.last;
+        if (includeLegacy
+            ? name == 'reference.json' ||
+                  (name.startsWith('reference_') && name.endsWith('.json'))
+            : name.endsWith('.json')) {
+          files.add(entry);
+        }
+      }
+    }
+    files.sort((a, b) => a.path.compareTo(b.path));
+    final references = <Session>[];
+    for (final file in files) {
+      try {
+        var reference = Session.fromJson(
+          jsonDecode(await file.readAsString()) as Map<String, dynamic>,
+        );
+        final name = file.uri.pathSegments.last;
+        if (reference.referenceName == null && name != 'reference.json') {
+          reference = reference.copyWith(
+            referenceName: name.substring(0, name.length - 5),
+          );
+        }
+        references.add(reference);
+      } catch (error) {
+        debugPrint('Error loading reference ${file.path}: $error');
+      }
+    }
+    if (includeLegacy) {
+      references.addAll(
+        await _loadReferences(Directory('${directory.path}/references')),
+      );
+    }
+    return references;
+  }
+
+  static Future<ExportData> _attachFileReferences(
+    ExportData data,
+    File file,
+  ) async {
+    final sessions = <Session>[];
+    for (final session in data.sessions) {
+      final key = base64Url.encode(utf8.encode(session.id));
+      final directory = Directory('${file.path}.references/$key');
+      sessions.add(
+        session.copyWith(
+          referenceDirectory: directory.path,
+          references: await _loadReferences(directory),
+        ),
+      );
+    }
+    return ExportData(
+      exportedAt: data.exportedAt,
+      profiles: data.profiles,
+      sessions: sessions,
+    );
+  }
+
+  /// Writes only a new sidecar file; existing recordings are never rewritten.
+  static Future<Session> saveReference(
+    Session session,
+    Session reference,
+  ) async {
+    final path = session.referenceDirectory;
+    if (path == null) {
+      throw StateError('Load a session from disk before saving.');
+    }
+    final directory = await Directory(path).create(recursive: true);
+    final staging = await directory.createTemp('.draft-');
+    try {
+      final file = File('${staging.path}/reference.json');
+      await file.writeAsString(
+        const JsonEncoder.withIndent('  ').convert(reference.toReferenceJson()),
+        flush: true,
+      );
+      final suffix = staging.uri.pathSegments.where((s) => s.isNotEmpty).last;
+      await file.rename(
+        '$path/reference_${DateTime.now().microsecondsSinceEpoch}_$suffix.json',
+      );
+    } finally {
+      await staging.delete(recursive: true);
+    }
+    return session.copyWith(references: [...session.references, reference]);
   }
 
   static Map<String, dynamic> _parseJson(String content) {

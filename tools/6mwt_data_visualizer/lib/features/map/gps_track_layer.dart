@@ -39,27 +39,27 @@ class GpsTrackLayer extends StatelessWidget {
     // Filter accuracy circles to points that actually have accuracy > 0
     final accuracyCircles = showAccuracyCircles
         ? session.positionSamples
-            .where((s) => (s.values[PositionKeys.accuracy] ?? 0) > 0)
-            .map((s) {
-            final lat = s.values[PositionKeys.latitude]!;
-            final lon = s.values[PositionKeys.longitude]!;
-            final accuracy = s.values[PositionKeys.accuracy]!;
-            return CircleMarker(
-              point: LatLng(lat, lon),
-              radius: accuracy,
-              useRadiusInMeter: true,
-              color: trackColor.withValues(alpha: 0.06),
-              borderColor: trackColor.withValues(alpha: 0.20),
-              borderStrokeWidth: 0.5,
-            );
-          }).toList()
+              .where((s) => (s.values[PositionKeys.accuracy] ?? 0) > 0)
+              .map((s) {
+                final lat = s.values[PositionKeys.latitude]!;
+                final lon = s.values[PositionKeys.longitude]!;
+                final accuracy = s.values[PositionKeys.accuracy]!;
+                return CircleMarker(
+                  point: LatLng(lat, lon),
+                  radius: accuracy,
+                  useRadiusInMeter: true,
+                  color: trackColor.withValues(alpha: 0.06),
+                  borderColor: trackColor.withValues(alpha: 0.20),
+                  borderStrokeWidth: 0.5,
+                );
+              })
+              .toList()
         : const <CircleMarker>[];
 
     return Stack(
       children: [
         // Accuracy circles for each GPS point
-        if (accuracyCircles.isNotEmpty)
-          CircleLayer(circles: accuracyCircles),
+        if (accuracyCircles.isNotEmpty) CircleLayer(circles: accuracyCircles),
 
         // GPS track polyline
         PolylineLayer(
