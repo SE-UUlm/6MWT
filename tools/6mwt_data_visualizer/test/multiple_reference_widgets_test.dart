@@ -86,6 +86,28 @@ void main() {
       expect(bars[count + 1].color, referenceColor(1));
       final table = tester.widget<DataTable>(find.byType(DataTable));
       expect(table.columns, hasLength(8));
+      expect(table.rows, hasLength(count + 2));
+      final watchRow = table.rows[count];
+      final manualRow = table.rows[count + 1];
+      expect(find.text('Reference: Watch'), findsOneWidget);
+      expect(
+        find.text('Reference: Drawn route (constant speed)'),
+        findsOneWidget,
+      );
+      expect((watchRow.cells[1].child as Text).data, '80.00');
+      expect(
+        (manualRow.cells[1].child as Text).data,
+        manual.distance.toStringAsFixed(2),
+      );
+      expect(
+        ((watchRow.cells.first.child as Row).children.first as Icon).color,
+        referenceColor(0),
+      );
+      expect(
+        ((manualRow.cells.first.child as Row).children.first as Icon).color,
+        referenceColor(1),
+      );
+      expect((watchRow.cells.last.child as Text).data, contains('5.0–25.0 s'));
       final fullDistance = bars.first.spots.last.y;
       final cells = table.rows.first.cells;
       expect(
@@ -111,6 +133,7 @@ void main() {
         tester.widget<LineChart>(find.byType(LineChart)).data.lineBarsData,
         hasLength(count + 1),
       );
+      expect(find.text('Reference: Watch'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

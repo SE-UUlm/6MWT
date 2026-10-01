@@ -124,7 +124,7 @@ class _EstimatorLabState extends State<EstimatorLab> {
         dataRowMinHeight: 56,
         dataRowMaxHeight: double.infinity,
         columns: [
-          DataColumn(label: Text('Estimator')),
+          DataColumn(label: Text('Estimator / Reference')),
           DataColumn(label: Text('Distance (m)'), numeric: true),
           DataColumn(label: Text('Δ stored (m)'), numeric: true),
           for (final reference in _replay.references) ...[
@@ -138,8 +138,47 @@ class _EstimatorLabState extends State<EstimatorLab> {
           ],
           DataColumn(label: Text('Additional info')),
         ],
-        rows: [for (var i = 0; i < _results.length; i++) _buildResultRow(i)],
+        rows: [
+          for (var i = 0; i < _results.length; i++) _buildResultRow(i),
+          for (var i = 0; i < _replay.references.length; i++)
+            _buildReferenceRow(i),
+        ],
       ),
+    );
+  }
+
+  DataRow _buildReferenceRow(int i) {
+    final reference = _replay.references[i];
+    final points = reference.points;
+    return DataRow(
+      cells: [
+        DataCell(
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.circle, size: 10, color: referenceColor(i)),
+              const SizedBox(width: 8),
+              Text('Reference: ${reference.label}'),
+            ],
+          ),
+        ),
+        DataCell(Text(points?.last.meters.toStringAsFixed(2) ?? '—')),
+        // Reference rows show the comparison baseline, not estimator errors.
+        for (
+          var column = 0;
+          column < 1 + 2 * _replay.references.length;
+          column++
+        )
+          const DataCell(Text('—')),
+        DataCell(
+          Text(
+            points == null
+                ? 'No valid overlap with this recording.'
+                : 'Reference coverage: ${points.first.seconds.toStringAsFixed(1)}–'
+                      '${points.last.seconds.toStringAsFixed(1)} s',
+          ),
+        ),
+      ],
     );
   }
 
