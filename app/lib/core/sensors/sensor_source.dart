@@ -14,6 +14,10 @@ abstract class SensorSource {
   Future<void> start();
 
   Future<void> stop();
+
+  // Sources may override this to provide measurements captured during warm-up
+  // or queried when a walk starts.
+  Future<List<SensorSample>> getInitialSamples() async => const [];
 }
 
 class SensorUnavailableException implements Exception {

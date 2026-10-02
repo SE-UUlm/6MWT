@@ -13,7 +13,7 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.
 // Test doubles (same as walk_session_test.dart)
 // ---------------------------------------------------------------------------
 
-class FakeSensorSource implements SensorSource {
+class FakeSensorSource extends SensorSource {
   final StreamController<SensorSample> controller =
       StreamController<SensorSample>.broadcast();
 

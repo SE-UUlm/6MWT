@@ -20,6 +20,8 @@ class PedometerSource implements SensorSource {
 
   StreamSubscription<StepCount>? _stepCountSubscription;
   StreamSubscription<PedestrianStatus>? _pedestrianStatusSubscription;
+  SensorSample? _latestStepCountSample;
+  SensorSample? _latestPedestrianStatusSample;
 
   @override
   String get sourceId => id;
@@ -29,6 +31,9 @@ class PedometerSource implements SensorSource {
 
   @override
   Future<void> start() async {
+    _latestStepCountSample = null;
+    _latestPedestrianStatusSample = null;
+
     Permission permission = Platform.isIOS
         ? Permission.sensors
         : Permission.activityRecognition; // Android
@@ -45,22 +50,24 @@ class PedometerSource implements SensorSource {
       // Not sure why this is needed but otherwise errors from the Pedometer streams are unhandled exceptions, even though they have working onError handlers
       () {
         _stepCountSubscription = Pedometer.stepCountStream.listen(
-          (stepCount) => _controller.add(
-            SensorSample(
+          (stepCount) {
+            final sample = SensorSample(
               timestamp: stepCount.timeStamp.toUtc(),
               sourceId: sourceId,
               type: SampleType.steps,
               values: {StepKeys.cumulativeSteps: stepCount.steps.toDouble()},
-            ),
-          ),
+            );
+            _latestStepCountSample = sample;
+            _controller.add(sample);
+          },
           onError: (err) {
             _controller.addError(err);
           },
         );
 
         _pedestrianStatusSubscription = Pedometer.pedestrianStatusStream.listen(
-          (pedestrianStatus) => _controller.add(
-            SensorSample(
+          (pedestrianStatus) {
+            final sample = SensorSample(
               timestamp: pedestrianStatus.timeStamp.toUtc(),
               sourceId: sourceId,
               type: SampleType.steps,
@@ -69,8 +76,10 @@ class PedometerSource implements SensorSource {
                     ? 1 // walking
                     : 0, // stopped
               },
-            ),
-          ),
+            );
+            _latestPedestrianStatusSample = sample;
+            _controller.add(sample);
+          },
           onError: _controller.addError,
         );
       },
@@ -92,5 +101,10 @@ class PedometerSource implements SensorSource {
 
     await _pedestrianStatusSubscription?.cancel();
     _pedestrianStatusSubscription = null;
+  }
+
+  @override
+  Future<List<SensorSample>> getInitialSamples() async {
+    return [?_latestPedestrianStatusSample, ?_latestStepCountSample];
   }
 }

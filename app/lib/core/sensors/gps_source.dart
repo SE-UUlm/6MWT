@@ -46,6 +46,12 @@ class GpsSource implements SensorSource {
     _subscription = null;
   }
 
+  @override
+  Future<List<SensorSample>> getInitialSamples() async {
+    final position = await _locationService.getCurrentPosition();
+    return [_toSample(position)];
+  }
+
   SensorSample _toSample(Position position) {
     return SensorSample(
       timestamp: position.timestamp.toUtc(),

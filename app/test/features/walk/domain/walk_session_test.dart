@@ -10,7 +10,7 @@ import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
-class FakeSensorSource implements SensorSource {
+class FakeSensorSource extends SensorSource {
   FakeSensorSource({this.available = true});
 
   final bool available;
@@ -19,6 +19,7 @@ class FakeSensorSource implements SensorSource {
 
   bool started = false;
   bool stopped = false;
+  int startCalls = 0;
 
   @override
   String get sourceId => 'fake';
@@ -28,6 +29,7 @@ class FakeSensorSource implements SensorSource {
 
   @override
   Future<void> start() async {
+    startCalls++;
     if (!available) {
       throw const SensorUnavailableException('sensor unavailable');
     }
@@ -37,6 +39,19 @@ class FakeSensorSource implements SensorSource {
   @override
   Future<void> stop() async {
     stopped = true;
+  }
+}
+
+class InitialSampleFakeSensorSource extends FakeSensorSource {
+  InitialSampleFakeSensorSource(this.initialSamples);
+
+  final List<SensorSample> initialSamples;
+  int initialSampleCalls = 0;
+
+  @override
+  Future<List<SensorSample>> getInitialSamples() async {
+    initialSampleCalls++;
+    return initialSamples;
   }
 }
 
@@ -97,6 +112,107 @@ void main() {
 
       expect(session.state.phase, WalkPhase.idle);
       expect(session.state.errorMessage, 'sensor unavailable');
+    });
+  });
+
+  test('warms up sensors without starting or recording a test', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+      async.flushMicrotasks();
+
+      expect(source.started, isTrue);
+      expect(session.state.phase, WalkPhase.idle);
+      expect(session.state.sessionId, isNull);
+      expect(sink.recorded, isEmpty);
+      expect(session.state.lastSamples, isEmpty);
+    });
+  });
+
+  test('uses warmed-up sensors when the test starts', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.start();
+      async.flushMicrotasks();
+
+      expect(session.state.phase, WalkPhase.running);
+      expect(source.startCalls, 1);
+    });
+  });
+
+  test('records initial samples when a warmed-up test starts', () {
+    fakeAsync((async) {
+      final initialPosition = createPositionSample(
+        latitude: 48.422,
+        longitude: 9.956,
+      );
+      final initialSteps = SensorSample(
+        timestamp: DateTime.now(),
+        sourceId: 'fake',
+        type: SampleType.steps,
+        values: const {StepKeys.cumulativeSteps: 1000},
+      );
+      final source = InitialSampleFakeSensorSource([
+        initialPosition,
+        initialSteps,
+      ]);
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.start();
+      async.flushMicrotasks();
+
+      expect(source.startCalls, 1);
+      expect(source.initialSampleCalls, 1);
+      expect(sink.recorded.map((entry) => entry.$2), [
+        same(initialPosition),
+        same(initialSteps),
+      ]);
+      expect(
+        session.state.lastSamples[SampleType.position],
+        same(initialPosition),
+      );
+      expect(session.state.lastSamples[SampleType.steps], same(initialSteps));
+      expect(session.state.distance, 0);
+    });
+  });
+
+  test('stops sensors when warm-up is no longer needed', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.stopWarmUp();
+      async.flushMicrotasks();
+
+      expect(source.stopped, isTrue);
     });
   });
 

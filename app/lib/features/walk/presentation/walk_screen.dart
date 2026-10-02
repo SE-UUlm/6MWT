@@ -21,6 +21,7 @@ class WalkScreen extends ConsumerStatefulWidget {
 
 class _WalkScreenState extends ConsumerState<WalkScreen> {
   Profile? _profile;
+  late final WalkSession _session;
 
   double _stopSliderValue = 0.0;
 
@@ -31,13 +32,16 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   @override
   void initState() {
     super.initState();
+    _session = ref.read(walkSessionProvider);
     _loadProfile();
+    _session.warmUp();
   }
 
   @override
-  void dispose() {
-    _pageController.dispose();
+  void dispose() async {
     super.dispose();
+    await _session.stopWarmUp();
+    _pageController.dispose();
   }
 
   Future<void> _loadProfile() async {
@@ -148,32 +152,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
             },
             onHorizontalDragEnd: (_) async {
               if (_stopSliderValue >= 0.9) {
-                final session = ref.read(walkSessionProvider);
-
-                await session.abort();
-
-                final sessionRow = createWalkSessionRow(session, session.state);
-                final profile = _profile;
-
                 if (!mounted || !context.mounted) return;
 
-                if (sessionRow == null || profile == null) {
-                  setState(() {
-                    _stopSliderValue = 0.0;
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Result could not be loaded')),
-                  );
-                  return;
-                }
+                await _session.abort();
 
-                context.pushReplacement(
-                  '/result',
-                  extra: WalkSessionWithProfile(
-                    session: sessionRow,
-                    profile: profile,
-                  ),
-                );
+                _endSession();
               } else {
                 setState(() {
                   _stopSliderValue = 0.0;
@@ -239,9 +222,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       // 6 Minuten vollständig gelaufen
       if (state.phase == WalkPhase.finished && !_resultNavigationTriggered) {
         _resultNavigationTriggered = true;
-
-        context.push('/result', extra: widget.profileId);
-        session.reset();
+        _endSession();
       }
     });
 
@@ -254,6 +235,30 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         _buildSimpleView(state, session),
         _buildDetailedView(state, session),
       ],
+    );
+  }
+
+  Future<void> _endSession() async {
+    final sessionRow = createWalkSessionRow(_session, _session.state);
+    final profile = _profile;
+
+    if (sessionRow == null || profile == null) {
+      setState(() {
+        _stopSliderValue = 0.0;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Result could not be loaded')),
+      );
+      return;
+    }
+
+    await _session.reset();
+
+    if (!mounted) return;
+
+    context.pushReplacement(
+      '/result',
+      extra: WalkSessionWithProfile(session: sessionRow, profile: profile),
     );
   }
 
@@ -465,7 +470,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                       height: 60,
                       child: ElevatedButton(
                         onPressed: () async {
-                          await session.reset();
                           await session.start();
                         },
                         style: ElevatedButton.styleFrom(

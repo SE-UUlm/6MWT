@@ -85,6 +85,7 @@ class WalkSession {
   final List<StreamSubscription<SensorSample>> _sampleSubscriptions = [];
   final List<SensorSource> _activeSources = [];
   Timer? _ticker;
+  Future<void>? _warmUpFuture;
 
   int? profileId;
 
@@ -96,7 +97,67 @@ class WalkSession {
     yield* _stateController.stream;
   }
 
+  /// Starts the sensors before a test begins so that, in particular, GPS has
+  /// time to acquire an accurate position. Warm-up samples are deliberately
+  /// not observed or persisted; recording starts only with [start].
+  Future<void> warmUp() {
+    if (_state.isRunning || _warmUpFuture != null) {
+      return _warmUpFuture ?? Future.value();
+    }
+
+    _log.i("Warming up sensors");
+
+    final future = _warmUp();
+    _warmUpFuture = future;
+    future.whenComplete(() {
+      if (identical(_warmUpFuture, future)) {
+        _warmUpFuture = null;
+      }
+    });
+    return future;
+  }
+
+  Future<void> _warmUp() async {
+    try {
+      await _startSources();
+    } on Exception catch (exception) {
+      await _stopSources();
+      _emit(
+        WalkSessionState(
+          phase: WalkPhase.idle,
+          remainingTime: walkDuration,
+          errorMessage: exception.toString(),
+        ),
+      );
+    }
+  }
+
+  /// Stops sensors that are only active for warm-up. A running test remains
+  /// active when its screen is replaced or temporarily covered.
+  Future<void> stopWarmUp() async {
+    if (_state.isRunning) {
+      return;
+    }
+
+    _log.i("Stopping warm up");
+
+    final warmUpFuture = _warmUpFuture;
+    if (warmUpFuture != null) {
+      await warmUpFuture;
+    }
+    await _stopSources();
+  }
+
   Future<void> start() async {
+    if (_state.isRunning) {
+      return;
+    }
+
+    final warmUpFuture = _warmUpFuture;
+    if (warmUpFuture != null) {
+      await warmUpFuture;
+    }
+
     if (_state.isRunning) {
       return;
     }
@@ -115,17 +176,8 @@ class WalkSession {
       ),
     );
 
-    for (final source in [..._sources, ..._optionalSources]) {
-      _sampleSubscriptions.add(
-        source.samples.listen(_onSample, onError: _onSampleError),
-      );
-    }
-
     try {
-      for (final source in _sources) {
-        await source.start();
-        _activeSources.add(source);
-      }
+      await _startSources();
     } on Exception catch (exception) {
       await _stopTracking();
 
@@ -139,18 +191,19 @@ class WalkSession {
       return;
     }
 
-    for (final source in _optionalSources) {
-      try {
-        await source.start();
-        _activeSources.add(source);
-      } on Exception catch (e) {
-        _log.w('Cannot start optional source ${source.sourceId}', error: e);
-        // Optional sources may be missing (no wearable, no permission,
-        // unsupported platform) — the walk test itself is unaffected.
-      }
+    _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
+    await _recordInitialSamples();
+
+    // The session may have been aborted while an initial sample was awaited.
+    if (!_state.isRunning || _state.sessionId != sessionId) {
+      return;
     }
 
-    _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
+    for (final source in [..._sources, ..._optionalSources]) {
+      _sampleSubscriptions.add(
+        source.samples.listen(_onSample, onError: _onSampleError),
+      );
+    }
   }
 
   Future<void> abort() async {
@@ -173,7 +226,11 @@ class WalkSession {
   }
 
   Future<void> reset() async {
-    await _stopTracking();
+    if (_state.isRunning ||
+        _activeSources.isNotEmpty ||
+        _sampleSubscriptions.isNotEmpty) {
+      await _stopTracking();
+    }
     _distanceEstimator.reset();
 
     _emit(WalkSessionState(phase: WalkPhase.idle, remainingTime: walkDuration));
@@ -188,7 +245,7 @@ class WalkSession {
     final remaining = _state.remainingTime - const Duration(seconds: 1);
 
     if (remaining <= Duration.zero) {
-      _finish();
+      unawaited(_finish());
       return;
     }
 
@@ -241,8 +298,8 @@ class WalkSession {
     );
   }
 
-  void _finish() {
-    unawaited(_stopTracking());
+  Future<void> _finish() async {
+    await _stopTracking();
 
     _emit(
       WalkSessionState(
@@ -268,16 +325,71 @@ class WalkSession {
     }
     _sampleSubscriptions.clear();
 
-    for (final source in _activeSources) {
+    await _stopSources();
+
+    await _sampleSink?.flush();
+  }
+
+  Future<void> _startSources() async {
+    for (final source in _sources) {
+      if (_activeSources.contains(source)) {
+        continue;
+      }
+
+      await source.start();
+      _activeSources.add(source);
+    }
+
+    for (final source in _optionalSources) {
+      if (_activeSources.contains(source)) {
+        continue;
+      }
+
+      try {
+        await source.start();
+        _activeSources.add(source);
+      } on Exception catch (e) {
+        _log.w('Cannot start optional source ${source.sourceId}', error: e);
+        // Optional sources may be missing (no wearable, no permission,
+        // unsupported platform) — the walk test itself is unaffected.
+      }
+    }
+  }
+
+  Future<void> _recordInitialSamples() async {
+    // A snapshot keeps iteration stable if the session is aborted while an
+    // individual sensor request is awaiting its result.
+    final activeSources = List<SensorSource>.of(_activeSources);
+    for (final source in activeSources) {
+      try {
+        final initialSamples = await source.getInitialSamples();
+        for (final sample in initialSamples) {
+          _onSample(sample);
+        }
+      } on Exception catch (exception) {
+        // The live stream remains authoritative. Failure to obtain this extra
+        // initial value must not abort an otherwise running walk test.
+        _log.w(
+          'Cannot get initial samples from ${source.sourceId}',
+          error: exception,
+        );
+      }
+    }
+  }
+
+  Future<void> _stopSources() async {
+    // Take ownership of the current sources before awaiting their asynchronous
+    // stop calls. A second stop request then sees an empty list and is a no-op.
+    final sourcesToStop = List<SensorSource>.of(_activeSources);
+    _activeSources.clear();
+
+    for (final source in sourcesToStop) {
       try {
         await source.stop();
       } on Exception {
         // Stopping one source must not prevent stopping the others.
       }
     }
-    _activeSources.clear();
-
-    await _sampleSink?.flush();
   }
 
   void _emit(WalkSessionState newState) {
