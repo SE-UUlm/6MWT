@@ -23,6 +23,9 @@ class ResultScreen extends ConsumerWidget {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
+  static const maxValue = 140;
+  static const labelCount = 7;
+
   // ===========================================================================
   // FORMAT DURATION
   // ===========================================================================
@@ -39,15 +42,14 @@ class ResultScreen extends ConsumerWidget {
   // ===========================================================================
 
   Widget _buildPerformanceBar(double percentage) {
-    final progress = (percentage / 100).clamp(0.0, 1.0);
-
     return Column(
       children: [
         SizedBox(
           height: 24,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final position = constraints.maxWidth * progress;
+              final progress = percentage.clamp(0, maxValue);
+              final position = constraints.maxWidth * progress / maxValue;
 
               return Stack(
                 clipBehavior: Clip.none,
@@ -61,12 +63,19 @@ class ResultScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                         gradient: const LinearGradient(
                           colors: [
-                            Color(0xFFE53935),
-                            Color(0xFFFFC857),
-                            Color(0xFF2196F3),
-                            Color(0xFF4CAF50),
+                            Color(0xFFf94144),
+                            Color(0xFFf8961e),
+                            Color(0xFF90be6d),
+                            Color(0xFF43aa8b),
+                            Color(0xFF577590),
                           ],
-                          stops: [0.0, 0.30, 0.55, 1.0],
+                          stops: [
+                            0.0 / maxValue,
+                            80 / maxValue,
+                            90 / maxValue,
+                            110 / maxValue,
+                            120 / maxValue,
+                          ],
                         ),
                       ),
                     ),
@@ -95,14 +104,16 @@ class ResultScreen extends ConsumerWidget {
 
         const SizedBox(height: 8),
 
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Row(
           children: [
-            Text('0%', style: TextStyle(fontSize: 11, color: Colors.black54)),
-            Text('25%', style: TextStyle(fontSize: 11, color: Colors.black54)),
-            Text('50%', style: TextStyle(fontSize: 11, color: Colors.black54)),
-            Text('75%', style: TextStyle(fontSize: 11, color: Colors.black54)),
-            Text('100%', style: TextStyle(fontSize: 11, color: Colors.black54)),
+            for (int i = 0; i < labelCount; i++)
+              Expanded(
+                child: Text(
+                  '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
+                  style: TextStyle(fontSize: 11, color: Colors.black54),
+                  textAlign: TextAlign.center,
+                ),
+              ),
           ],
         ),
       ],
