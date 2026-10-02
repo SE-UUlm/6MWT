@@ -163,7 +163,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               await session.abort();
 
-              if (!mounted) return;
+              if (!context.mounted) return;
 
               context.push('/result', extra: widget.profileId);
               session.reset();
