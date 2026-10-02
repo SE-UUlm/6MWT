@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/walk_result_arguments.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
 import '../features/debug/gps_test_screen.dart';
@@ -48,7 +49,14 @@ final router = GoRouter(
     GoRoute(
       path: '/result',
       builder: (context, state) {
-        final session = state.extra as WalkSessionWithProfile;
+        final extra = state.extra;
+        if (extra is WalkResultArguments) {
+          return ResultScreen(
+            session: extra.session,
+            comparisons: extra.comparisons,
+          );
+        }
+        final session = extra as WalkSessionWithProfile;
 
         return ResultScreen(session: session);
       },
