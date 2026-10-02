@@ -35,13 +35,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final name = _nameController.text.trim();
     final age = int.tryParse(_ageController.text.trim());
     final height = int.tryParse(_heightController.text.trim());
-    final weight = double.tryParse(_weightController.text.trim());
+    //final weight = double.tryParse(_weightController.text.trim());
 
-    if (name.isEmpty ||
-        age == null ||
-        height == null ||
-        weight == null ||
-        _selectedGender == null) {
+    // TODO: Save weight and gender?
+
+    if (age == null || height == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.profile_info)),
       );

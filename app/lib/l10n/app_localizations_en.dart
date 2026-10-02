@@ -151,7 +151,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_sub2 => 'Anthropometrie';
 
   @override
-  String get profile_info => 'Bitte füllen Sie alle Felder aus.';
+  String get profile_info => 'Bitte füllen Sie Alter und Körpergröße aus.';
 
   @override
   String get field1 => 'Name';

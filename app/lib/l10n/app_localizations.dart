@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @profile_info.
   ///
   /// In de, this message translates to:
-  /// **'Bitte füllen Sie alle Felder aus.'**
+  /// **'Bitte füllen Sie Alter und Körpergröße aus.'**
   String get profile_info;
 
   /// No description provided for @field1.
