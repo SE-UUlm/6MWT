@@ -165,7 +165,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               if (!mounted) return;
 
-              await context.push('/result', extra: widget.profileId);
+              context.push('/result', extra: widget.profileId);
+              session.reset();
             },
             child: Stack(
               alignment: Alignment.centerLeft,
@@ -227,6 +228,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         _resultNavigationTriggered = true;
 
         context.push('/result', extra: widget.profileId);
+        session.reset();
       }
     });
 
