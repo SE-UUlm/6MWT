@@ -174,6 +174,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     profile: profile,
                   ),
                 );
+                session.reset();
               } else {
                 setState(() {
                   _stopSliderValue = 0.0;
