@@ -26,3 +26,10 @@ ProfileRepository profileRepository(Ref ref) =>
 @Riverpod(keepAlive: true)
 WalkSessionRepository walkSessionRepository(Ref ref) =>
     WalkSessionRepository(ref.watch(databaseProvider));
+
+// Dedicated provider for stream so the stream is not regenerated on every component build
+@riverpod
+Stream<List<WalkSessionWithProfile>> walkSessionsWithProfiles(Ref ref) {
+  final repository = ref.watch(walkSessionRepositoryProvider);
+  return repository.watchSessionsWithProfiles();
+}

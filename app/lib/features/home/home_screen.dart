@@ -202,7 +202,7 @@ class HomeScreen extends ConsumerWidget {
                         icon: Icons.bar_chart_rounded,
                         title: l10n.home_result,
                         subtitle: l10n.home_resultsb,
-                        onTap: () => context.push('/results'),
+                        onTap: () => context.push('/history'),
                       ),
                     ),
 

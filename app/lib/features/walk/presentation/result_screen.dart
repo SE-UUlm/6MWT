@@ -1,48 +1,32 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
-import '../domain/walk_session_provider.dart';
+class ResultScreen extends ConsumerWidget {
+  ResultScreen({super.key, required WalkSessionWithProfile session})
+    : session = session.session,
+      profile = session.profile;
 
-class ResultScreen extends ConsumerStatefulWidget {
-  const ResultScreen({super.key, required this.profileId});
-
-  final int profileId;
-
-  @override
-  ConsumerState<ResultScreen> createState() => _ResultScreenState();
-}
-
-class _ResultScreenState extends ConsumerState<ResultScreen> {
-  Profile? _profile;
+  final WalkSessionRow session;
+  final Profile profile;
 
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  @override
-  void initState() {
-    super.initState();
-    _loadProfile();
-  }
+  // ===========================================================================
+  // FORMAT DURATION
+  // ===========================================================================
 
-  // Load Profile
-  Future<void> _loadProfile() async {
-    final repository = ref.read(profileRepositoryProvider);
-
-    final profile = await repository.loadProfile(widget.profileId);
-
-    if (!mounted) return;
-
-    setState(() {
-      _profile = profile;
-    });
-  }
-
-  // Formatting duration to "mm:ss min"
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
@@ -50,7 +34,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
-  // Performance Bar
+  // ===========================================================================
+  // PERFORMANCE BAR
+  // ===========================================================================
+
   Widget _buildPerformanceBar(double percentage) {
     final progress = (percentage / 100).clamp(0.0, 1.0);
 
@@ -65,7 +52,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
               return Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // Color Gradient
+                  // ----------------------------------------------------------------
+                  // COLOR GRADIENT
+                  // ----------------------------------------------------------------
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -83,7 +72,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     ),
                   ),
 
-                  // Postition Marker
+                  // ----------------------------------------------------------------
+                  // POSITION MARKER
+                  // ----------------------------------------------------------------
                   Positioned(
                     left: position - 2,
                     top: -6,
@@ -118,7 +109,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // Details Card
+  // ===========================================================================
+  // DETAILS CARD
+  // ===========================================================================
+
   Widget _buildDetailsCard({
     required String title,
     required List<Widget> children,
@@ -147,7 +141,10 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // Detail row
+  // ===========================================================================
+  // DETAIL ROW
+  // ===========================================================================
+
   Widget _buildDetailRow({
     required IconData icon,
     required String label,
@@ -192,32 +189,70 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // Build
+  Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
+    try {
+      final export = (await ref
+          .read(walkSessionRepositoryProvider)
+          .exportSession(session.id))!;
+
+      final samples = await ref
+          .read(sampleRepositoryProvider)
+          .exportSession(session.id);
+
+      final profile = await ref
+          .read(profileRepositoryProvider)
+          .exportProfile(session.profileId);
+
+      export['samples'] = samples;
+      export['profile'] = profile;
+      export['exportedAt'] = DateTime.now().toUtc().toIso8601String();
+
+      final jsonString = const JsonEncoder().convert(export);
+
+      final dir = await getTemporaryDirectory();
+
+      final file = File(
+        '${dir.path}/6mwt_export_session_${session.id.substring(0, 8)}_'
+        '${DateTime.now().millisecondsSinceEpoch}.json',
+      );
+
+      await file.writeAsString(jsonString);
+
+      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+      }
+    }
+  }
+
+  // ===========================================================================
+  // BUILD
+  // ===========================================================================
+
   @override
-  Widget build(BuildContext context) {
-    final session = ref.watch(walkSessionProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // -------------------------------------------------------------------------
+    // DURATION
+    // -------------------------------------------------------------------------
 
-    final state = ref.watch(walkSessionStateProvider).value ?? session.state;
+    final durationText = _formatDuration(session.duration);
 
-    // Duration calculation
-    final elapsedDuration = session.walkDuration - state.remainingTime;
+    // -------------------------------------------------------------------------
+    // ASSESSMENT
+    // -------------------------------------------------------------------------
 
-    final duration = elapsedDuration <= Duration.zero
-        ? Duration.zero
-        : elapsedDuration;
-
-    final durationText = _formatDuration(duration);
-
-    // Assessment
     var percentage = 0.0;
     String category = 'No assessment';
 
-    if (_profile != null && duration > Duration.zero) {
+    if (session.phase == WalkPhase.finished) {
       final assessment = assessFitness(
-        duration: duration,
-        distance: state.distance,
-        ageInYears: _profile!.age,
-        heightInCm: _profile!.height.toDouble(),
+        duration: session.duration,
+        distance: session.distance,
+        ageInYears: profile.age,
+        heightInCm: profile.height.toDouble(),
       );
 
       percentage = assessment.percentOfExpected;
@@ -233,9 +268,26 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // =================================================================
+              // BACK BUTTON
+              // =================================================================
+              IconButton(
+                onPressed: () => context.pop(),
+                padding: EdgeInsets.zero,
+                alignment: Alignment.centerLeft,
+                constraints: const BoxConstraints(),
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 20,
+                  color: Colors.black,
+                ),
+              ),
+
               const SizedBox(height: 18),
 
-              // Header
+              // =================================================================
+              // HEADER
+              // =================================================================
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -265,6 +317,13 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                       ),
                     ),
                   ),
+
+                  IconButton(
+                    onPressed: () {
+                      _exportSession(context, ref);
+                    },
+                    icon: const Icon(Icons.share),
+                  ),
                 ],
               ),
 
@@ -280,7 +339,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // Performance Card
+              // =================================================================
+              // PERFORMANCE CARD
+              // =================================================================
               const SizedBox(height: 24),
 
               Container(
@@ -302,7 +363,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
                     const SizedBox(height: 14),
 
-                    // Performance Percentage
+                    // -----------------------------------------------------------
+                    // PERCENTAGE
+                    // -----------------------------------------------------------
                     Text(
                       '${percentage.round()}%',
                       textAlign: TextAlign.center,
@@ -321,12 +384,16 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
                     const SizedBox(height: 22),
 
-                    // Bar
+                    // -----------------------------------------------------------
+                    // BAR
+                    // -----------------------------------------------------------
                     _buildPerformanceBar(percentage),
 
                     const SizedBox(height: 20),
 
-                    // Category
+                    // -----------------------------------------------------------
+                    // CATEGORY
+                    // -----------------------------------------------------------
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -367,7 +434,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // Test Details
+              // =================================================================
+              // TEST DETAILS
+              // =================================================================
               const SizedBox(height: 14),
 
               _buildDetailsCard(
@@ -376,7 +445,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   _buildDetailRow(
                     icon: Icons.swap_horiz_rounded,
                     label: 'Distance walked',
-                    value: '${state.distance.toStringAsFixed(1)} m',
+                    value: '${session.distance.toStringAsFixed(1)} m',
                   ),
 
                   _buildDetailRow(
@@ -388,7 +457,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   _buildDetailRow(
                     icon: Icons.flag_rounded,
                     label: 'Test status',
-                    value: state.phase == WalkPhase.aborted
+                    value: session.phase == WalkPhase.aborted
                         ? 'Stopped early'
                         : 'Completed',
                     showDivider: false,
@@ -396,7 +465,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ],
               ),
 
-              // Profile Details
+              // =================================================================
+              // PROFILE DETAILS
+              // =================================================================
               const SizedBox(height: 14),
 
               _buildDetailsCard(
@@ -405,25 +476,27 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                   _buildDetailRow(
                     icon: Icons.person_outline_rounded,
                     label: 'Name',
-                    value: _profile?.name ?? '-',
+                    value: profile.name ?? '-',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.cake_outlined,
                     label: 'Age',
-                    value: _profile == null ? '-' : '${_profile!.age} years',
+                    value: '${profile.age} years',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.height_rounded,
                     label: 'Height',
-                    value: _profile == null ? '-' : '${_profile!.height} cm',
+                    value: '${profile.height} cm',
                     showDivider: false,
                   ),
                 ],
               ),
 
-              // Information
+              // =================================================================
+              // INFORMATION
+              // =================================================================
               const SizedBox(height: 18),
 
               const Text(
@@ -437,7 +510,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // Back to Home Button
+              // =================================================================
+              // BACK TO HOME
+              // =================================================================
               const SizedBox(height: 24),
 
               SizedBox(

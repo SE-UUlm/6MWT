@@ -190,3 +190,45 @@ final class WalkSessionRepositoryProvider
 
 String _$walkSessionRepositoryHash() =>
     r'090be2dbce0d98fceb59431ee6992655246442f6';
+
+@ProviderFor(walkSessionsWithProfiles)
+final walkSessionsWithProfilesProvider = WalkSessionsWithProfilesProvider._();
+
+final class WalkSessionsWithProfilesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<WalkSessionWithProfile>>,
+          List<WalkSessionWithProfile>,
+          Stream<List<WalkSessionWithProfile>>
+        >
+    with
+        $FutureModifier<List<WalkSessionWithProfile>>,
+        $StreamProvider<List<WalkSessionWithProfile>> {
+  WalkSessionsWithProfilesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'walkSessionsWithProfilesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$walkSessionsWithProfilesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<WalkSessionWithProfile>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<WalkSessionWithProfile>> create(Ref ref) {
+    return walkSessionsWithProfiles(ref);
+  }
+}
+
+String _$walkSessionsWithProfilesHash() =>
+    r'd810ed87af47e7cfc11be7da9064a2b2db6dea8b';

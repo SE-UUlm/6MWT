@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
+import 'package:six_minute_walk_test/features/history/history_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
@@ -46,10 +48,15 @@ final router = GoRouter(
     GoRoute(
       path: '/result',
       builder: (context, state) {
-        final profileId = state.extra as int;
+        final session = state.extra as WalkSessionWithProfile;
 
-        return ResultScreen(profileId: profileId);
+        return ResultScreen(session: session);
       },
+    ),
+
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => const HistoryScreen(),
     ),
 
     // Route +  Animation - Instructions-1 Page

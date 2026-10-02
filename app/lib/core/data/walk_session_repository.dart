@@ -2,6 +2,14 @@ import 'package:drift/drift.dart';
 
 import 'database.dart';
 
+/// A history entry with the profile that was active during the walk session.
+class WalkSessionWithProfile {
+  const WalkSessionWithProfile({required this.session, required this.profile});
+
+  final WalkSessionRow session;
+  final Profile profile;
+}
+
 class WalkSessionRepository {
   WalkSessionRepository(this._db);
 
@@ -17,6 +25,26 @@ class WalkSessionRepository {
       ..orderBy([(row) => OrderingTerm.desc(row.startedAt)]);
 
     return query.watch();
+  }
+
+  /// Watches sessions and their associated profiles, newest session first.
+  Stream<List<WalkSessionWithProfile>> watchSessionsWithProfiles() {
+    final query = _db.select(_db.walkSessions).join([
+      innerJoin(
+        _db.profiles,
+        _db.profiles.id.equalsExp(_db.walkSessions.profileId),
+      ),
+    ])..orderBy([OrderingTerm.desc(_db.walkSessions.startedAt)]);
+
+    return query.watch().map(
+      (rows) => [
+        for (final row in rows)
+          WalkSessionWithProfile(
+            session: row.readTable(_db.walkSessions),
+            profile: row.readTable(_db.profiles),
+          ),
+      ],
+    );
   }
 
   static Map<String, dynamic> _rowToMap(WalkSessionRow row) => {

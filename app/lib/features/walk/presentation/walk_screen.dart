@@ -3,13 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
-
-bool _debugInitialized = false;
 
 class WalkScreen extends ConsumerStatefulWidget {
   const WalkScreen({super.key, required this.profileId});
@@ -148,25 +147,39 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               });
             },
             onHorizontalDragEnd: (_) async {
-              if (_stopSliderValue < 0.9) {
+              if (_stopSliderValue >= 0.9) {
+                final session = ref.read(walkSessionProvider);
+
+                await session.abort();
+
+                final sessionRow = createWalkSessionRow(session, session.state);
+                final profile = _profile;
+
+                if (!mounted || !context.mounted) return;
+
+                if (sessionRow == null || profile == null) {
+                  setState(() {
+                    _stopSliderValue = 0.0;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Result could not be loaded')),
+                  );
+                  return;
+                }
+
+                context.pushReplacement(
+                  '/result',
+                  extra: WalkSessionWithProfile(
+                    session: sessionRow,
+                    profile: profile,
+                  ),
+                );
+              } else {
                 setState(() {
                   _stopSliderValue = 0.0;
                 });
                 return;
               }
-
-              final session = ref.read(walkSessionProvider);
-
-              setState(() {
-                _stopSliderValue = 0.0;
-              });
-
-              await session.abort();
-
-              if (!context.mounted) return;
-
-              context.push('/result', extra: widget.profileId);
-              session.reset();
             },
             child: Stack(
               alignment: Alignment.centerLeft,
@@ -246,21 +259,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
     // Debug Profile Initialization
-    final profile = ref.watch(profileRepositoryProvider);
-
-    if (!_debugInitialized) {
-      _debugInitialized = true;
-
-      Future.microtask(() async {
-        final profileId = await profile.ensureProfile(
-          height: 189,
-          age: 27,
-          name: 'Frank',
-        );
-
-        session.profileId = profileId;
-      });
-    }
 
     final lastPosition = state.lastSamples[SampleType.position];
 
