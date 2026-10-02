@@ -110,23 +110,65 @@ abstract class AppLocalizations {
   /// **'Standardisierte Beurteilung der funktionellen Belastbarkeit'**
   String get appSubTitle;
 
-  /// No description provided for @appProfile.
+  /// No description provided for @home_walk.
   ///
   /// In de, this message translates to:
-  /// **'Einrichtung des Patientenprofils'**
-  String get appProfile;
+  /// **'Gehen'**
+  String get home_walk;
 
-  /// No description provided for @appCountdown.
+  /// No description provided for @home_walksb.
   ///
   /// In de, this message translates to:
-  /// **'6-Minuten-Countdown'**
-  String get appCountdown;
+  /// **'So weit wie möglich in 6 Minuten gehen'**
+  String get home_walksb;
 
-  /// No description provided for @appResult.
+  /// No description provided for @home_performance.
   ///
   /// In de, this message translates to:
-  /// **'Ergebnisse und Werte'**
-  String get appResult;
+  /// **'Leistung'**
+  String get home_performance;
+
+  /// No description provided for @home_performancesb.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Ausdauer objektiv messen'**
+  String get home_performancesb;
+
+  /// No description provided for @home_progress.
+  ///
+  /// In de, this message translates to:
+  /// **'Fortschritt'**
+  String get home_progress;
+
+  /// No description provided for @home_progresssb.
+  ///
+  /// In de, this message translates to:
+  /// **'Ergebnisse vergleichen'**
+  String get home_progresssb;
+
+  /// No description provided for @home_result.
+  ///
+  /// In de, this message translates to:
+  /// **'Meine Ergebnisse'**
+  String get home_result;
+
+  /// No description provided for @home_resultsb.
+  ///
+  /// In de, this message translates to:
+  /// **'Frühere Tests ansehen'**
+  String get home_resultsb;
+
+  /// No description provided for @home_instruction.
+  ///
+  /// In de, this message translates to:
+  /// **'Über den 6 Minuten Test'**
+  String get home_instruction;
+
+  /// No description provided for @home_instructionsb.
+  ///
+  /// In de, this message translates to:
+  /// **'Ausführliche Anleitung'**
+  String get home_instructionsb;
 
   /// No description provided for @startTest.
   ///
@@ -295,6 +337,150 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!'**
   String get instructions_7_text;
+
+  /// No description provided for @profile_title.
+  ///
+  /// In de, this message translates to:
+  /// **'Vorkalibrierung'**
+  String get profile_title;
+
+  /// No description provided for @profile_text.
+  ///
+  /// In de, this message translates to:
+  /// **'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein'**
+  String get profile_text;
+
+  /// No description provided for @profile_sub1.
+  ///
+  /// In de, this message translates to:
+  /// **'Patienteninformationen'**
+  String get profile_sub1;
+
+  /// No description provided for @profile_sub2.
+  ///
+  /// In de, this message translates to:
+  /// **'Anthropometrie'**
+  String get profile_sub2;
+
+  /// No description provided for @profile_info.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte füllen Sie alle Felder aus.'**
+  String get profile_info;
+
+  /// No description provided for @field1.
+  ///
+  /// In de, this message translates to:
+  /// **'Name'**
+  String get field1;
+
+  /// No description provided for @field2.
+  ///
+  /// In de, this message translates to:
+  /// **'Alter in Jahren'**
+  String get field2;
+
+  /// No description provided for @field3_1.
+  ///
+  /// In de, this message translates to:
+  /// **'Männlich'**
+  String get field3_1;
+
+  /// No description provided for @field3_2.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiblich'**
+  String get field3_2;
+
+  /// No description provided for @field4.
+  ///
+  /// In de, this message translates to:
+  /// **'Höhe'**
+  String get field4;
+
+  /// No description provided for @field5.
+  ///
+  /// In de, this message translates to:
+  /// **'Gewicht'**
+  String get field5;
+
+  /// No description provided for @profile_footer.
+  ///
+  /// In de, this message translates to:
+  /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.'**
+  String get profile_footer;
+
+  /// No description provided for @video_title.
+  ///
+  /// In de, this message translates to:
+  /// **'Testvorbereitung'**
+  String get video_title;
+
+  /// No description provided for @video_text.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
+  String get video_text;
+
+  /// No description provided for @walk_info.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.'**
+  String get walk_info;
+
+  /// No description provided for @walk_idstance.
+  ///
+  /// In de, this message translates to:
+  /// **'Distanz'**
+  String get walk_idstance;
+
+  /// No description provided for @walk_status.
+  ///
+  /// In de, this message translates to:
+  /// **'Status'**
+  String get walk_status;
+
+  /// No description provided for @walk_assessment.
+  ///
+  /// In de, this message translates to:
+  /// **'Bewertung'**
+  String get walk_assessment;
+
+  /// No description provided for @walk_start.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch nicht gestartet'**
+  String get walk_start;
+
+  /// No description provided for @walk_position.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelle Position'**
+  String get walk_position;
+
+  /// No description provided for @walk_duration.
+  ///
+  /// In de, this message translates to:
+  /// **'Dauer'**
+  String get walk_duration;
+
+  /// No description provided for @walk_profile.
+  ///
+  /// In de, this message translates to:
+  /// **'Profil'**
+  String get walk_profile;
+
+  /// No description provided for @walk_test_start.
+  ///
+  /// In de, this message translates to:
+  /// **'Starte Test'**
+  String get walk_test_start;
+
+  /// No description provided for @walk_reset.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurücksetzen'**
+  String get walk_reset;
 }
 
 class _AppLocalizationsDelegate

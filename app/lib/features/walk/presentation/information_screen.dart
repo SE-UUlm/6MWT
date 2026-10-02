@@ -43,7 +43,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         weight == null ||
         _selectedGender == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields.')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.profile_info)),
       );
       return;
     }
@@ -63,6 +63,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -94,27 +95,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 70,
-                    height: 70,
+                    width: 48,
+                    height: 48,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: circleBlue,
                     ),
                     child: const Icon(
                       Icons.directions_walk_rounded,
-                      size: 50,
+                      size: 26,
                       color: Colors.black87,
                     ),
                   ),
-
                   const SizedBox(width: 14),
-
-                  const Text(
-                    'Pre-Calibration',
+                  Text(
+                    l10n.profile_title,
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 26,
                       fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                      color: Color(0xFF111111),
                     ),
                   ),
                 ],
@@ -122,10 +121,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               const SizedBox(height: 45),
 
-              const Text(
-                'To obtain the most accurate test results possible, '
-                'please enter all information correctly.',
-                style: TextStyle(
+              Text(
+                l10n.profile_text,
+                style: const TextStyle(
                   fontSize: 16,
                   height: 1.15,
                   color: Colors.black,
@@ -134,20 +132,23 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               const SizedBox(height: 22),
 
-              const Text(
-                'Patient Information',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              Text(
+                l10n.profile_sub1,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 8),
 
-              _InputField(controller: _nameController, hintText: 'Name'),
+              _InputField(controller: _nameController, hintText: l10n.field1),
 
               const SizedBox(height: 8),
 
               _InputField(
                 controller: _ageController,
-                hintText: 'Age in years',
+                hintText: l10n.field2,
                 keyboardType: TextInputType.number,
               ),
 
@@ -158,7 +159,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Expanded(
                     child: _GenderButton(
                       icon: Icons.male,
-                      label: 'Male',
+                      label: l10n.field3_1,
                       selected: _selectedGender == 'male',
                       onTap: () {
                         setState(() {
@@ -173,7 +174,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   Expanded(
                     child: _GenderButton(
                       icon: Icons.female,
-                      label: 'Female',
+                      label: l10n.field3_2,
                       selected: _selectedGender == 'female',
                       onTap: () {
                         setState(() {
@@ -187,16 +188,19 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               const SizedBox(height: 30),
 
-              const Text(
-                'Anthropometrics',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              Text(
+                l10n.profile_sub2,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
 
               const SizedBox(height: 8),
 
               _InputField(
                 controller: _heightController,
-                hintText: 'Height',
+                hintText: l10n.field4,
                 suffixText: 'cm',
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
@@ -207,7 +211,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               _InputField(
                 controller: _weightController,
-                hintText: 'Weight',
+                hintText: l10n.field5,
                 suffixText: 'kg',
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
@@ -216,12 +220,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               const SizedBox(height: 30),
 
-              const Center(
+              Center(
                 child: Text(
-                  'Your privacy is important to us. This information will\n'
-                  'not be used for any other purposes.',
+                  l10n.profile_footer,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontStyle: FontStyle.italic,
                     height: 1.3,

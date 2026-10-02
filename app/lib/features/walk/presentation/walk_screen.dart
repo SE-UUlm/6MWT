@@ -25,10 +25,20 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
   double _stopSliderValue = 0.0;
 
+  bool _resultNavigationTriggered = false;
+
+  final PageController _pageController = PageController();
+
   @override
   void initState() {
     super.initState();
     _loadProfile();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadProfile() async {
@@ -49,10 +59,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  // ---------------------------------------------------------------------------
-  // STATUS
-  // ---------------------------------------------------------------------------
-
+  // Status
   String _statusMessage(WalkSessionState state) {
     final errorMessage = state.errorMessage;
 
@@ -77,10 +84,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // ASSESSMENT
-  // ---------------------------------------------------------------------------
-
+  // Assessment
   String _assessmentPercentage(WalkSessionState state, WalkSession session) {
     final duration = session.walkDuration - state.remainingTime;
 
@@ -123,10 +127,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     return assessment.category.name;
   }
 
-  // ---------------------------------------------------------------------------
-  // BUILD
-  // ---------------------------------------------------------------------------
-
+  // Build
   Widget _buildStopSlider() {
     return Container(
       height: 54,
@@ -146,18 +147,25 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 _stopSliderValue = _stopSliderValue.clamp(0.0, 1.0);
               });
             },
-            onHorizontalDragEnd: (_) {
-              if (_stopSliderValue >= 0.9) {
-                final session = ref.read(walkSessionProvider);
-
-                session.abort();
-
-                context.push('/result', extra: widget.profileId);
-              } else {
+            onHorizontalDragEnd: (_) async {
+              if (_stopSliderValue < 0.9) {
                 setState(() {
                   _stopSliderValue = 0.0;
                 });
+                return;
               }
+
+              final session = ref.read(walkSessionProvider);
+
+              setState(() {
+                _stopSliderValue = 0.0;
+              });
+
+              await session.abort();
+
+              if (!mounted) return;
+
+              await context.push('/result', extra: widget.profileId);
             },
             child: Stack(
               alignment: Alignment.centerLeft,
@@ -172,7 +180,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     ),
                   ),
                 ),
-
                 Positioned(
                   left: _stopSliderValue * maxOffset,
                   child: Container(
@@ -201,12 +208,42 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   Widget build(BuildContext context) {
     final session = ref.watch(walkSessionProvider);
 
+    ref.listen<AsyncValue<WalkSessionState>>(walkSessionStateProvider, (
+      previous,
+      next,
+    ) {
+      final state = next.value;
+
+      if (state == null) return;
+
+      // Reset -> Navigation für einen neuen Test wieder erlauben
+      if (state.phase == WalkPhase.idle) {
+        _resultNavigationTriggered = false;
+        return;
+      }
+
+      // 6 Minuten vollständig gelaufen
+      if (state.phase == WalkPhase.finished && !_resultNavigationTriggered) {
+        _resultNavigationTriggered = true;
+
+        context.push('/result', extra: widget.profileId);
+      }
+    });
+
     final state = ref.watch(walkSessionStateProvider).value ?? session.state;
 
-    // -------------------------------------------------------------------------
-    // DEBUG PROFILE
-    // -------------------------------------------------------------------------
+    return PageView(
+      scrollDirection: Axis.horizontal,
+      controller: _pageController,
+      children: [
+        _buildSimpleView(state, session),
+        _buildDetailedView(state, session),
+      ],
+    );
+  }
 
+  Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
+    // Debug Profile Initialization
     final profile = ref.watch(profileRepositoryProvider);
 
     if (!_debugInitialized) {
@@ -225,20 +262,14 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     final lastPosition = state.lastSamples[SampleType.position];
 
-    // -------------------------------------------------------------------------
-    // CURRENT POSITION
-    // -------------------------------------------------------------------------
-
+    // Current Postition
     final latitude = lastPosition?.values[PositionKeys.latitude];
 
     final longitude = lastPosition?.values[PositionKeys.longitude];
 
     final accuracy = lastPosition?.values[PositionKeys.accuracy];
 
-    // -------------------------------------------------------------------------
-    // DURATION
-    // -------------------------------------------------------------------------
-
+    // Duration
     final elapsedDuration = session.walkDuration - state.remainingTime;
 
     final durationText = elapsedDuration <= Duration.zero
@@ -255,9 +286,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // =================================================================
               // WALK ICON
-              // =================================================================
               Center(
                 child: Container(
                   width: 76,
@@ -276,9 +305,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 10),
 
-              // =================================================================
-              // TIMER
-              // =================================================================
+              // Timer
               Text(
                 state.formattedRemainingTime,
                 textAlign: TextAlign.center,
@@ -300,9 +327,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 24),
 
-              // =================================================================
-              // DISTANCE + STATUS
-              // =================================================================
+              // Distance + Status
               Row(
                 children: [
                   Expanded(
@@ -328,9 +353,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // =================================================================
-              // ASSESSMENT
-              // =================================================================
+              // Assessment
               _LargeInfoCard(
                 icon: Icons.bar_chart_rounded,
                 title: 'Assessment',
@@ -345,9 +368,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // =================================================================
-              // CURRENT POSITION
-              // =================================================================
+              // Current Position
               _LargeInfoCard(
                 icon: Icons.location_on_rounded,
                 title: 'Current Position',
@@ -363,9 +384,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // =================================================================
-              // DURATION + PROFILE
-              // =================================================================
+              // Duration
               Row(
                 children: [
                   Expanded(
@@ -395,58 +414,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               ),
 
               const SizedBox(height: 24),
-
-              // =================================================================
-              // START / SLIDE TO STOP
-              // =================================================================
-              if (state.isRunning)
-                _buildStopSlider()
-              else
-                SizedBox(
-                  height: 54,
-                  child: ElevatedButton(
-                    onPressed: session.start,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryBlue,
-                      foregroundColor: Colors.white,
-                      elevation: 3,
-                      shadowColor: Colors.black.withValues(alpha: 0.25),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                    ),
-                    child: const Text(
-                      'Start Test',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-
-              const SizedBox(height: 10),
-
-              // =================================================================
-              // RESET
-              // =================================================================
-              SizedBox(
-                height: 50,
-                child: OutlinedButton(
-                  onPressed: session.reset,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: primaryBlue,
-                    side: const BorderSide(color: primaryBlue, width: 1.5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: const Text(
-                    'Reset',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -454,10 +421,107 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // DURATION FORMAT
-  // ---------------------------------------------------------------------------
+  Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Transform.translate(
+              offset: const Offset(0, 40),
+              child: Image.asset(
+                'assets/images/walking_image.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+            Container(color: Colors.white.withValues(alpha: 0.25)),
 
+            // Inhalt
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  // Timer
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        state.formattedRemainingTime,
+                        style: const TextStyle(
+                          fontSize: 100,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Start / Stop
+                  if (state.isRunning)
+                    _buildStopSlider()
+                  else
+                    SizedBox(
+                      width: double.infinity,
+                      height: 60,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          await session.reset();
+                          await session.start();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryBlue,
+                          foregroundColor: Colors.white,
+                          elevation: 3,
+                          shadowColor: Colors.black.withValues(alpha: 0.25),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                        ),
+                        child: const Text(
+                          'Start Test',
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  const SizedBox(height: 10),
+
+                  // Reset
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: OutlinedButton(
+                      onPressed: session.reset,
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: primaryBlue,
+                        backgroundColor: Colors.white.withValues(alpha: 0.85),
+                        side: const BorderSide(color: primaryBlue, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      child: const Text(
+                        'Reset',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Duration Formatting
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
@@ -466,10 +530,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 }
 
-// =============================================================================
-// SMALL INFO CARD
-// =============================================================================
-
+// Small Info Card
 class _InfoCard extends StatelessWidget {
   const _InfoCard({
     required this.icon,
@@ -557,10 +618,7 @@ class _InfoCard extends StatelessWidget {
   }
 }
 
-// =============================================================================
-// LARGE INFO CARD
-// =============================================================================
-
+// Large Info Card
 class _LargeInfoCard extends StatelessWidget {
   const _LargeInfoCard({
     required this.icon,
