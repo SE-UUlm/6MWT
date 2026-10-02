@@ -42,6 +42,20 @@ class FakeSensorSource implements SensorSource {
   }
 }
 
+class SnapshotFakeSensorSource extends FakeSensorSource
+    implements SnapshotSensorSource {
+  SnapshotFakeSensorSource(this.snapshot);
+
+  final SensorSample snapshot;
+  int snapshotCalls = 0;
+
+  @override
+  Future<SensorSample> takeSnapshot() async {
+    snapshotCalls++;
+    return snapshot;
+  }
+}
+
 class RecordingSink implements SampleSink {
   final List<(String, SensorSample)> recorded = [];
   int flushCount = 0;
@@ -140,6 +154,37 @@ void main() {
 
       expect(session.state.phase, WalkPhase.running);
       expect(source.startCalls, 1);
+    });
+  });
+
+  test('records one fresh initial sample when a warmed-up test starts', () {
+    fakeAsync((async) {
+      final initialPosition = createPositionSample(
+        latitude: 48.422,
+        longitude: 9.956,
+      );
+      final source = SnapshotFakeSensorSource(initialPosition);
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.start();
+      async.flushMicrotasks();
+
+      expect(source.startCalls, 1);
+      expect(source.snapshotCalls, 1);
+      expect(sink.recorded, hasLength(1));
+      expect(sink.recorded.single.$2, same(initialPosition));
+      expect(
+        session.state.lastSamples[SampleType.position],
+        same(initialPosition),
+      );
+      expect(session.state.distance, 0);
     });
   });
 

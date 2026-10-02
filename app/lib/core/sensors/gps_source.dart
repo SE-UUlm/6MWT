@@ -6,7 +6,7 @@ import '../domain/sensor_sample.dart';
 import 'location_service.dart';
 import 'sensor_source.dart';
 
-class GpsSource implements SensorSource {
+class GpsSource implements SensorSource, SnapshotSensorSource {
   GpsSource({required this._locationService});
 
   static const id = 'gps';
@@ -44,6 +44,12 @@ class GpsSource implements SensorSource {
   Future<void> stop() async {
     await _subscription?.cancel();
     _subscription = null;
+  }
+
+  @override
+  Future<SensorSample> takeSnapshot() async {
+    final position = await _locationService.getCurrentPosition();
+    return _toSample(position);
   }
 
   SensorSample _toSample(Position position) {

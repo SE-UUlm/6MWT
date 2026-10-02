@@ -198,6 +198,7 @@ class WalkSession {
     }
 
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
+    await _recordInitialSamples();
   }
 
   Future<void> abort() async {
@@ -346,6 +347,29 @@ class WalkSession {
         _log.w('Cannot start optional source ${source.sourceId}', error: e);
         // Optional sources may be missing (no wearable, no permission,
         // unsupported platform) — the walk test itself is unaffected.
+      }
+    }
+  }
+
+  Future<void> _recordInitialSamples() async {
+    // A snapshot keeps iteration stable if the session is aborted while an
+    // individual sensor request is awaiting its result.
+    final activeSources = List<SensorSource>.of(_activeSources);
+    for (final source in activeSources) {
+      if (source is! SnapshotSensorSource) {
+        continue;
+      }
+      final snapshotSource = source as SnapshotSensorSource;
+
+      try {
+        _onSample(await snapshotSource.takeSnapshot());
+      } on Exception catch (exception) {
+        // The live stream remains authoritative. Failure to obtain this extra
+        // initial value must not abort an otherwise running walk test.
+        _log.w(
+          'Cannot get initial sample from ${source.sourceId}',
+          error: exception,
+        );
       }
     }
   }

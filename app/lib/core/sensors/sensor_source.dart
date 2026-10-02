@@ -16,6 +16,13 @@ abstract class SensorSource {
   Future<void> stop();
 }
 
+/// Optional capability for sources that can provide a fresh measurement on
+/// demand. Walk sessions use this once at the start to establish an initial
+/// value without waiting for the next stream event.
+abstract interface class SnapshotSensorSource {
+  Future<SensorSample> takeSnapshot();
+}
+
 class SensorUnavailableException implements Exception {
   const SensorUnavailableException(this.message);
 
