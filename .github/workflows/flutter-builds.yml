@@ -86,7 +86,7 @@ jobs:
           compression-level: 0
 
   build-ios:
-    name: Build iOS Simulator App
+    name: Build iOS IPA
     needs: changes
     if: ${{ !cancelled() && (github.event_name == 'push' || needs.changes.outputs.relevant != 'false') }}
     runs-on: macos-latest
@@ -100,7 +100,7 @@ jobs:
         with:
           channel: stable
           cache: true
-          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}
+          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}-device-release-v1
           pub-cache-key: flutter-pub-:os:-:arch:-:channel:-:version:-${{ hashFiles('app/pubspec.lock') }}
 
       - name: Identify Xcode version
@@ -127,13 +127,32 @@ jobs:
           path: |
             ~/Library/Developer/Xcode/DerivedData
             app/build/ios
-          # Refresh per commit; reuse intermediates only with matching build inputs.
-          key: ios-build-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-${{ github.sha }}
+          # Keep device release intermediates separate from previous simulator builds.
+          key: ios-device-release-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-${{ github.sha }}
           restore-keys: |
-            ios-build-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-
+            ios-device-release-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-
 
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build iOS Simulator App
-        run: flutter build ios --simulator --debug --no-codesign --no-pub
+      - name: Build unsigned iOS device app
+        run: flutter build ios --release --no-codesign --no-pub
+
+      - name: Package unsigned IPA
+        # Sideloadly / AltStore signs the device app locally with the user's Apple account.
+        # Stage outside build/ios so the IPA is not duplicated in the build cache.
+        run: |
+          package_dir=$(mktemp -d "$RUNNER_TEMP/ios-ipa.XXXXXX")
+          mkdir "$package_dir/Payload"
+          cp -R build/ios/iphoneos/Runner.app "$package_dir/Payload/Runner.app"
+          cd "$package_dir"
+          zip -qry "$RUNNER_TEMP/six-minute-walk-test-unsigned.ipa" Payload
+
+      - name: Upload unsigned iOS IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-unsigned-ipa
+          path: ${{ runner.temp }}/six-minute-walk-test-unsigned.ipa
+          if-no-files-found: error
+          # The IPA is already a ZIP archive.
+          compression-level: 0
