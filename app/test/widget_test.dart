@@ -14,7 +14,7 @@ void main() {
     expect(find.text('Meine Ergebnisse'), findsOneWidget);
   });
 
-  testWidgets('navigating to the walking test shows the test screen', (
+  testWidgets('clicking start test leads to the patient information screen', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const ProviderScope(child: SixMinuteWalkApp()));
