@@ -6,7 +6,6 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
-import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
@@ -30,10 +29,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     _loadProfile();
   }
 
-  // ===========================================================================
-  // LOAD PROFILE
-  // ===========================================================================
-
+  // Load Profile
   Future<void> _loadProfile() async {
     final repository = ref.read(profileRepositoryProvider);
 
@@ -46,10 +42,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     });
   }
 
-  // ===========================================================================
-  // FORMAT DURATION
-  // ===========================================================================
-
+  // Formatting duration to "mm:ss min"
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
@@ -57,10 +50,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
-  // ===========================================================================
-  // PERFORMANCE BAR
-  // ===========================================================================
-
+  // Performance Bar
   Widget _buildPerformanceBar(double percentage) {
     final progress = (percentage / 100).clamp(0.0, 1.0);
 
@@ -75,9 +65,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
               return Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // ----------------------------------------------------------------
-                  // COLOR GRADIENT
-                  // ----------------------------------------------------------------
+                  // Color Gradient
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -95,9 +83,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                     ),
                   ),
 
-                  // ----------------------------------------------------------------
-                  // POSITION MARKER
-                  // ----------------------------------------------------------------
+                  // Postition Marker
                   Positioned(
                     left: position - 2,
                     top: -6,
@@ -132,10 +118,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // ===========================================================================
-  // DETAILS CARD
-  // ===========================================================================
-
+  // Details Card
   Widget _buildDetailsCard({
     required String title,
     required List<Widget> children,
@@ -164,10 +147,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // ===========================================================================
-  // DETAIL ROW
-  // ===========================================================================
-
+  // Detail row
   Widget _buildDetailRow({
     required IconData icon,
     required String label,
@@ -212,20 +192,14 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
     );
   }
 
-  // ===========================================================================
-  // BUILD
-  // ===========================================================================
-
+  // Build
   @override
   Widget build(BuildContext context) {
     final session = ref.watch(walkSessionProvider);
 
     final state = ref.watch(walkSessionStateProvider).value ?? session.state;
 
-    // -------------------------------------------------------------------------
-    // DURATION
-    // -------------------------------------------------------------------------
-
+    // Duration calculation
     final elapsedDuration = session.walkDuration - state.remainingTime;
 
     final duration = elapsedDuration <= Duration.zero
@@ -234,10 +208,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
     final durationText = _formatDuration(duration);
 
-    // -------------------------------------------------------------------------
-    // ASSESSMENT
-    // -------------------------------------------------------------------------
-
+    // Assessment
     var percentage = 0.0;
     String category = 'No assessment';
 
@@ -262,26 +233,9 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // =================================================================
-              // BACK BUTTON
-              // =================================================================
-              IconButton(
-                onPressed: () => context.pop(),
-                padding: EdgeInsets.zero,
-                alignment: Alignment.centerLeft,
-                constraints: const BoxConstraints(),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 20,
-                  color: Colors.black,
-                ),
-              ),
-
               const SizedBox(height: 18),
 
-              // =================================================================
-              // HEADER
-              // =================================================================
+              // Header
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -326,9 +280,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // =================================================================
-              // PERFORMANCE CARD
-              // =================================================================
+              // Performance Card
               const SizedBox(height: 24),
 
               Container(
@@ -350,9 +302,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
                     const SizedBox(height: 14),
 
-                    // -----------------------------------------------------------
-                    // PERCENTAGE
-                    // -----------------------------------------------------------
+                    // Performance Percentage
                     Text(
                       '${percentage.round()}%',
                       textAlign: TextAlign.center,
@@ -371,16 +321,12 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
 
                     const SizedBox(height: 22),
 
-                    // -----------------------------------------------------------
-                    // BAR
-                    // -----------------------------------------------------------
+                    // Bar
                     _buildPerformanceBar(percentage),
 
                     const SizedBox(height: 20),
 
-                    // -----------------------------------------------------------
-                    // CATEGORY
-                    // -----------------------------------------------------------
+                    // Category
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -421,9 +367,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // =================================================================
-              // TEST DETAILS
-              // =================================================================
+              // Test Details
               const SizedBox(height: 14),
 
               _buildDetailsCard(
@@ -452,9 +396,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ],
               ),
 
-              // =================================================================
-              // PROFILE DETAILS
-              // =================================================================
+              // Profile Details
               const SizedBox(height: 14),
 
               _buildDetailsCard(
@@ -481,9 +423,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ],
               ),
 
-              // =================================================================
-              // INFORMATION
-              // =================================================================
+              // Information
               const SizedBox(height: 18),
 
               const Text(
@@ -497,9 +437,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                 ),
               ),
 
-              // =================================================================
-              // BACK TO HOME
-              // =================================================================
+              // Back to Home Button
               const SizedBox(height: 24),
 
               SizedBox(

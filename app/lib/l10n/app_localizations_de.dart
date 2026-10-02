@@ -16,13 +16,34 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standardisierte Beurteilung der funktionellen Belastbarkeit';
 
   @override
-  String get appProfile => 'Einrichtung des Patientenprofils';
+  String get home_walk => 'Gehen';
 
   @override
-  String get appCountdown => '6-Minuten-Countdown';
+  String get home_walksb => 'So weit wie möglich in 6 Minuten gehen';
 
   @override
-  String get appResult => 'Ergebnisse und Werte';
+  String get home_performance => 'Leistung';
+
+  @override
+  String get home_performancesb => 'Deine Ausdauer objektiv messen';
+
+  @override
+  String get home_progress => 'Fortschritt';
+
+  @override
+  String get home_progresssb => 'Ergebnisse vergleichen';
+
+  @override
+  String get home_result => 'Meine Ergebnisse';
+
+  @override
+  String get home_resultsb => 'Frühere Tests ansehen';
+
+  @override
+  String get home_instruction => 'Über den 6 Minuten Test';
+
+  @override
+  String get home_instructionsb => 'Ausführliche Anleitung';
 
   @override
   String get startTest => 'Test starten';
@@ -115,4 +136,80 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get instructions_7_text =>
       'Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!';
+
+  @override
+  String get profile_title => 'Vorkalibrierung';
+
+  @override
+  String get profile_text =>
+      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein';
+
+  @override
+  String get profile_sub1 => 'Patienteninformationen';
+
+  @override
+  String get profile_sub2 => 'Anthropometrie';
+
+  @override
+  String get profile_info => 'Bitte füllen Sie alle Felder aus.';
+
+  @override
+  String get field1 => 'Name';
+
+  @override
+  String get field2 => 'Alter in Jahren';
+
+  @override
+  String get field3_1 => 'Männlich';
+
+  @override
+  String get field3_2 => 'Weiblich';
+
+  @override
+  String get field4 => 'Höhe';
+
+  @override
+  String get field5 => 'Gewicht';
+
+  @override
+  String get profile_footer =>
+      'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.';
+
+  @override
+  String get video_title => 'Testvorbereitung';
+
+  @override
+  String get video_text =>
+      'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
+
+  @override
+  String get walk_info =>
+      'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.';
+
+  @override
+  String get walk_idstance => 'Distanz';
+
+  @override
+  String get walk_status => 'Status';
+
+  @override
+  String get walk_assessment => 'Bewertung';
+
+  @override
+  String get walk_start => 'Noch nicht gestartet';
+
+  @override
+  String get walk_position => 'Aktuelle Position';
+
+  @override
+  String get walk_duration => 'Dauer';
+
+  @override
+  String get walk_profile => 'Profil';
+
+  @override
+  String get walk_test_start => 'Starte Test';
+
+  @override
+  String get walk_reset => 'Zurücksetzen';
 }

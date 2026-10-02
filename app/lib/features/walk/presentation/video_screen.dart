@@ -40,6 +40,8 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -85,9 +87,9 @@ class _VideoScreenState extends State<VideoScreen> {
 
                   const SizedBox(width: 14),
 
-                  const Text(
-                    'Test Preparation',
-                    style: TextStyle(
+                  Text(
+                    l10n.video_title,
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
@@ -100,9 +102,8 @@ class _VideoScreenState extends State<VideoScreen> {
 
               // Beschreibung
               // Beschreibung
-              const Text(
-                'Walk back and forth along the marked distance (e.g. 6 meters), starting from the middle. Walk at your own pace.'
-                ' If you are unsure how the test works, watch the video below for guidance.',
+              Text(
+                l10n.video_text,
                 style: TextStyle(
                   fontSize: 16,
                   height: 1.25,
@@ -137,7 +138,7 @@ class _VideoScreenState extends State<VideoScreen> {
                 ),
               ),
 
-              const SizedBox(height: 245),
+              const SizedBox(height: 190),
 
               // Continue-Button
               SizedBox(
