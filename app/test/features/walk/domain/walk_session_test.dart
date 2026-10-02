@@ -19,6 +19,7 @@ class FakeSensorSource implements SensorSource {
 
   bool started = false;
   bool stopped = false;
+  int startCalls = 0;
 
   @override
   String get sourceId => 'fake';
@@ -28,6 +29,7 @@ class FakeSensorSource implements SensorSource {
 
   @override
   Future<void> start() async {
+    startCalls++;
     if (!available) {
       throw const SensorUnavailableException('sensor unavailable');
     }
@@ -97,6 +99,64 @@ void main() {
 
       expect(session.state.phase, WalkPhase.idle);
       expect(session.state.errorMessage, 'sensor unavailable');
+    });
+  });
+
+  test('warms up sensors without starting or recording a test', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        sampleSink: sink,
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+      async.flushMicrotasks();
+
+      expect(source.started, isTrue);
+      expect(session.state.phase, WalkPhase.idle);
+      expect(session.state.sessionId, isNull);
+      expect(sink.recorded, isEmpty);
+      expect(session.state.lastSamples, isEmpty);
+    });
+  });
+
+  test('uses warmed-up sensors when the test starts', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.start();
+      async.flushMicrotasks();
+
+      expect(session.state.phase, WalkPhase.running);
+      expect(source.startCalls, 1);
+    });
+  });
+
+  test('stops sensors when warm-up is no longer needed', () {
+    fakeAsync((async) {
+      final source = FakeSensorSource();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+      );
+
+      session.warmUp();
+      async.flushMicrotasks();
+      session.stopWarmUp();
+      async.flushMicrotasks();
+
+      expect(source.stopped, isTrue);
     });
   });
 
