@@ -165,7 +165,6 @@ class InstructionsScreen7 extends StatelessWidget {
               ),
 
               const SizedBox(height: 12),
-
             ],
           ),
         ),

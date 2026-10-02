@@ -12,15 +12,9 @@ class SixMinuteWalkApp extends StatelessWidget {
     return MaterialApp.router(
       title: '6MWT',
 
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
-      ),
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
 
-      supportedLocales: const [
-        Locale('de'),
-        Locale('en'),
-      ],
+      supportedLocales: const [Locale('de'), Locale('en')],
 
       localizationsDelegates: const [
         AppLocalizations.delegate,

@@ -143,12 +143,7 @@ class InstructionsScreen2 extends StatelessWidget {
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(top: 1),
-                      child: Text(
-                        '💡',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
+                      child: Text('💡', style: TextStyle(fontSize: 20)),
                     ),
 
                     const SizedBox(width: 10),
@@ -241,10 +236,7 @@ class InstructionsScreen2 extends StatelessWidget {
 }
 
 class _StepRow extends StatelessWidget {
-  const _StepRow({
-    required this.number,
-    required this.text,
-  });
+  const _StepRow({required this.number, required this.text});
 
   final String number;
   final String text;
@@ -257,9 +249,7 @@ class _StepRow extends StatelessWidget {
           width: 30,
           height: 30,
           alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: Color(0xFF8DB5F5),
-          ),
+          decoration: const BoxDecoration(color: Color(0xFF8DB5F5)),
           child: Text(
             number,
             style: const TextStyle(

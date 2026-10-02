@@ -127,7 +127,10 @@ class InstructionsScreen6 extends StatelessWidget {
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.continueButton,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

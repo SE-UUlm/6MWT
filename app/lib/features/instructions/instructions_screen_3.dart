@@ -122,10 +122,7 @@ class InstructionsScreen3 extends StatelessWidget {
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.continueButton,
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
@@ -165,7 +162,6 @@ class InstructionsScreen3 extends StatelessWidget {
               ),
 
               const SizedBox(height: 12),
-
             ],
           ),
         ),
