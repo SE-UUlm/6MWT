@@ -107,6 +107,8 @@ Reference distance uses the reference's cumulative `distance` values when availa
 
 ### Experimental algorithms
 
+- **Calibrated steps:** all observed steps use the median GPS-calibrated step length from valid rolling windows.
+- **Adaptive GPS + steps:** good GPS intervals plus step-based gaps, calibrated locally before and after each gap. Both variants can revise previous estimates; see [behavior, limitations, and benchmarks](../../app/docs/gps_step_distance_estimators.md).
 - **Kalman GPS:** GPS-only constant-velocity Kalman filter with accuracy/speed checks, innovation rejection, a distance deadband, and confirmed straight-line gap recovery. Shared with the app's live comparison. See the [algorithm, configuration, tests, and recorded-data benchmark](../../app/docs/kalman_gps_distance_estimator.md); it is experimental and does not consistently outperform the simple filter on the current recordings.
 - **Filtered GPS:** rejects invalid coordinates, reported accuracy radii above the threshold, nonpositive time intervals, and segment speeds above the threshold. Rejected fixes do not become the next segment's anchor. Missing accuracy is accepted. This simple filter can remain anchored at a bad first fix; it is a development baseline.
 - **Steps:** cumulative step deltas multiplied by a fixed length. Uses the first valid cumulative-step source, ignores status-only events, and treats a counter decrease as a new baseline. No steps before the first sample are inferred.

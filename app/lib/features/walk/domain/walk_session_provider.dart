@@ -9,6 +9,7 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'gps_step_distance_estimator.dart';
 import 'distance_estimator.dart';
 import 'calibrated_step_distance_estimator.dart';
+import 'adaptive_gps_step_distance_estimator.dart';
 import 'estimator_comparison.dart';
 import 'experimental_estimators.dart';
 import 'kalman_gps_distance_estimator.dart';
@@ -82,6 +83,10 @@ WalkSession walkSession(Ref ref) {
       stepSourceId: PedometerSource.id,
     ),
     comparisonEstimators: [
+      NamedDistanceEstimator(
+        'Adaptive GPS + steps',
+        AdaptiveGpsStepDistanceEstimator(),
+      ),
       NamedDistanceEstimator(
         'Calibrated steps',
         CalibratedStepDistanceEstimator(),
