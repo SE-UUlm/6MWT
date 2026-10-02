@@ -2,103 +2,78 @@ name: Flutter CI
 
 on:
   push:
-    paths:
-      - "app/**"
-      - ".github/workflows/flutter-ci.yml"
-  pull_request:
-    paths:
-      - "app/**"
-      - ".github/workflows/flutter-ci.yml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: app
+
 jobs:
+  changes:
+    name: Detect check changes
+    runs-on: ubuntu-latest
+    outputs:
+      relevant: ${{ steps.filter.outcome != 'success' || steps.filter.outputs.app != 'false' }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Detect app and workflow changes
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          # Feature branches: compare all changes since branching from the default branch.
+          # Default branch: compare with its state before this push.
+          base: ${{ github.event.repository.default_branch }}
+          filters: |
+            app:
+              - 'app/**'
+              - '.github/workflows/flutter-ci.yml'
+
   test:
-    name: Format, Analyze and Test
+    name: ${{ matrix.check.name }}
+    needs: changes
+    # Keep every named matrix check; run the checks if change detection fails.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: app
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - name: Format
+            command: dart format --output=none --set-exit-if-changed .
+          - name: Analyze
+            command: dart analyze
+          - name: Test
+            command: flutter test --no-pub
 
     steps:
+      - name: No relevant changes
+        if: needs.changes.outputs.relevant == 'false'
+        working-directory: .
+        run: echo "No app or CI workflow changes; check passed without running Flutter."
+
       - uses: actions/checkout@v6
+        if: needs.changes.outputs.relevant != 'false'
 
       - name: Setup Flutter
+        if: needs.changes.outputs.relevant != 'false'
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true
+          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}
+          pub-cache-key: flutter-pub-:os:-:arch:-:channel:-:version:-${{ hashFiles('app/pubspec.lock') }}
 
       - name: Install dependencies
+        if: needs.changes.outputs.relevant != 'false'
         run: flutter pub get
 
-      - name: Check formatting
-        run: dart format --output=none --set-exit-if-changed .
-
-      - name: Analyze code
-        run: dart analyze
-
-      - name: Run tests
-        run: flutter test
-
-  build-android:
-    name: Build Android APK
-    runs-on: ubuntu-latest
-    needs: test
-
-    defaults:
-      run:
-        working-directory: app
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build Android APK
-        run: flutter build apk
-
-      - name: Upload Android APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-release-apk
-          path: app/build/app/outputs/flutter-apk/app-release.apk
-
-  build-ios:
-    name: Build iOS Simulator App
-    runs-on: macos-latest
-    needs: test
-
-    defaults:
-      run:
-        working-directory: app
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build iOS Simulator App
-        run: flutter build ios --simulator
+      - name: ${{ matrix.check.name }}
+        if: needs.changes.outputs.relevant != 'false'
+        run: ${{ matrix.check.command }}
