@@ -10,7 +10,7 @@ import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
-class FakeSensorSource implements SensorSource {
+class FakeSensorSource extends SensorSource {
   FakeSensorSource({this.available = true});
 
   final bool available;
@@ -42,17 +42,16 @@ class FakeSensorSource implements SensorSource {
   }
 }
 
-class SnapshotFakeSensorSource extends FakeSensorSource
-    implements SnapshotSensorSource {
-  SnapshotFakeSensorSource(this.snapshot);
+class InitialSampleFakeSensorSource extends FakeSensorSource {
+  InitialSampleFakeSensorSource(this.initialSamples);
 
-  final SensorSample snapshot;
-  int snapshotCalls = 0;
+  final List<SensorSample> initialSamples;
+  int initialSampleCalls = 0;
 
   @override
-  Future<SensorSample> takeSnapshot() async {
-    snapshotCalls++;
-    return snapshot;
+  Future<List<SensorSample>> getInitialSamples() async {
+    initialSampleCalls++;
+    return initialSamples;
   }
 }
 
@@ -157,13 +156,22 @@ void main() {
     });
   });
 
-  test('records one fresh initial sample when a warmed-up test starts', () {
+  test('records initial samples when a warmed-up test starts', () {
     fakeAsync((async) {
       final initialPosition = createPositionSample(
         latitude: 48.422,
         longitude: 9.956,
       );
-      final source = SnapshotFakeSensorSource(initialPosition);
+      final initialSteps = SensorSample(
+        timestamp: DateTime.now(),
+        sourceId: 'fake',
+        type: SampleType.steps,
+        values: const {StepKeys.cumulativeSteps: 1000},
+      );
+      final source = InitialSampleFakeSensorSource([
+        initialPosition,
+        initialSteps,
+      ]);
       final sink = RecordingSink();
       final session = WalkSession(
         sources: [source],
@@ -177,13 +185,16 @@ void main() {
       async.flushMicrotasks();
 
       expect(source.startCalls, 1);
-      expect(source.snapshotCalls, 1);
-      expect(sink.recorded, hasLength(1));
-      expect(sink.recorded.single.$2, same(initialPosition));
+      expect(source.initialSampleCalls, 1);
+      expect(sink.recorded.map((entry) => entry.$2), [
+        same(initialPosition),
+        same(initialSteps),
+      ]);
       expect(
         session.state.lastSamples[SampleType.position],
         same(initialPosition),
       );
+      expect(session.state.lastSamples[SampleType.steps], same(initialSteps));
       expect(session.state.distance, 0);
     });
   });

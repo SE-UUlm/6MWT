@@ -176,12 +176,6 @@ class WalkSession {
       ),
     );
 
-    for (final source in [..._sources, ..._optionalSources]) {
-      _sampleSubscriptions.add(
-        source.samples.listen(_onSample, onError: _onSampleError),
-      );
-    }
-
     try {
       await _startSources();
     } on Exception catch (exception) {
@@ -199,6 +193,17 @@ class WalkSession {
 
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
     await _recordInitialSamples();
+
+    // The session may have been aborted while an initial sample was awaited.
+    if (!_state.isRunning || _state.sessionId != sessionId) {
+      return;
+    }
+
+    for (final source in [..._sources, ..._optionalSources]) {
+      _sampleSubscriptions.add(
+        source.samples.listen(_onSample, onError: _onSampleError),
+      );
+    }
   }
 
   Future<void> abort() async {
@@ -356,18 +361,16 @@ class WalkSession {
     // individual sensor request is awaiting its result.
     final activeSources = List<SensorSource>.of(_activeSources);
     for (final source in activeSources) {
-      if (source is! SnapshotSensorSource) {
-        continue;
-      }
-      final snapshotSource = source as SnapshotSensorSource;
-
       try {
-        _onSample(await snapshotSource.takeSnapshot());
+        final initialSamples = await source.getInitialSamples();
+        for (final sample in initialSamples) {
+          _onSample(sample);
+        }
       } on Exception catch (exception) {
         // The live stream remains authoritative. Failure to obtain this extra
         // initial value must not abort an otherwise running walk test.
         _log.w(
-          'Cannot get initial sample from ${source.sourceId}',
+          'Cannot get initial samples from ${source.sourceId}',
           error: exception,
         );
       }
