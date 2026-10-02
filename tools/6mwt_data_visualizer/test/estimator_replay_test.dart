@@ -8,7 +8,7 @@ import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
-import 'package:six_mwt_visualizer/features/estimator_lab/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
 
 final start = DateTime.utc(2026, 8, 11, 12);
 

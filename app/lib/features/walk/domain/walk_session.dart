@@ -8,6 +8,7 @@ import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
 import 'distance_estimator.dart';
+import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');
 
@@ -17,6 +18,7 @@ class WalkSessionState {
     required this.phase,
     required this.remainingTime,
     this.distance = 0, // In meters
+    this.comparisons = const [],
     this.lastSamples = const {},
     this.errorMessage,
     this.sessionId,
@@ -26,6 +28,7 @@ class WalkSessionState {
   final WalkPhase phase;
   final Duration remainingTime;
   final double distance;
+  final List<EstimatorComparison> comparisons;
 
   // Latest sample per sample type, for display purposes.
   final Map<SampleType, SensorSample> lastSamples;
@@ -57,8 +60,9 @@ class WalkSession {
     required this._distanceEstimator,
     this._sampleSink,
     this._optionalSources = const [],
+    List<NamedDistanceEstimator> comparisonEstimators = const [],
     this.walkDuration = const Duration(minutes: 6),
-  }) {
+  }) : _comparisonEstimators = List.unmodifiable(comparisonEstimators) {
     _state = WalkSessionState(
       phase: WalkPhase.idle,
       remainingTime: walkDuration,
@@ -75,6 +79,8 @@ class WalkSession {
   final List<SensorSource> _optionalSources;
 
   final DistanceEstimator _distanceEstimator;
+  final List<NamedDistanceEstimator> _comparisonEstimators;
+  final Map<int, String> _comparisonErrors = {};
   final SampleSink? _sampleSink;
 
   final StreamController<WalkSessionState> _stateController =
@@ -166,6 +172,7 @@ class WalkSession {
     final sessionId = _generateSessionId();
 
     _distanceEstimator.reset();
+    _resetComparisons();
 
     _emit(
       WalkSessionState(
@@ -173,6 +180,7 @@ class WalkSession {
         remainingTime: walkDuration,
         sessionId: sessionId,
         startedAt: startedAt,
+        comparisons: _snapshotComparisons(),
       ),
     );
 
@@ -216,6 +224,7 @@ class WalkSession {
     _emit(
       WalkSessionState(
         phase: WalkPhase.aborted,
+        comparisons: _state.comparisons,
         remainingTime: _state.remainingTime,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
@@ -232,6 +241,7 @@ class WalkSession {
       await _stopTracking();
     }
     _distanceEstimator.reset();
+    _resetComparisons();
 
     _emit(WalkSessionState(phase: WalkPhase.idle, remainingTime: walkDuration));
   }
@@ -253,6 +263,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: remaining,
+        comparisons: _state.comparisons,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
@@ -270,12 +281,19 @@ class WalkSession {
 
     _sampleSink?.addSample(sessionId, sample);
     _distanceEstimator.addSample(sample);
+    for (var i = 0; i < _comparisonEstimators.length; i++) {
+      _runComparison(
+        i,
+        () => _comparisonEstimators[i].estimator.addSample(sample),
+      );
+    }
 
     _emit(
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: _state.remainingTime,
         distance: _distanceEstimator.totalDistance,
+        comparisons: _snapshotComparisons(),
         lastSamples: {..._state.lastSamples, sample.type: sample},
         sessionId: sessionId,
         startedAt: _state.startedAt,
@@ -288,6 +306,7 @@ class WalkSession {
     _emit(
       WalkSessionState(
         phase: _state.phase,
+        comparisons: _state.comparisons,
         remainingTime: _state.remainingTime,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
@@ -304,6 +323,7 @@ class WalkSession {
     _emit(
       WalkSessionState(
         phase: WalkPhase.finished,
+        comparisons: _state.comparisons,
         remainingTime: Duration.zero,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
@@ -390,6 +410,56 @@ class WalkSession {
         // Stopping one source must not prevent stopping the others.
       }
     }
+  }
+
+  void _runComparison(int index, void Function() action) {
+    if (_comparisonErrors.containsKey(index)) return;
+    try {
+      action();
+    } catch (error, stackTrace) {
+      _comparisonErrors[index] = error.toString();
+      _log.w(
+        'Comparison estimator failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  void _resetComparisons() {
+    _comparisonErrors.clear();
+    for (var i = 0; i < _comparisonEstimators.length; i++) {
+      _runComparison(i, _comparisonEstimators[i].estimator.reset);
+    }
+  }
+
+  List<EstimatorComparison> _snapshotComparisons() {
+    return List.unmodifiable([
+      for (var i = 0; i < _comparisonEstimators.length; i++)
+        _snapshotComparison(i),
+    ]);
+  }
+
+  EstimatorComparison _snapshotComparison(int index) {
+    final entry = _comparisonEstimators[index];
+    EstimatorComparison? result;
+    _runComparison(index, () {
+      final distance = entry.estimator.totalDistance;
+      if (!distance.isFinite || distance < 0) {
+        throw StateError('Invalid comparison distance');
+      }
+      result = EstimatorComparison(
+        name: entry.name,
+        distance: distance,
+        additionalInfo: entry.estimator.additionalInfo,
+      );
+    });
+    return result ??
+        EstimatorComparison(
+          name: entry.name,
+          distance: 0,
+          error: _comparisonErrors[index],
+        );
   }
 
   void _emit(WalkSessionState newState) {

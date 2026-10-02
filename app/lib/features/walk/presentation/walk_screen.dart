@@ -9,6 +9,8 @@ import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dar
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
+import 'estimator_comparison_card.dart';
+import 'walk_result_arguments.dart';
 
 class WalkScreen extends ConsumerStatefulWidget {
   const WalkScreen({super.key, required this.profileId});
@@ -252,14 +254,15 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       return;
     }
 
+    final result = WalkResultArguments(
+      session: WalkSessionWithProfile(session: sessionRow, profile: profile),
+      comparisons: _session.state.comparisons,
+    );
     await _session.reset();
 
     if (!mounted) return;
 
-    context.pushReplacement(
-      '/result',
-      extra: WalkSessionWithProfile(session: sessionRow, profile: profile),
-    );
+    context.pushReplacement('/result', extra: result);
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
@@ -418,6 +421,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 ],
               ),
 
+              if (state.comparisons.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                EstimatorComparisonCard(comparisons: state.comparisons),
+              ],
               const SizedBox(height: 24),
             ],
           ),

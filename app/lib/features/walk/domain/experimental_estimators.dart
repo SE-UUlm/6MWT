@@ -1,6 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'distance_estimator.dart';
 
 /// Experimental, causal GPS filter. Rejected fixes never become the anchor.
 class FilteredGpsEstimator extends DistanceEstimator {

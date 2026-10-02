@@ -6,6 +6,8 @@ import 'package:six_minute_walk_test/core/sensors/location_service.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'distance_estimator.dart';
+import 'estimator_comparison.dart';
+import 'experimental_estimators.dart';
 import 'walk_session.dart';
 
 part 'walk_session_provider.g.dart';
@@ -73,6 +75,13 @@ WalkSession walkSession(Ref ref) {
     // permission, unsupported platform).
     optionalSources: [PedometerSource()],
     distanceEstimator: GpsDistanceEstimator(),
+    comparisonEstimators: [
+      NamedDistanceEstimator(
+        'Filtered GPS',
+        FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
+      ),
+      NamedDistanceEstimator('Steps', StepDistanceEstimator(stepLength: 0.75)),
+    ],
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 

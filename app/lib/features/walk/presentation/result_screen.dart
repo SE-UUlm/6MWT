@@ -11,14 +11,20 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import '../domain/estimator_comparison.dart';
+import 'estimator_comparison_card.dart';
 
 class ResultScreen extends ConsumerWidget {
-  ResultScreen({super.key, required WalkSessionWithProfile session})
-    : session = session.session,
-      profile = session.profile;
+  ResultScreen({
+    super.key,
+    required WalkSessionWithProfile session,
+    this.comparisons = const [],
+  }) : session = session.session,
+       profile = session.profile;
 
   final WalkSessionRow session;
   final Profile profile;
+  final List<EstimatorComparison> comparisons;
 
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
@@ -479,6 +485,10 @@ class ResultScreen extends ConsumerWidget {
               // =================================================================
               // PROFILE DETAILS
               // =================================================================
+              if (comparisons.isNotEmpty) ...[
+                const SizedBox(height: 14),
+                EstimatorComparisonCard(comparisons: comparisons),
+              ],
               const SizedBox(height: 14),
 
               _buildDetailsCard(

@@ -88,11 +88,11 @@ Reference distance uses the reference's cumulative `distance` values when availa
 - **Filtered GPS:** rejects invalid coordinates, reported accuracy radii above the threshold, nonpositive time intervals, and segment speeds above the threshold. Rejected fixes do not become the next segment's anchor. Missing accuracy is accepted. This simple filter can remain anchored at a bad first fix; it is a development baseline.
 - **Steps:** cumulative step deltas multiplied by a fixed length. Uses the first valid cumulative-step source, ignores status-only events, and treats a counter decrease as a new baseline. No steps before the first sample are inferred.
 
-These implementations are experiments and do not change the estimator selected in the main app.
+These implementations are shared with the main app, where they run as live comparisons. The main app still uses the original GPS estimator for its primary distance and fitness assessment.
 
 ### Adding your own DistanceEstimator
 
-Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `lib/features/estimator_lab/experimental_estimators.dart`. Keep the algorithm independent of widgets, replay state and reference data so it can later be moved to `app/lib/features/walk/domain/` without changing its interface.
+Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `../../app/lib/features/walk/domain/experimental_estimators.dart` for the shared implementations. Keep algorithms independent of widgets, replay state and reference data.
 
 Add the instance to the list in `estimators.dart`, for example:
 
@@ -204,8 +204,7 @@ lib/
 │   ├── estimator_lab/
 │   │   ├── estimator_lab.dart        # Comparison chart/table
 │   │   ├── estimators.dart           # List of algorithms and parameters to compare
-│   │   ├── estimator_replay.dart     # App sample adapter, replay and reference alignment
-│   │   └── experimental_estimators.dart # Portable DistanceEstimator implementations
+│   │   └── estimator_replay.dart     # App sample adapter, replay and reference alignment
 │   ├── chart/
 │   │   ├── distance_steps_chart.dart # Interactive fl_chart widget
 │   │   └── session_chart_data.dart   # Series calculation & normalization
