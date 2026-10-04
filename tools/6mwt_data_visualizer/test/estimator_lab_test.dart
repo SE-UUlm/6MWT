@@ -126,7 +126,21 @@ void main() {
         markers.map((span) => span.style!.color),
         bars.map((bar) => bar.color),
       );
-      final reversedHits = [LineBarSpot(bars[1], 1, bars[1].spots[1]), hit];
+      // Flat step-only curves may have no point at this timestamp. Choose an
+      // actual second hit at the same time instead of assuming a list index.
+      final otherIndex = bars.indexWhere(
+        (bar) => bar != bars.first && bar.spots.any((p) => p.x == hit.x),
+      );
+      expect(otherIndex, greaterThan(0));
+      final other = bars[otherIndex];
+      final reversedHits = [
+        LineBarSpot(
+          other,
+          otherIndex,
+          other.spots.firstWhere((p) => p.x == hit.x),
+        ),
+        hit,
+      ];
       final items = tooltip.getTooltipItems(reversedHits);
       expect(items, hasLength(2));
       expect(tooltipText(items.first!), text);

@@ -1,15 +1,21 @@
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/calibrated_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/adaptive_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
+import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
 import 'walk_session_test.dart'
     show InitialSampleFakeSensorSource, RecordingSink;
+import 'kalman_gps_distance_estimator_test.dart' as kalman;
+import 'calibrated_step_distance_estimator_test.dart' as calibration;
 
 class RecordingEstimator extends DistanceEstimator {
   RecordingEstimator(this.increment);
@@ -48,6 +54,104 @@ SensorSample steps(double count) => SensorSample(
 );
 
 void main() {
+  for (final create in <DistanceEstimator Function()>[
+    () => CalibratedStepDistanceEstimator(),
+    () => AdaptiveGpsStepDistanceEstimator(),
+    () => KalmanGpsStepDistanceEstimator(),
+  ]) {
+    test('${create().runtimeType} live revisions survive finish and reset', () {
+      fakeAsync((async) {
+        final initial = calibration.steps(0, 100);
+        final source = InitialSampleFakeSensorSource([initial]);
+        final direct = create()..addSample(initial);
+        final session = WalkSession(
+          sources: [source],
+          distanceEstimator: GpsDistanceEstimator(),
+          comparisonEstimators: [
+            NamedDistanceEstimator('GPS + steps', create()),
+          ],
+          walkDuration: const Duration(seconds: 20),
+          now: () => clock.now(),
+        );
+        session.start();
+        async.flushMicrotasks();
+        for (final sample in [
+          calibration.steps(10, 120),
+          calibration.gps(0, 0),
+          calibration.gps(5, 5),
+          calibration.gps(10, 10),
+        ]) {
+          direct.addSample(sample);
+          source.controller.add(sample);
+          async.flushMicrotasks();
+          expect(
+            session.state.comparisons.single.distance,
+            direct.totalDistance,
+          );
+          expect(session.state.comparisons.single.error, isNull);
+        }
+        final frozen = session.state.comparisons.single;
+        // Kalman retains some prior uncertainty after a single GPS window.
+        final expected = direct is KalmanGpsStepDistanceEstimator
+            ? 12.124
+            : 10.0;
+        expect(frozen.distance, closeTo(expected, .03));
+        async.elapse(const Duration(seconds: 20));
+        async.flushMicrotasks();
+        expect(session.state.phase, WalkPhase.finished);
+        expect(session.state.comparisons.single.distance, frozen.distance);
+        session.reset();
+        async.flushMicrotasks();
+        expect(frozen.distance, closeTo(expected, .03));
+        session.dispose();
+        async.flushMicrotasks();
+      });
+    });
+  }
+
+  test('Kalman live comparison retains the filtered result at finish', () {
+    fakeAsync((async) {
+      final initial = kalman.gps(0, 0);
+      final source = InitialSampleFakeSensorSource([initial]);
+      final comparison = KalmanGpsDistanceEstimator();
+      final direct = KalmanGpsDistanceEstimator()..addSample(initial);
+      final sink = RecordingSink();
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: GpsDistanceEstimator(),
+        comparisonEstimators: [
+          NamedDistanceEstimator('Kalman GPS', comparison),
+        ],
+        sampleSink: sink,
+        walkDuration: const Duration(seconds: 20),
+        now: () => clock.now(),
+      );
+      session.start();
+      async.flushMicrotasks();
+      for (final sample in [
+        kalman.gps(5, 7),
+        kalman.gps(7, 1000),
+        kalman.gps(10, 14),
+      ]) {
+        direct.addSample(sample);
+        source.controller.add(sample);
+        async.flushMicrotasks();
+        expect(session.state.comparisons.single.distance, direct.totalDistance);
+      }
+      expect(sink.recorded, hasLength(4));
+      expect(session.state.distance, greaterThan(1000));
+      async.elapse(const Duration(seconds: 20));
+      async.flushMicrotasks();
+      expect(session.state.phase, WalkPhase.finished);
+      expect(session.state.comparisons.single.distance, direct.totalDistance);
+      expect(
+        session.state.comparisons.single.additionalInfo,
+        direct.additionalInfo,
+      );
+      session.dispose();
+      async.flushMicrotasks();
+    });
+  });
   for (final abort in [false, true]) {
     test(
       'comparison lifecycle, ${abort ? 'abort' : 'finish'}, and immutable snapshots',

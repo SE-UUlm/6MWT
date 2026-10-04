@@ -79,66 +79,15 @@ appear immediately and load again the next time the recording is opened.
 2. All estimators configured in `estimators.dart` run automatically. Use the graph legend to toggle curves and the table to compare distances and additional diagnostics.
 3. To test another algorithm or parameter variant, edit the list in `createEstimators()` and hot restart the tool. Multiple instances of the same class with different parameters are allowed.
 
-The GPS/step estimator has three Lab variants: maximum GPS intervals of **5, 10
-and 15 seconds**. All three start step fallback after **5 seconds** without a
-good fix. Later accepted GPS segments replace only their overlapping provisional
-step distance and also contribute to stride calibration. Accuracy and speed
-filters still apply; a rejected fix breaks the GPS segment. The main app keeps
-its existing 5-second defaults.
-
-Variant labels include the GPS interval limit. **Additional info** shows both
-time limits, accepted GPS intervals, rejection counts for time gaps, coordinates,
-accuracy and speed, and successful/rejected stride calibration windows. Successful
-updates include the first learned stride and subsequent smoothed updates.
-
-To compare all repository recordings with the same replay and reference alignment:
-
-```bash
-flutter test tool/compare_gps_gaps.dart --reporter expanded
-```
-
-This writes `build/gps_gap_comparison.md` and `build/gps_gap_comparison.json` with
-per-recording diagnostics, reference deltas over shared time, and aggregate errors.
-Watch measurements and manually drawn references are evaluated separately.
-
 The replay feeds **all recorded app sensor samples** to each estimator, from the earliest to the latest recorded timestamp. It uses subsecond timing, preserves file order for timestamp ties, and does not run in real time. It does not use the reference recording or a whole-session step-length estimate to calibrate algorithms. The original estimator runs unchanged; replay totals can differ from the stored distance if historical app versions, sample arrival order, or incomplete recordings differ.
 
 Reference distance uses the reference's cumulative `distance` values when available throughout the track, otherwise a GPS Haversine sum. The available overlap with the replay is displayed, interpolated at its boundaries and rebased to zero at the overlap start. A later start or earlier end does not hide the reference. Table reference deltas compare both distances over this shared interval only; hover the reference legend for its time range. A reference with no overlap or invalid/decreasing cumulative distance is unavailable. A zero reference distance has no percentage delta. Tooltips interpolate every visible curve at the same time in estimator order, with the reference last; times outside a curve's coverage show a dash rather than extrapolated values. The recording/map view retains its existing reference-window behavior.
 
-### Experimental algorithms
+### Distance estimator documentation
 
-- **Filtered GPS:** rejects invalid coordinates, reported accuracy radii above the threshold, nonpositive time intervals, and segment speeds above the threshold. Rejected fixes do not become the next segment's anchor. Missing accuracy is accepted. This simple filter can remain anchored at a bad first fix; it is a development baseline.
-- **Steps:** cumulative step deltas multiplied by a fixed length. Uses the first valid cumulative-step source, ignores status-only events, and treats a counter decrease as a new baseline. No steps before the first sample are inferred.
-
-These implementations are shared with the main app, where they run as live comparisons. The main app still uses the original GPS estimator for its primary distance and fitness assessment.
-
-### Adding your own DistanceEstimator
-
-Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `../../app/lib/features/walk/domain/experimental_estimators.dart` for the shared implementations. Keep algorithms independent of widgets, replay state and reference data.
-
-Add the instance to the list in `estimators.dart`, for example:
-
-```dart
-List<DistanceEstimator> createEstimators() => [
-  GpsDistanceEstimator(),
-  MyDistanceEstimator(threshold: 10),
-  MyDistanceEstimator(threshold: 20),
-];
-```
-
-The tool uses the class name and list position to identify each curve. New instances are created for every session, and replay calls `reset()` before feeding samples. Failures are caught separately for each estimator. The app GPS implementation is imported directly, so changes to it are available after a hot restart/rebuild.
-
-Optionally override `additionalInfo` to expose settings and calculation diagnostics:
-
-```dart
-@override
-Map<String, String> get additionalInfo => {
-  'Rejected GPS': '$rejected',
-  'Threshold': '$threshold m',
-};
-```
-
-The default getter returns an empty map. The tool snapshots the map after calculation and displays every entry in the **Additional info** column. No UI or replay changes are needed for new diagnostics. Clear any per-run counters in `reset()`.
+See the [Distance Estimators wiki page](../../wiki/Distance-Estimators.md) for all
+algorithms, GPS/step Lab variants, configuration, diagnostics, limitations,
+benchmarks, and instructions for adding an estimator.
 
 The local app dependency also resolves its transitive plugins; generated desktop plugin registrations are therefore part of the tool. Replays themselves require no sensor permissions or live sensor access.
 
