@@ -391,7 +391,7 @@ provide a fallback. GPS and steps never both contribute to the same interval.
 - Reject lengths outside 0.15–1.6 m or residuals exceeding three model sigmas.
   Update with `K = P'/(P'+R)`, `L += K × residual`, `P = (1-K) × P'`.
 
-The scalar update follows [Welch and Bishop's Kalman filter introduction](https://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf).
+The scalar update follows [Welch and Bishop's Kalman filter introduction](https://www.cs.cmu.edu/~motionplanning/papers/sbp_papers/kalman/welch_intro_kalman.pdf).
 The sensor model, gates and default parameters here are engineering assumptions.
 
 The current length applies to all observed steps, including earlier ones; the
