@@ -1,3 +1,5 @@
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,6 +12,72 @@ String tooltipText(LineTooltipItem item) =>
     TextSpan(text: item.text, children: item.children).toPlainText();
 
 void main() {
+  testWidgets('horizontal scrollbar exposes diagnostics in a narrow window', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(900, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: EstimatorLab(
+            session: fixtures.session(
+              [fixtures.gps(0, 0), fixtures.gps(5, 0.00005)],
+              reference: fixtures.session([
+                fixtures.gps(0, 0, distance: 0),
+                fixtures.gps(5, 0.00005, distance: 5),
+              ]),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final scrollView = find.byWidgetPredicate(
+      (widget) =>
+          widget is SingleChildScrollView &&
+          widget.scrollDirection == Axis.horizontal,
+    );
+    final controller = tester
+        .widget<SingleChildScrollView>(scrollView)
+        .controller!;
+    expect(controller.position.maxScrollExtent, greaterThan(0));
+    final scrollbar = tester.widget<Scrollbar>(
+      find.byWidgetPredicate(
+        (widget) => widget is Scrollbar && widget.controller == controller,
+      ),
+    );
+    expect(scrollbar.thumbVisibility, isTrue);
+
+    // The extra variants make the table taller than the window. Reach its
+    // bottom scrollbar through the surrounding vertical list first.
+    await tester.drag(find.byType(ListView), const Offset(0, -2400));
+    await tester.pumpAndSettle();
+    final viewport = tester.getRect(scrollView);
+    final diagnostics = find.textContaining('Calibration: Default').first;
+    expect(tester.getRect(diagnostics).right, greaterThan(viewport.right));
+
+    await tester.dragFrom(
+      Offset(viewport.left + 24, viewport.bottom - 5),
+      const Offset(600, 0),
+      kind: PointerDeviceKind.mouse,
+    );
+    await tester.pumpAndSettle();
+
+    expect(controller.offset, greaterThan(0));
+    final diagnosticsRect = tester.getRect(diagnostics);
+    expect(diagnosticsRect.left, greaterThanOrEqualTo(viewport.left));
+    expect(diagnosticsRect.right, lessThanOrEqualTo(viewport.right));
+    expect(tester.takeException(), isNull);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets(
     'partial reference is visible and tooltips include unhit curves in order',
     (tester) async {

@@ -1,4 +1,6 @@
+import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
 
 import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
 
@@ -8,4 +10,9 @@ List<DistanceEstimator> createEstimators() => [
   GpsDistanceEstimator(),
   FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
   StepDistanceEstimator(stepLength: 0.75),
+  for (final seconds in [5, 10, 15])
+    GpsStepDistanceEstimator(
+      stepSourceId: PedometerSource.id,
+      maxGpsInterval: Duration(seconds: seconds),
+    ),
 ];

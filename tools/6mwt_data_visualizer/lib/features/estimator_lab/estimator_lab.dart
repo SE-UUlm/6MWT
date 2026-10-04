@@ -18,6 +18,7 @@ class EstimatorLab extends StatefulWidget {
 }
 
 class _EstimatorLabState extends State<EstimatorLab> {
+  final ScrollController _tableScrollController = ScrollController();
   final Set<int> _hidden = {};
   final Set<int> _hiddenReferences = {};
   late EstimatorReplay _replay;
@@ -36,6 +37,12 @@ class _EstimatorLabState extends State<EstimatorLab> {
   void initState() {
     super.initState();
     _run();
+  }
+
+  @override
+  void dispose() {
+    _tableScrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -118,31 +125,42 @@ class _EstimatorLabState extends State<EstimatorLab> {
   }
 
   Widget _buildResultsTable() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        dataRowMinHeight: 56,
-        dataRowMaxHeight: double.infinity,
-        columns: [
-          DataColumn(label: Text('Estimator / Reference')),
-          DataColumn(label: Text('Distance (m)'), numeric: true),
-          DataColumn(label: Text('Δ stored (m)'), numeric: true),
-          for (final reference in _replay.references) ...[
-            DataColumn(
-              label: Text('Δ ${reference.name} (m)'),
-              numeric: true,
-              tooltip:
-                  'Distance difference within the shared recording interval only.',
-            ),
-            DataColumn(label: Text('Δ ${reference.name} (%)'), numeric: true),
+    return Scrollbar(
+      controller: _tableScrollController,
+      thumbVisibility: true,
+      trackVisibility: true,
+      interactive: true,
+      thickness: 10,
+      scrollbarOrientation: ScrollbarOrientation.bottom,
+      child: SingleChildScrollView(
+        controller: _tableScrollController,
+        primary: false,
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(bottom: 16),
+        child: DataTable(
+          dataRowMinHeight: 56,
+          dataRowMaxHeight: double.infinity,
+          columns: [
+            DataColumn(label: Text('Estimator / Reference')),
+            DataColumn(label: Text('Distance (m)'), numeric: true),
+            DataColumn(label: Text('Δ stored (m)'), numeric: true),
+            for (final reference in _replay.references) ...[
+              DataColumn(
+                label: Text('Δ ${reference.name} (m)'),
+                numeric: true,
+                tooltip:
+                    'Distance difference within the shared recording interval only.',
+              ),
+              DataColumn(label: Text('Δ ${reference.name} (%)'), numeric: true),
+            ],
+            DataColumn(label: Text('Additional info')),
           ],
-          DataColumn(label: Text('Additional info')),
-        ],
-        rows: [
-          for (var i = 0; i < _results.length; i++) _buildResultRow(i),
-          for (var i = 0; i < _replay.references.length; i++)
-            _buildReferenceRow(i),
-        ],
+          rows: [
+            for (var i = 0; i < _results.length; i++) _buildResultRow(i),
+            for (var i = 0; i < _replay.references.length; i++)
+              _buildReferenceRow(i),
+          ],
+        ),
       ),
     );
   }
