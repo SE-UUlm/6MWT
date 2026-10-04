@@ -33,7 +33,7 @@ void main() {
     for (var i = 0; i < 100; i++) {
       repository.addSample(
         'session-1',
-        createSample(DateTime(2026, 7, 1).add(Duration(seconds: i)), 1),
+        createSample(DateTime.utc(2026, 7, 1).add(Duration(seconds: i)), 1),
       );
     }
 
@@ -62,6 +62,78 @@ void main() {
     expect(result.first['timestamp'], isA<String>());
     expect(result.first['id'], isA<int>());
   });
+
+  test(
+    'preserves UTC timestamps and precision for GPS and step samples',
+    () async {
+      final repository = SampleRepository(db);
+      final utc = DateTime.utc(2026, 7, 1, 12, 0, 1, 123, 456);
+
+      repository.addSample('session-1', createSample(utc, 48.5));
+      for (final values in [
+        {StepKeys.cumulativeSteps: 100.0},
+        {StepKeys.pedestrianStatus: 1.0},
+      ]) {
+        repository.addSample(
+          'session-1',
+          SensorSample(
+            timestamp: utc,
+            sourceId: 'pedometer',
+            type: SampleType.steps,
+            values: values,
+          ),
+        );
+      }
+      await repository.flush();
+
+      final rows = await db.select(db.sensorSamples).get();
+      expect(rows, hasLength(3));
+      for (final row in rows) {
+        expect(row.timestamp.isUtc, isTrue);
+        expect(
+          row.timestamp.microsecondsSinceEpoch,
+          utc.microsecondsSinceEpoch,
+        );
+      }
+      final sessionExport = await repository.exportSession('session-1');
+      final allExports = await repository.exportAllSessions();
+      for (final rows in [sessionExport, allExports['session-1']!]) {
+        expect(
+          rows.map((row) => row['timestamp']),
+          everyElement(utc.toIso8601String()),
+        );
+      }
+    },
+  );
+
+  test(
+    'exports existing local database timestamps in UTC without changing the instant',
+    () async {
+      final utc = DateTime.utc(2026, 7, 1, 12, 0, 1, 123, 456);
+      // Bypass the repository to simulate a recording saved before normalization.
+      await db
+          .into(db.sensorSamples)
+          .insert(
+            SensorSamplesCompanion.insert(
+              timestamp: utc.toLocal(),
+              sessionId: 'old-session',
+              sourceId: 'pedometer',
+              type: 'steps',
+              values: '{"cumulative_steps":100}',
+            ),
+          );
+      final repository = SampleRepository(db);
+      expect(
+        (await repository.exportSession('old-session')).single['timestamp'],
+        utc.toIso8601String(),
+      );
+      expect(
+        (await repository.exportAllSessions())['old-session']!
+            .single['timestamp'],
+        utc.toIso8601String(),
+      );
+    },
+  );
 
   test('exportSession returns samples ordered by timestamp', () async {
     final repository = SampleRepository(db);

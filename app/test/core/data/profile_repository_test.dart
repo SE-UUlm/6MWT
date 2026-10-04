@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
@@ -167,7 +168,7 @@ void main() {
       final profile = await repository.loadProfile(id);
 
       expect(profile, isNotNull);
-      expect(profile!.timestamp, isNotNull);
+      expect(profile!.timestamp.isUtc, isTrue);
       // The database-generated timestamp should be roughly "now".
       expect(
         profile.timestamp.millisecondsSinceEpoch,
@@ -181,6 +182,28 @@ void main() {
   });
 
   group('exportAllProfiles', () {
+    test('exports legacy local profile timestamps in UTC', () async {
+      final instant = DateTime.utc(2026, 7, 1, 12, 30, 0, 123, 456);
+      final id = await db
+          .into(db.profiles)
+          .insert(
+            ProfilesCompanion.insert(
+              height: 180,
+              age: 30,
+              timestamp: Value(instant.toLocal()),
+            ),
+          );
+      final repository = ProfileRepository(db);
+      expect(
+        (await repository.exportProfile(id))!['timestamp'],
+        instant.toIso8601String(),
+      );
+      expect(
+        (await repository.exportAllProfiles()).single['timestamp'],
+        instant.toIso8601String(),
+      );
+    });
+
     test('returns all profiles with correct fields', () async {
       final repository = ProfileRepository(db);
 

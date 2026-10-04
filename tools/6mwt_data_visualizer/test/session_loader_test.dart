@@ -8,67 +8,84 @@ void main() {
     if (!Directory(dataDir).existsSync()) return;
 
     final data = await SessionLoader.loadFromDataDirectory(dataDir);
-    expect(data.sessions.length, 10);
+    final sessionFolders = Directory(dataDir)
+        .listSync()
+        .whereType<Directory>()
+        .where((folder) => File('${folder.path}/session.json').existsSync());
+    expect(data.sessions.length, sessionFolders.length);
 
     // Basauri should not have a reference
-    final basauri = data.sessions.firstWhere((s) => s.notes.contains('Basauri'));
+    final basauri = data.sessions.firstWhere(
+      (s) => s.notes.contains('Basauri'),
+    );
     expect(basauri.hasReference, isFalse);
     expect(basauri.referenceSession, isNull);
 
     // Gasteiz 1 should have a reference
-    final gasteiz = data.sessions.firstWhere((s) => s.notes.contains('Gasteiz 1'));
+    final gasteiz = data.sessions.firstWhere(
+      (s) => s.notes.contains('Gasteiz 1'),
+    );
     expect(gasteiz.hasReference, isTrue);
     expect(gasteiz.referenceSession, isNotNull);
     expect(gasteiz.referenceSession!.distance, closeTo(598.3, 0.5));
   });
 
-  test('Loads single session.json and automatically attaches reference.json', () async {
-    const filePath = '../../data/Gräfenberg Wald 3/session.json';
-    if (!File(filePath).existsSync()) return;
+  test(
+    'Loads single session.json and automatically attaches reference.json',
+    () async {
+      const filePath = '../../data/Gräfenberg Wald 3/session.json';
+      if (!File(filePath).existsSync()) return;
 
-    final data = await SessionLoader.load(filePath);
-    expect(data.sessions.length, 1);
-    final session = data.sessions.first;
-    expect(session.notes, contains('Gräfenberg Wald 3'));
-    expect(session.hasReference, isTrue);
-    expect(session.referenceSession, isNotNull);
-    expect(session.referenceSession!.distance, closeTo(212.3, 0.5));
-    expect(session.referenceSession!.positionSamples.length, 72);
-  });
+      final data = await SessionLoader.load(filePath);
+      expect(data.sessions.length, 1);
+      final session = data.sessions.first;
+      expect(session.notes, contains('Gräfenberg Wald 3'));
+      expect(session.hasReference, isTrue);
+      expect(session.referenceSession, isNotNull);
+      expect(session.referenceSession!.distance, closeTo(212.3, 0.5));
+      expect(session.referenceSession!.positionSamples.length, 72);
+    },
+  );
 
-  test('Correctly trims reference recording to 6MWT session time window', () async {
-    const filePath = '../../data/Gasteiz 2/session.json';
-    if (!File(filePath).existsSync()) return;
+  test(
+    'Correctly trims reference recording to 6MWT session time window',
+    () async {
+      const filePath = '../../data/Gasteiz 2/session.json';
+      if (!File(filePath).existsSync()) return;
 
-    final data = await SessionLoader.load(filePath);
-    final session = data.sessions.first;
-    expect(session.hasReference, isTrue);
+      final data = await SessionLoader.load(filePath);
+      final session = data.sessions.first;
+      expect(session.hasReference, isTrue);
 
-    // Untrimmed
-    final rawRef = session.referenceSession!;
-    expect(rawRef.distance, closeTo(720.0, 1.0));
-    expect(rawRef.positionSamples.length, 92);
+      // Untrimmed
+      final rawRef = session.referenceSession!;
+      expect(rawRef.distance, closeTo(720.0, 1.0));
+      expect(rawRef.positionSamples.length, 92);
 
-    // Trimmed to 360s window (+ 1 sample buffer before/after)
-    final trimmedRef = session.trimmedReferenceSession;
-    expect(trimmedRef, isNotNull);
-    expect(trimmedRef!.distance, closeTo(626.9, 1.0));
-    expect(trimmedRef.positionSamples.length, 75);
-    expect(trimmedRef.duration, inInclusiveRange(355, 365));
-  });
+      // Trimmed to 360s window (+ 1 sample buffer before/after)
+      final trimmedRef = session.trimmedReferenceSession;
+      expect(trimmedRef, isNotNull);
+      expect(trimmedRef!.distance, closeTo(626.9, 1.0));
+      expect(trimmedRef.positionSamples.length, 75);
+      expect(trimmedRef.duration, inInclusiveRange(355, 365));
+    },
+  );
 
-  test('Trims reference to the last sample of app session when recording extends beyond 6 minutes', () async {
-    const filePath = '../../data/Pletzia Wanderung/session.json';
-    if (!File(filePath).existsSync()) return;
+  test(
+    'Trims reference to the last sample of app session when recording extends beyond 6 minutes',
+    () async {
+      const filePath = '../../data/Pletzia Wanderung/session.json';
+      if (!File(filePath).existsSync()) return;
 
-    final data = await SessionLoader.load(filePath);
-    final session = data.sessions.first;
-    expect(session.hasReference, isTrue);
+      final data = await SessionLoader.load(filePath);
+      final session = data.sessions.first;
+      expect(session.hasReference, isTrue);
 
-    // App recording extends to ~397s (6:37)
-    final trimmedRef = session.trimmedReferenceSession;
-    expect(trimmedRef, isNotNull);
-    expect(trimmedRef!.duration, greaterThan(390));
-    expect(trimmedRef.positionSamples.length, greaterThan(120));
-  });
+      // App recording extends to ~397s (6:37)
+      final trimmedRef = session.trimmedReferenceSession;
+      expect(trimmedRef, isNotNull);
+      expect(trimmedRef!.duration, greaterThan(390));
+      expect(trimmedRef.positionSamples.length, greaterThan(120));
+    },
+  );
 }

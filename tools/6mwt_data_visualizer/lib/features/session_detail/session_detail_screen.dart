@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/providers.dart';
 
 import '../../core/domain/session.dart';
 import '../../core/utils/date_formatters.dart';
 import '../chart/distance_steps_chart.dart';
+import '../estimator_lab/estimator_lab.dart';
 import '../map/session_map.dart';
 import 'session_info_panel.dart';
 
-class SessionDetailScreen extends StatefulWidget {
+class SessionDetailScreen extends ConsumerStatefulWidget {
   const SessionDetailScreen({super.key, required this.session});
 
   final Session session;
 
   @override
-  State<SessionDetailScreen> createState() => _SessionDetailScreenState();
+  ConsumerState<SessionDetailScreen> createState() =>
+      _SessionDetailScreenState();
 }
 
-class _SessionDetailScreenState extends State<SessionDetailScreen> {
+class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   bool _showChart = true;
+  bool _showLab = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,44 +36,76 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
           showChart: _showChart,
           onToggleChart: () => setState(() => _showChart = !_showChart),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: SegmentedButton<bool>(
+            segments: const [
+              ButtonSegment(
+                value: false,
+                label: Text('Recording'),
+                icon: Icon(Icons.map_outlined),
+              ),
+              ButtonSegment(
+                value: true,
+                label: Text('Estimator Lab'),
+                icon: Icon(Icons.science_outlined),
+              ),
+            ],
+            selected: {_showLab},
+            onSelectionChanged: (selection) =>
+                setState(() => _showLab = selection.single),
+          ),
+        ),
         // Main content: map & chart on the left, info panel on the right
         Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          // Keep the lab mounted when switching tabs so parameter variants survive.
+          child: IndexedStack(
+            index: _showLab ? 1 : 0,
             children: [
-              // Left side: Map and Chart
-              Expanded(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Map view
-                    Expanded(
-                      flex: _showChart ? 3 : 1,
-                      child: SessionMap(session: session),
-                    ),
-                    // Chart view (Phase 2)
-                    if (_showChart) ...[
-                      const Divider(height: 1),
-                      Expanded(
-                        flex: 2,
-                        child: DistanceStepsChart(
-                          session: session,
-                          onClose: () => setState(() => _showChart = false),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Left side: Map and Chart
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Map view
+                        Expanded(
+                          flex: _showChart ? 3 : 1,
+                          child: SessionMap(
+                            session: session,
+                            onReferenceSaved: (updated) => ref
+                                .read(exportDataProvider.notifier)
+                                .replaceSession(session, updated),
+                          ),
                         ),
-                      ),
-                    ],
-                  ],
-                ),
+                        // Chart view (Phase 2)
+                        if (_showChart) ...[
+                          const Divider(height: 1),
+                          Expanded(
+                            flex: 2,
+                            child: DistanceStepsChart(
+                              session: session,
+                              onClose: () => setState(() => _showChart = false),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  // Info panel on the right
+                  SizedBox(
+                    width: 260,
+                    child: Material(
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
+                      child: SessionInfoPanel(session: session),
+                    ),
+                  ),
+                ],
               ),
-              // Info panel on the right
-              SizedBox(
-                width: 260,
-                child: Material(
-                  color: Theme.of(context).colorScheme.surfaceContainerLow,
-                  child: SessionInfoPanel(session: session),
-                ),
-              ),
+              EstimatorLab(session: session),
             ],
           ),
         ),
@@ -113,7 +150,10 @@ class _TitleBar extends StatelessWidget {
                 if (session.hasReference) ...[
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.green.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(4),
@@ -125,10 +165,14 @@ class _TitleBar extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.watch_outlined, size: 12, color: Colors.green),
+                        const Icon(
+                          Icons.watch_outlined,
+                          size: 12,
+                          color: Colors.green,
+                        ),
                         const SizedBox(width: 4),
                         Text(
-                          'Reference',
+                          '${session.references.length} reference(s)',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.green.shade300,
                             fontSize: 10,
@@ -152,7 +196,9 @@ class _TitleBar extends StatelessWidget {
           IconButton(
             icon: Icon(
               showChart ? Icons.stacked_line_chart : Icons.show_chart,
-              color: showChart ? colorScheme.primary : colorScheme.onSurfaceVariant,
+              color: showChart
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
               size: 20,
             ),
             tooltip: showChart ? 'Hide chart' : 'Show chart',

@@ -1,0 +1,3404 @@
+{
+  "id": "a0cbc6a63deaf6850b0d9e57a9c90448",
+  "startedAt": "2026-10-01T14:24:29.346892Z",
+  "duration": 202,
+  "distance": 263.51727878119385,
+  "phase": "aborted",
+  "profileId": 1,
+  "samples": [
+    {
+      "id": 2665,
+      "timestamp": "2026-10-01T14:24:29.491Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3990312,
+        "longitude": 9.9836565,
+        "accuracy": 12.340999603271484,
+        "altitude": 528.0,
+        "speed": 0.0,
+        "heading": 0.0
+      }
+    },
+    {
+      "id": 2668,
+      "timestamp": "2026-10-01T14:24:35.487Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3990366,
+        "longitude": 9.9836827,
+        "accuracy": 16.10099983215332,
+        "altitude": 528.0,
+        "speed": 1.2976806163787842,
+        "heading": 87.65840148925781
+      }
+    },
+    {
+      "id": 2682,
+      "timestamp": "2026-10-01T14:24:40.503Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3990735,
+        "longitude": 9.9836989,
+        "accuracy": 11.088000297546387,
+        "altitude": 528.0,
+        "speed": 1.2884372472763062,
+        "heading": 5.081314563751221
+      }
+    },
+    {
+      "id": 2692,
+      "timestamp": "2026-10-01T14:24:45.306Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3991411,
+        "longitude": 9.9836855,
+        "accuracy": 13.236000061035156,
+        "altitude": 528.0,
+        "speed": 1.3834294080734253,
+        "heading": 16.987751007080078
+      }
+    },
+    {
+      "id": 2702,
+      "timestamp": "2026-10-01T14:24:50.487Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3992135,
+        "longitude": 9.9836594,
+        "accuracy": 8.329000473022461,
+        "altitude": 527.8999633789062,
+        "speed": 1.3697322607040405,
+        "heading": 342.3197326660156
+      }
+    },
+    {
+      "id": 2714,
+      "timestamp": "2026-10-01T14:24:55.206Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3992787,
+        "longitude": 9.983651,
+        "accuracy": 7.814000129699707,
+        "altitude": 527.8999633789062,
+        "speed": 1.3500746488571167,
+        "heading": 341.1419677734375
+      }
+    },
+    {
+      "id": 2723,
+      "timestamp": "2026-10-01T14:24:59.799Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993324,
+        "longitude": 9.983619,
+        "accuracy": 8.666000366210938,
+        "altitude": 527.8999633789062,
+        "speed": 1.301754117012024,
+        "heading": 347.9811096191406
+      }
+    },
+    {
+      "id": 2734,
+      "timestamp": "2026-10-01T14:25:04.400Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993718,
+        "longitude": 9.9836249,
+        "accuracy": 9.802000045776367,
+        "altitude": 527.8999633789062,
+        "speed": 1.2520906925201416,
+        "heading": 65.251708984375
+      }
+    },
+    {
+      "id": 2742,
+      "timestamp": "2026-10-01T14:25:09.043Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994061,
+        "longitude": 9.9836648,
+        "accuracy": 10.29800033569336,
+        "altitude": 521.5999755859375,
+        "speed": 1.2864960432052612,
+        "heading": 52.38298797607422
+      }
+    },
+    {
+      "id": 2750,
+      "timestamp": "2026-10-01T14:25:13.797Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994415,
+        "longitude": 9.9837742,
+        "accuracy": 12.781999588012695,
+        "altitude": 521.5999755859375,
+        "speed": 1.3517874479293823,
+        "heading": 61.79557800292969
+      }
+    },
+    {
+      "id": 2759,
+      "timestamp": "2026-10-01T14:25:18.500Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994367,
+        "longitude": 9.9839496,
+        "accuracy": 16.200000762939453,
+        "altitude": 521.5,
+        "speed": 1.4744694232940674,
+        "heading": 73.58108520507812
+      }
+    },
+    {
+      "id": 2769,
+      "timestamp": "2026-10-01T14:25:23.324Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994367,
+        "longitude": 9.9840524,
+        "accuracy": 17.058000564575195,
+        "altitude": 521.5,
+        "speed": 1.400885820388794,
+        "heading": 92.33503723144531
+      }
+    },
+    {
+      "id": 2778,
+      "timestamp": "2026-10-01T14:25:28.487Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994395,
+        "longitude": 9.9841505,
+        "accuracy": 15.937999725341797,
+        "altitude": 521.5,
+        "speed": 1.3337799310684204,
+        "heading": 94.33473205566406
+      }
+    },
+    {
+      "id": 2790,
+      "timestamp": "2026-10-01T14:25:33.143Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994401,
+        "longitude": 9.9842715,
+        "accuracy": 16.57699966430664,
+        "altitude": 521.5,
+        "speed": 1.3380849361419678,
+        "heading": 90.6933364868164
+      }
+    },
+    {
+      "id": 2798,
+      "timestamp": "2026-10-01T14:25:37.746Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994335,
+        "longitude": 9.9843358,
+        "accuracy": 14.486000061035156,
+        "altitude": 521.5,
+        "speed": 1.1591678857803345,
+        "heading": 96.66969299316406
+      }
+    },
+    {
+      "id": 2808,
+      "timestamp": "2026-10-01T14:25:42.358Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994485,
+        "longitude": 9.9844319,
+        "accuracy": 13.267000198364258,
+        "altitude": 521.5999755859375,
+        "speed": 1.275738000869751,
+        "heading": 89.38231658935547
+      }
+    },
+    {
+      "id": 2819,
+      "timestamp": "2026-10-01T14:25:47.213Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994683,
+        "longitude": 9.9845092,
+        "accuracy": 12.131999969482422,
+        "altitude": 521.5999755859375,
+        "speed": 1.2984046936035156,
+        "heading": 67.9189682006836
+      }
+    },
+    {
+      "id": 2827,
+      "timestamp": "2026-10-01T14:25:51.926Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995151,
+        "longitude": 9.9846151,
+        "accuracy": 9.77299976348877,
+        "altitude": 521.5999755859375,
+        "speed": 0.7561413645744324,
+        "heading": 71.33727264404297
+      }
+    },
+    {
+      "id": 2837,
+      "timestamp": "2026-10-01T14:25:56.487Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995296,
+        "longitude": 9.9847411,
+        "accuracy": 9.873000144958496,
+        "altitude": 521.5999755859375,
+        "speed": 1.0057836771011353,
+        "heading": 80.55562591552734
+      }
+    },
+    {
+      "id": 2846,
+      "timestamp": "2026-10-01T14:26:03.473Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995227,
+        "longitude": 9.9847505,
+        "accuracy": 8.01099967956543,
+        "altitude": 521.5999755859375,
+        "speed": 0.07483968883752823,
+        "heading": 0.0
+      }
+    },
+    {
+      "id": 2847,
+      "timestamp": "2026-10-01T14:26:09.486Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995124,
+        "longitude": 9.9847536,
+        "accuracy": 7.354000091552734,
+        "altitude": 521.5999755859375,
+        "speed": 0.07408417761325836,
+        "heading": 0.0
+      }
+    },
+    {
+      "id": 2848,
+      "timestamp": "2026-10-01T14:26:15.492Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995125,
+        "longitude": 9.9847701,
+        "accuracy": 6.583000183105469,
+        "altitude": 521.5999755859375,
+        "speed": 0.06501709669828415,
+        "heading": 0.0
+      }
+    },
+    {
+      "id": 2849,
+      "timestamp": "2026-10-01T14:26:23.486Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.39951,
+        "longitude": 9.9847906,
+        "accuracy": 6.823999881744385,
+        "altitude": 521.5999755859375,
+        "speed": 0.11587489396333694,
+        "heading": 73.76902770996094
+      }
+    },
+    {
+      "id": 2851,
+      "timestamp": "2026-10-01T14:26:28.367Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995099,
+        "longitude": 9.9848093,
+        "accuracy": 6.956999778747559,
+        "altitude": 527.5,
+        "speed": 0.13516351580619812,
+        "heading": 168.59768676757812
+      }
+    },
+    {
+      "id": 2864,
+      "timestamp": "2026-10-01T14:26:33.161Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994677,
+        "longitude": 9.9848228,
+        "accuracy": 6.311999797821045,
+        "altitude": 527.5,
+        "speed": 1.1238263845443726,
+        "heading": 176.03485107421875
+      }
+    },
+    {
+      "id": 2873,
+      "timestamp": "2026-10-01T14:26:38.447Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994179,
+        "longitude": 9.9848897,
+        "accuracy": 8.180000305175781,
+        "altitude": 527.3999633789062,
+        "speed": 1.1321004629135132,
+        "heading": 149.2744598388672
+      }
+    },
+    {
+      "id": 2882,
+      "timestamp": "2026-10-01T14:26:43.341Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993668,
+        "longitude": 9.9849304,
+        "accuracy": 9.767999649047852,
+        "altitude": 527.5,
+        "speed": 1.0865848064422607,
+        "heading": 201.61827087402344
+      }
+    },
+    {
+      "id": 2893,
+      "timestamp": "2026-10-01T14:26:48.646Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993251,
+        "longitude": 9.9849072,
+        "accuracy": 10.607999801635742,
+        "altitude": 527.5,
+        "speed": 0.962395966053009,
+        "heading": 259.9848937988281
+      }
+    },
+    {
+      "id": 2902,
+      "timestamp": "2026-10-01T14:26:53.381Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993264,
+        "longitude": 9.9848143,
+        "accuracy": 9.532999992370605,
+        "altitude": 527.2000122070312,
+        "speed": 1.1120706796646118,
+        "heading": 275.911865234375
+      }
+    },
+    {
+      "id": 2909,
+      "timestamp": "2026-10-01T14:26:57.882Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993694,
+        "longitude": 9.9847452,
+        "accuracy": 8.866000175476074,
+        "altitude": 527.5,
+        "speed": 1.2501907348632812,
+        "heading": 290.6634521484375
+      }
+    },
+    {
+      "id": 2921,
+      "timestamp": "2026-10-01T14:27:02.887Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993821,
+        "longitude": 9.984658,
+        "accuracy": 9.736000061035156,
+        "altitude": 527.5,
+        "speed": 1.366950273513794,
+        "heading": 263.27630615234375
+      }
+    },
+    {
+      "id": 2930,
+      "timestamp": "2026-10-01T14:27:07.600Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3993664,
+        "longitude": 9.9845594,
+        "accuracy": 13.36299991607666,
+        "altitude": 521.5999755859375,
+        "speed": 1.5257205963134766,
+        "heading": 250.2106170654297
+      }
+    },
+    {
+      "id": 2939,
+      "timestamp": "2026-10-01T14:27:12.746Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994053,
+        "longitude": 9.9843998,
+        "accuracy": 15.843000411987305,
+        "altitude": 521.5,
+        "speed": 1.3277404308319092,
+        "heading": 332.4270324707031
+      }
+    },
+    {
+      "id": 2949,
+      "timestamp": "2026-10-01T14:27:17.319Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3994438,
+        "longitude": 9.9844458,
+        "accuracy": 13.387999534606934,
+        "altitude": 521.5,
+        "speed": 1.4278528690338135,
+        "heading": 63.27069854736328
+      }
+    },
+    {
+      "id": 2959,
+      "timestamp": "2026-10-01T14:27:22.585Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995331,
+        "longitude": 9.9846036,
+        "accuracy": 18.88800048828125,
+        "altitude": 521.5999755859375,
+        "speed": 1.3444547653198242,
+        "heading": 73.23603820800781
+      }
+    },
+    {
+      "id": 2970,
+      "timestamp": "2026-10-01T14:27:27.086Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.399556,
+        "longitude": 9.9847781,
+        "accuracy": 22.739999771118164,
+        "altitude": 521.5999755859375,
+        "speed": 1.3720632791519165,
+        "heading": 80.68540954589844
+      }
+    },
+    {
+      "id": 2977,
+      "timestamp": "2026-10-01T14:27:31.921Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995614,
+        "longitude": 9.984861,
+        "accuracy": 21.281999588012695,
+        "altitude": 521.5999755859375,
+        "speed": 1.2616465091705322,
+        "heading": 66.68508911132812
+      }
+    },
+    {
+      "id": 2990,
+      "timestamp": "2026-10-01T14:27:37.458Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3995966,
+        "longitude": 9.9849682,
+        "accuracy": 18.690000534057617,
+        "altitude": 521.5999755859375,
+        "speed": 1.075463891029358,
+        "heading": 72.59367370605469
+      }
+    },
+    {
+      "id": 2997,
+      "timestamp": "2026-10-01T14:27:42.000Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.399622,
+        "longitude": 9.9849962,
+        "accuracy": 14.038000106811523,
+        "altitude": 521.5999755859375,
+        "speed": 0.3147587180137634,
+        "heading": 75.1078872680664
+      }
+    },
+    {
+      "id": 3010,
+      "timestamp": "2026-10-01T14:27:47.267Z",
+      "sourceId": "gps",
+      "type": "position",
+      "values": {
+        "latitude": 48.3996626,
+        "longitude": 9.9851555,
+        "accuracy": 15.652000427246094,
+        "altitude": 521.5999755859375,
+        "speed": 1.3458656072616577,
+        "heading": 66.23875427246094
+      }
+    },
+    {
+      "id": 2664,
+      "timestamp": "2026-10-01T14:24:29.432116Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2375.0
+      }
+    },
+    {
+      "id": 2666,
+      "timestamp": "2026-10-01T14:24:31.033254Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 0.0
+      }
+    },
+    {
+      "id": 2667,
+      "timestamp": "2026-10-01T14:24:32.047951Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 1.0
+      }
+    },
+    {
+      "id": 2669,
+      "timestamp": "2026-10-01T14:24:38.035900Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2376.0
+      }
+    },
+    {
+      "id": 2670,
+      "timestamp": "2026-10-01T14:24:38.040513Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2377.0
+      }
+    },
+    {
+      "id": 2671,
+      "timestamp": "2026-10-01T14:24:38.040868Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2378.0
+      }
+    },
+    {
+      "id": 2672,
+      "timestamp": "2026-10-01T14:24:38.040972Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2379.0
+      }
+    },
+    {
+      "id": 2673,
+      "timestamp": "2026-10-01T14:24:38.041040Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2380.0
+      }
+    },
+    {
+      "id": 2674,
+      "timestamp": "2026-10-01T14:24:38.041091Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2381.0
+      }
+    },
+    {
+      "id": 2675,
+      "timestamp": "2026-10-01T14:24:38.041155Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2382.0
+      }
+    },
+    {
+      "id": 2676,
+      "timestamp": "2026-10-01T14:24:38.041215Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2383.0
+      }
+    },
+    {
+      "id": 2677,
+      "timestamp": "2026-10-01T14:24:38.041263Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2384.0
+      }
+    },
+    {
+      "id": 2678,
+      "timestamp": "2026-10-01T14:24:39.043001Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2385.0
+      }
+    },
+    {
+      "id": 2679,
+      "timestamp": "2026-10-01T14:24:39.043238Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2386.0
+      }
+    },
+    {
+      "id": 2680,
+      "timestamp": "2026-10-01T14:24:40.050071Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2387.0
+      }
+    },
+    {
+      "id": 2681,
+      "timestamp": "2026-10-01T14:24:40.050345Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2388.0
+      }
+    },
+    {
+      "id": 2683,
+      "timestamp": "2026-10-01T14:24:41.052037Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2389.0
+      }
+    },
+    {
+      "id": 2684,
+      "timestamp": "2026-10-01T14:24:42.056406Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2390.0
+      }
+    },
+    {
+      "id": 2685,
+      "timestamp": "2026-10-01T14:24:42.056668Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2391.0
+      }
+    },
+    {
+      "id": 2686,
+      "timestamp": "2026-10-01T14:24:43.020218Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2392.0
+      }
+    },
+    {
+      "id": 2687,
+      "timestamp": "2026-10-01T14:24:43.020427Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2393.0
+      }
+    },
+    {
+      "id": 2688,
+      "timestamp": "2026-10-01T14:24:44.028312Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2394.0
+      }
+    },
+    {
+      "id": 2689,
+      "timestamp": "2026-10-01T14:24:44.028514Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2395.0
+      }
+    },
+    {
+      "id": 2690,
+      "timestamp": "2026-10-01T14:24:45.033196Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2396.0
+      }
+    },
+    {
+      "id": 2691,
+      "timestamp": "2026-10-01T14:24:45.033401Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2397.0
+      }
+    },
+    {
+      "id": 2693,
+      "timestamp": "2026-10-01T14:24:46.037249Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2398.0
+      }
+    },
+    {
+      "id": 2694,
+      "timestamp": "2026-10-01T14:24:46.037597Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2399.0
+      }
+    },
+    {
+      "id": 2695,
+      "timestamp": "2026-10-01T14:24:47.042985Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2400.0
+      }
+    },
+    {
+      "id": 2696,
+      "timestamp": "2026-10-01T14:24:48.047136Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2401.0
+      }
+    },
+    {
+      "id": 2697,
+      "timestamp": "2026-10-01T14:24:48.047499Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2402.0
+      }
+    },
+    {
+      "id": 2698,
+      "timestamp": "2026-10-01T14:24:49.055004Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2403.0
+      }
+    },
+    {
+      "id": 2699,
+      "timestamp": "2026-10-01T14:24:49.055287Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2404.0
+      }
+    },
+    {
+      "id": 2700,
+      "timestamp": "2026-10-01T14:24:50.055443Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2405.0
+      }
+    },
+    {
+      "id": 2701,
+      "timestamp": "2026-10-01T14:24:50.057593Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2406.0
+      }
+    },
+    {
+      "id": 2703,
+      "timestamp": "2026-10-01T14:24:51.023384Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2407.0
+      }
+    },
+    {
+      "id": 2704,
+      "timestamp": "2026-10-01T14:24:51.023605Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2408.0
+      }
+    },
+    {
+      "id": 2705,
+      "timestamp": "2026-10-01T14:24:52.027663Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2409.0
+      }
+    },
+    {
+      "id": 2706,
+      "timestamp": "2026-10-01T14:24:52.027864Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2410.0
+      }
+    },
+    {
+      "id": 2707,
+      "timestamp": "2026-10-01T14:24:53.032953Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2411.0
+      }
+    },
+    {
+      "id": 2708,
+      "timestamp": "2026-10-01T14:24:53.033156Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2412.0
+      }
+    },
+    {
+      "id": 2709,
+      "timestamp": "2026-10-01T14:24:54.037905Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2413.0
+      }
+    },
+    {
+      "id": 2710,
+      "timestamp": "2026-10-01T14:24:54.038571Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2414.0
+      }
+    },
+    {
+      "id": 2711,
+      "timestamp": "2026-10-01T14:24:54.038762Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2415.0
+      }
+    },
+    {
+      "id": 2712,
+      "timestamp": "2026-10-01T14:24:55.042049Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2416.0
+      }
+    },
+    {
+      "id": 2713,
+      "timestamp": "2026-10-01T14:24:55.042516Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2417.0
+      }
+    },
+    {
+      "id": 2715,
+      "timestamp": "2026-10-01T14:24:56.051008Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2418.0
+      }
+    },
+    {
+      "id": 2716,
+      "timestamp": "2026-10-01T14:24:56.051501Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2419.0
+      }
+    },
+    {
+      "id": 2717,
+      "timestamp": "2026-10-01T14:24:56.051726Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2420.0
+      }
+    },
+    {
+      "id": 2718,
+      "timestamp": "2026-10-01T14:24:57.051042Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2421.0
+      }
+    },
+    {
+      "id": 2719,
+      "timestamp": "2026-10-01T14:24:57.051337Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2422.0
+      }
+    },
+    {
+      "id": 2720,
+      "timestamp": "2026-10-01T14:24:58.056859Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2423.0
+      }
+    },
+    {
+      "id": 2721,
+      "timestamp": "2026-10-01T14:24:59.022297Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2424.0
+      }
+    },
+    {
+      "id": 2722,
+      "timestamp": "2026-10-01T14:24:59.022512Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2425.0
+      }
+    },
+    {
+      "id": 2724,
+      "timestamp": "2026-10-01T14:25:00.025763Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2426.0
+      }
+    },
+    {
+      "id": 2725,
+      "timestamp": "2026-10-01T14:25:01.032579Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2427.0
+      }
+    },
+    {
+      "id": 2726,
+      "timestamp": "2026-10-01T14:25:01.032950Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2428.0
+      }
+    },
+    {
+      "id": 2727,
+      "timestamp": "2026-10-01T14:25:01.033088Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2429.0
+      }
+    },
+    {
+      "id": 2728,
+      "timestamp": "2026-10-01T14:25:02.038194Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2430.0
+      }
+    },
+    {
+      "id": 2729,
+      "timestamp": "2026-10-01T14:25:02.038453Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2431.0
+      }
+    },
+    {
+      "id": 2730,
+      "timestamp": "2026-10-01T14:25:03.042206Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2432.0
+      }
+    },
+    {
+      "id": 2731,
+      "timestamp": "2026-10-01T14:25:03.042457Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2433.0
+      }
+    },
+    {
+      "id": 2732,
+      "timestamp": "2026-10-01T14:25:04.048928Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2434.0
+      }
+    },
+    {
+      "id": 2733,
+      "timestamp": "2026-10-01T14:25:04.049177Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2435.0
+      }
+    },
+    {
+      "id": 2735,
+      "timestamp": "2026-10-01T14:25:05.053020Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2436.0
+      }
+    },
+    {
+      "id": 2736,
+      "timestamp": "2026-10-01T14:25:05.053213Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2437.0
+      }
+    },
+    {
+      "id": 2737,
+      "timestamp": "2026-10-01T14:25:06.056171Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2438.0
+      }
+    },
+    {
+      "id": 2738,
+      "timestamp": "2026-10-01T14:25:07.019624Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2439.0
+      }
+    },
+    {
+      "id": 2739,
+      "timestamp": "2026-10-01T14:25:07.019769Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2440.0
+      }
+    },
+    {
+      "id": 2740,
+      "timestamp": "2026-10-01T14:25:08.025345Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2441.0
+      }
+    },
+    {
+      "id": 2741,
+      "timestamp": "2026-10-01T14:25:09.031976Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2442.0
+      }
+    },
+    {
+      "id": 2743,
+      "timestamp": "2026-10-01T14:25:10.036091Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2443.0
+      }
+    },
+    {
+      "id": 2744,
+      "timestamp": "2026-10-01T14:25:10.037278Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2444.0
+      }
+    },
+    {
+      "id": 2745,
+      "timestamp": "2026-10-01T14:25:11.040830Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2445.0
+      }
+    },
+    {
+      "id": 2746,
+      "timestamp": "2026-10-01T14:25:12.047266Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2446.0
+      }
+    },
+    {
+      "id": 2747,
+      "timestamp": "2026-10-01T14:25:12.047514Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2447.0
+      }
+    },
+    {
+      "id": 2748,
+      "timestamp": "2026-10-01T14:25:13.050574Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2448.0
+      }
+    },
+    {
+      "id": 2749,
+      "timestamp": "2026-10-01T14:25:13.050816Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2449.0
+      }
+    },
+    {
+      "id": 2751,
+      "timestamp": "2026-10-01T14:25:14.053134Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2450.0
+      }
+    },
+    {
+      "id": 2752,
+      "timestamp": "2026-10-01T14:25:14.053326Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2451.0
+      }
+    },
+    {
+      "id": 2753,
+      "timestamp": "2026-10-01T14:25:15.019671Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2452.0
+      }
+    },
+    {
+      "id": 2754,
+      "timestamp": "2026-10-01T14:25:16.025728Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2453.0
+      }
+    },
+    {
+      "id": 2755,
+      "timestamp": "2026-10-01T14:25:16.025914Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2454.0
+      }
+    },
+    {
+      "id": 2756,
+      "timestamp": "2026-10-01T14:25:17.033433Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2455.0
+      }
+    },
+    {
+      "id": 2757,
+      "timestamp": "2026-10-01T14:25:17.033695Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2456.0
+      }
+    },
+    {
+      "id": 2758,
+      "timestamp": "2026-10-01T14:25:18.037092Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2457.0
+      }
+    },
+    {
+      "id": 2760,
+      "timestamp": "2026-10-01T14:25:19.041066Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2458.0
+      }
+    },
+    {
+      "id": 2761,
+      "timestamp": "2026-10-01T14:25:20.048536Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2459.0
+      }
+    },
+    {
+      "id": 2762,
+      "timestamp": "2026-10-01T14:25:20.048769Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2460.0
+      }
+    },
+    {
+      "id": 2763,
+      "timestamp": "2026-10-01T14:25:21.050459Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2461.0
+      }
+    },
+    {
+      "id": 2764,
+      "timestamp": "2026-10-01T14:25:21.058893Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2462.0
+      }
+    },
+    {
+      "id": 2765,
+      "timestamp": "2026-10-01T14:25:22.055841Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2463.0
+      }
+    },
+    {
+      "id": 2766,
+      "timestamp": "2026-10-01T14:25:22.056207Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2464.0
+      }
+    },
+    {
+      "id": 2767,
+      "timestamp": "2026-10-01T14:25:23.020357Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2465.0
+      }
+    },
+    {
+      "id": 2768,
+      "timestamp": "2026-10-01T14:25:23.020565Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2466.0
+      }
+    },
+    {
+      "id": 2770,
+      "timestamp": "2026-10-01T14:25:24.023702Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2467.0
+      }
+    },
+    {
+      "id": 2771,
+      "timestamp": "2026-10-01T14:25:24.023929Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2468.0
+      }
+    },
+    {
+      "id": 2772,
+      "timestamp": "2026-10-01T14:25:25.030781Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2469.0
+      }
+    },
+    {
+      "id": 2773,
+      "timestamp": "2026-10-01T14:25:26.035590Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2470.0
+      }
+    },
+    {
+      "id": 2774,
+      "timestamp": "2026-10-01T14:25:26.035933Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2471.0
+      }
+    },
+    {
+      "id": 2775,
+      "timestamp": "2026-10-01T14:25:27.040719Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2472.0
+      }
+    },
+    {
+      "id": 2776,
+      "timestamp": "2026-10-01T14:25:27.041065Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2473.0
+      }
+    },
+    {
+      "id": 2777,
+      "timestamp": "2026-10-01T14:25:28.047693Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2474.0
+      }
+    },
+    {
+      "id": 2779,
+      "timestamp": "2026-10-01T14:25:29.049889Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2475.0
+      }
+    },
+    {
+      "id": 2780,
+      "timestamp": "2026-10-01T14:25:29.050308Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2476.0
+      }
+    },
+    {
+      "id": 2781,
+      "timestamp": "2026-10-01T14:25:30.056384Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2477.0
+      }
+    },
+    {
+      "id": 2782,
+      "timestamp": "2026-10-01T14:25:30.056586Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2478.0
+      }
+    },
+    {
+      "id": 2783,
+      "timestamp": "2026-10-01T14:25:31.020729Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2479.0
+      }
+    },
+    {
+      "id": 2784,
+      "timestamp": "2026-10-01T14:25:31.021115Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2480.0
+      }
+    },
+    {
+      "id": 2785,
+      "timestamp": "2026-10-01T14:25:31.021244Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2481.0
+      }
+    },
+    {
+      "id": 2786,
+      "timestamp": "2026-10-01T14:25:32.480008Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2482.0
+      }
+    },
+    {
+      "id": 2787,
+      "timestamp": "2026-10-01T14:25:32.480180Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2483.0
+      }
+    },
+    {
+      "id": 2788,
+      "timestamp": "2026-10-01T14:25:33.477470Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2484.0
+      }
+    },
+    {
+      "id": 2789,
+      "timestamp": "2026-10-01T14:25:33.477573Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2485.0
+      }
+    },
+    {
+      "id": 2791,
+      "timestamp": "2026-10-01T14:25:34.332288Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2486.0
+      }
+    },
+    {
+      "id": 2792,
+      "timestamp": "2026-10-01T14:25:35.040700Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2487.0
+      }
+    },
+    {
+      "id": 2793,
+      "timestamp": "2026-10-01T14:25:35.041056Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2488.0
+      }
+    },
+    {
+      "id": 2794,
+      "timestamp": "2026-10-01T14:25:35.041168Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2489.0
+      }
+    },
+    {
+      "id": 2795,
+      "timestamp": "2026-10-01T14:25:36.045285Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2490.0
+      }
+    },
+    {
+      "id": 2796,
+      "timestamp": "2026-10-01T14:25:37.047332Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2491.0
+      }
+    },
+    {
+      "id": 2797,
+      "timestamp": "2026-10-01T14:25:37.047510Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2492.0
+      }
+    },
+    {
+      "id": 2799,
+      "timestamp": "2026-10-01T14:25:38.053298Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2493.0
+      }
+    },
+    {
+      "id": 2800,
+      "timestamp": "2026-10-01T14:25:38.053489Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2494.0
+      }
+    },
+    {
+      "id": 2801,
+      "timestamp": "2026-10-01T14:25:39.058647Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2495.0
+      }
+    },
+    {
+      "id": 2802,
+      "timestamp": "2026-10-01T14:25:39.058923Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2496.0
+      }
+    },
+    {
+      "id": 2803,
+      "timestamp": "2026-10-01T14:25:40.022239Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2497.0
+      }
+    },
+    {
+      "id": 2804,
+      "timestamp": "2026-10-01T14:25:40.022436Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2498.0
+      }
+    },
+    {
+      "id": 2805,
+      "timestamp": "2026-10-01T14:25:41.028952Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2499.0
+      }
+    },
+    {
+      "id": 2806,
+      "timestamp": "2026-10-01T14:25:42.033018Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2500.0
+      }
+    },
+    {
+      "id": 2807,
+      "timestamp": "2026-10-01T14:25:42.033223Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2501.0
+      }
+    },
+    {
+      "id": 2809,
+      "timestamp": "2026-10-01T14:25:43.041124Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2502.0
+      }
+    },
+    {
+      "id": 2810,
+      "timestamp": "2026-10-01T14:25:43.041357Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2503.0
+      }
+    },
+    {
+      "id": 2811,
+      "timestamp": "2026-10-01T14:25:44.044992Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2504.0
+      }
+    },
+    {
+      "id": 2812,
+      "timestamp": "2026-10-01T14:25:45.051546Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2505.0
+      }
+    },
+    {
+      "id": 2813,
+      "timestamp": "2026-10-01T14:25:45.051927Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2506.0
+      }
+    },
+    {
+      "id": 2814,
+      "timestamp": "2026-10-01T14:25:46.056455Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2507.0
+      }
+    },
+    {
+      "id": 2815,
+      "timestamp": "2026-10-01T14:25:46.056694Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2508.0
+      }
+    },
+    {
+      "id": 2816,
+      "timestamp": "2026-10-01T14:25:46.057094Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2509.0
+      }
+    },
+    {
+      "id": 2817,
+      "timestamp": "2026-10-01T14:25:47.060262Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2510.0
+      }
+    },
+    {
+      "id": 2818,
+      "timestamp": "2026-10-01T14:25:47.060448Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2511.0
+      }
+    },
+    {
+      "id": 2820,
+      "timestamp": "2026-10-01T14:25:48.467453Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2512.0
+      }
+    },
+    {
+      "id": 2821,
+      "timestamp": "2026-10-01T14:25:48.467563Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2513.0
+      }
+    },
+    {
+      "id": 2822,
+      "timestamp": "2026-10-01T14:25:49.465914Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2514.0
+      }
+    },
+    {
+      "id": 2823,
+      "timestamp": "2026-10-01T14:25:49.466018Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2515.0
+      }
+    },
+    {
+      "id": 2824,
+      "timestamp": "2026-10-01T14:25:50.484740Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2516.0
+      }
+    },
+    {
+      "id": 2825,
+      "timestamp": "2026-10-01T14:25:50.484926Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2517.0
+      }
+    },
+    {
+      "id": 2826,
+      "timestamp": "2026-10-01T14:25:51.040264Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2518.0
+      }
+    },
+    {
+      "id": 2828,
+      "timestamp": "2026-10-01T14:25:52.044147Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2519.0
+      }
+    },
+    {
+      "id": 2829,
+      "timestamp": "2026-10-01T14:25:52.044514Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2520.0
+      }
+    },
+    {
+      "id": 2830,
+      "timestamp": "2026-10-01T14:25:53.048533Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2521.0
+      }
+    },
+    {
+      "id": 2831,
+      "timestamp": "2026-10-01T14:25:53.048856Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2522.0
+      }
+    },
+    {
+      "id": 2832,
+      "timestamp": "2026-10-01T14:25:54.054222Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2523.0
+      }
+    },
+    {
+      "id": 2833,
+      "timestamp": "2026-10-01T14:25:54.054578Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2524.0
+      }
+    },
+    {
+      "id": 2834,
+      "timestamp": "2026-10-01T14:25:55.058647Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2525.0
+      }
+    },
+    {
+      "id": 2835,
+      "timestamp": "2026-10-01T14:25:55.058978Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2526.0
+      }
+    },
+    {
+      "id": 2836,
+      "timestamp": "2026-10-01T14:25:56.484644Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2527.0
+      }
+    },
+    {
+      "id": 2838,
+      "timestamp": "2026-10-01T14:25:57.473867Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2528.0
+      }
+    },
+    {
+      "id": 2839,
+      "timestamp": "2026-10-01T14:25:57.474062Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2529.0
+      }
+    },
+    {
+      "id": 2840,
+      "timestamp": "2026-10-01T14:25:58.470239Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2530.0
+      }
+    },
+    {
+      "id": 2841,
+      "timestamp": "2026-10-01T14:25:58.470330Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2531.0
+      }
+    },
+    {
+      "id": 2842,
+      "timestamp": "2026-10-01T14:25:59.037238Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2532.0
+      }
+    },
+    {
+      "id": 2843,
+      "timestamp": "2026-10-01T14:26:00.042219Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2533.0
+      }
+    },
+    {
+      "id": 2844,
+      "timestamp": "2026-10-01T14:26:00.042467Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2534.0
+      }
+    },
+    {
+      "id": 2845,
+      "timestamp": "2026-10-01T14:26:01.038808Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 0.0
+      }
+    },
+    {
+      "id": 2850,
+      "timestamp": "2026-10-01T14:26:24.040814Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 1.0
+      }
+    },
+    {
+      "id": 2852,
+      "timestamp": "2026-10-01T14:26:29.031018Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2535.0
+      }
+    },
+    {
+      "id": 2853,
+      "timestamp": "2026-10-01T14:26:29.031678Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2536.0
+      }
+    },
+    {
+      "id": 2854,
+      "timestamp": "2026-10-01T14:26:29.031832Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2537.0
+      }
+    },
+    {
+      "id": 2855,
+      "timestamp": "2026-10-01T14:26:29.031900Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2538.0
+      }
+    },
+    {
+      "id": 2856,
+      "timestamp": "2026-10-01T14:26:29.031950Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2539.0
+      }
+    },
+    {
+      "id": 2857,
+      "timestamp": "2026-10-01T14:26:30.029843Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2540.0
+      }
+    },
+    {
+      "id": 2858,
+      "timestamp": "2026-10-01T14:26:31.038555Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2541.0
+      }
+    },
+    {
+      "id": 2859,
+      "timestamp": "2026-10-01T14:26:31.038788Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2542.0
+      }
+    },
+    {
+      "id": 2860,
+      "timestamp": "2026-10-01T14:26:32.041592Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2543.0
+      }
+    },
+    {
+      "id": 2861,
+      "timestamp": "2026-10-01T14:26:32.041921Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2544.0
+      }
+    },
+    {
+      "id": 2862,
+      "timestamp": "2026-10-01T14:26:33.046749Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2545.0
+      }
+    },
+    {
+      "id": 2863,
+      "timestamp": "2026-10-01T14:26:33.046954Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2546.0
+      }
+    },
+    {
+      "id": 2865,
+      "timestamp": "2026-10-01T14:26:34.052498Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2547.0
+      }
+    },
+    {
+      "id": 2866,
+      "timestamp": "2026-10-01T14:26:35.057175Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2548.0
+      }
+    },
+    {
+      "id": 2867,
+      "timestamp": "2026-10-01T14:26:35.057552Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2549.0
+      }
+    },
+    {
+      "id": 2868,
+      "timestamp": "2026-10-01T14:26:36.020560Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2550.0
+      }
+    },
+    {
+      "id": 2869,
+      "timestamp": "2026-10-01T14:26:37.024204Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2551.0
+      }
+    },
+    {
+      "id": 2870,
+      "timestamp": "2026-10-01T14:26:37.024403Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2552.0
+      }
+    },
+    {
+      "id": 2871,
+      "timestamp": "2026-10-01T14:26:38.029320Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2553.0
+      }
+    },
+    {
+      "id": 2872,
+      "timestamp": "2026-10-01T14:26:38.029732Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2554.0
+      }
+    },
+    {
+      "id": 2874,
+      "timestamp": "2026-10-01T14:26:39.036052Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2555.0
+      }
+    },
+    {
+      "id": 2875,
+      "timestamp": "2026-10-01T14:26:39.036235Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2556.0
+      }
+    },
+    {
+      "id": 2876,
+      "timestamp": "2026-10-01T14:26:40.041334Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2557.0
+      }
+    },
+    {
+      "id": 2877,
+      "timestamp": "2026-10-01T14:26:41.045593Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2558.0
+      }
+    },
+    {
+      "id": 2878,
+      "timestamp": "2026-10-01T14:26:42.053808Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2559.0
+      }
+    },
+    {
+      "id": 2879,
+      "timestamp": "2026-10-01T14:26:42.054005Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2560.0
+      }
+    },
+    {
+      "id": 2880,
+      "timestamp": "2026-10-01T14:26:43.056365Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2561.0
+      }
+    },
+    {
+      "id": 2881,
+      "timestamp": "2026-10-01T14:26:43.056704Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2562.0
+      }
+    },
+    {
+      "id": 2883,
+      "timestamp": "2026-10-01T14:26:44.019301Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2563.0
+      }
+    },
+    {
+      "id": 2884,
+      "timestamp": "2026-10-01T14:26:44.019517Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2564.0
+      }
+    },
+    {
+      "id": 2885,
+      "timestamp": "2026-10-01T14:26:45.024248Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2565.0
+      }
+    },
+    {
+      "id": 2886,
+      "timestamp": "2026-10-01T14:26:46.031594Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2566.0
+      }
+    },
+    {
+      "id": 2887,
+      "timestamp": "2026-10-01T14:26:46.031856Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2567.0
+      }
+    },
+    {
+      "id": 2888,
+      "timestamp": "2026-10-01T14:26:47.025611Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 0.0
+      }
+    },
+    {
+      "id": 2889,
+      "timestamp": "2026-10-01T14:26:47.033783Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2568.0
+      }
+    },
+    {
+      "id": 2890,
+      "timestamp": "2026-10-01T14:26:48.040674Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2569.0
+      }
+    },
+    {
+      "id": 2892,
+      "timestamp": "2026-10-01T14:26:48.040818Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "pedestrian_status": 1.0
+      }
+    },
+    {
+      "id": 2891,
+      "timestamp": "2026-10-01T14:26:48.041003Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2570.0
+      }
+    },
+    {
+      "id": 2894,
+      "timestamp": "2026-10-01T14:26:49.047511Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2571.0
+      }
+    },
+    {
+      "id": 2895,
+      "timestamp": "2026-10-01T14:26:50.052745Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2572.0
+      }
+    },
+    {
+      "id": 2896,
+      "timestamp": "2026-10-01T14:26:50.053102Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2573.0
+      }
+    },
+    {
+      "id": 2897,
+      "timestamp": "2026-10-01T14:26:51.057169Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2574.0
+      }
+    },
+    {
+      "id": 2898,
+      "timestamp": "2026-10-01T14:26:52.020576Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2575.0
+      }
+    },
+    {
+      "id": 2899,
+      "timestamp": "2026-10-01T14:26:52.020964Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2576.0
+      }
+    },
+    {
+      "id": 2900,
+      "timestamp": "2026-10-01T14:26:53.026432Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2577.0
+      }
+    },
+    {
+      "id": 2901,
+      "timestamp": "2026-10-01T14:26:53.026791Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2578.0
+      }
+    },
+    {
+      "id": 2903,
+      "timestamp": "2026-10-01T14:26:54.030125Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2579.0
+      }
+    },
+    {
+      "id": 2904,
+      "timestamp": "2026-10-01T14:26:55.035393Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2580.0
+      }
+    },
+    {
+      "id": 2905,
+      "timestamp": "2026-10-01T14:26:55.035710Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2581.0
+      }
+    },
+    {
+      "id": 2906,
+      "timestamp": "2026-10-01T14:26:56.039660Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2582.0
+      }
+    },
+    {
+      "id": 2907,
+      "timestamp": "2026-10-01T14:26:56.039986Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2583.0
+      }
+    },
+    {
+      "id": 2908,
+      "timestamp": "2026-10-01T14:26:57.045994Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2584.0
+      }
+    },
+    {
+      "id": 2910,
+      "timestamp": "2026-10-01T14:26:58.051517Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2585.0
+      }
+    },
+    {
+      "id": 2911,
+      "timestamp": "2026-10-01T14:26:58.051927Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2586.0
+      }
+    },
+    {
+      "id": 2912,
+      "timestamp": "2026-10-01T14:26:59.056612Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2587.0
+      }
+    },
+    {
+      "id": 2913,
+      "timestamp": "2026-10-01T14:26:59.057091Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2588.0
+      }
+    },
+    {
+      "id": 2914,
+      "timestamp": "2026-10-01T14:27:00.020105Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2589.0
+      }
+    },
+    {
+      "id": 2915,
+      "timestamp": "2026-10-01T14:27:00.020481Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2590.0
+      }
+    },
+    {
+      "id": 2916,
+      "timestamp": "2026-10-01T14:27:01.026942Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2591.0
+      }
+    },
+    {
+      "id": 2917,
+      "timestamp": "2026-10-01T14:27:01.027267Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2592.0
+      }
+    },
+    {
+      "id": 2918,
+      "timestamp": "2026-10-01T14:27:01.027394Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2593.0
+      }
+    },
+    {
+      "id": 2919,
+      "timestamp": "2026-10-01T14:27:02.029722Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2594.0
+      }
+    },
+    {
+      "id": 2920,
+      "timestamp": "2026-10-01T14:27:02.029912Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2595.0
+      }
+    },
+    {
+      "id": 2922,
+      "timestamp": "2026-10-01T14:27:03.036461Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2596.0
+      }
+    },
+    {
+      "id": 2923,
+      "timestamp": "2026-10-01T14:27:03.036667Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2597.0
+      }
+    },
+    {
+      "id": 2924,
+      "timestamp": "2026-10-01T14:27:04.040310Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2598.0
+      }
+    },
+    {
+      "id": 2925,
+      "timestamp": "2026-10-01T14:27:05.047311Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2599.0
+      }
+    },
+    {
+      "id": 2926,
+      "timestamp": "2026-10-01T14:27:05.047549Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2600.0
+      }
+    },
+    {
+      "id": 2927,
+      "timestamp": "2026-10-01T14:27:06.050537Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2601.0
+      }
+    },
+    {
+      "id": 2928,
+      "timestamp": "2026-10-01T14:27:07.054836Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2602.0
+      }
+    },
+    {
+      "id": 2929,
+      "timestamp": "2026-10-01T14:27:07.055529Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2603.0
+      }
+    },
+    {
+      "id": 2931,
+      "timestamp": "2026-10-01T14:27:08.019412Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2604.0
+      }
+    },
+    {
+      "id": 2932,
+      "timestamp": "2026-10-01T14:27:09.025686Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2605.0
+      }
+    },
+    {
+      "id": 2933,
+      "timestamp": "2026-10-01T14:27:09.025891Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2606.0
+      }
+    },
+    {
+      "id": 2934,
+      "timestamp": "2026-10-01T14:27:10.030136Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2607.0
+      }
+    },
+    {
+      "id": 2935,
+      "timestamp": "2026-10-01T14:27:11.033890Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2608.0
+      }
+    },
+    {
+      "id": 2936,
+      "timestamp": "2026-10-01T14:27:11.034212Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2609.0
+      }
+    },
+    {
+      "id": 2937,
+      "timestamp": "2026-10-01T14:27:12.039348Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2610.0
+      }
+    },
+    {
+      "id": 2938,
+      "timestamp": "2026-10-01T14:27:12.039750Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2611.0
+      }
+    },
+    {
+      "id": 2940,
+      "timestamp": "2026-10-01T14:27:13.046321Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2612.0
+      }
+    },
+    {
+      "id": 2941,
+      "timestamp": "2026-10-01T14:27:13.046560Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2613.0
+      }
+    },
+    {
+      "id": 2942,
+      "timestamp": "2026-10-01T14:27:14.048398Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2614.0
+      }
+    },
+    {
+      "id": 2943,
+      "timestamp": "2026-10-01T14:27:15.055779Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2615.0
+      }
+    },
+    {
+      "id": 2944,
+      "timestamp": "2026-10-01T14:27:15.056168Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2616.0
+      }
+    },
+    {
+      "id": 2945,
+      "timestamp": "2026-10-01T14:27:16.060514Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2617.0
+      }
+    },
+    {
+      "id": 2946,
+      "timestamp": "2026-10-01T14:27:16.060712Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2618.0
+      }
+    },
+    {
+      "id": 2947,
+      "timestamp": "2026-10-01T14:27:17.025303Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2619.0
+      }
+    },
+    {
+      "id": 2948,
+      "timestamp": "2026-10-01T14:27:17.025504Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2620.0
+      }
+    },
+    {
+      "id": 2950,
+      "timestamp": "2026-10-01T14:27:18.030200Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2621.0
+      }
+    },
+    {
+      "id": 2951,
+      "timestamp": "2026-10-01T14:27:18.030391Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2622.0
+      }
+    },
+    {
+      "id": 2952,
+      "timestamp": "2026-10-01T14:27:19.037533Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2623.0
+      }
+    },
+    {
+      "id": 2953,
+      "timestamp": "2026-10-01T14:27:19.037953Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2624.0
+      }
+    },
+    {
+      "id": 2954,
+      "timestamp": "2026-10-01T14:27:20.039572Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2625.0
+      }
+    },
+    {
+      "id": 2955,
+      "timestamp": "2026-10-01T14:27:20.039880Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2626.0
+      }
+    },
+    {
+      "id": 2956,
+      "timestamp": "2026-10-01T14:27:21.046476Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2627.0
+      }
+    },
+    {
+      "id": 2957,
+      "timestamp": "2026-10-01T14:27:21.046881Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2628.0
+      }
+    },
+    {
+      "id": 2958,
+      "timestamp": "2026-10-01T14:27:22.050469Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2629.0
+      }
+    },
+    {
+      "id": 2960,
+      "timestamp": "2026-10-01T14:27:23.054767Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2630.0
+      }
+    },
+    {
+      "id": 2961,
+      "timestamp": "2026-10-01T14:27:23.054994Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2631.0
+      }
+    },
+    {
+      "id": 2962,
+      "timestamp": "2026-10-01T14:27:24.060117Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2632.0
+      }
+    },
+    {
+      "id": 2963,
+      "timestamp": "2026-10-01T14:27:24.060315Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2633.0
+      }
+    },
+    {
+      "id": 2964,
+      "timestamp": "2026-10-01T14:27:25.024697Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2634.0
+      }
+    },
+    {
+      "id": 2965,
+      "timestamp": "2026-10-01T14:27:25.025014Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2635.0
+      }
+    },
+    {
+      "id": 2966,
+      "timestamp": "2026-10-01T14:27:26.029964Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2636.0
+      }
+    },
+    {
+      "id": 2967,
+      "timestamp": "2026-10-01T14:27:26.030173Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2637.0
+      }
+    },
+    {
+      "id": 2968,
+      "timestamp": "2026-10-01T14:27:27.035880Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2638.0
+      }
+    },
+    {
+      "id": 2969,
+      "timestamp": "2026-10-01T14:27:27.036108Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2639.0
+      }
+    },
+    {
+      "id": 2971,
+      "timestamp": "2026-10-01T14:27:28.039178Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2640.0
+      }
+    },
+    {
+      "id": 2972,
+      "timestamp": "2026-10-01T14:27:29.480964Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2641.0
+      }
+    },
+    {
+      "id": 2973,
+      "timestamp": "2026-10-01T14:27:29.481139Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2642.0
+      }
+    },
+    {
+      "id": 2974,
+      "timestamp": "2026-10-01T14:27:30.048197Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2643.0
+      }
+    },
+    {
+      "id": 2975,
+      "timestamp": "2026-10-01T14:27:30.048581Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2644.0
+      }
+    },
+    {
+      "id": 2976,
+      "timestamp": "2026-10-01T14:27:31.053165Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2645.0
+      }
+    },
+    {
+      "id": 2978,
+      "timestamp": "2026-10-01T14:27:32.057322Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2646.0
+      }
+    },
+    {
+      "id": 2979,
+      "timestamp": "2026-10-01T14:27:32.057418Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2647.0
+      }
+    },
+    {
+      "id": 2980,
+      "timestamp": "2026-10-01T14:27:33.024250Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2648.0
+      }
+    },
+    {
+      "id": 2981,
+      "timestamp": "2026-10-01T14:27:33.024450Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2649.0
+      }
+    },
+    {
+      "id": 2982,
+      "timestamp": "2026-10-01T14:27:34.028359Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2650.0
+      }
+    },
+    {
+      "id": 2983,
+      "timestamp": "2026-10-01T14:27:34.028751Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2651.0
+      }
+    },
+    {
+      "id": 2984,
+      "timestamp": "2026-10-01T14:27:35.406172Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2652.0
+      }
+    },
+    {
+      "id": 2985,
+      "timestamp": "2026-10-01T14:27:35.406274Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2653.0
+      }
+    },
+    {
+      "id": 2986,
+      "timestamp": "2026-10-01T14:27:36.473832Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2654.0
+      }
+    },
+    {
+      "id": 2987,
+      "timestamp": "2026-10-01T14:27:36.474147Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2655.0
+      }
+    },
+    {
+      "id": 2988,
+      "timestamp": "2026-10-01T14:27:37.484618Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2656.0
+      }
+    },
+    {
+      "id": 2989,
+      "timestamp": "2026-10-01T14:27:37.484774Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2657.0
+      }
+    },
+    {
+      "id": 2991,
+      "timestamp": "2026-10-01T14:27:38.047638Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2658.0
+      }
+    },
+    {
+      "id": 2992,
+      "timestamp": "2026-10-01T14:27:39.051448Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2659.0
+      }
+    },
+    {
+      "id": 2993,
+      "timestamp": "2026-10-01T14:27:39.051672Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2660.0
+      }
+    },
+    {
+      "id": 2994,
+      "timestamp": "2026-10-01T14:27:40.056022Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2661.0
+      }
+    },
+    {
+      "id": 2995,
+      "timestamp": "2026-10-01T14:27:40.056229Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2662.0
+      }
+    },
+    {
+      "id": 2996,
+      "timestamp": "2026-10-01T14:27:41.020800Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2663.0
+      }
+    },
+    {
+      "id": 2998,
+      "timestamp": "2026-10-01T14:27:42.028949Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2664.0
+      }
+    },
+    {
+      "id": 2999,
+      "timestamp": "2026-10-01T14:27:42.029179Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2665.0
+      }
+    },
+    {
+      "id": 3000,
+      "timestamp": "2026-10-01T14:27:43.035793Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2666.0
+      }
+    },
+    {
+      "id": 3001,
+      "timestamp": "2026-10-01T14:27:43.036060Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2667.0
+      }
+    },
+    {
+      "id": 3002,
+      "timestamp": "2026-10-01T14:27:43.036272Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2668.0
+      }
+    },
+    {
+      "id": 3003,
+      "timestamp": "2026-10-01T14:27:44.037031Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2669.0
+      }
+    },
+    {
+      "id": 3004,
+      "timestamp": "2026-10-01T14:27:44.038121Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2670.0
+      }
+    },
+    {
+      "id": 3005,
+      "timestamp": "2026-10-01T14:27:45.042072Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2671.0
+      }
+    },
+    {
+      "id": 3006,
+      "timestamp": "2026-10-01T14:27:45.042382Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2672.0
+      }
+    },
+    {
+      "id": 3007,
+      "timestamp": "2026-10-01T14:27:46.049497Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2673.0
+      }
+    },
+    {
+      "id": 3008,
+      "timestamp": "2026-10-01T14:27:46.049735Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2674.0
+      }
+    },
+    {
+      "id": 3009,
+      "timestamp": "2026-10-01T14:27:47.052576Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2675.0
+      }
+    },
+    {
+      "id": 3011,
+      "timestamp": "2026-10-01T14:27:48.058033Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2676.0
+      }
+    },
+    {
+      "id": 3012,
+      "timestamp": "2026-10-01T14:27:48.058221Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2677.0
+      }
+    },
+    {
+      "id": 3013,
+      "timestamp": "2026-10-01T14:27:49.022920Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2678.0
+      }
+    },
+    {
+      "id": 3014,
+      "timestamp": "2026-10-01T14:27:50.025788Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2679.0
+      }
+    },
+    {
+      "id": 3015,
+      "timestamp": "2026-10-01T14:27:50.025857Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2680.0
+      }
+    },
+    {
+      "id": 3016,
+      "timestamp": "2026-10-01T14:27:51.028979Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2681.0
+      }
+    },
+    {
+      "id": 3017,
+      "timestamp": "2026-10-01T14:27:51.029036Z",
+      "sourceId": "pedometer",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 2682.0
+      }
+    }
+  ],
+  "profile": {
+    "id": 1,
+    "name": "Frank",
+    "timestamp": "2026-09-30T18:02:57.000Z",
+    "height": 189,
+    "age": 27
+  },
+  "exportedAt": "2026-10-01T15:09:52.447454Z"
+}

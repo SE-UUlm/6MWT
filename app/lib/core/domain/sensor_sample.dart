@@ -6,6 +6,8 @@ class SensorSample {
     required this.values,
   });
 
+  /// Measurement time in UTC. Every SensorSource implementation must convert
+  /// source timestamps with toUtc() before creating a SensorSample.
   final DateTime timestamp;
 
   // What are we measuring?

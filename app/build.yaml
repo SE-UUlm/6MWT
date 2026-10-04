@@ -1,6 +1,20 @@
 targets:
+  # drift needs to build frist, before riverpod can be build because riverpod providers use drift generated classes
+  drift:
+    auto_apply_builders: false
+    builders:
+      drift_dev:analyzer:
+        enabled: true
+        options: &drift_options
+          has_separate_analyzer: true
+          store_date_time_values_as_text: true
+      drift_dev:not_shared:
+        enabled: true
+        options: *drift_options
+
   $default:
+    dependencies:
+      - ":drift"
     builders:
       drift_dev:
-        options:
-          store_date_time_values_as_text: true
+        enabled: false

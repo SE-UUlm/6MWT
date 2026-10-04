@@ -38,8 +38,14 @@ class Session {
     required this.profileId,
     required this.samples,
     this.profile,
-    this.referenceSession,
-  });
+    Session? referenceSession,
+    List<Session>? references,
+    this.referenceDirectory,
+    this.referenceName,
+    this.isManualReference = false,
+  }) : references = List.unmodifiable(
+         references ?? (referenceSession == null ? [] : [referenceSession]),
+       );
 
   final String id;
   final String notes;
@@ -50,21 +56,36 @@ class Session {
   final int profileId;
   final List<SensorSample> samples;
   final Profile? profile;
-  final Session? referenceSession;
+  final List<Session> references;
+  final String? referenceDirectory;
+  final String? referenceName;
+  final bool isManualReference;
+
+  /// Compatibility accessor for callers displaying the first reference.
+  Session? get referenceSession => references.firstOrNull;
+
+  String referenceLabel(int index) =>
+      references[index].referenceName ??
+      (index == 0 ? 'Reference' : 'Reference ${index + 1}');
+
+  List<Session> get trimmedReferences => [
+    for (final reference in references)
+      reference.trimToWindow(start: sessionStartUtc, end: sessionEndUtc),
+  ];
 
   // Cached filtered sample lists (lazily computed).
   List<SensorSample>? _positionSamplesCache;
   List<SensorSample>? _stepSamplesCache;
 
-  /// True if a reference recording (reference.json) is attached.
-  bool get hasReference => referenceSession != null;
+  /// True if at least one measured or manual reference is attached.
+  bool get hasReference => references.isNotEmpty;
 
   /// Start time of the session in UTC (based on first GPS timestamp or startedAt).
   DateTime get sessionStartUtc {
     if (positionSamples.isNotEmpty) {
-      return positionSamples.first.timestamp.toUtc();
+      return positionSamples.first.timestamp;
     }
-    return startedAt.toUtc();
+    return startedAt;
   }
 
   /// Calculated end time of the active session in UTC.
@@ -73,15 +94,11 @@ class Session {
     DateTime? latest;
 
     if (positionSamples.isNotEmpty) {
-      latest = positionSamples.last.timestamp.toUtc();
+      latest = positionSamples.last.timestamp;
     }
 
     if (stepSamples.isNotEmpty) {
-      // Step samples may have local timestamps without timezone indicator,
-      // so compute elapsed duration relative to their own stream start.
-      final stepDuration =
-          stepSamples.last.timestamp.difference(stepSamples.first.timestamp);
-      final stepEnd = sessionStartUtc.add(stepDuration);
+      final stepEnd = stepSamples.last.timestamp;
       if (latest == null || stepEnd.isAfter(latest)) {
         latest = stepEnd;
       }
@@ -100,18 +117,12 @@ class Session {
   Session? get trimmedReferenceSession {
     final ref = referenceSession;
     if (ref == null) return null;
-    return ref.trimToWindow(
-      start: sessionStartUtc,
-      end: sessionEndUtc,
-    );
+    return ref.trimToWindow(start: sessionStartUtc, end: sessionEndUtc);
   }
 
   /// Trims this session's samples to [start, end] window, plus at most 1 sample
   /// immediately before start and 1 sample immediately after end for boundary continuity.
-  Session trimToWindow({
-    required DateTime start,
-    required DateTime end,
-  }) {
+  Session trimToWindow({required DateTime start, required DateTime end}) {
     if (samples.isEmpty) return this;
 
     final samplesByType = <SampleType, List<SensorSample>>{};
@@ -129,7 +140,7 @@ class Session {
       int? afterIdx;
 
       for (int i = 0; i < list.length; i++) {
-        final t = list[i].timestamp.toUtc();
+        final t = list[i].timestamp;
         if (t.isBefore(start)) {
           beforeIdx = i;
         } else if (t.isAfter(end) && afterIdx == null) {
@@ -149,8 +160,9 @@ class Session {
     trimmedSamples.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
     // Calculate trimmed distance
-    final posSamples =
-        trimmedSamples.where((s) => s.type == SampleType.position).toList();
+    final posSamples = trimmedSamples
+        .where((s) => s.type == SampleType.position)
+        .toList();
     double newDistance = distance;
     if (posSamples.length >= 2) {
       final firstDist = posSamples.first.values[PositionKeys.distance];
@@ -186,24 +198,31 @@ class Session {
     return Session(
       id: '${id}_trimmed',
       notes: notes,
-      startedAt:
-          trimmedSamples.isNotEmpty ? trimmedSamples.first.timestamp : startedAt,
+      startedAt: trimmedSamples.isNotEmpty
+          ? trimmedSamples.first.timestamp
+          : startedAt,
       duration: newDuration,
       distance: newDistance,
       phase: phase,
       profileId: profileId,
       samples: trimmedSamples,
       profile: profile,
+      referenceName: referenceName,
+      isManualReference: isManualReference,
     );
   }
 
   Session copyWith({
     Session? referenceSession,
+    List<Session>? references,
     Profile? profile,
+    String? referenceDirectory,
+    String? referenceName,
+    String? notes,
   }) {
     return Session(
       id: id,
-      notes: notes,
+      notes: notes ?? this.notes,
       startedAt: startedAt,
       duration: duration,
       distance: distance,
@@ -211,24 +230,28 @@ class Session {
       profileId: profileId,
       samples: samples,
       profile: profile ?? this.profile,
-      referenceSession: referenceSession ?? this.referenceSession,
+      references:
+          references ??
+          (referenceSession == null ? this.references : [referenceSession]),
+      referenceDirectory: referenceDirectory ?? this.referenceDirectory,
+      referenceName: referenceName ?? this.referenceName,
+      isManualReference: isManualReference,
     );
   }
 
   /// All GPS position samples, in order.
-  List<SensorSample> get positionSamples =>
-      _positionSamplesCache ??=
-          samples.where((s) => s.type == SampleType.position).toList();
+  List<SensorSample> get positionSamples => _positionSamplesCache ??= samples
+      .where((s) => s.type == SampleType.position)
+      .toList();
 
   /// All step samples that contain cumulative_steps.
-  List<SensorSample> get stepSamples =>
-      _stepSamplesCache ??= samples
-          .where(
-            (s) =>
-                s.type == SampleType.steps &&
-                s.values.containsKey(StepKeys.cumulativeSteps),
-          )
-          .toList();
+  List<SensorSample> get stepSamples => _stepSamplesCache ??= samples
+      .where(
+        (s) =>
+            s.type == SampleType.steps &&
+            s.values.containsKey(StepKeys.cumulativeSteps),
+      )
+      .toList();
 
   /// Total steps walked during the session.
   int? get totalSteps {
@@ -280,6 +303,33 @@ class Session {
       profileId: (json['profileId'] as num?)?.toInt() ?? 0,
       samples: samples,
       profile: profile,
+      referenceName: json['referenceName'] as String?,
+      isManualReference: json['referenceKind'] == 'manual',
     );
   }
+
+  Map<String, dynamic> toReferenceJson() => {
+    'id': id,
+    'notes': notes,
+    'startedAt': startedAt.toIso8601String(),
+    'duration': duration,
+    'distance': distance,
+    'phase': phase,
+    'profileId': profileId,
+    if (referenceName != null) 'referenceName': referenceName,
+    if (isManualReference) ...{
+      'referenceKind': 'manual',
+      'timingModel': 'constant_speed',
+    },
+    'samples': [
+      for (final s in samples)
+        {
+          'id': s.id,
+          'timestamp': s.timestamp.toIso8601String(),
+          'type': s.type.wireName,
+          'sourceId': s.sourceId,
+          'values': s.values,
+        },
+    ],
+  };
 }

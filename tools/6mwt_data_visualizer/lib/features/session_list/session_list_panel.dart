@@ -24,9 +24,7 @@ class _SessionListPanelState extends ConsumerState<SessionListPanel> {
   Future<void> _tryAutoLoad() async {
     final files = await ref.read(defaultJsonFilesProvider.future);
     if (files.isNotEmpty && mounted) {
-      await ref
-          .read(exportDataProvider.notifier)
-          .loadFromPath(files.first);
+      await ref.read(exportDataProvider.notifier).loadFromPath(files.first);
     }
   }
 
@@ -97,9 +95,9 @@ class _Header extends StatelessWidget {
           Expanded(
             child: Text(
               '6MWT Sessions',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           IconButton(
@@ -189,12 +187,17 @@ class _ErrorView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.error_outline,
-              color: Theme.of(context).colorScheme.error, size: 40),
+          Icon(
+            Icons.error_outline,
+            color: Theme.of(context).colorScheme.error,
+            size: 40,
+          ),
           const SizedBox(height: 8),
-          Text('Error loading data:\n$error',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Theme.of(context).colorScheme.error)),
+          Text(
+            'Error loading data:\n$error',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
+          ),
         ],
       ),
     );

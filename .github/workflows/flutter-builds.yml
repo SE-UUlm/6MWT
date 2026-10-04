@@ -1,0 +1,158 @@
+name: Flutter Builds
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  changes:
+    name: Detect build changes
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      relevant: ${{ steps.filter.outcome != 'success' || steps.filter.outputs.app != 'false' }}
+    steps:
+      - name: Detect app and workflow changes
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          # The PR file list includes all changes relative to its target branch.
+          filters: |
+            app:
+              - 'app/**'
+              - '.github/workflows/flutter-builds.yml'
+
+  build-android:
+    name: Build Android APK
+    needs: changes
+    # Always build main; skip PRs only when no relevant changes were detected.
+    if: ${{ !cancelled() && (github.event_name == 'push' || needs.changes.outputs.relevant != 'false') }}
+    runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: -Dorg.gradle.caching=true -Dorg.gradle.parallel=true
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          # Populate shared caches on main and reusable caches within each PR.
+          cache-read-only: false
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          # Separate SDK caches retain each job's downloaded engine artifacts.
+          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}
+          pub-cache-key: flutter-pub-:os:-:arch:-:channel:-:version:-${{ hashFiles('app/pubspec.lock') }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Android APK
+        run: flutter build apk --release --no-pub
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          # APKs are already compressed.
+          compression-level: 0
+
+  build-ios:
+    name: Build iOS IPA
+    needs: changes
+    if: ${{ !cancelled() && (github.event_name == 'push' || needs.changes.outputs.relevant != 'false') }}
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Flutter
+        id: flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}-device-release-v1
+          pub-cache-key: flutter-pub-:os:-:arch:-:channel:-:version:-${{ hashFiles('app/pubspec.lock') }}
+
+      - name: Identify Xcode version
+        id: xcode
+        run: |
+          version_hash=$(xcodebuild -version | shasum -a 256 | cut -d ' ' -f 1)
+          echo "version-hash=$version_hash" >> "$GITHUB_OUTPUT"
+
+      - name: Cache native iOS dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/Library/Caches/org.swift.swiftpm
+            ~/Library/org.swift.swiftpm
+            ~/Library/Caches/CocoaPods
+            ~/.cocoapods
+          key: ios-deps-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ hashFiles('app/pubspec.lock', 'app/ios/Podfile.lock', 'app/ios/**/Package.resolved') }}
+          restore-keys: |
+            ios-deps-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-
+
+      - name: Cache iOS build intermediates
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            app/build/ios
+          # Keep device release intermediates separate from previous simulator builds.
+          key: ios-device-release-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-${{ github.sha }}
+          restore-keys: |
+            ios-device-release-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.xcode.outputs.version-hash }}-${{ steps.flutter.outputs.VERSION }}-${{ hashFiles('app/pubspec.lock', 'app/ios/**') }}-
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build unsigned iOS device app
+        run: flutter build ios --release --no-codesign --no-pub
+
+      - name: Package unsigned IPA
+        # Sideloadly / AltStore signs the device app locally with the user's Apple account.
+        # Stage outside build/ios so the IPA is not duplicated in the build cache.
+        run: |
+          package_dir=$(mktemp -d "$RUNNER_TEMP/ios-ipa.XXXXXX")
+          mkdir "$package_dir/Payload"
+          cp -R build/ios/iphoneos/Runner.app "$package_dir/Payload/Runner.app"
+          cd "$package_dir"
+          zip -qry "$RUNNER_TEMP/six-minute-walk-test-unsigned.ipa" Payload
+
+      - name: Upload unsigned iOS IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-unsigned-ipa
+          path: ${{ runner.temp }}/six-minute-walk-test-unsigned.ipa
+          if-no-files-found: error
+          # The IPA is already a ZIP archive.
+          compression-level: 0

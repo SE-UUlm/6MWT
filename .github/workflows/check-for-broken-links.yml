@@ -1,10 +1,9 @@
 name: Check for Broken Links
 on:
   push:
-    paths:
-      - wiki/**
-      - .github/workflows/check-for-broken-links.yml
-      - README.md
+
+permissions:
+  contents: read
 
 jobs:
   check-for-broken-links:
@@ -13,12 +12,31 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Detect documentation and workflow changes
+        id: changes
+        uses: dorny/paths-filter@v4
+        with:
+          # Include earlier changes on feature branches so a later unrelated push
+          # cannot bypass a failed link check. On the default branch, compare pushes.
+          base: ${{ github.event.repository.default_branch }}
+          filters: |
+            docs:
+              - 'wiki/**'
+              - 'README.md'
+              - '.github/workflows/check-for-broken-links.yml'
+
+      - name: No relevant changes
+        if: steps.changes.outputs.docs == 'false'
+        run: echo "No documentation or link-check workflow changes; check passed without checking links."
+
       - name: Check for Broken Links in README
+        if: steps.changes.outputs.docs != 'false'
         uses: becheran/mlc@v1
         with:
           args: README.md
 
       - name: Check for Broken Links in Wiki
+        if: steps.changes.outputs.docs != 'false'
         uses: becheran/mlc@v1
         with:
-            args: wiki/
+          args: wiki/

@@ -46,7 +46,7 @@ class ProfileRepository {
   static Map<String, dynamic> _rowToMap(Profile row) => {
     'id': row.id,
     'name': row.name,
-    'timestamp': row.timestamp.toIso8601String(),
+    'timestamp': row.timestamp.toUtc().toIso8601String(),
     'height': row.height,
     'age': row.age,
   };

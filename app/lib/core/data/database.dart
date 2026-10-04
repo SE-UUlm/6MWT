@@ -2,7 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
-part 'database.g.dart';
+part 'database.drift.dart';
 
 enum WalkPhase { idle, running, finished, aborted }
 
@@ -33,6 +33,7 @@ class Profiles extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get name => text().nullable()();
+  // SQLite generates this timestamp in UTC; Drift reads the text value as UTC.
   DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
   IntColumn get height => integer()();
   IntColumn get age => integer()();

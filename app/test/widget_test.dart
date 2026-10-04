@@ -9,21 +9,20 @@ void main() {
   ) async {
     await tester.pumpWidget(const ProviderScope(child: SixMinuteWalkApp()));
 
-    expect(find.text('Six Minute Walk Test'), findsOneWidget);
-    expect(find.text('Start Walking Test'), findsOneWidget);
-    expect(find.text('GPS Debug'), findsOneWidget);
+    expect(find.text('6-Minute Walk Test'), findsOneWidget);
+    expect(find.text('Start test'), findsOneWidget);
+    expect(find.text('Meine Ergebnisse'), findsOneWidget);
   });
 
-  testWidgets('navigating to the walking test shows the test screen', (
+  testWidgets('clicking start test leads to the patient information screen', (
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(const ProviderScope(child: SixMinuteWalkApp()));
 
-    await tester.tap(find.text('Start Walking Test'));
+    await tester.tap(find.text('Start test'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Walking Test'), findsOneWidget);
-    expect(find.text('06:00'), findsOneWidget);
-    expect(find.text('Start Test'), findsOneWidget);
+    expect(find.text('Vorkalibrierung'), findsOneWidget);
+    expect(find.text('Patienteninformationen'), findsOneWidget);
   });
 }
