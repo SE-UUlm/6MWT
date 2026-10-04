@@ -53,6 +53,18 @@ class LocationService {
           setOngoing: true,
         ),
       );
+    } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+      locationSettings = AppleSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 1,
+        pauseLocationUpdatesAutomatically: false,
+        // Keeps location tracking active during a walk test when  the app
+        // is backgrounded or the screen is locked. This requires the `location` background
+        // mode in Runner/Info.plist.
+        allowBackgroundLocationUpdates: true,
+        // Make the ongoing background location use visible to the user.
+        showBackgroundLocationIndicator: true,
+      );
     } else {
       locationSettings = const LocationSettings(
         accuracy: LocationAccuracy.high,

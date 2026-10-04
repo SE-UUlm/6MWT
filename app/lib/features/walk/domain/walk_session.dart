@@ -194,7 +194,22 @@ class WalkSession {
     await _stateController.close();
   }
 
-  void _onTick(Timer _) {
+  /// Reconciles the displayed state with the wall clock after backgrounding.
+  ///
+  /// Dart timers may be paused while the app is in the background. The test
+  /// deadline itself is absolute, so recalculating it when the app resumes
+  /// immediately restores the correct countdown or finishes the test.
+  void synchronizeWithClock() {
+    if (!_state.isRunning) {
+      return;
+    }
+
+    _updateForCurrentTime();
+  }
+
+  void _onTick(Timer _) => _updateForCurrentTime();
+
+  void _updateForCurrentTime() {
     final remaining = _remainingTimeAt(_now());
 
     if (remaining <= Duration.zero) {

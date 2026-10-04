@@ -164,6 +164,35 @@ void main() {
     });
   });
 
+  test('synchronizes the countdown with the wall clock after resuming', () {
+    fakeAsync((async) {
+      final clock = TestClock(DateTime(2026));
+      final session = WalkSession(
+        sources: [FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        walkDuration: const Duration(seconds: 5),
+        now: clock.call,
+      );
+
+      session.start();
+      async.flushMicrotasks();
+
+      // Simulate time passing while the app is backgrounded and Dart timers
+      // are paused. No timer callback or sensor event occurs in this period.
+      clock.advance(const Duration(seconds: 2));
+      session.synchronizeWithClock();
+
+      expect(session.state.phase, WalkPhase.running);
+      expect(session.state.remainingTime, const Duration(seconds: 3));
+
+      clock.advance(const Duration(seconds: 3));
+      session.synchronizeWithClock();
+
+      expect(session.state.phase, WalkPhase.finished);
+      expect(session.state.remainingTime, Duration.zero);
+    });
+  });
+
   test('counts wall-clock time while periodic callbacks are delayed', () {
     fakeAsync((async) {
       final clock = TestClock(DateTime(2026));
