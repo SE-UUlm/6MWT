@@ -53,7 +53,8 @@ class WalkSessionState {
 }
 
 // Runs the walk test (timer + position tracking) independently of any UI, so
-// the test survives navigation and can later run in a foreground service.
+// the test survives navigation and can continue while the app is in the background
+// or the screen is locked.
 class WalkSession {
   WalkSession({
     required this._sources,
@@ -62,7 +63,9 @@ class WalkSession {
     this._optionalSources = const [],
     List<NamedDistanceEstimator> comparisonEstimators = const [],
     this.walkDuration = const Duration(minutes: 6),
-  }) : _comparisonEstimators = List.unmodifiable(comparisonEstimators) {
+    DateTime Function()? now,
+  }) : _now = now ?? DateTime.now,
+       _comparisonEstimators = List.unmodifiable(comparisonEstimators) {
     _state = WalkSessionState(
       phase: WalkPhase.idle,
       remainingTime: walkDuration,
@@ -82,6 +85,10 @@ class WalkSession {
   final List<NamedDistanceEstimator> _comparisonEstimators;
   final Map<int, String> _comparisonErrors = {};
   final SampleSink? _sampleSink;
+
+  // Provides the current time for deadline calculations and can be replaced
+  // with a controlled clock in tests.
+  final DateTime Function() _now;
 
   final StreamController<WalkSessionState> _stateController =
       StreamController<WalkSessionState>.broadcast();
@@ -168,7 +175,7 @@ class WalkSession {
       return;
     }
 
-    final startedAt = DateTime.now().toUtc();
+    final startedAt = _now().toUtc();
     final sessionId = _generateSessionId();
 
     _distanceEstimator.reset();
@@ -219,13 +226,19 @@ class WalkSession {
       return;
     }
 
+    final remaining = _remainingTimeAt(_now());
+    if (remaining == Duration.zero) {
+      await _finish();
+      return;
+    }
+
     await _stopTracking();
 
     _emit(
       WalkSessionState(
         phase: WalkPhase.aborted,
         comparisons: _state.comparisons,
-        remainingTime: _state.remainingTime,
+        remainingTime: remaining,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
@@ -251,8 +264,23 @@ class WalkSession {
     await _stateController.close();
   }
 
-  void _onTick(Timer timer) {
-    final remaining = _state.remainingTime - const Duration(seconds: 1);
+  /// Reconciles the displayed state with the wall clock after backgrounding.
+  ///
+  /// Dart timers may be paused while the app is in the background. The test
+  /// deadline itself is absolute, so recalculating it when the app resumes
+  /// immediately restores the correct countdown or finishes the test.
+  void synchronizeWithClock() {
+    if (!_state.isRunning) {
+      return;
+    }
+
+    _updateForCurrentTime();
+  }
+
+  void _onTick(Timer _) => _updateForCurrentTime();
+
+  void _updateForCurrentTime() {
+    final remaining = _remainingTimeAt(_now());
 
     if (remaining <= Duration.zero) {
       unawaited(_finish());
@@ -279,6 +307,12 @@ class WalkSession {
       return;
     }
 
+    final remaining = _remainingTimeAt(_now());
+    if (remaining == Duration.zero) {
+      unawaited(_finish());
+      return;
+    }
+
     _sampleSink?.addSample(sessionId, sample);
     _distanceEstimator.addSample(sample);
     for (var i = 0; i < _comparisonEstimators.length; i++) {
@@ -291,7 +325,7 @@ class WalkSession {
     _emit(
       WalkSessionState(
         phase: WalkPhase.running,
-        remainingTime: _state.remainingTime,
+        remainingTime: remaining,
         distance: _distanceEstimator.totalDistance,
         comparisons: _snapshotComparisons(),
         lastSamples: {..._state.lastSamples, sample.type: sample},
@@ -303,11 +337,18 @@ class WalkSession {
 
   void _onSampleError(Object error) {
     _log.w('Sample error', error: error);
+
+    final remaining = _remainingTimeAt(_now());
+    if (_state.isRunning && remaining == Duration.zero) {
+      unawaited(_finish());
+      return;
+    }
+
     _emit(
       WalkSessionState(
         phase: _state.phase,
         comparisons: _state.comparisons,
-        remainingTime: _state.remainingTime,
+        remainingTime: remaining,
         distance: _state.distance,
         lastSamples: _state.lastSamples,
         errorMessage: 'Sensor error: $error',
@@ -318,7 +359,11 @@ class WalkSession {
   }
 
   Future<void> _finish() async {
-    await _stopTracking();
+    if (!_state.isRunning) {
+      return;
+    }
+
+    final stopTracking = _stopTracking();
 
     _emit(
       WalkSessionState(
@@ -331,6 +376,8 @@ class WalkSession {
         startedAt: _state.startedAt,
       ),
     );
+
+    await stopTracking;
   }
 
   Future<void> _stopTracking() async {
@@ -460,6 +507,33 @@ class WalkSession {
           distance: 0,
           error: _comparisonErrors[index],
         );
+  }
+
+  // Calculates the remaining time until the walk test deadline based on the
+  // elapsed time since the session started.
+  Duration _remainingTimeAt(DateTime now) {
+    final startedAt = _state.startedAt;
+    if (startedAt == null) {
+      return walkDuration;
+    }
+
+    final elapsed = now.difference(startedAt);
+    if (elapsed <= Duration.zero) {
+      return walkDuration;
+    }
+
+    if (elapsed >= walkDuration) {
+      return Duration.zero;
+    }
+
+    final remaining = walkDuration - elapsed;
+    final hasPartialSecond =
+        remaining.inMicroseconds.remainder(Duration.microsecondsPerSecond) != 0;
+
+    // State and persistence are second-based. Rounding up keeps the displayed
+    // value stable until the next whole second without changing the exact
+    // deadline check above.
+    return Duration(seconds: remaining.inSeconds + (hasPartialSecond ? 1 : 0));
   }
 
   void _emit(WalkSessionState newState) {

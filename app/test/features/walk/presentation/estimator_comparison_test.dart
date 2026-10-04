@@ -60,6 +60,7 @@ void main() {
           ),
         ],
         walkDuration: const Duration(seconds: 5),
+        now: () => tester.binding.clock.now(),
       );
       router.go('/walk', extra: 1);
       await tester.pumpWidget(

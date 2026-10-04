@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
@@ -68,6 +69,7 @@ void main() {
             ],
             sampleSink: sink,
             walkDuration: const Duration(seconds: 3),
+            now: () => clock.now(),
           );
           session.warmUp();
           async.flushMicrotasks();

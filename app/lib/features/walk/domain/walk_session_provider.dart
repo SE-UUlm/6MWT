@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
@@ -91,7 +92,15 @@ WalkSession walkSession(Ref ref) {
     session,
   ).listen(walkSessionRepository.saveSession);
 
+  // A Dart timer can be paused while the app is backgrounded. Synchronizing on
+  // resume ensures the visible countdown and the session phase immediately
+  // reflect the wall-clock deadline.
+  final lifecycleListener = AppLifecycleListener(
+    onResume: session.synchronizeWithClock,
+  );
+
   ref.onDispose(() {
+    lifecycleListener.dispose();
     subscription.cancel();
     session.dispose();
   });
