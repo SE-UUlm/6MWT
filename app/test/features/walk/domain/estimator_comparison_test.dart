@@ -71,6 +71,7 @@ void main() {
             NamedDistanceEstimator('GPS + steps', create()),
           ],
           walkDuration: const Duration(seconds: 20),
+          now: () => clock.now(),
         );
         session.start();
         async.flushMicrotasks();
@@ -123,6 +124,7 @@ void main() {
         ],
         sampleSink: sink,
         walkDuration: const Duration(seconds: 20),
+        now: () => clock.now(),
       );
       session.start();
       async.flushMicrotasks();
