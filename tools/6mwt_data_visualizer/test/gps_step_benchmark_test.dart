@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_step_distance_estimator.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
@@ -15,6 +16,7 @@ void main() {
   for (final estimator in <DistanceEstimator>[
     CalibratedStepDistanceEstimator(),
     AdaptiveGpsStepDistanceEstimator(),
+    KalmanGpsStepDistanceEstimator(),
   ]) {
     test(
       '${estimator.runtimeType} replay matches every live update and reset',
@@ -62,7 +64,7 @@ void main() {
     // Run with --reporter expanded to reproduce the documented report.
     // ignore: avoid_print
     print(
-      'Session | Raw m | Filtered m | Kalman m | Fixed steps m | Calibrated steps m | Adaptive m',
+      'Session | Raw m | Filtered m | Kalman m | Fixed steps m | Calibrated steps m | Adaptive m | Kalman steps m',
     );
     var sessions = 0;
     for (final folder in folders) {
@@ -77,6 +79,7 @@ void main() {
         StepDistanceEstimator(stepLength: .75),
         CalibratedStepDistanceEstimator(),
         AdaptiveGpsStepDistanceEstimator(),
+        KalmanGpsStepDistanceEstimator(),
       ];
       final results = estimators.map(replay.run).toList();
       for (var i = 0; i < results.length; i++) {

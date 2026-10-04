@@ -1,6 +1,7 @@
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
@@ -56,6 +57,7 @@ void main() {
   for (final create in <DistanceEstimator Function()>[
     () => CalibratedStepDistanceEstimator(),
     () => AdaptiveGpsStepDistanceEstimator(),
+    () => KalmanGpsStepDistanceEstimator(),
   ]) {
     test('${create().runtimeType} live revisions survive finish and reset', () {
       fakeAsync((async) {
@@ -88,14 +90,18 @@ void main() {
           expect(session.state.comparisons.single.error, isNull);
         }
         final frozen = session.state.comparisons.single;
-        expect(frozen.distance, closeTo(10, .03));
+        // Kalman retains some prior uncertainty after a single GPS window.
+        final expected = direct is KalmanGpsStepDistanceEstimator
+            ? 12.124
+            : 10.0;
+        expect(frozen.distance, closeTo(expected, .03));
         async.elapse(const Duration(seconds: 20));
         async.flushMicrotasks();
         expect(session.state.phase, WalkPhase.finished);
         expect(session.state.comparisons.single.distance, frozen.distance);
         session.reset();
         async.flushMicrotasks();
-        expect(frozen.distance, closeTo(10, .03));
+        expect(frozen.distance, closeTo(expected, .03));
         session.dispose();
         async.flushMicrotasks();
       });
