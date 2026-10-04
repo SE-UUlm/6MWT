@@ -15,21 +15,8 @@ The current screens do not display calendar dates or clock times.
 
 ## Distance comparisons
 
-The session provider configures the primary `GpsDistanceEstimator` and additional
-named estimators in `lib/features/walk/domain/walk_session_provider.dart`. Each
-entry must own a separate estimator instance. All estimators receive the same
-initial and live sensor samples, excluding warm-up samples.
-
-The default comparisons are filtered GPS (maximum accuracy radius 20 m, maximum
-speed 3 m/s) and steps (fixed step length 0.75 m). Their shared implementations
-also power the data visualizer. Diagnostics appear below the detailed walking
-view and between test details and profile information on the result screen,
-including in release builds. A failed comparison is disabled until the next run.
-
-Comparison results are kept in memory for the current test only. They survive
-the session reset when navigating to its result, but are not stored in history
-or JSON exports. The primary GPS distance remains the basis for assessment and
-persistence.
+See [Distance Estimators](../wiki/Distance-Estimators.md) in the wiki for the
+algorithms, app integration, configuration, diagnostics, and benchmarks.
 
 ## Getting Started
 
