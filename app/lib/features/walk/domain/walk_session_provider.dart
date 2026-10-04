@@ -84,6 +84,7 @@ WalkSession walkSession(Ref ref) {
       stepSourceId: PedometerSource.id,
     ),
     comparisonEstimators: [
+      NamedDistanceEstimator('Plain GPS', GpsDistanceEstimator()),
       NamedDistanceEstimator(
         'Kalman GPS + steps',
         KalmanGpsStepDistanceEstimator(),
