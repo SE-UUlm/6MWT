@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
@@ -44,6 +46,84 @@ SensorSample _position(double lat, double lng) => SensorSample(
 
 void main() {
   group('deduplicatedSaves', () {
+    test('persists optional phone steps and a downward stride correction', () {
+      fakeAsync((async) {
+        final gps = FakeSensorSource();
+        final phone = FakeSensorSource();
+        final estimator = GpsStepDistanceEstimator(stepSourceId: 'fake');
+        final session = WalkSession(
+          sources: [gps],
+          optionalSources: [phone],
+          distanceEstimator: estimator,
+          walkDuration: const Duration(seconds: 60),
+        )..profileId = 1;
+        final rows = <WalkSessionRow>[];
+        final sub = deduplicatedSaves(session).listen(rows.add);
+        final epoch = DateTime.utc(2026);
+
+        void steps(int second, double count) {
+          phone.controller.add(
+            SensorSample(
+              timestamp: epoch.add(Duration(seconds: second)),
+              sourceId: 'fake',
+              type: SampleType.steps,
+              values: {StepKeys.cumulativeSteps: count},
+            ),
+          );
+          async.flushMicrotasks();
+        }
+
+        session.start();
+        async.flushMicrotasks();
+        steps(0, 1000);
+        steps(10, 1010);
+        expect(session.state.distance, closeTo(7, 1e-6));
+        expect(rows.last.distance, closeTo(7, 1e-6));
+
+        for (var i = 0; i <= 17; i++) {
+          gps.controller.add(
+            SensorSample(
+              timestamp: epoch.add(Duration(seconds: 10 + i)),
+              sourceId: 'fake',
+              type: SampleType.position,
+              values: {
+                PositionKeys.latitude: 0,
+                PositionKeys.longitude:
+                    i * 0.6 / Geolocator.distanceBetween(0, 0, 0, 1),
+                PositionKeys.accuracy: 3,
+              },
+            ),
+          );
+          async.flushMicrotasks();
+          steps(10 + i, (1010 + i).toDouble());
+        }
+
+        // 10.2 GPS metres plus ten earlier steps corrected from 0.7 to 0.6 m.
+        expect(estimator.stepLength, closeTo(0.6, 1e-6));
+        expect(session.state.distance, closeTo(16.2, 1e-6));
+        expect(rows.last.distance, closeTo(16.2, 1e-6));
+        expect(rows[rows.length - 2].distance, closeTo(17.2, 1e-6));
+        expect(session.state.lastSamples[SampleType.steps], isNotNull);
+
+        session.abort();
+        async.flushMicrotasks();
+        expect(rows.last.phase, WalkPhase.aborted);
+        expect(rows.last.distance, closeTo(16.2, 1e-6));
+        session.start();
+        async.flushMicrotasks();
+        expect(estimator.hasLearnedStepLength, isFalse);
+        steps(30, 2000);
+        steps(31, 2002);
+        expect(rows.last.distance, closeTo(1.4, 1e-6));
+
+        sub.cancel();
+        session.dispose();
+        async.flushMicrotasks();
+        gps.controller.close();
+        phone.controller.close();
+      });
+    });
+
     test('skips state emissions that do not change persisted fields', () {
       fakeAsync((async) {
         final source = FakeSensorSource();

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
 import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
@@ -83,6 +84,28 @@ class BrokenEstimator extends RecordingEstimator {
 }
 
 void main() {
+  test('lab compares 5, 10 and 15 s GPS intervals with distinct labels', () {
+    final variants = createEstimators()
+        .whereType<GpsStepDistanceEstimator>()
+        .toList();
+    expect(variants.map((e) => e.maxGpsInterval.inSeconds), [5, 10, 15]);
+    expect(
+      variants.every((e) => e.gpsFallbackTimeout == const Duration(seconds: 5)),
+      isTrue,
+    );
+    final replay = EstimatorReplay(
+      session([gps(0, 0), steps(0, 1000), gps(10, 0.00005), steps(10, 1010)]),
+    );
+    final results = variants.map(replay.run).toList();
+    expect(results.map((r) => r.name).toSet(), hasLength(3));
+    expect(results.first.additionalInfo['Rejected GPS gap'], '1');
+    expect(results[1].additionalInfo['Rejected GPS gap'], '0');
+    expect(results[2].additionalInfo['Rejected GPS gap'], '0');
+    expect(results.first.distance, closeTo(7, 1e-6));
+    expect(results[1].distance, closeTo(5.56, 0.01));
+    expect(results[2].distance, closeTo(results[1].distance!, 1e-6));
+  });
+
   test('chart connects distance updates without unrelated sensor plateaus', () {
     final replay = EstimatorReplay(
       session([

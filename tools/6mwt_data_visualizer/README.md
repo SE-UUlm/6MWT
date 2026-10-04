@@ -79,6 +79,28 @@ appear immediately and load again the next time the recording is opened.
 2. All estimators configured in `estimators.dart` run automatically. Use the graph legend to toggle curves and the table to compare distances and additional diagnostics.
 3. To test another algorithm or parameter variant, edit the list in `createEstimators()` and hot restart the tool. Multiple instances of the same class with different parameters are allowed.
 
+The GPS/step estimator has three Lab variants: maximum GPS intervals of **5, 10
+and 15 seconds**. All three start step fallback after **5 seconds** without a
+good fix. Later accepted GPS segments replace only their overlapping provisional
+step distance and also contribute to stride calibration. Accuracy and speed
+filters still apply; a rejected fix breaks the GPS segment. The main app keeps
+its existing 5-second defaults.
+
+Variant labels include the GPS interval limit. **Additional info** shows both
+time limits, accepted GPS intervals, rejection counts for time gaps, coordinates,
+accuracy and speed, and successful/rejected stride calibration windows. Successful
+updates include the first learned stride and subsequent smoothed updates.
+
+To compare all repository recordings with the same replay and reference alignment:
+
+```bash
+flutter test tool/compare_gps_gaps.dart --reporter expanded
+```
+
+This writes `build/gps_gap_comparison.md` and `build/gps_gap_comparison.json` with
+per-recording diagnostics, reference deltas over shared time, and aggregate errors.
+Watch measurements and manually drawn references are evaluated separately.
+
 The replay feeds **all recorded app sensor samples** to each estimator, from the earliest to the latest recorded timestamp. It uses subsecond timing, preserves file order for timestamp ties, and does not run in real time. It does not use the reference recording or a whole-session step-length estimate to calibrate algorithms. The original estimator runs unchanged; replay totals can differ from the stored distance if historical app versions, sample arrival order, or incomplete recordings differ.
 
 Reference distance uses the reference's cumulative `distance` values when available throughout the track, otherwise a GPS Haversine sum. The available overlap with the replay is displayed, interpolated at its boundaries and rebased to zero at the overlap start. A later start or earlier end does not hide the reference. Table reference deltas compare both distances over this shared interval only; hover the reference legend for its time range. A reference with no overlap or invalid/decreasing cumulative distance is unavailable. A zero reference distance has no percentage delta. Tooltips interpolate every visible curve at the same time in estimator order, with the reference last; times outside a curve's coverage show a dash rather than extrapolated values. The recording/map view retains its existing reference-window behavior.
