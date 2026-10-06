@@ -1,0 +1,1444 @@
+{
+  "notes": "Garmin Referenz: Walking (Workout-gehen-2026-10-05T17_46_09+02_00)",
+  "id": "garmin_20261005T154752Z",
+  "startedAt": "2026-10-05T15:47:52+00:00",
+  "duration": 305,
+  "distance": 460.06,
+  "phase": "finished",
+  "profileId": 1,
+  "samples": [
+    {
+      "id": 1,
+      "timestamp": "2026-10-05T15:47:52+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 0.0,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-10-05T15:47:52+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4239919,
+        "longitude": 9.9547096,
+        "speed": 1.502,
+        "distance": 138.25,
+        "altitude": 612.2
+      }
+    },
+    {
+      "id": 3,
+      "timestamp": "2026-10-05T15:47:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 6.9,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 4,
+      "timestamp": "2026-10-05T15:47:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4238672,
+        "longitude": 9.9548012,
+        "speed": 2.389,
+        "distance": 138.25,
+        "altitude": 612.2
+      }
+    },
+    {
+      "id": 5,
+      "timestamp": "2026-10-05T15:47:59+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 16.1,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-10-05T15:47:59+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4238843,
+        "longitude": 9.9547726,
+        "speed": 2.389,
+        "distance": 143.15,
+        "altitude": 612.4
+      }
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-10-05T15:48:01+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 20.7,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-10-05T15:48:01+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4238776,
+        "longitude": 9.9547575,
+        "speed": 1.838,
+        "distance": 143.15,
+        "altitude": 612.6
+      }
+    },
+    {
+      "id": 9,
+      "timestamp": "2026-10-05T15:48:04+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 27.9,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 10,
+      "timestamp": "2026-10-05T15:48:04+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4238824,
+        "longitude": 9.9547702,
+        "speed": 1.446,
+        "distance": 143.64,
+        "altitude": 612.6
+      }
+    },
+    {
+      "id": 11,
+      "timestamp": "2026-10-05T15:48:08+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 37.6,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 12,
+      "timestamp": "2026-10-05T15:48:08+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4239151,
+        "longitude": 9.9548198,
+        "speed": 1.736,
+        "distance": 148.35,
+        "altitude": 612.6
+      }
+    },
+    {
+      "id": 13,
+      "timestamp": "2026-10-05T15:48:11+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 44.9,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 14,
+      "timestamp": "2026-10-05T15:48:11+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4239671,
+        "longitude": 9.9548334,
+        "speed": 1.866,
+        "distance": 154.28,
+        "altitude": 613.0
+      }
+    },
+    {
+      "id": 15,
+      "timestamp": "2026-10-05T15:48:14+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 51.8,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 16,
+      "timestamp": "2026-10-05T15:48:14+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4239484,
+        "longitude": 9.9548592,
+        "speed": 1.605,
+        "distance": 154.28,
+        "altitude": 613.8
+      }
+    },
+    {
+      "id": 17,
+      "timestamp": "2026-10-05T15:48:16+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 56.2,
+        "cadence": 100.0
+      }
+    },
+    {
+      "id": 18,
+      "timestamp": "2026-10-05T15:48:16+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4239472,
+        "longitude": 9.9548742,
+        "speed": 1.661,
+        "distance": 154.28,
+        "altitude": 614.2
+      }
+    },
+    {
+      "id": 19,
+      "timestamp": "2026-10-05T15:48:22+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 69.5,
+        "cadence": 102.0
+      }
+    },
+    {
+      "id": 20,
+      "timestamp": "2026-10-05T15:48:22+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4240093,
+        "longitude": 9.9548503,
+        "speed": 1.372,
+        "distance": 160.04,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 21,
+      "timestamp": "2026-10-05T15:48:25+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 76.7,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 22,
+      "timestamp": "2026-10-05T15:48:25+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4240485,
+        "longitude": 9.9548192,
+        "speed": 1.409,
+        "distance": 164.89,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 23,
+      "timestamp": "2026-10-05T15:48:27+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 81.4,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 24,
+      "timestamp": "2026-10-05T15:48:27+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4240735,
+        "longitude": 9.9547977,
+        "speed": 1.446,
+        "distance": 168.17,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 25,
+      "timestamp": "2026-10-05T15:48:29+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 86.2,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 26,
+      "timestamp": "2026-10-05T15:48:29+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4240916,
+        "longitude": 9.954781,
+        "speed": 1.372,
+        "distance": 170.42,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 27,
+      "timestamp": "2026-10-05T15:48:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 96.1,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 28,
+      "timestamp": "2026-10-05T15:48:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4241386,
+        "longitude": 9.9547503,
+        "speed": 1.381,
+        "distance": 176.03,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 29,
+      "timestamp": "2026-10-05T15:48:42+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 118.0,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 30,
+      "timestamp": "2026-10-05T15:48:42+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4242564,
+        "longitude": 9.9546461,
+        "speed": 1.596,
+        "distance": 190.8,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 31,
+      "timestamp": "2026-10-05T15:48:50+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 137.5,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 32,
+      "timestamp": "2026-10-05T15:48:50+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4243545,
+        "longitude": 9.954548,
+        "speed": 1.68,
+        "distance": 204.16,
+        "altitude": 615.2
+      }
+    },
+    {
+      "id": 33,
+      "timestamp": "2026-10-05T15:48:52+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 142.4,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 34,
+      "timestamp": "2026-10-05T15:48:52+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4243773,
+        "longitude": 9.9545247,
+        "speed": 1.652,
+        "distance": 206.93,
+        "altitude": 615.4
+      }
+    },
+    {
+      "id": 35,
+      "timestamp": "2026-10-05T15:48:56+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 151.6,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 36,
+      "timestamp": "2026-10-05T15:48:56+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4244307,
+        "longitude": 9.954495,
+        "speed": 1.642,
+        "distance": 214.02,
+        "altitude": 616.0
+      }
+    },
+    {
+      "id": 37,
+      "timestamp": "2026-10-05T15:48:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 156.2,
+        "cadence": 106.0
+      }
+    },
+    {
+      "id": 38,
+      "timestamp": "2026-10-05T15:48:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4244545,
+        "longitude": 9.9544901,
+        "speed": 1.624,
+        "distance": 216.45,
+        "altitude": 616.4
+      }
+    },
+    {
+      "id": 39,
+      "timestamp": "2026-10-05T15:49:05+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 173.2,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 40,
+      "timestamp": "2026-10-05T15:49:05+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4245446,
+        "longitude": 9.9544177,
+        "speed": 1.586,
+        "distance": 227.36,
+        "altitude": 616.8
+      }
+    },
+    {
+      "id": 41,
+      "timestamp": "2026-10-05T15:49:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 178.1,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 42,
+      "timestamp": "2026-10-05T15:49:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4245655,
+        "longitude": 9.954399,
+        "speed": 1.577,
+        "distance": 230.03,
+        "altitude": 616.8
+      }
+    },
+    {
+      "id": 43,
+      "timestamp": "2026-10-05T15:49:14+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 195.1,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 44,
+      "timestamp": "2026-10-05T15:49:14+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4246416,
+        "longitude": 9.9542746,
+        "speed": 1.596,
+        "distance": 243.03,
+        "altitude": 616.8
+      }
+    },
+    {
+      "id": 45,
+      "timestamp": "2026-10-05T15:49:17+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 202.4,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 46,
+      "timestamp": "2026-10-05T15:49:17+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4246784,
+        "longitude": 9.9542368,
+        "speed": 1.605,
+        "distance": 247.91,
+        "altitude": 617.2
+      }
+    },
+    {
+      "id": 47,
+      "timestamp": "2026-10-05T15:49:21+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 212.3,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 48,
+      "timestamp": "2026-10-05T15:49:21+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4247222,
+        "longitude": 9.95419,
+        "speed": 1.596,
+        "distance": 253.81,
+        "altitude": 617.2
+      }
+    },
+    {
+      "id": 49,
+      "timestamp": "2026-10-05T15:49:24+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 219.6,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 50,
+      "timestamp": "2026-10-05T15:49:24+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4247587,
+        "longitude": 9.9541519,
+        "speed": 1.596,
+        "distance": 258.83,
+        "altitude": 617.4
+      }
+    },
+    {
+      "id": 51,
+      "timestamp": "2026-10-05T15:49:29+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 231.6,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 52,
+      "timestamp": "2026-10-05T15:49:29+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4248325,
+        "longitude": 9.9541041,
+        "speed": 1.605,
+        "distance": 267.89,
+        "altitude": 618.0
+      }
+    },
+    {
+      "id": 53,
+      "timestamp": "2026-10-05T15:49:31+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 236.5,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 54,
+      "timestamp": "2026-10-05T15:49:31+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4248624,
+        "longitude": 9.9541264,
+        "speed": 1.614,
+        "distance": 271.43,
+        "altitude": 618.0
+      }
+    },
+    {
+      "id": 55,
+      "timestamp": "2026-10-05T15:49:34+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 243.8,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 56,
+      "timestamp": "2026-10-05T15:49:34+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4248875,
+        "longitude": 9.9541798,
+        "speed": 1.614,
+        "distance": 276.28,
+        "altitude": 618.2
+      }
+    },
+    {
+      "id": 57,
+      "timestamp": "2026-10-05T15:49:42+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 263.6,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 58,
+      "timestamp": "2026-10-05T15:49:42+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4249321,
+        "longitude": 9.9543448,
+        "speed": 1.633,
+        "distance": 289.89,
+        "altitude": 618.0
+      }
+    },
+    {
+      "id": 59,
+      "timestamp": "2026-10-05T15:49:54+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 293.4,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 60,
+      "timestamp": "2026-10-05T15:49:54+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4250367,
+        "longitude": 9.9545687,
+        "speed": 1.642,
+        "distance": 309.71,
+        "altitude": 618.0
+      }
+    },
+    {
+      "id": 61,
+      "timestamp": "2026-10-05T15:49:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 303.3,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 62,
+      "timestamp": "2026-10-05T15:49:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4250735,
+        "longitude": 9.9546438,
+        "speed": 1.652,
+        "distance": 316.38,
+        "altitude": 618.2
+      }
+    },
+    {
+      "id": 63,
+      "timestamp": "2026-10-05T15:50:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 325.2,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 64,
+      "timestamp": "2026-10-05T15:50:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4251319,
+        "longitude": 9.9548147,
+        "speed": 1.661,
+        "distance": 331.13,
+        "altitude": 618.4
+      }
+    },
+    {
+      "id": 65,
+      "timestamp": "2026-10-05T15:50:17+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 348.6,
+        "cadence": 108.0
+      }
+    },
+    {
+      "id": 66,
+      "timestamp": "2026-10-05T15:50:17+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.425209,
+        "longitude": 9.9549752,
+        "speed": 1.614,
+        "distance": 345.76,
+        "altitude": 618.8
+      }
+    },
+    {
+      "id": 67,
+      "timestamp": "2026-10-05T15:50:26+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 370.2,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 68,
+      "timestamp": "2026-10-05T15:50:26+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4252791,
+        "longitude": 9.9551274,
+        "speed": 1.586,
+        "distance": 359.36,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 69,
+      "timestamp": "2026-10-05T15:50:28+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 375.0,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 70,
+      "timestamp": "2026-10-05T15:50:28+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4252946,
+        "longitude": 9.9551633,
+        "speed": 1.586,
+        "distance": 362.63,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 71,
+      "timestamp": "2026-10-05T15:50:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 387.0,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 72,
+      "timestamp": "2026-10-05T15:50:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4253251,
+        "longitude": 9.9552452,
+        "speed": 1.577,
+        "distance": 369.46,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 73,
+      "timestamp": "2026-10-05T15:50:38+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 399.1,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 74,
+      "timestamp": "2026-10-05T15:50:38+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4253698,
+        "longitude": 9.9553266,
+        "speed": 1.558,
+        "distance": 377.11,
+        "altitude": 619.4
+      }
+    },
+    {
+      "id": 75,
+      "timestamp": "2026-10-05T15:50:47+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 420.6,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 76,
+      "timestamp": "2026-10-05T15:50:47+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4254356,
+        "longitude": 9.9554922,
+        "speed": 1.568,
+        "distance": 391.55,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 77,
+      "timestamp": "2026-10-05T15:50:50+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 427.8,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 78,
+      "timestamp": "2026-10-05T15:50:50+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4254567,
+        "longitude": 9.9555423,
+        "speed": 1.558,
+        "distance": 395.9,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 79,
+      "timestamp": "2026-10-05T15:50:53+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 435.0,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 80,
+      "timestamp": "2026-10-05T15:50:53+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.425491,
+        "longitude": 9.955571,
+        "speed": 1.549,
+        "distance": 400.37,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 81,
+      "timestamp": "2026-10-05T15:50:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 439.8,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 82,
+      "timestamp": "2026-10-05T15:50:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4255179,
+        "longitude": 9.9555648,
+        "speed": 1.549,
+        "distance": 403.44,
+        "altitude": 619.0
+      }
+    },
+    {
+      "id": 83,
+      "timestamp": "2026-10-05T15:51:03+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 458.9,
+        "cadence": 110.0
+      }
+    },
+    {
+      "id": 84,
+      "timestamp": "2026-10-05T15:51:03+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4256111,
+        "longitude": 9.9554722,
+        "speed": 1.54,
+        "distance": 415.57,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 85,
+      "timestamp": "2026-10-05T15:51:10+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 475.9,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 86,
+      "timestamp": "2026-10-05T15:51:10+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4257092,
+        "longitude": 9.9554243,
+        "speed": 1.558,
+        "distance": 427.7,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 87,
+      "timestamp": "2026-10-05T15:51:20+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 500.7,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 88,
+      "timestamp": "2026-10-05T15:51:20+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4258474,
+        "longitude": 9.9554284,
+        "speed": 1.54,
+        "distance": 442.83,
+        "altitude": 619.2
+      }
+    },
+    {
+      "id": 89,
+      "timestamp": "2026-10-05T15:51:21+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 503.2,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 90,
+      "timestamp": "2026-10-05T15:51:21+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4258614,
+        "longitude": 9.9554325,
+        "speed": 1.54,
+        "distance": 444.32,
+        "altitude": 619.0
+      }
+    },
+    {
+      "id": 91,
+      "timestamp": "2026-10-05T15:51:31+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 527.9,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 92,
+      "timestamp": "2026-10-05T15:51:31+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4260065,
+        "longitude": 9.9555349,
+        "speed": 1.586,
+        "distance": 462.26,
+        "altitude": 618.8
+      }
+    },
+    {
+      "id": 93,
+      "timestamp": "2026-10-05T15:51:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 532.9,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 94,
+      "timestamp": "2026-10-05T15:51:33+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4260256,
+        "longitude": 9.9555673,
+        "speed": 1.596,
+        "distance": 465.55,
+        "altitude": 618.8
+      }
+    },
+    {
+      "id": 95,
+      "timestamp": "2026-10-05T15:51:40+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 550.2,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 96,
+      "timestamp": "2026-10-05T15:51:40+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4260956,
+        "longitude": 9.9556907,
+        "speed": 1.605,
+        "distance": 477.1,
+        "altitude": 618.6
+      }
+    },
+    {
+      "id": 97,
+      "timestamp": "2026-10-05T15:51:49+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 572.5,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 98,
+      "timestamp": "2026-10-05T15:51:49+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4261511,
+        "longitude": 9.9558611,
+        "speed": 1.605,
+        "distance": 491.35,
+        "altitude": 618.4
+      }
+    },
+    {
+      "id": 99,
+      "timestamp": "2026-10-05T15:51:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 594.8,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 100,
+      "timestamp": "2026-10-05T15:51:58+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4261704,
+        "longitude": 9.9560412,
+        "speed": 1.605,
+        "distance": 504.91,
+        "altitude": 618.4
+      }
+    },
+    {
+      "id": 101,
+      "timestamp": "2026-10-05T15:52:05+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 611.9,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 102,
+      "timestamp": "2026-10-05T15:52:05+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4261668,
+        "longitude": 9.9561912,
+        "speed": 1.596,
+        "distance": 515.57,
+        "altitude": 618.2
+      }
+    },
+    {
+      "id": 103,
+      "timestamp": "2026-10-05T15:52:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 616.7,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 104,
+      "timestamp": "2026-10-05T15:52:07+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4261796,
+        "longitude": 9.9562221,
+        "speed": 1.596,
+        "distance": 518.5,
+        "altitude": 618.2
+      }
+    },
+    {
+      "id": 105,
+      "timestamp": "2026-10-05T15:52:11+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 626.5,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 106,
+      "timestamp": "2026-10-05T15:52:11+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4262276,
+        "longitude": 9.9562723,
+        "speed": 1.586,
+        "distance": 524.84,
+        "altitude": 618.0
+      }
+    },
+    {
+      "id": 107,
+      "timestamp": "2026-10-05T15:52:19+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 646.3,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 108,
+      "timestamp": "2026-10-05T15:52:19+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4263257,
+        "longitude": 9.9563405,
+        "speed": 1.586,
+        "distance": 536.81,
+        "altitude": 617.4
+      }
+    },
+    {
+      "id": 109,
+      "timestamp": "2026-10-05T15:52:25+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 661.1,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 110,
+      "timestamp": "2026-10-05T15:52:25+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4264061,
+        "longitude": 9.9563785,
+        "speed": 1.577,
+        "distance": 545.63,
+        "altitude": 617.0
+      }
+    },
+    {
+      "id": 111,
+      "timestamp": "2026-10-05T15:52:27+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 666.1,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 112,
+      "timestamp": "2026-10-05T15:52:27+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4264363,
+        "longitude": 9.9563855,
+        "speed": 1.577,
+        "distance": 549.38,
+        "altitude": 617.0
+      }
+    },
+    {
+      "id": 113,
+      "timestamp": "2026-10-05T15:52:35+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 685.9,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 114,
+      "timestamp": "2026-10-05T15:52:35+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4265604,
+        "longitude": 9.9564118,
+        "speed": 1.586,
+        "distance": 562.97,
+        "altitude": 616.2
+      }
+    },
+    {
+      "id": 115,
+      "timestamp": "2026-10-05T15:52:37+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 690.9,
+        "cadence": 116.0
+      }
+    },
+    {
+      "id": 116,
+      "timestamp": "2026-10-05T15:52:37+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4265895,
+        "longitude": 9.9564223,
+        "speed": 1.586,
+        "distance": 566.67,
+        "altitude": 616.0
+      }
+    },
+    {
+      "id": 117,
+      "timestamp": "2026-10-05T15:52:45+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 710.8,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 118,
+      "timestamp": "2026-10-05T15:52:45+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4267082,
+        "longitude": 9.9564646,
+        "speed": 1.596,
+        "distance": 580.33,
+        "altitude": 614.8
+      }
+    },
+    {
+      "id": 119,
+      "timestamp": "2026-10-05T15:52:46+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 713.2,
+        "cadence": 114.0
+      }
+    },
+    {
+      "id": 120,
+      "timestamp": "2026-10-05T15:52:46+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.426718,
+        "longitude": 9.9564642,
+        "speed": 1.596,
+        "distance": 581.37,
+        "altitude": 614.6
+      }
+    },
+    {
+      "id": 121,
+      "timestamp": "2026-10-05T15:52:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 735.1,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 122,
+      "timestamp": "2026-10-05T15:52:55+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4268366,
+        "longitude": 9.9565092,
+        "speed": 1.586,
+        "distance": 594.74,
+        "altitude": 614.2
+      }
+    },
+    {
+      "id": 123,
+      "timestamp": "2026-10-05T15:52:57+00:00",
+      "sourceId": "garmin_watch",
+      "type": "steps",
+      "values": {
+        "cumulative_steps": 740.0,
+        "cadence": 112.0
+      }
+    },
+    {
+      "id": 124,
+      "timestamp": "2026-10-05T15:52:57+00:00",
+      "sourceId": "garmin_watch",
+      "type": "position",
+      "values": {
+        "latitude": 48.4268669,
+        "longitude": 9.956523,
+        "speed": 1.586,
+        "distance": 598.31,
+        "altitude": 614.0
+      }
+    }
+  ],
+  "profile": {
+    "id": 1,
+    "name": "Garmin Watch",
+    "timestamp": "2026-10-05T15:47:52+00:00",
+    "height": 0,
+    "age": 0
+  }
+}
