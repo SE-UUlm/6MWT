@@ -34,6 +34,8 @@ class GpsSource implements SensorSource {
       );
     }
 
+    await _locationService.requestNotificationPermission();
+
     _subscription = _locationService.getPositionStream().listen(
       (position) => _controller.add(_toSample(position)),
       onError: _controller.addError,

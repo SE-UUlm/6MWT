@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LocationService {
   // Checks if location services are enabled and requests permission if needed.
@@ -73,5 +74,19 @@ class LocationService {
     }
 
     return Geolocator.getPositionStream(locationSettings: locationSettings);
+  }
+
+  // Ask Android users to allow ongoing tracking notification (not ongoing tracking itself).
+  // Denying nofitications does not block the location tracking.
+  Future<void> requestNotificationPermission() async {
+    if (defaultTargetPlatform != TargetPlatform.android) {
+      return;
+    }
+
+    final notificationStatus = await Permission.notification.status;
+
+    if (notificationStatus.isDenied) {
+      await Permission.notification.request();
+    }
   }
 }
