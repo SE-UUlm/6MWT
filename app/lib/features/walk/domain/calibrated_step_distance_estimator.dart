@@ -136,13 +136,35 @@ class StepCalibrationHistory {
     return true;
   }
 
-  static double sum(List<CalibrationSegment> segments, double a, double b) =>
-      segments.fold(0.0, (v, s) => v + s.between(a, b));
+  /// Histories contain disjoint segments in chronological order. Skip the
+  /// unrelated prefix in logarithmic time, then visit only overlapping segments.
+  static int firstEndingAfter(List<CalibrationSegment> segments, double time) {
+    var low = 0, high = segments.length;
+    while (low < high) {
+      final mid = (low + high) >> 1;
+      if (segments[mid].end <= time) {
+        low = mid + 1;
+      } else {
+        high = mid;
+      }
+    }
+    return low;
+  }
+
+  static double sum(List<CalibrationSegment> segments, double a, double b) {
+    var total = 0.0;
+    for (var i = firstEndingAfter(segments, a); i < segments.length; i++) {
+      final segment = segments[i];
+      if (segment.start >= b) break;
+      total += segment.between(a, b);
+    }
+    return total;
+  }
 
   static bool covers(List<CalibrationSegment> segments, double a, double b) {
     var cursor = a;
-    for (final s in segments) {
-      if (s.end <= cursor) continue;
+    for (var i = firstEndingAfter(segments, a); i < segments.length; i++) {
+      final s = segments[i];
       if (s.start > cursor + 1e-6) return false;
       cursor = s.end;
       if (cursor >= b - 1e-6) return true;

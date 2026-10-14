@@ -225,3 +225,27 @@ The graph selector supports all estimators and subsessions, all estimators of on
 subsession, or all subsessions of one estimator. Legend chips toggle individual
 curves. Graph time is relative to each subsession's first sensor sample; references
 are aligned and compared separately for each recording's actual UTC overlap.
+
+## Replay performance
+
+Opening **Recording** does not start the Estimator Lab. Opening the Lab runs all
+subsession replays in a background isolate and displays a loading indicator while
+the interface remains responsive. Results are reused for the same loaded session;
+reloading files or saving references creates a fresh session and invalidates its
+cached result. Discarded datasets can be garbage-collected. Hot restart after
+changing `createEstimators()` to discard previously computed results.
+
+Calibration history queries search directly for overlapping intervals instead
+of repeatedly scanning the full history. Every sample still reaches every
+estimator; no samples or numerical results are approximated for performance.
+
+Reproduce per-estimator timings on the repository's `Uni together` recordings:
+
+```bash
+flutter test tool/profile_loading.dart --reporter expanded
+```
+
+These timings measure replay and chart preparation in the Flutter test runtime,
+not end-to-end rendering or release-build performance. To inspect interactive
+performance without debug instrumentation, run `flutter run -d linux --profile`
+or use a release build.

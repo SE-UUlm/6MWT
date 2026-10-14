@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import '../../core/domain/session.dart';
 import '../../core/theme/reference_colors.dart';
 import 'estimator_replay.dart';
-import 'estimators.dart';
+import 'session_replay_cache.dart';
 
 /// Displays the code-configured estimators for the selected recording.
 class EstimatorLab extends StatefulWidget {
-  const EstimatorLab({super.key, required this.session});
+  const EstimatorLab({super.key, required this.session, this.replayLoader});
+  final ReplayLoader? replayLoader;
   final Session session;
 
   @override
@@ -25,6 +26,9 @@ class _EstimatorLabState extends State<EstimatorLab> {
   int _graphMode = 0;
   int _selectedRecording = 0;
   int _selectedEstimator = 0;
+  bool _loading = true;
+  Object? _error;
+  int _generation = 0;
   late List<EstimatorReplay> _replays;
   late List<List<ReplayResult>> _runs;
   List<ReplayResult> get _results => _runs.first;
@@ -61,11 +65,27 @@ class _EstimatorLabState extends State<EstimatorLab> {
 
   /// New instances isolate each session; replay resets every estimator before use.
   void _run() {
-    _replays = widget.session.recordings.map(EstimatorReplay.new).toList();
-    _runs = [
-      for (final replay in _replays)
-        createEstimators().map(replay.run).toList(),
-    ];
+    _loading = true;
+    _error = null;
+    final generation = ++_generation;
+    final load = widget.replayLoader ?? sessionReplayCache.load;
+    load(widget.session).then(
+      (result) {
+        if (!mounted || generation != _generation) return;
+        setState(() {
+          _replays = result.replays;
+          _runs = result.runs;
+          _loading = false;
+        });
+      },
+      onError: (Object error, StackTrace stack) {
+        if (!mounted || generation != _generation) return;
+        setState(() {
+          _loading = false;
+          _error = error;
+        });
+      },
+    );
     _hidden.clear();
     _hiddenReferences.clear();
     _expandedInfo.clear();
@@ -75,6 +95,32 @@ class _EstimatorLabState extends State<EstimatorLab> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 12),
+            Text('Calculating estimators…'),
+          ],
+        ),
+      );
+    }
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Could not replay session: $_error'),
+            TextButton(
+              onPressed: () => setState(_run),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [

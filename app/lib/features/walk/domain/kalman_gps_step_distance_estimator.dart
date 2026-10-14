@@ -108,7 +108,16 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
     _gpsDistance = 0;
     for (final edge in _history.gps) {
       var coveredSeconds = 0.0;
-      for (final step in _history.steps) {
+      for (
+        var i = StepCalibrationHistory.firstEndingAfter(
+          _history.steps,
+          edge.start,
+        );
+        i < _history.steps.length;
+        i++
+      ) {
+        final step = _history.steps[i];
+        if (step.start >= edge.end) break;
         coveredSeconds += math.max(
           0,
           math.min(edge.end, step.end) - math.max(edge.start, step.start),

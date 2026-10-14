@@ -22,12 +22,16 @@ class SessionDetailScreen extends ConsumerStatefulWidget {
 class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   bool _showChart = true;
   int _view = 0;
+  bool _labOpened = false;
   int _recordingIndex = 0;
 
   @override
   void didUpdateWidget(SessionDetailScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.session.id != widget.session.id) _recordingIndex = 0;
+    if (!identical(oldWidget.session, widget.session)) {
+      _recordingIndex = 0;
+      _labOpened = _view == 1;
+    }
   }
 
   @override
@@ -61,8 +65,10 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
               ),
             ],
             selected: {_view},
-            onSelectionChanged: (selection) =>
-                setState(() => _view = selection.single),
+            onSelectionChanged: (selection) => setState(() {
+              _view = selection.single;
+              if (_view == 1) _labOpened = true;
+            }),
           ),
         ),
         // Main content: map & chart on the left, info panel on the right
@@ -131,7 +137,10 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                   ),
                 ],
               ),
-              EstimatorLab(session: session),
+              if (_labOpened)
+                EstimatorLab(session: session)
+              else
+                const SizedBox.shrink(),
             ],
           ),
         ),

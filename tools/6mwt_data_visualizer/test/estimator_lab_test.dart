@@ -1,3 +1,4 @@
+import 'package:six_mwt_visualizer/features/estimator_lab/session_replay_cache.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,6 +22,7 @@ void main() {
       MaterialApp(
         home: Scaffold(
           body: EstimatorLab(
+            replayLoader: (s) async => runSessionReplay(s),
             session: fixtures.session([
               fixtures.gps(0, 0),
               fixtures.gps(5, 0.00005),
@@ -29,6 +31,7 @@ void main() {
         ),
       ),
     );
+    await tester.pumpAndSettle();
     expect(find.textContaining('Rejected GPS:'), findsNothing);
     final index = createEstimators().indexWhere(
       (e) => e.additionalInfo.containsKey('Rejected GPS'),
@@ -64,9 +67,15 @@ void main() {
       );
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: EstimatorLab(session: session)),
+          home: Scaffold(
+            body: EstimatorLab(
+              replayLoader: (s) async => runSessionReplay(s),
+              session: session,
+            ),
+          ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.text('Reference (dashed)'), findsOneWidget);
       final chart = tester.widget<LineChart>(find.byType(LineChart));
       final bars = chart.data.lineBarsData;
@@ -149,6 +158,7 @@ void main() {
         theme: theme,
         home: Scaffold(
           body: EstimatorLab(
+            replayLoader: (s) async => runSessionReplay(s),
             session: fixtures.session([
               fixtures.gps(0, 0),
               fixtures.gps(10, longitude),
@@ -158,6 +168,7 @@ void main() {
       );
 
       await tester.pumpWidget(lab(1));
+      await tester.pumpAndSettle();
       expect(find.byType(TextFormField), findsNothing);
       expect(
         find.byWidgetPredicate((widget) => widget is DropdownButton),
@@ -199,6 +210,7 @@ void main() {
 
       // Changing sessions creates fresh estimators and updates their diagnostics.
       await tester.pumpWidget(lab(0.0001));
+      await tester.pumpAndSettle();
       expect(find.textContaining('Rejected GPS:'), findsNothing);
       for (final button in tester.widgetList<TextButton>(
         find.byWidgetPredicate((w) => w is TextButton),

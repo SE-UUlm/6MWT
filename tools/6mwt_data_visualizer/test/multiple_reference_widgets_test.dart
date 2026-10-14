@@ -1,3 +1,4 @@
+import 'package:six_mwt_visualizer/features/estimator_lab/session_replay_cache.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,11 +46,13 @@ void main() {
         ),
       );
       await tester.pumpWidget(chart(false));
+      await tester.pumpAndSettle();
       expect(
         tester.widget<LineChart>(find.byType(LineChart)).data.lineBarsData,
         hasLength(2),
       );
       await tester.pumpWidget(chart(true));
+      await tester.pumpAndSettle();
       await tester.pumpAndSettle();
       var bars = tester
           .widget<LineChart>(find.byType(LineChart))
@@ -73,10 +76,17 @@ void main() {
     (tester) async {
       desktop(tester);
       Widget lab(bool added) => MaterialApp(
-        home: Scaffold(body: EstimatorLab(session: added ? updated : original)),
+        home: Scaffold(
+          body: EstimatorLab(
+            replayLoader: (s) async => runSessionReplay(s),
+            session: added ? updated : original,
+          ),
+        ),
       );
       await tester.pumpWidget(lab(false));
+      await tester.pumpAndSettle();
       await tester.pumpWidget(lab(true));
+      await tester.pumpAndSettle();
       await tester.pumpAndSettle();
       final chart = tester.widget<LineChart>(find.byType(LineChart));
       final bars = chart.data.lineBarsData;

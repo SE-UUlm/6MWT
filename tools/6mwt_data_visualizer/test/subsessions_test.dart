@@ -1,3 +1,4 @@
+import 'package:six_mwt_visualizer/features/estimator_lab/session_replay_cache.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -112,6 +113,7 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
       expect(find.byType(GpsTrackLayer), findsNWidgets(3));
       final chips = find.byType(FilterChip);
       await tester.tap(chips.at(1));
@@ -137,9 +139,15 @@ void main() {
       final session = group();
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: EstimatorLab(session: session)),
+          home: Scaffold(
+            body: EstimatorLab(
+              replayLoader: (s) async => runSessionReplay(s),
+              session: session,
+            ),
+          ),
         ),
       );
+      await tester.pumpAndSettle();
       final count = createEstimators().length;
       List<LineChartBarData> bars() =>
           tester.widget<LineChart>(find.byType(LineChart)).data.lineBarsData;
