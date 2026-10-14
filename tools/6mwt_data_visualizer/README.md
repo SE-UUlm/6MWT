@@ -17,10 +17,10 @@ A Flutter desktop development tool for visualizing recorded 6-minute walk test s
 - **Dynamic map legend**:
   - Floating legend showing distance and GPS point count for both tracks, plus live delta (\(\Delta\)) in meters and percentage
 - **GPS dots** – from zoom level 18 onwards, GPS samples are shown as small dots along the route
-- **Segment labels** – zoom-adaptive labels at GPS points:
+- **Segment labels** – screen-space-adaptive labels at GPS points:
   - 🟢 `+X.X m` – Haversine distance to the previous GPS sample
   - 🔵 `+Y steps` – step delta (only `cumulative_steps` samples) since the previous GPS sample
-  - Label density adapts automatically to the zoom level (every 10th point at low zoom, every point at zoom ≥ 19)
+  - Label density follows the available screen space, zoom, map rotation and text scale. Dense recordings skip more samples; labels stay inside the viewport and avoid each other across all visible subsessions. Deltas still refer to the immediately preceding raw GPS sample.
 - **Session info panel & Reference Comparison** – overview of phase, duration, stored distance, participant profile, and a dedicated **Reference Comparison Card** (distance delta, step delta, duration difference, sample counts)
 - **Folder structure auto-load** – on startup the tool automatically scans `data/` subfolders for `session.json` and automatically attaches `reference.json` when present
 - **Folder & file picker** – buttons in the sidebar header to reload data, pick a custom session folder, or open individual JSON files

@@ -6,134 +6,196 @@ import '../../core/domain/haversine.dart';
 import '../../core/domain/sensor_sample.dart';
 import '../../core/domain/session.dart';
 
-/// Shows per-segment labels on the map at each (shown) GPS position.
-///
-/// Each label displays:
-///   +X.X m    – GPS distance from the previous GPS sample (Haversine)
-///   +Y steps  – cumulative-step delta since the previous GPS sample
-/// Its hover tooltip additionally displays the GPS sample's accuracy.
-///
-/// The marker density adapts automatically to the current zoom level:
-///   zoom ≥ 19  → every point
-///   zoom ≥ 18  → every 2nd point
-///   zoom ≥ 17  → every 3rd point
-///   zoom ≥ 16  → every 5th point
-///   zoom < 16  → every 10th point
-class StepMarkerLayer extends StatelessWidget {
-  const StepMarkerLayer({
-    super.key,
-    required this.session,
-    required this.gpsPoints,
-  });
+/// Uses screen-space label bounds rather than sample count or fixed zoom steps.
+/// All visible recordings share one collision grid, including crossing tracks.
+/// Deltas always refer to the preceding raw GPS sample, not the previous label.
+class StepMarkerLayer extends StatefulWidget {
+  const StepMarkerLayer({super.key, required this.sessions});
 
-  final Session session;
-  final List<LatLng> gpsPoints;
+  final List<Session> sessions;
 
-  int _strideForZoom(double zoom) {
-    if (zoom >= 19) return 1;
-    if (zoom >= 18) return 2;
-    if (zoom >= 17) return 3;
-    if (zoom >= 16) return 5;
-    return 10;
+  @override
+  State<StepMarkerLayer> createState() => _StepMarkerLayerState();
+}
+
+class _StepMarkerLayerState extends State<StepMarkerLayer> {
+  final _data = <Session, List<_SegmentData>>{};
+
+  @override
+  void initState() {
+    super.initState();
+    _prepare();
+  }
+
+  @override
+  void didUpdateWidget(StepMarkerLayer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _prepare();
+  }
+
+  void _prepare() {
+    _data.removeWhere((session, _) => !widget.sessions.contains(session));
+    for (final session in widget.sessions) {
+      _data.putIfAbsent(session, () => _segments(session));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final positionSamples = session.positionSamples;
-    if (positionSamples.isEmpty) return const SizedBox.shrink();
-
-    final stepSamples = session.stepSamples;
-
-    final zoom = MapCamera.of(context).zoom;
-    final stride = _strideForZoom(zoom);
-
+    final camera = MapCamera.of(context);
+    final scale = MediaQuery.textScalerOf(context).scale(9) / 9;
+    final labelSize = Size(64 * scale, 36 * scale);
+    final placement = ScreenLabelPlacement(
+      viewport: Offset.zero & camera.nonRotatedSize,
+      labelSize: labelSize,
+    );
     final markers = <Marker>[];
+    final iterators = [for (final s in widget.sessions) _data[s]!.iterator];
 
-    // Previous values for delta computation – always track across ALL samples,
-    // but only emit a marker every [stride] samples.
-    double? prevLat;
-    double? prevLon;
-    double? prevSteps;
-
-    for (int i = 0; i < positionSamples.length; i++) {
-      final sample = positionSamples[i];
-      final lat = sample.values[PositionKeys.latitude]!;
-      final lon = sample.values[PositionKeys.longitude]!;
-
-      // GPS distance delta to the immediately preceding GPS sample.
-      final double? gpsDelta = (prevLat != null && prevLon != null)
-          ? haversineDistance(
-              lat1: prevLat,
-              lon1: prevLon,
-              lat2: lat,
-              lon2: lon,
-            )
-          : null;
-
-      // Step delta to the immediately preceding GPS sample timestamp.
-      final cumSteps = stepSamples.isNotEmpty
-          ? _stepsAtTime(stepSamples, sample.timestamp)
-          : null;
-      final int? stepDelta = (cumSteps != null && prevSteps != null)
-          ? (cumSteps - prevSteps).round()
-          : null;
-
-      prevLat = lat;
-      prevLon = lon;
-      if (cumSteps != null) prevSteps = cumSteps;
-
-      // Only emit a marker every [stride] samples.
-      if (i % stride != 0) continue;
-
-      // The first point has no segment or step delta, but should still expose
-      // its accuracy when hovered.
-      if (gpsDelta == null) {
-        final accuracy = sample.values[PositionKeys.accuracy];
-        if (accuracy != null) {
-          markers.add(
-            Marker(
-              point: LatLng(lat, lon),
-              width: 20,
-              height: 20,
-              child: Tooltip(
-                message: 'Accuracy: ${accuracy.toStringAsFixed(1)} m',
-                child: const ColoredBox(color: Colors.transparent),
+    // Give each recording a turn instead of filling the map with the first one.
+    var hasMore = true;
+    while (hasMore) {
+      hasMore = false;
+      for (var i = 0; i < iterators.length; i++) {
+        final iterator = iterators[i];
+        if (!iterator.moveNext()) continue;
+        hasMore = true;
+        final data = iterator.current;
+        final offset = camera.latLngToScreenOffset(data.point);
+        if (data.gpsDelta == null) {
+          if (data.accuracy != null && placement.viewport.contains(offset)) {
+            markers.add(
+              Marker(
+                point: data.point,
+                width: 20,
+                height: 20,
+                child: Tooltip(
+                  message: 'Accuracy: ${data.accuracy!.toStringAsFixed(1)} m',
+                  child: const ColoredBox(color: Colors.transparent),
+                ),
               ),
-            ),
-          );
+            );
+          }
+          continue;
         }
-        continue;
-      }
-
-      markers.add(
-        Marker(
-          point: LatLng(lat, lon),
-          width: 64,
-          height: 36,
-          alignment: Alignment.topCenter,
-          child: _SegmentLabel(
-            gpsDelta: gpsDelta,
-            stepDelta: stepDelta,
-            accuracy: sample.values[PositionKeys.accuracy],
+        if (!placement.add(offset)) continue;
+        markers.add(
+          Marker(
+            point: data.point,
+            width: labelSize.width,
+            height: labelSize.height,
+            alignment: Alignment.topCenter,
+            rotate: true,
+            child: _SegmentLabel(
+              gpsDelta: data.gpsDelta!,
+              stepDelta: data.stepDelta,
+              accuracy: data.accuracy,
+              recording: widget.sessions.length > 1
+                  ? widget.sessions[i].deviceLabel
+                  : null,
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
-
     return MarkerLayer(markers: markers);
   }
+}
 
-  double? _stepsAtTime(List<SensorSample> stepSamples, DateTime time) {
-    SensorSample? nearest;
-    for (final s in stepSamples) {
-      if (!s.timestamp.isAfter(time)) {
-        nearest = s;
-      } else {
-        break;
+/// Greedy screen-space placement with a spatial grid: bounded neighbour checks
+/// instead of comparing every sample to every already accepted label.
+class ScreenLabelPlacement {
+  ScreenLabelPlacement({
+    required Rect viewport,
+    required this.labelSize,
+    this.gap = 4,
+  }) : viewport = viewport.deflate(4);
+
+  final Rect viewport;
+  final Size labelSize;
+  final double gap;
+  final _cells = <(int, int), List<Rect>>{};
+
+  bool add(Offset anchor) {
+    if (!anchor.dx.isFinite || !anchor.dy.isFinite) return false;
+    final bounds = Rect.fromLTWH(
+      anchor.dx - labelSize.width / 2,
+      anchor.dy - labelSize.height,
+      labelSize.width,
+      labelSize.height,
+    );
+    if (bounds.left < viewport.left ||
+        bounds.right > viewport.right ||
+        bounds.top < viewport.top ||
+        bounds.bottom > viewport.bottom) {
+      return false;
+    }
+    final padded = bounds.inflate(gap / 2);
+    final width = labelSize.width + gap, height = labelSize.height + gap;
+    final left = (padded.left / width).floor(),
+        right = (padded.right / width).floor();
+    final top = (padded.top / height).floor(),
+        bottom = (padded.bottom / height).floor();
+    for (var x = left; x <= right; x++) {
+      for (var y = top; y <= bottom; y++) {
+        if ((_cells[(x, y)] ?? const <Rect>[]).any((r) => r.overlaps(padded))) {
+          return false;
+        }
       }
     }
-    return nearest?.values[StepKeys.cumulativeSteps];
+    for (var x = left; x <= right; x++) {
+      for (var y = top; y <= bottom; y++) {
+        _cells.putIfAbsent((x, y), () => []).add(padded);
+      }
+    }
+    return true;
   }
+}
+
+class _SegmentData {
+  const _SegmentData(this.point, this.gpsDelta, this.stepDelta, this.accuracy);
+  final LatLng point;
+  final double? gpsDelta;
+  final int? stepDelta;
+  final double? accuracy;
+}
+
+/// Prepare once per recording. Merge chronological GPS/step streams in O(n+m)
+/// so camera movement never repeats distance calculations or history scans.
+List<_SegmentData> _segments(Session session) {
+  final positions = session.positionSamples, steps = session.stepSamples;
+  final result = <_SegmentData>[];
+  SensorSample? previous;
+  double? previousSteps, cumulativeSteps;
+  var stepIndex = 0;
+  for (final sample in positions) {
+    while (stepIndex < steps.length &&
+        !steps[stepIndex].timestamp.isAfter(sample.timestamp)) {
+      cumulativeSteps = steps[stepIndex++].values[StepKeys.cumulativeSteps];
+    }
+    final lat = sample.values[PositionKeys.latitude]!,
+        lon = sample.values[PositionKeys.longitude]!;
+    result.add(
+      _SegmentData(
+        LatLng(lat, lon),
+        previous == null
+            ? null
+            : haversineDistance(
+                lat1: previous.values[PositionKeys.latitude]!,
+                lon1: previous.values[PositionKeys.longitude]!,
+                lat2: lat,
+                lon2: lon,
+              ),
+        cumulativeSteps == null || previousSteps == null
+            ? null
+            : (cumulativeSteps - previousSteps).round(),
+        sample.values[PositionKeys.accuracy],
+      ),
+    );
+    previous = sample;
+    if (cumulativeSteps != null) previousSteps = cumulativeSteps;
+  }
+  return result;
 }
 
 // ---------------------------------------------------------------------------
@@ -141,11 +203,17 @@ class StepMarkerLayer extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _SegmentLabel extends StatelessWidget {
-  const _SegmentLabel({required this.gpsDelta, this.stepDelta, this.accuracy});
+  const _SegmentLabel({
+    required this.gpsDelta,
+    this.stepDelta,
+    this.accuracy,
+    this.recording,
+  });
 
   final double gpsDelta;
   final int? stepDelta;
   final double? accuracy;
+  final String? recording;
 
   @override
   Widget build(BuildContext context) {
@@ -157,6 +225,7 @@ class _SegmentLabel extends StatelessWidget {
 
     return Tooltip(
       message:
+          '${recording == null ? '' : '$recording\n'}'
           'GPS segment: $gpsText'
           '${stepsText != null ? '\n$stepsText' : ''}'
           '${accuracyText != null ? '\n$accuracyText' : ''}',
@@ -176,6 +245,8 @@ class _SegmentLabel extends StatelessWidget {
           children: [
             Text(
               gpsText,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Colors.lightGreenAccent,
                 fontSize: 9,
@@ -186,6 +257,8 @@ class _SegmentLabel extends StatelessWidget {
             if (stepsText != null)
               Text(
                 stepsText,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.blue.shade200,
                   fontSize: 8,

@@ -314,12 +314,15 @@ class _SessionMapState extends State<SessionMap> {
                       : 'App End',
                   showAccuracyCircles: _showAccuracyCircles,
                 ),
-                if (_showStepMarkers)
-                  StepMarkerLayer(
-                    session: recording,
-                    gpsPoints: _gpsPoints(recording),
-                  ),
               ],
+            if (_showStepMarkers && _showAppTrack)
+              StepMarkerLayer(
+                sessions: [
+                  for (final (i, recording)
+                      in widget.session.recordings.indexed)
+                    if (!_hiddenRecordings.contains(i)) recording,
+                ],
+              ),
             if (_drawing && _draft.isNotEmpty) ...[
               PolylineLayer(
                 polylines: [
