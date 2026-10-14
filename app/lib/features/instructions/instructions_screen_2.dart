@@ -15,28 +15,20 @@ class InstructionsScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        iconTheme: const IconThemeData(color: Color(0xFF111111)),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
-
-              // Back - Arrow
-              GestureDetector(
-                onTap: () => context.pop(),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 20,
-                    color: Color(0xFF111111),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
 
               // Icon + Titel
               Row(

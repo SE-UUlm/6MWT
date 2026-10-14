@@ -14,7 +14,6 @@ class InstructionsScreen1 extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // Neuer automatischer Zurückpfeil
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
