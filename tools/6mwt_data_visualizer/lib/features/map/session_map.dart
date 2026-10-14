@@ -41,6 +41,7 @@ class SessionMap extends StatefulWidget {
 class _SessionMapState extends State<SessionMap> {
   final _mapController = MapController();
   late final _tileProvider = widget.tileProvider ?? NetworkTileProvider();
+  final Set<int> _hiddenRecordings = {};
   bool _showAppTrack = true;
   bool _showRefTrack = true;
   bool _showStepMarkers = true;
@@ -63,6 +64,7 @@ class _SessionMapState extends State<SessionMap> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.session.id != widget.session.id) {
       _drawing = false;
+      _hiddenRecordings.clear();
       _draft.clear();
       _fitBounds();
     }
@@ -185,10 +187,24 @@ class _SessionMapState extends State<SessionMap> {
     ),
   );
 
+  Color _deviceColor(int index) => const [
+    Colors.blue,
+    Colors.purple,
+    Colors.teal,
+    Colors.pink,
+    Colors.indigo,
+  ][index % 5];
+
   List<LatLng> _allPoints() {
     final points = <LatLng>[];
-    points.addAll(_gpsPoints(widget.session));
-    for (final ref in _effectiveReferences) {
+    if (_showAppTrack) {
+      for (final (i, recording) in widget.session.recordings.indexed) {
+        if (!_hiddenRecordings.contains(i)) {
+          points.addAll(_gpsPoints(recording));
+        }
+      }
+    }
+    for (final ref in _showRefTrack ? _effectiveReferences : <Session>[]) {
       points.addAll(_gpsPoints(ref));
     }
     return points;
@@ -276,22 +292,34 @@ class _SessionMapState extends State<SessionMap> {
                   isReference: true,
                   showAccuracyCircles: false,
                 ),
-            // 6MWT App GPS track
-            if (_showAppTrack && appPoints.isNotEmpty)
-              GpsTrackLayer(
-                session: widget.session,
-                gpsPoints: appPoints,
-                trackColor: AppColors.appTrackBlue,
-                startColor: Colors.green,
-                endColor: Colors.red,
-                startLabel: 'App Start',
-                endLabel: 'App End',
-                isReference: false,
-                showAccuracyCircles: _showAccuracyCircles,
-              ),
-            // Step markers (toggleable)
-            if (_showStepMarkers && _showAppTrack && appPoints.isNotEmpty)
-              StepMarkerLayer(session: widget.session, gpsPoints: appPoints),
+            for (final (i, recording) in widget.session.recordings.indexed)
+              if (_showAppTrack && !_hiddenRecordings.contains(i)) ...[
+                GpsTrackLayer(
+                  session: recording,
+                  gpsPoints: _gpsPoints(recording),
+                  trackColor: widget.session.isGroup
+                      ? _deviceColor(i)
+                      : AppColors.appTrackBlue,
+                  startColor: widget.session.isGroup
+                      ? _deviceColor(i)
+                      : Colors.green,
+                  endColor: widget.session.isGroup
+                      ? _deviceColor(i)
+                      : Colors.red,
+                  startLabel: widget.session.isGroup
+                      ? '${recording.deviceLabel} Start'
+                      : 'App Start',
+                  endLabel: widget.session.isGroup
+                      ? '${recording.deviceLabel} End'
+                      : 'App End',
+                  showAccuracyCircles: _showAccuracyCircles,
+                ),
+                if (_showStepMarkers)
+                  StepMarkerLayer(
+                    session: recording,
+                    gpsPoints: _gpsPoints(recording),
+                  ),
+              ],
             if (_drawing && _draft.isNotEmpty) ...[
               PolylineLayer(
                 polylines: [
@@ -332,12 +360,45 @@ class _SessionMapState extends State<SessionMap> {
         Positioned(
           left: 12,
           top: 12,
-          child: MapLegend(
-            session: widget.session,
-            references: references,
-            appPointsCount: appPoints.length,
-            isTrimmed: _trimReference,
-          ),
+          right: widget.session.isGroup ? 64 : null,
+          child: widget.session.isGroup
+              ? Material(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Wrap(
+                      spacing: 8,
+                      children: [
+                        for (final (i, recording)
+                            in widget.session.recordings.indexed)
+                          FilterChip(
+                            avatar: Icon(
+                              Icons.circle,
+                              size: 12,
+                              color: _deviceColor(i),
+                            ),
+                            label: Text(
+                              '${recording.deviceLabel} · ${recording.distance.toStringAsFixed(1)} m',
+                            ),
+                            selected: !_hiddenRecordings.contains(i),
+                            onSelected: (selected) => setState(() {
+                              if (selected) {
+                                _hiddenRecordings.remove(i);
+                              } else {
+                                _hiddenRecordings.add(i);
+                              }
+                            }),
+                          ),
+                      ],
+                    ),
+                  ),
+                )
+              : MapLegend(
+                  session: widget.session,
+                  references: references,
+                  appPointsCount: appPoints.length,
+                  isTrimmed: _trimReference,
+                ),
         ),
 
         Positioned(

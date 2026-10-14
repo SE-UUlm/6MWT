@@ -16,6 +16,7 @@ class ExportDataNotifier extends _$ExportDataNotifier {
   AsyncValue<ExportData?> build() => const AsyncValue.data(null);
 
   Future<void> loadFromPath(String path) async {
+    ref.read(selectedSessionProvider.notifier).clear();
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => SessionLoader.load(path));
   }
@@ -45,9 +46,11 @@ class ExportDataNotifier extends _$ExportDataNotifier {
   }
 
   Future<void> pickAndLoad() async {
-    final path = await SessionLoader.pickFile();
-    if (path != null) {
-      await loadFromPath(path);
+    final paths = await SessionLoader.pickFiles();
+    if (paths != null && paths.isNotEmpty) {
+      ref.read(selectedSessionProvider.notifier).clear();
+      state = const AsyncValue.loading();
+      state = await AsyncValue.guard(() => SessionLoader.loadFiles(paths));
     }
   }
 }

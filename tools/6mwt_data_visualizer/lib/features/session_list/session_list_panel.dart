@@ -58,7 +58,7 @@ class _SessionListPanelState extends ConsumerState<SessionListPanel> {
               }
               return _SessionList(
                 exportData: exportData,
-                selectedId: selectedSession?.id,
+                selectedSession: selectedSession,
                 onSelect: (session) {
                   ref.read(selectedSessionProvider.notifier).select(session);
                 },
@@ -112,7 +112,7 @@ class _Header extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.file_open_outlined, size: 20),
-            tooltip: 'Open JSON file',
+            tooltip: 'Open JSON files',
             onPressed: onPickFile,
           ),
         ],
@@ -128,12 +128,12 @@ class _Header extends StatelessWidget {
 class _SessionList extends StatelessWidget {
   const _SessionList({
     required this.exportData,
-    required this.selectedId,
+    required this.selectedSession,
     required this.onSelect,
   });
 
   final ExportData exportData;
-  final String? selectedId;
+  final Session? selectedSession;
   final void Function(Session session) onSelect;
 
   @override
@@ -147,7 +147,7 @@ class _SessionList extends StatelessWidget {
         return SessionListTile(
           session: session,
           profile: exportData.profileForSession(session),
-          isSelected: session.id == selectedId,
+          isSelected: identical(session, selectedSession),
           onTap: () => onSelect(session),
         );
       },

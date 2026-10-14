@@ -85,7 +85,7 @@ void main() {
       expect(bars[count].color, referenceColor(0));
       expect(bars[count + 1].color, referenceColor(1));
       final table = tester.widget<DataTable>(find.byType(DataTable));
-      expect(table.columns, hasLength(8));
+      expect(table.columns, hasLength(2));
       expect(table.rows, hasLength(count + 2));
       final watchRow = table.rows[count];
       final manualRow = table.rows[count + 1];
@@ -94,10 +94,13 @@ void main() {
         find.text('Reference: Drawn route (constant speed)'),
         findsOneWidget,
       );
-      expect((watchRow.cells[1].child as Text).data, '80.00');
       expect(
-        (manualRow.cells[1].child as Text).data,
-        manual.distance.toStringAsFixed(2),
+        ((watchRow.cells[1].child as Tooltip).child as Text).data,
+        '80.00 m',
+      );
+      expect(
+        ((manualRow.cells[1].child as Tooltip).child as Text).data,
+        '${manual.distance.toStringAsFixed(2)} m',
       );
       expect(
         ((watchRow.cells.first.child as Row).children.first as Icon).color,
@@ -107,16 +110,22 @@ void main() {
         ((manualRow.cells.first.child as Row).children.first as Icon).color,
         referenceColor(1),
       );
-      expect((watchRow.cells.last.child as Text).data, contains('5.0–25.0 s'));
-      final fullDistance = bars.first.spots.last.y;
-      final cells = table.rows.first.cells;
       expect(
-        (cells[3].child as Text).data,
-        (fullDistance * 20 / 30 - 80).toStringAsFixed(2),
+        (watchRow.cells.last.child as Tooltip).message,
+        contains('5.0–25.0 s'),
+      );
+      final fullDistance = bars.first.spots.last.y;
+      expect(
+        find.textContaining(
+          'Δ Watch: ${(fullDistance * 20 / 30 - 80).toStringAsFixed(2)} m',
+        ),
+        findsWidgets,
       );
       expect(
-        (cells[5].child as Text).data,
-        (fullDistance - manual.distance).toStringAsFixed(2),
+        find.textContaining(
+          'Δ Drawn route: ${(fullDistance - manual.distance).toStringAsFixed(2)} m',
+        ),
+        findsWidgets,
       );
       final item = chart.data.lineTouchData.touchTooltipData.getTooltipItems([
         LineBarSpot(bars.last, bars.length - 1, const FlSpot(15, 0)),
@@ -127,6 +136,7 @@ void main() {
       ).toPlainText();
       expect(tooltip, contains('Watch: 40.00 m'));
       expect(tooltip, contains('Drawn route (constant speed):'));
+      await tester.ensureVisible(find.text('Watch (dashed)'));
       await tester.tap(find.text('Watch (dashed)'));
       await tester.pumpAndSettle();
       expect(

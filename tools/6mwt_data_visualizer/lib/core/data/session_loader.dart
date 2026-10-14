@@ -27,7 +27,7 @@ class SessionLoader {
 
   /// Loads all sessions from the given [dataDirPath].
   ///
-  /// Scans for subdirectories containing `session.json`, attaching
+  /// Scans for subdirectories containing `session.json` or `session_*.json`, attaching
   /// `reference.json`, `reference_*.json` and `references/*.json`.
   /// Also handles direct session folders or legacy export files.
   static Future<ExportData> loadFromDataDirectory(String dataDirPath) async {
@@ -39,45 +39,34 @@ class SessionLoader {
     final sessions = <Session>[];
     final profiles = <Profile>[];
 
-    // Check if the directory itself is a single session folder
-    final selfSessionFile = File('${dir.path}/session.json');
-    if (await selfSessionFile.exists()) {
-      final session = await _loadSessionFolder(dir);
-      if (session != null) {
-        if (session.profile != null) profiles.add(session.profile!);
-        return ExportData(
-          exportedAt: session.startedAt,
-          profiles: profiles,
-          sessions: [session],
-        );
-      }
-    }
-
-    // Scan subdirectories
-    final entries = await dir.list().toList();
-    for (final entry in entries) {
-      if (entry is Directory) {
-        final session = await _loadSessionFolder(entry);
-        if (session != null) {
-          sessions.add(session);
-          if (session.profile != null) {
-            profiles.add(session.profile!);
+    final ownSessions = await _loadSessionFolder(dir);
+    if (ownSessions.isNotEmpty) {
+      sessions.add(_groupFolder(dir, ownSessions));
+    } else {
+      final entries = await dir.list().toList()
+        ..sort((a, b) => a.path.compareTo(b.path));
+      for (final entry in entries) {
+        if (entry is Directory) {
+          final recordings = await _loadSessionFolder(entry);
+          if (recordings.isNotEmpty) {
+            sessions.add(_groupFolder(entry, recordings));
           }
-        }
-      } else if (entry is File && entry.path.endsWith('.json')) {
-        // Also support any top-level legacy export JSON file
-        final fileName = entry.uri.pathSegments.last;
-        if (fileName != 'session.json' && fileName != 'reference.json') {
+        } else if (entry is File && entry.path.endsWith('.json')) {
+          final name = entry.uri.pathSegments.last;
+          if (name == 'reference.json' || name.startsWith('reference_')) {
+            continue;
+          }
           try {
-            final legacyData = await _loadLegacyExportFile(entry);
-            sessions.addAll(legacyData.sessions);
-            profiles.addAll(legacyData.profiles);
+            final data = await _loadLegacyExportFile(entry);
+            sessions.addAll(data.sessions);
+            profiles.addAll(data.profiles);
           } catch (_) {
-            // Ignore non-export json files
+            // Ignore unrelated JSON files.
           }
         }
       }
     }
+    profiles.addAll(sessions.map((s) => s.profile).whereType<Profile>());
 
     // Sort sessions by start time descending
     sessions.sort((a, b) => b.startedAt.compareTo(a.startedAt));
@@ -89,31 +78,66 @@ class SessionLoader {
     );
   }
 
-  /// Loads a session and all reference recordings from a session directory.
-  static Future<Session?> _loadSessionFolder(Directory folder) async {
-    final sessionFile = File('${folder.path}/session.json');
-    if (!await sessionFile.exists()) {
-      return null;
+  static Session _groupFolder(Directory folder, List<Session> recordings) {
+    if (recordings.length == 1) return recordings.single;
+    return recordings.first.copyWith(
+      id: 'folder:${folder.absolute.path}',
+      notes: folder.uri.pathSegments.where((s) => s.isNotEmpty).last,
+      subsessions: recordings,
+    );
+  }
+
+  /// Loads each device recording independently, sharing the folder references.
+  static Future<List<Session>> _loadSessionFolder(Directory folder) async {
+    final files = await folder
+        .list()
+        .where((entry) {
+          final name = entry.uri.pathSegments.last;
+          return entry is File &&
+              (name == 'session.json' ||
+                  (name.startsWith('session_') && name.endsWith('.json')));
+        })
+        .cast<File>()
+        .toList();
+    files.sort((a, b) => a.path.compareTo(b.path));
+    if (files.isEmpty) return [];
+    final references = await _loadReferences(folder, includeLegacy: true);
+    final sessions = <Session>[];
+    for (final file in files) {
+      try {
+        final data = ExportData.fromJson(
+          jsonDecode(await file.readAsString()) as Map<String, dynamic>,
+        );
+        for (final session in data.sessions) {
+          sessions.add(
+            session.copyWith(
+              profile: data.profileForSession(session),
+              sourcePath: file.absolute.path,
+              referenceDirectory: '${folder.path}/references',
+              references: references,
+              notes: session.notes.isEmpty
+                  ? folder.uri.pathSegments.where((s) => s.isNotEmpty).last
+                  : session.notes,
+            ),
+          );
+        }
+      } catch (error) {
+        debugPrint('Error loading session from ${file.path}: $error');
+      }
     }
+    return sessions;
+  }
 
-    try {
-      final sessionContent = await sessionFile.readAsString();
-      final sessionJson = jsonDecode(sessionContent) as Map<String, dynamic>;
-      var session = Session.fromJson(sessionJson);
-
-      session = session.copyWith(
-        referenceDirectory: '${folder.path}/references',
-        references: await _loadReferences(folder, includeLegacy: true),
-        notes: session.notes.isEmpty
-            ? folder.uri.pathSegments.where((s) => s.isNotEmpty).last
-            : session.notes,
-      );
-
-      return session;
-    } catch (e) {
-      debugPrint('Error loading session from ${folder.path}: $e');
-      return null;
+  static Future<ExportData> loadFiles(List<String> paths) async {
+    final datasets = <ExportData>[];
+    for (final path in paths.toSet()) {
+      datasets.add(await load(path));
     }
+    return ExportData(
+      exportedAt: DateTime.now(),
+      profiles: datasets.expand((d) => d.profiles).toList(),
+      sessions: datasets.expand((d) => d.sessions).toList(),
+    );
   }
 
   static Future<ExportData> _loadLegacyExportFile(File file) async {
@@ -129,15 +153,16 @@ class SessionLoader {
     );
   }
 
-  /// Opens a system file-picker dialog and returns the chosen file path.
+  /// Opens a system file-picker dialog and returns the chosen file paths.
   /// Returns null if the user cancels.
-  static Future<String?> pickFile() async {
+  static Future<List<String>?> pickFiles() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json'],
-      dialogTitle: 'Select 6MWT JSON export file',
+      dialogTitle: 'Select 6MWT JSON export files',
+      allowMultiple: true,
     );
-    return result?.files.single.path;
+    return result?.files.map((f) => f.path).whereType<String>().toList();
   }
 
   /// Loads and parses an [ExportData] from the given [filePathOrDirPath].
@@ -150,25 +175,21 @@ class SessionLoader {
     final file = File(filePathOrDirPath);
     final fileName = file.uri.pathSegments.last;
 
-    if (fileName == 'session.json') {
-      final session = await _loadSessionFolder(file.parent);
-      if (session != null) {
+    if (fileName == 'session.json' ||
+        fileName.startsWith('session_') ||
+        fileName == 'reference.json') {
+      final sessions = await _loadSessionFolder(file.parent);
+      final selected = fileName == 'reference.json' && sessions.isNotEmpty
+          ? [_groupFolder(file.parent, sessions)]
+          : sessions.where((s) => s.sourcePath == file.absolute.path).toList();
+      if (selected.isNotEmpty) {
         return ExportData(
-          exportedAt: session.startedAt,
-          profiles: session.profile != null ? [session.profile!] : const [],
-          sessions: [session],
-        );
-      }
-    }
-
-    if (fileName == 'reference.json') {
-      // If reference.json was picked, check if session.json exists in the same folder
-      final session = await _loadSessionFolder(file.parent);
-      if (session != null) {
-        return ExportData(
-          exportedAt: session.startedAt,
-          profiles: session.profile != null ? [session.profile!] : const [],
-          sessions: [session],
+          exportedAt: selected.first.startedAt,
+          profiles: selected
+              .map((s) => s.profile)
+              .whereType<Profile>()
+              .toList(),
+          sessions: selected,
         );
       }
     }
@@ -232,6 +253,8 @@ class SessionLoader {
       final directory = Directory('${file.path}.references/$key');
       sessions.add(
         session.copyWith(
+          sourcePath: file.absolute.path,
+          profile: data.profileForSession(session),
           referenceDirectory: directory.path,
           references: await _loadReferences(directory),
         ),

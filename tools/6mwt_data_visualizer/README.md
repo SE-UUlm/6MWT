@@ -203,3 +203,25 @@ After modifying Riverpod annotations, re-run the code generator:
 ```bash
 dart run build_runner build
 ```
+
+## Comparing recordings from several devices
+
+A folder containing multiple `session_*.json` files (optionally also
+`session.json`) appears as one session in the sidebar, named after the folder.
+For example, open **Uni together 1** or **Uni together 2**. Each file remains an
+independent subsession, including its original timestamps and sensor samples.
+Folder reference recordings are shared with all subsessions.
+
+All subsession tracks appear on the existing map immediately. Use the device
+chips to hide or show individual tracks. The recording details selector chooses
+which subsession supplies the information panel and distance/steps chart.
+
+In **Estimator Lab**, each estimator runs independently on every subsession.
+The table has one column per subsession, containing its distance, stored-distance
+delta and reference deltas (meters and percent over the shared time interval).
+Use **Additional info** within a cell to expand or collapse estimator diagnostics.
+
+The graph selector supports all estimators and subsessions, all estimators of one
+subsession, or all subsessions of one estimator. Legend chips toggle individual
+curves. Graph time is relative to each subsession's first sensor sample; references
+are aligned and compared separately for each recording's actual UTC overlap.
