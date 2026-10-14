@@ -17,10 +17,10 @@ A Flutter desktop development tool for visualizing recorded 6-minute walk test s
 - **Dynamic map legend**:
   - Floating legend showing distance and GPS point count for both tracks, plus live delta (\(\Delta\)) in meters and percentage
 - **GPS dots** – from zoom level 18 onwards, GPS samples are shown as small dots along the route
-- **Segment labels** – zoom-adaptive labels at GPS points:
+- **Segment labels** – screen-space-adaptive labels at GPS points:
   - 🟢 `+X.X m` – Haversine distance to the previous GPS sample
   - 🔵 `+Y steps` – step delta (only `cumulative_steps` samples) since the previous GPS sample
-  - Label density adapts automatically to the zoom level (every 10th point at low zoom, every point at zoom ≥ 19)
+  - Label density follows the available screen space, zoom, map rotation and text scale. Dense recordings skip more samples; labels stay inside the viewport and avoid each other across all visible subsessions. Deltas still refer to the immediately preceding raw GPS sample.
 - **Session info panel & Reference Comparison** – overview of phase, duration, stored distance, participant profile, and a dedicated **Reference Comparison Card** (distance delta, step delta, duration difference, sample counts)
 - **Folder structure auto-load** – on startup the tool automatically scans `data/` subfolders for `session.json` and automatically attaches `reference.json` when present
 - **Folder & file picker** – buttons in the sidebar header to reload data, pick a custom session folder, or open individual JSON files
@@ -203,3 +203,49 @@ After modifying Riverpod annotations, re-run the code generator:
 ```bash
 dart run build_runner build
 ```
+
+## Comparing recordings from several devices
+
+A folder containing multiple `session_*.json` files (optionally also
+`session.json`) appears as one session in the sidebar, named after the folder.
+For example, open **Uni together 1** or **Uni together 2**. Each file remains an
+independent subsession, including its original timestamps and sensor samples.
+Folder reference recordings are shared with all subsessions.
+
+All subsession tracks appear on the existing map immediately. Use the device
+chips to hide or show individual tracks. The recording details selector chooses
+which subsession supplies the information panel and distance/steps chart.
+
+In **Estimator Lab**, each estimator runs independently on every subsession.
+The table has one column per subsession, containing its distance, stored-distance
+delta and reference deltas (meters and percent over the shared time interval).
+Use **Additional info** within a cell to expand or collapse estimator diagnostics.
+
+The graph selector supports all estimators and subsessions, all estimators of one
+subsession, or all subsessions of one estimator. Legend chips toggle individual
+curves. Graph time is relative to each subsession's first sensor sample; references
+are aligned and compared separately for each recording's actual UTC overlap.
+
+## Replay performance
+
+Opening **Recording** does not start the Estimator Lab. Opening the Lab runs all
+subsession replays in a background isolate and displays a loading indicator while
+the interface remains responsive. Results are reused for the same loaded session;
+reloading files or saving references creates a fresh session and invalidates its
+cached result. Discarded datasets can be garbage-collected. Hot restart after
+changing `createEstimators()` to discard previously computed results.
+
+Calibration history queries search directly for overlapping intervals instead
+of repeatedly scanning the full history. Every sample still reaches every
+estimator; no samples or numerical results are approximated for performance.
+
+Reproduce per-estimator timings on the repository's `Uni together` recordings:
+
+```bash
+flutter test tool/profile_loading.dart --reporter expanded
+```
+
+These timings measure replay and chart preparation in the Flutter test runtime,
+not end-to-end rendering or release-build performance. To inspect interactive
+performance without debug instrumentation, run `flutter run -d linux --profile`
+or use a release build.

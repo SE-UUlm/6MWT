@@ -38,14 +38,33 @@ class Session {
     required this.profileId,
     required this.samples,
     this.profile,
+    this.sourcePath,
+    List<Session> subsessions = const [],
     Session? referenceSession,
     List<Session>? references,
     this.referenceDirectory,
     this.referenceName,
     this.isManualReference = false,
-  }) : references = List.unmodifiable(
+  }) : subsessions = List.unmodifiable(subsessions),
+       references = List.unmodifiable(
          references ?? (referenceSession == null ? [] : [referenceSession]),
        );
+
+  /// Device recordings grouped by their containing folder. Metadata on the
+  /// group retains the first recording for compatibility; use [recordings]
+  /// for per-device measurements and replay, never combine sensor streams.
+  final List<Session> subsessions;
+  bool get isGroup => subsessions.isNotEmpty;
+  List<Session> get recordings => isGroup ? subsessions : [this];
+  String get deviceLabel => sourcePath == null
+      ? (notes.isEmpty ? id : notes)
+      : Uri.file(sourcePath!).pathSegments.last
+            .replaceFirst(RegExp(r'\.json$'), '')
+            .replaceFirst('session_', '');
+  final String? sourcePath;
+  String get recordingLabel => sourcePath == null
+      ? (notes.isEmpty ? id : notes)
+      : '${Uri.file(sourcePath!).pathSegments.reversed.take(2).toList().reversed.join('/')} · $id';
 
   final String id;
   final String notes;
@@ -82,6 +101,11 @@ class Session {
 
   /// Start time of the session in UTC (based on first GPS timestamp or startedAt).
   DateTime get sessionStartUtc {
+    if (isGroup) {
+      return subsessions
+          .map((s) => s.sessionStartUtc)
+          .reduce((a, b) => a.isBefore(b) ? a : b);
+    }
     if (positionSamples.isNotEmpty) {
       return positionSamples.first.timestamp;
     }
@@ -91,6 +115,11 @@ class Session {
   /// Calculated end time of the active session in UTC.
   /// Based on the latest sample timestamp of this session (or sessionStartUtc + duration if no samples).
   DateTime get sessionEndUtc {
+    if (isGroup) {
+      return subsessions
+          .map((s) => s.sessionEndUtc)
+          .reduce((a, b) => a.isAfter(b) ? a : b);
+    }
     DateTime? latest;
 
     if (positionSamples.isNotEmpty) {
@@ -213,16 +242,28 @@ class Session {
   }
 
   Session copyWith({
+    String? id,
+    List<Session>? subsessions,
     Session? referenceSession,
     List<Session>? references,
     Profile? profile,
     String? referenceDirectory,
     String? referenceName,
     String? notes,
+    String? sourcePath,
   }) {
     return Session(
-      id: id,
+      id: id ?? this.id,
+      subsessions:
+          subsessions ??
+          (references == null
+              ? this.subsessions
+              : [
+                  for (final s in this.subsessions)
+                    s.copyWith(references: references),
+                ]),
       notes: notes ?? this.notes,
+      sourcePath: sourcePath ?? this.sourcePath,
       startedAt: startedAt,
       duration: duration,
       distance: distance,

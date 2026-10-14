@@ -8,11 +8,29 @@ void main() {
     if (!Directory(dataDir).existsSync()) return;
 
     final data = await SessionLoader.loadFromDataDirectory(dataDir);
-    final sessionFolders = Directory(dataDir)
+    final recordingFiles = Directory(dataDir)
         .listSync()
         .whereType<Directory>()
-        .where((folder) => File('${folder.path}/session.json').existsSync());
-    expect(data.sessions.length, sessionFolders.length);
+        .expand((folder) => folder.listSync().whereType<File>())
+        .where((file) {
+          final name = file.uri.pathSegments.last;
+          return name == 'session.json' ||
+              (name.startsWith('session_') && name.endsWith('.json'));
+        });
+    expect(
+      data.sessions.expand((s) => s.recordings).length,
+      recordingFiles.length,
+    );
+    final together = data.sessions.where(
+      (s) => s.sourcePath!.contains('Uni together 1/'),
+    );
+    expect(together, hasLength(1));
+    expect(together.single.subsessions, hasLength(3));
+    final second = data.sessions.singleWhere(
+      (s) => s.notes == 'Uni together 2',
+    );
+    expect(second.subsessions, hasLength(3));
+    expect(together.every((s) => s.hasReference), isTrue);
 
     // Basauri should not have a reference
     final basauri = data.sessions.firstWhere(
