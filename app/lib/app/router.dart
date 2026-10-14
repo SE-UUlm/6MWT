@@ -26,7 +26,6 @@ final router = GoRouter(
       path: '/walk',
       builder: (context, state) {
         final profileId = state.extra as int;
-
         return WalkScreen(profileId: profileId);
       },
     ),
@@ -42,7 +41,6 @@ final router = GoRouter(
       path: '/video',
       builder: (context, state) {
         final profileId = state.extra as int;
-
         return VideoScreen(profileId: profileId);
       },
     ),
@@ -57,167 +55,42 @@ final router = GoRouter(
           );
         }
         final session = extra as WalkSessionWithProfile;
-
         return ResultScreen(session: session);
       },
     ),
-
     GoRoute(
       path: '/history',
       builder: (context, state) => const HistoryScreen(),
     ),
 
-    // Route +  Animation - Instructions-1 Page
+    // Instructions 1–7
     GoRoute(
       path: '/instructions-1',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen1(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen1(),
     ),
-
-    // Route + Animation - Instructions-2 Page
     GoRoute(
       path: '/instructions-2',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen2(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen2(),
     ),
-    // Route + Animation - Instructions-3 Page
     GoRoute(
       path: '/instructions-3',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen3(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    ),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen3(),
     ),
-    // Route + Animation - Instructions-4 Page
     GoRoute(
       path: '/instructions-4',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen4(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen4(),
     ),
-    // Route + Animation - Instructions-5 Page
     GoRoute(
       path: '/instructions-5',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen5(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen5(),
     ),
-    // Route + Animation - Instructions-6 Page
     GoRoute(
       path: '/instructions-6',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen6(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen6(),
     ),
-    // Route + Animation - Instructions-7 Page
     GoRoute(
       path: '/instructions-7',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen7(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+      builder: (context, state) => const InstructionsScreen7(),
     ),
   ],
 );
