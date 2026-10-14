@@ -122,50 +122,13 @@ class InstructionsScreen3 extends StatelessWidget {
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.continueButton,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 18,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF347FE5),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF347FE5).withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF347FE5).withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
-
             ],
           ),
         ),

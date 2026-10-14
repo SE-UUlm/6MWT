@@ -117,56 +117,22 @@ class InstructionsScreen6 extends StatelessWidget {
                     context.push('/instructions-7');
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
+                    backgroundColor: const Color(0xFF347FE5),
                     foregroundColor: Colors.white,
-                    elevation: 3,
-                    shadowColor: Colors.black.withValues(alpha: 0.25),
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.continueButton,
-                    style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-
-              const SizedBox(height: 16),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: primaryBlue.withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    width: 18,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: primaryBlue,
-                      borderRadius: BorderRadius.circular(3),
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Container(
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: primaryBlue.withValues(alpha: 0.25),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 12),
             ],
           ),
         ),
