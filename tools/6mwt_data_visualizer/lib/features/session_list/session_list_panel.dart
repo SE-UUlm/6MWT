@@ -51,7 +51,14 @@ class _SessionListPanelState extends ConsumerState<SessionListPanel> {
         Expanded(
           child: exportState.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, _) => _ErrorView(error: err.toString()),
+            error: (err, _) => _ErrorView(
+              error: err.toString(),
+              onPickFolder: () async {
+                await ref
+                    .read(exportDataProvider.notifier)
+                    .pickDirectoryAndLoad();
+              },
+            ),
             data: (exportData) {
               if (exportData == null) {
                 return const _NoDataView();
@@ -177,11 +184,39 @@ class _NoDataView extends StatelessWidget {
 }
 
 class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.error});
+  const _ErrorView({required this.error, required this.onPickFolder});
   final String error;
+  final VoidCallback onPickFolder;
 
   @override
   Widget build(BuildContext context) {
+    if (Theme.of(context).platform == TargetPlatform.macOS) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.folder_open_outlined, size: 40),
+              const SizedBox(height: 12),
+              Text(
+                'The macOS sandbox cannot access the data folder automatically.\n'
+                'Click “Open directory” and select the data folder in the repository.',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                onPressed: onPickFolder,
+                icon: const Icon(Icons.folder_open_outlined),
+                label: const Text('Open directory'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
