@@ -42,8 +42,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
     final gender = _selectedGender;
 
-    // TODO: Ungewollte Log Ausgaben in Tests unterbinden
-
     if (age == null || height == null || gender == null || weight == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.profile_info)),
