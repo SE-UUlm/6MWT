@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -11,6 +12,7 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import '../domain/estimator_comparison.dart';
 import 'estimator_comparison_card.dart';
 
@@ -251,6 +253,15 @@ class ResultScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final genderLabel = switch (profile.gender) {
+      Gender.male => l10n.genderMale,
+      Gender.female => l10n.genderFemale,
+      Gender.other => l10n.genderOther,
+    };
+    final weightText = NumberFormat.decimalPattern(
+      l10n.localeName,
+    ).format(profile.weight);
     // -------------------------------------------------------------------------
     // DURATION
     // -------------------------------------------------------------------------
@@ -510,6 +521,18 @@ class ResultScreen extends ConsumerWidget {
                     icon: Icons.height_rounded,
                     label: 'Height',
                     value: '${profile.height} cm',
+                  ),
+
+                  _buildDetailRow(
+                    icon: Icons.monitor_weight_outlined,
+                    label: 'Weight',
+                    value: '$weightText kg',
+                  ),
+
+                  _buildDetailRow(
+                    icon: Icons.person_outline_rounded,
+                    label: 'Gender',
+                    value: genderLabel,
                     showDivider: false,
                   ),
                 ],
