@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "6MWT App",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "app"
+        },
+        {
+            "name": "6MWT Visualizer",
+            "type": "dart",
+            "request": "launch",
+            "cwd": "tools/6mwt_data_visualizer"
+        }
+    ]
+}
