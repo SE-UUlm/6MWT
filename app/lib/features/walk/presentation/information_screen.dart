@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
@@ -36,10 +37,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final name = _nameController.text.trim();
     final age = int.tryParse(_ageController.text.trim());
     final height = int.tryParse(_heightController.text.trim());
-    final weight = double.tryParse(_weightController.text.trim());
+    final weight = double.tryParse(
+      _weightController.text.trim().replaceAll(',', '.'),
+    );
     final gender = _selectedGender;
-
-    // TODO: Eingaben von nicht Zahlen sperren
 
     // TODO Plausbilitätscheck
 
@@ -160,6 +161,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 controller: _ageController,
                 hintText: l10n.field2,
                 keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
 
               const SizedBox(height: 10),
@@ -232,9 +234,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 controller: _heightController,
                 hintText: l10n.field4,
                 suffixText: 'cm',
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               ),
 
               const SizedBox(height: 8),
@@ -243,6 +244,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 controller: _weightController,
                 hintText: l10n.field5,
                 suffixText: 'kg',
+                inputFormatters: [
+                  TextInputFormatter.withFunction((oldValue, newValue) {
+                    return RegExp(r'^\d*([.,]\d*)?$').hasMatch(newValue.text)
+                        ? newValue
+                        : oldValue;
+                  }),
+                ],
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
                 ),
@@ -302,12 +310,14 @@ class _InputField extends StatelessWidget {
     required this.hintText,
     this.suffixText,
     this.keyboardType,
+    this.inputFormatters,
   });
 
   final TextEditingController controller;
   final String hintText;
   final String? suffixText;
   final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -316,6 +326,7 @@ class _InputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFFB5B5B5), fontSize: 15),
