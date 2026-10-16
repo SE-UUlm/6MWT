@@ -32,25 +32,39 @@ class HomeScreen extends ConsumerWidget {
             // ═══════════════════════════════════════
             // ILLUSTRATION
             // ═══════════════════════════════════════
-            Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: SizedBox(
-                width: double.infinity,
-                height: 225,
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const Center(
-                      child: Icon(
-                        Icons.directions_walk_rounded,
-                        size: 150,
-                        color: primaryBlue,
-                      ),
-                    );
-                  },
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 225,
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(
+                            Icons.directions_walk_rounded,
+                            size: 150,
+                            color: primaryBlue,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: 4,
+                  right: 8,
+                  child: IconButton(
+                    tooltip: l10n.aboutTitle,
+                    icon: const Icon(Icons.info_outline_rounded),
+                    color: primaryBlue,
+                    onPressed: () => context.push('/about'),
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(height: 15),

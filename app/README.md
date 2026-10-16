@@ -60,7 +60,10 @@ export `commitHash: null`, replacing any previous value. Commit embedding is
 implemented for Android and iOS.
 
 The annotated `appInfoProvider` in `core/domain/app_info.dart`
-exposes the installed version, build number, and embedded hash for reuse by a
-future About screen. Models, export composition, and their annotated providers live in `core/domain`;
+exposes the installed version, build number, and embedded hash for reuse by the
+About screen. Models, export composition, and their annotated providers live in `core/domain`;
 global OS/plugin access lives in `app/metadata_service.dart` and
-`app/platform_metadata.dart`. No About UI is added yet.
+`app/platform_metadata.dart`. The home screen info button opens `/about`, showing build metadata, project
+information, authors, the repository link, and bundled open-source licenses.
+Unavailable metadata is displayed as “Not available”; the other content remains
+accessible.
