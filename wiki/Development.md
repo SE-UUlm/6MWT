@@ -19,6 +19,8 @@ Steps:
 * Run linter/code analyzer: `dart analyze`
 * Run tests: `flutter test`
 
+For database schema changes, follow [Database Migrations](Database-Migrations.md).
+
 ## Commit Messages
 
 We are following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for our commit messages.

@@ -42,8 +42,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
     final gender = _selectedGender;
 
-    // TODO: Docu für Drift Migratrion Stuff
-
     // TODO: ANzeige von Gewicht und Gender
 
     // TODO: Ungewollte Log Ausgaben in Tests unterbinden
