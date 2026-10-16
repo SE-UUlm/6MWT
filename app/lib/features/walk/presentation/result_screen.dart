@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/core/domain/export_metadata.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
@@ -225,6 +226,10 @@ class ResultScreen extends ConsumerWidget {
       export['samples'] = samples;
       export['profile'] = profile;
       export['exportedAt'] = DateTime.now().toUtc().toIso8601String();
+
+      export.addAll(
+        await ref.read(exportMetadataServiceProvider).getMetadata(),
+      );
 
       final jsonString = const JsonEncoder().convert(export);
 

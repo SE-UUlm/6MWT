@@ -6,8 +6,9 @@
 
 * Presentation Layer: Flutter GUI. 
   * Allowed to interact with Data Layer directly
-  * Riverpod-Provider go here
-* Domain Layer: pure dart (no flutter) application logic
+  * UI-specific Riverpod providers go here
+* Domain Layer: pure Dart (no Flutter imports) application logic
+  * Riverpod providers for application logic and dependency injection may go here
   * Flutter Plugin Datatypes are allowed like Position from geolocator
 * Data Layer: Persistence
   * SQLite Storage
@@ -22,7 +23,7 @@ Should be state (some directories are not created yet):
 lib/
 ├── core/                   # Shared code between features
 │   ├── sensors/            # SensorSource interface + implementations
-│   ├── domain/             # pure Dart logic, no Flutter imports
+│   ├── domain/             # Dart logic and Riverpod providers, no Flutter imports
 │   ├── data/               # persistence
 │   └── presentation/       # Shared Flutter Widgets
 ├── features/               # Feature specific code. Code in a feature directory is not allowed to reference code in a different feature directory
