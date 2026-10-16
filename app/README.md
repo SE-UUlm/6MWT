@@ -31,3 +31,36 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Export metadata
+
+Both single-session and history JSON exports include `deviceInfo` and `appInfo`
+objects at the top level. They describe the device and installed app **at export
+time**, not at the original recording time. Existing session data is unchanged.
+
+- `deviceInfo`: `manufacturer`, `model`, `os`, `osVersion`, `deviceId`, and
+  `deviceIdType`. iOS models use the machine identifier (for example `iPhone17,1`).
+- `appInfo`: `version`, `buildNumber` (both strings), and the full `commitHash`.
+- Unavailable values are JSON `null`; metadata lookup failures do not prevent export.
+
+Android uses `Settings.Secure.ANDROID_ID` (`deviceIdType: androidId`), scoped to
+signing key, user, and device on Android 8+. It generally survives reinstalling
+with the same signing key. iOS uses `identifierForVendor`
+(`deviceIdType: identifierForVendor`), shared by apps from the same vendor. It can
+change after all that vendor's apps are removed and one is reinstalled. Neither
+is a permanent hardware or strictly per-installation ID. No identifier is stored
+in our database. Other platforms currently export only OS information.
+
+Gradle and Xcode automatically embed `git rev-parse HEAD` during native builds.
+Normal `flutter run` and `flutter build` commands need no extra arguments, locally
+or in CI. A PR build may embed its checked-out merge commit. Incremental native
+builds refresh the hash; hot reload does not. Uncommitted changes are not captured
+by the hash. Builds without Git/repository metadata emit a build warning and
+export `commitHash: null`, replacing any previous value. Commit embedding is
+implemented for Android and iOS.
+
+The annotated `appInfoProvider` in `core/domain/app_info.dart`
+exposes the installed version, build number, and embedded hash for reuse by a
+future About screen. Models, export composition, and their annotated providers live in `core/domain`;
+global OS/plugin access lives in `app/metadata_service.dart` and
+`app/platform_metadata.dart`. No About UI is added yet.

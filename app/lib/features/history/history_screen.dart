@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/core/domain/export_metadata.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
 class HistoryScreen extends ConsumerWidget {
@@ -118,11 +119,15 @@ class HistoryScreen extends ConsumerWidget {
         session['samples'] = samplesBySession[sessionId] ?? [];
       }
 
-      final export = {
+      final export = <String, dynamic>{
         'exportedAt': DateTime.now().toUtc().toIso8601String(),
         'profiles': profiles,
         'sessions': sessions,
       };
+
+      export.addAll(
+        await ref.read(exportMetadataServiceProvider).getMetadata(),
+      );
 
       final jsonString = const JsonEncoder().convert(export);
 
