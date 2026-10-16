@@ -42,8 +42,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
     final gender = _selectedGender;
 
-    // TODO Plausbilitätscheck
-
     // TODO: Docu für Drift Migratrion Stuff
 
     // TODO: ANzeige von Gewicht und Gender
@@ -54,6 +52,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.profile_info)),
       );
+      return;
+    }
+
+    final l10n = AppLocalizations.of(context)!;
+    final String? validationError;
+    if (age < 1 || age > 120) {
+      validationError = l10n.profileAgeOutOfRange;
+    } else if (height < 50 || height > 250) {
+      validationError = l10n.profileHeightOutOfRange;
+    } else if (!weight.isFinite || weight < 1 || weight > 400) {
+      validationError = l10n.profileWeightOutOfRange;
+    } else {
+      validationError = null;
+    }
+
+    if (validationError != null) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(SnackBar(content: Text(validationError)));
       return;
     }
 

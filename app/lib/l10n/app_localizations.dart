@@ -368,6 +368,24 @@ abstract class AppLocalizations {
   /// **'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.'**
   String get profile_info;
 
+  /// No description provided for @profileAgeOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.'**
+  String get profileAgeOutOfRange;
+
+  /// No description provided for @profileHeightOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.'**
+  String get profileHeightOutOfRange;
+
+  /// No description provided for @profileWeightOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.'**
+  String get profileWeightOutOfRange;
+
   /// No description provided for @field1.
   ///
   /// In de, this message translates to:

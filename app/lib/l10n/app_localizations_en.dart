@@ -155,6 +155,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.';
 
   @override
+  String get profileAgeOutOfRange =>
+      'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.';
+
+  @override
+  String get profileHeightOutOfRange =>
+      'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.';
+
+  @override
+  String get profileWeightOutOfRange =>
+      'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.';
+
+  @override
   String get field1 => 'Name';
 
   @override

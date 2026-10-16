@@ -81,6 +81,52 @@ void main() {
     expect(value(tester, 3), isEmpty);
   });
 
+  for (final (index, input, message) in [
+    (1, '0', 'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.'),
+    (1, '121', 'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.'),
+    (2, '49', 'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.'),
+    (2, '251', 'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.'),
+    (3, '0,9', 'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.'),
+    (3, '400.1', 'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.'),
+    (3, '9' * 400, 'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.'),
+  ]) {
+    testWidgets('rejects out-of-range input in field $index: $input', (
+      tester,
+    ) async {
+      await showProfile(tester);
+      await tester.enterText(field(1), '30');
+      await tester.enterText(field(2), '175');
+      await tester.enterText(field(3), '72.5');
+      await tester.tap(find.text('Weiblich'));
+      await tester.enterText(field(index), input);
+      await tester.tap(find.text('Weiter'));
+      await tester.pumpAndSettle();
+      expect(find.text(message), findsOneWidget);
+      expect(find.byType(ProfileScreen), findsOneWidget);
+      expect(await db.select(db.profiles).get(), isEmpty);
+    });
+  }
+
+  for (final (age, height, weight) in [(1, 50, 1), (120, 250, 400)]) {
+    testWidgets('accepts inclusive limits $age, $height, $weight', (
+      tester,
+    ) async {
+      await showProfile(tester);
+      await tester.enterText(field(1), '$age');
+      await tester.enterText(field(2), '$height');
+      await tester.enterText(field(3), '$weight');
+      await tester.tap(find.text('Weiblich'));
+      await tester.tap(find.text('Weiter'));
+      await tester.pumpAndSettle();
+      final profile = await db.select(db.profiles).getSingle();
+      expect(profile.age, age);
+      expect(profile.height, height);
+      expect(profile.weight, weight);
+      await tester.pumpAndSettle();
+      expect(find.text('Video'), findsOneWidget);
+    });
+  }
+
   for (final weight in ['72,5', '72.5']) {
     testWidgets('stores weight $weight as 72.5 and continues', (tester) async {
       await showProfile(tester);
