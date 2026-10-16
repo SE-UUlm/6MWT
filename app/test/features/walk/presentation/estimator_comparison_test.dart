@@ -23,6 +23,8 @@ final profile = Profile(
   timestamp: DateTime.utc(2026),
   height: 170,
   age: 30,
+  weight: 70,
+  gender: Gender.other,
 );
 
 class TestProfileRepository extends ProfileRepository {

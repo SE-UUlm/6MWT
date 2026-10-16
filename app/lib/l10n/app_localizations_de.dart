@@ -151,7 +151,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get profile_sub2 => 'Anthropometrie';
 
   @override
-  String get profile_info => 'Bitte füllen Sie Alter und Körpergröße aus.';
+  String get profile_info =>
+      'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.';
 
   @override
   String get field1 => 'Name';
@@ -160,10 +161,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get field2 => 'Alter in Jahren';
 
   @override
-  String get field3_1 => 'Männlich';
+  String get genderMale => 'Männlich';
 
   @override
-  String get field3_2 => 'Weiblich';
+  String get genderFemale => 'Weiblich';
+
+  @override
+  String get genderOther => 'Divers/Keine Angabe';
 
   @override
   String get field4 => 'Höhe';

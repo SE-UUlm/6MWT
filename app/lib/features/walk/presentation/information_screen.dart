@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 
@@ -20,7 +21,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  String? _selectedGender;
+  Gender? _selectedGender;
 
   @override
   void dispose() {
@@ -35,11 +36,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final name = _nameController.text.trim();
     final age = int.tryParse(_ageController.text.trim());
     final height = int.tryParse(_heightController.text.trim());
-    //final weight = double.tryParse(_weightController.text.trim());
+    final weight = double.tryParse(_weightController.text.trim());
+    final gender = _selectedGender;
 
-    // TODO: Save weight and gender?
+    // TODO: Eingaben von nicht Zahlen sperren
 
-    if (age == null || height == null) {
+    // TODO Plausbilitätscheck
+
+    // TODO: Docu für Drift Migratrion Stuff
+
+    // TODO: ANzeige von Gewicht und Gender
+
+    // TODO: Ungewollte Log Ausgaben in Tests unterbinden
+
+    if (age == null || height == null || gender == null || weight == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(AppLocalizations.of(context)!.profile_info)),
       );
@@ -52,6 +62,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       name: name,
       age: age,
       height: height,
+      weight: weight,
+      gender: gender,
     );
 
     if (!mounted) return;
@@ -152,36 +164,56 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               const SizedBox(height: 10),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: _GenderButton(
-                      icon: Icons.male,
-                      label: l10n.field3_1,
-                      selected: _selectedGender == 'male',
-                      onTap: () {
-                        setState(() {
-                          _selectedGender = 'male';
-                        });
-                      },
-                    ),
-                  ),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final halfWidth = (constraints.maxWidth - 10) / 2;
 
-                  const SizedBox(width: 10),
-
-                  Expanded(
-                    child: _GenderButton(
-                      icon: Icons.female,
-                      label: l10n.field3_2,
-                      selected: _selectedGender == 'female',
-                      onTap: () {
-                        setState(() {
-                          _selectedGender = 'female';
-                        });
-                      },
-                    ),
-                  ),
-                ],
+                  return Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: [
+                      SizedBox(
+                        width: halfWidth,
+                        child: _GenderButton(
+                          icon: Icons.male,
+                          label: l10n.genderMale,
+                          selected: _selectedGender == Gender.male,
+                          onTap: () {
+                            setState(() {
+                              _selectedGender = Gender.male;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: halfWidth,
+                        child: _GenderButton(
+                          icon: Icons.female,
+                          label: l10n.genderFemale,
+                          selected: _selectedGender == Gender.female,
+                          onTap: () {
+                            setState(() {
+                              _selectedGender = Gender.female;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: constraints.maxWidth,
+                        child: _GenderButton(
+                          icon: Icons.circle_outlined,
+                          label: l10n.genderOther,
+                          selected: _selectedGender == Gender.other,
+                          onTap: () {
+                            setState(() {
+                              _selectedGender = Gender.other;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
 
               const SizedBox(height: 30),

@@ -8,6 +8,8 @@ targets:
         options: &drift_options
           has_separate_analyzer: true
           store_date_time_values_as_text: true
+          databases:
+            6mwt_database: lib/core/data/database.dart
       drift_dev:not_shared:
         enabled: true
         options: *drift_options

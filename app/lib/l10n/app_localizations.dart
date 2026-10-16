@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @profile_info.
   ///
   /// In de, this message translates to:
-  /// **'Bitte füllen Sie Alter und Körpergröße aus.'**
+  /// **'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.'**
   String get profile_info;
 
   /// No description provided for @field1.
@@ -380,17 +380,23 @@ abstract class AppLocalizations {
   /// **'Alter in Jahren'**
   String get field2;
 
-  /// No description provided for @field3_1.
+  /// No description provided for @genderMale.
   ///
   /// In de, this message translates to:
   /// **'Männlich'**
-  String get field3_1;
+  String get genderMale;
 
-  /// No description provided for @field3_2.
+  /// No description provided for @genderFemale.
   ///
   /// In de, this message translates to:
   /// **'Weiblich'**
-  String get field3_2;
+  String get genderFemale;
+
+  /// No description provided for @genderOther.
+  ///
+  /// In de, this message translates to:
+  /// **'Divers/Keine Angabe'**
+  String get genderOther;
 
   /// No description provided for @field4.
   ///
