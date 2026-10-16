@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logger/logger.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
@@ -401,10 +400,6 @@ void main() {
   });
 
   test('an unavailable optional source does not prevent the test', () {
-    // Suppress expected log output from the optional-source error path.
-    final previousLevel = Logger.level;
-    Logger.level = Level.off;
-
     fakeAsync((async) {
       final optionalSource = FakeSensorSource(available: false);
       final session = WalkSession(
@@ -420,8 +415,6 @@ void main() {
       expect(session.state.phase, WalkPhase.running);
       expect(session.state.errorMessage, isNull);
     });
-
-    Logger.level = previousLevel;
   });
 
   test('samples from optional sources reach the sink', () {

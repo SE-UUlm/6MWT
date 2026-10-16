@@ -15,6 +15,7 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/estimator_comparison_card.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
 
@@ -23,6 +24,8 @@ final profile = Profile(
   timestamp: DateTime.utc(2026),
   height: 170,
   age: 30,
+  weight: 70,
+  gender: Gender.other,
 );
 
 class TestProfileRepository extends ProfileRepository {
@@ -71,7 +74,11 @@ void main() {
               TestProfileRepository(db),
             ),
           ],
-          child: MaterialApp.router(routerConfig: router),
+          child: MaterialApp.router(
+            routerConfig: router,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
         ),
       );
       await tester.pumpAndSettle();
