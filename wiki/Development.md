@@ -35,6 +35,17 @@ Android uses the debug key on PRs and the permanent keystore on `main` and relea
 runs. iOS stays unsigned. Actions downloads expire after **7 days**; published
 release downloads remain. See [Releases](Releases.md) for setup and tagging.
 
+### Required PR checks
+
+For the `main` ruleset, require `Format`, `Analyze`, `Test`, `Visualizer Format`,
+`Visualizer Analyze`, `Visualizer Test`, `Commitlint - all PR commits` and
+`PR builds` (source: GitHub Actions). Keep existing security checks as appropriate.
+`PR builds` is the stable summary of the Android/iOS builds, including deliberate
+skips for unrelated changes; remove the old individual mobile-build requirements.
+Do not require main-only desktop builds or the path-filtered `validate` job from
+`release-checks.yml`, which does not report a status on every PR. New checks must
+run successfully before they appear in GitHub's selection list.
+
 ## Useful Commands
 * Run code generation: `dart run build_runner build`
     * Needed after changes to riverpod providers and drift database

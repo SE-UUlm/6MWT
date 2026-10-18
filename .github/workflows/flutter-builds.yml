@@ -61,3 +61,33 @@ jobs:
     needs: changes
     if: ${{ !cancelled() && (github.event_name == 'push' || needs.changes.outputs.relevant != 'false') }}
     uses: ./.github/workflows/build-ios.yml
+
+  pr-builds:
+    name: PR builds
+    needs: [changes, build-android-pr, build-ios]
+    # Reusable jobs have different check names when skipped. Require this stable
+    # check instead; it also reports failures from dependencies explicitly.
+    if: ${{ always() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check required build results
+        working-directory: .
+        env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          RELEVANT: ${{ needs.changes.outputs.relevant }}
+          ANDROID_RESULT: ${{ needs.build-android-pr.result }}
+          IOS_RESULT: ${{ needs.build-ios.result }}
+        run: |
+          if [ "$CHANGES_RESULT" != success ]; then
+            echo 'Change detection did not succeed.'
+            exit 1
+          fi
+          if [ "$RELEVANT" = false ]; then
+            test "$ANDROID_RESULT" = skipped
+            test "$IOS_RESULT" = skipped
+            echo 'No relevant changes; mobile builds were not needed.'
+          else
+            test "$ANDROID_RESULT" = success
+            test "$IOS_RESULT" = success
+            echo 'Both mobile builds succeeded.'
+          fi
