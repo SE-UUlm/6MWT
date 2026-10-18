@@ -50,6 +50,7 @@ val gitCommit = providers.of(GitCommitValueSource::class) {
 android {
     buildFeatures {
         buildConfig = true
+        resValues = true
     }
 
     namespace = "de.uniulm.in.se.sixmwt"
@@ -64,6 +65,7 @@ android {
     defaultConfig {
         buildConfigField("String", "GIT_COMMIT", "\"${gitCommit.get()}\"")
         applicationId = "de.uniulm.in.se.sixmwt"
+        resValue("string", "app_name", "6MWT")
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -75,6 +77,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
+            resValue("string", "app_name", "6MWT Debug")
         }
         release {
             // TODO: Add your own signing config for the release build.
