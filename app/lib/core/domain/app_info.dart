@@ -4,7 +4,7 @@ import '../../app/metadata_service.dart';
 
 part 'app_info.g.dart';
 
-/// Information about the installed build, shared by exports and future UI.
+/// Information about the installed build, shared by exports and the About screen.
 class AppInfo {
   const AppInfo({this.version, this.buildNumber, this.commitHash});
 
@@ -19,6 +19,6 @@ class AppInfo {
   };
 }
 
-/// Shared by exports and the future About screen.
+/// Shared by exports and the About screen.
 @Riverpod(keepAlive: true)
 Future<AppInfo> appInfo(Ref ref) => AppInfoService().load();

@@ -228,4 +228,38 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walk_reset => 'Zurücksetzen';
+
+  @override
+  String get aboutTitle => 'Über die App';
+
+  @override
+  String get aboutProject =>
+      'Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.';
+
+  @override
+  String get aboutVersion => 'App-Version';
+
+  @override
+  String get aboutBuild => 'Buildnummer';
+
+  @override
+  String get aboutCommit => 'Commit-Hash';
+
+  @override
+  String get aboutUnavailable => 'Nicht verfügbar';
+
+  @override
+  String get aboutAuthors => 'Autoren';
+
+  @override
+  String get aboutRepository => 'GitHub-Repository';
+
+  @override
+  String get aboutProjectLicense => 'Projektlizenz';
+
+  @override
+  String get aboutLicenses => 'Open-Source-Lizenzen';
+
+  @override
+  String get aboutLinkError => 'Der Link konnte nicht geöffnet werden.';
 }
