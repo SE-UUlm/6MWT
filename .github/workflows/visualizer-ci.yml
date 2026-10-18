@@ -1,0 +1,86 @@
+name: Visualizer CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    name: Detect visualizer changes
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      relevant: ${{ steps.filter.outcome != 'success' || steps.filter.outputs.visualizer != 'false' }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Detect visualizer and dependency changes
+        id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          # PRs: all changes relative to the target branch.
+          # Main pushes: changes since the previous pushed commit.
+          base: ${{ github.event.repository.default_branch }}
+          filters: |
+            visualizer:
+              - 'tools/6mwt_data_visualizer/**'
+              - 'app/**'
+              - 'data/**'
+              - 'tools/release/**'
+              - '.github/flutter-version.yaml'
+              - '.github/workflows/visualizer-ci.yml'
+              - '.github/workflows/build-visualizer.yml'
+              - '.github/workflows/release.yml'
+
+  checks:
+    name: Visualizer ${{ matrix.check.name }}
+    needs: changes
+    # Keep named checks green for unrelated changes; run if detection failed.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - name: Format
+            command: dart format --output=none --set-exit-if-changed .
+          - name: Analyze
+            command: flutter analyze --no-pub
+          - name: Test
+            command: flutter test --no-pub
+    defaults:
+      run:
+        working-directory: tools/6mwt_data_visualizer
+    steps:
+      - name: No relevant changes
+        if: needs.changes.outputs.relevant == 'false'
+        working-directory: .
+        run: echo "No visualizer or dependency changes; check passed without running Flutter."
+      - uses: actions/checkout@v6
+        if: needs.changes.outputs.relevant != 'false'
+      - uses: subosito/flutter-action@v2
+        if: needs.changes.outputs.relevant != 'false'
+        with:
+          flutter-version-file: .github/flutter-version.yaml
+          cache: true
+      - name: Install dependencies
+        if: needs.changes.outputs.relevant != 'false'
+        run: flutter pub get
+      - name: ${{ matrix.check.name }}
+        if: needs.changes.outputs.relevant != 'false'
+        run: ${{ matrix.check.command }}
+
+  desktop:
+    name: Build Visualizer downloads
+    needs: changes
+    if: ${{ !cancelled() && github.event_name == 'push' && needs.changes.outputs.relevant != 'false' }}
+    uses: ./.github/workflows/build-visualizer.yml

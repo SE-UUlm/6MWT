@@ -12,6 +12,40 @@ Steps:
 * Merge PR if ready and checks passed
 * Issue should automatically close
 
+## App and visualizer CI
+
+Checks mean **formatting, static analysis and automated tests**. Workflow files
+are in `.github/workflows/`.
+
+| Workflow | Trigger | Checks / builds |
+| --- | --- | --- |
+| `flutter-ci.yml` | Push (including feature branches) | App checks, for relevant app/CI/SDK changes |
+| `flutter-builds.yml` | PR; push to `main` | Android APK + unsigned iOS IPA; relevant changes only on PRs, always on `main` |
+| `visualizer-ci.yml` | PR; push to `main` | Visualizer checks; additionally Windows/Linux/macOS builds on `main`; relevant changes only |
+| `release-checks.yml` | PR; push to `main` | Shared version validation and release-script tests, when versions or release/CI configuration change |
+| `release.yml` | Push of `vX.Y.Z` tag | All app/visualizer checks and all five builds; publish GitHub Release only after success |
+| `release.yml` | Manual “Run workflow” | Same checks/builds, without publishing; selected commit must belong to `main` history |
+
+Visualizer-relevant changes include `tools/6mwt_data_visualizer/**`, `app/**`,
+`data/**`, release helpers and relevant workflow/SDK configuration. Release runs
+never skip work based on changed paths. Build steps are shared through
+`build-android.yml`, `build-ios.yml` and `build-visualizer.yml`.
+
+Android uses the debug key on PRs and the permanent keystore on `main` and release
+runs. iOS stays unsigned. Actions downloads expire after **7 days**; published
+release downloads remain. See [Releases](Releases.md) for setup and tagging.
+
+### Required PR checks
+
+For the `main` ruleset, require `Format`, `Analyze`, `Test`, `Visualizer Format`,
+`Visualizer Analyze`, `Visualizer Test`, `Commitlint - all PR commits` and
+`PR builds` (source: GitHub Actions). Keep existing security checks as appropriate.
+`PR builds` is the stable summary of the Android/iOS builds, including deliberate
+skips for unrelated changes; remove the old individual mobile-build requirements.
+Do not require main-only desktop builds or the path-filtered `validate` job from
+`release-checks.yml`, which does not report a status on every PR. New checks must
+run successfully before they appear in GitHub's selection list.
+
 ## Useful Commands
 * Run code generation: `dart run build_runner build`
     * Needed after changes to riverpod providers and drift database
