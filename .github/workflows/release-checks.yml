@@ -1,0 +1,29 @@
+name: Release configuration checks
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/flutter-version.yaml'
+      - 'tools/release/**'
+      - 'app/pubspec.yaml'
+      - 'tools/6mwt_data_visualizer/pubspec.yaml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+      - '.github/flutter-version.yaml'
+      - 'tools/release/**'
+      - 'app/pubspec.yaml'
+      - 'tools/6mwt_data_visualizer/pubspec.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - run: python3 -m unittest discover -s tools/release -p 'test_*.py'
+      - run: python3 tools/release/version.py

@@ -8,6 +8,7 @@ This wiki is our primary project documentation.
 
 - [Getting Started](Getting-Started.md)
 - [Development](Development.md)
+- [Releases](Releases.md)
 - [Architecture](Architecture.md)
 - [Distance Estimators](Distance-Estimators.md)
 - [Requirements](Requirements.md)

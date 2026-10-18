@@ -7,3 +7,5 @@ The goal of our Software Engineering Project is to explore other options for mea
 More information regarding the test: [6mwt.org](https://www.6mwt.org/)
 
 This project is licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later). See the LICENSE file for details.
+
+Build downloads, versioning and signing setup are documented in [Releases](wiki/Releases.md).
