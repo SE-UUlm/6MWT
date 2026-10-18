@@ -137,7 +137,7 @@ class AboutScreen extends ConsumerWidget {
                             'Moritz Beck',
                             'Lea-Marie Kindermann',
                             'Serhat Kan',
-                            'lucamariej',
+                            'Luca-Marie Jamrosy',
                           ])
                             Text(
                               name,
