@@ -1,4 +1,4 @@
-package com.example.six_minute_walk_test
+package de.uniulm.`in`.se.sixmwt
 
 import android.provider.Settings
 import io.flutter.embedding.android.FlutterActivity

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
@@ -10,7 +11,7 @@ class SixMinuteWalkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '6MWT',
+      title: kDebugMode ? '6MWT Debug' : '6MWT',
 
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
 

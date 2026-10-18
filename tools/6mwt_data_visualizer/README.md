@@ -249,3 +249,37 @@ These timings measure replay and chart preparation in the Flutter test runtime,
 not end-to-end rendering or release-build performance. To inspect interactive
 performance without debug instrumentation, run `flutter run -d linux --profile`
 or use a release build.
+
+
+## Desktop branding
+
+The native app and window name is **6MWT Visualizer** on macOS, Windows and Linux.
+Project attribution is **SE-UUlm / 6MWT**, with copyright attributed to the 6MWT
+contributors. The repository's GPL-3.0-or-later license applies.
+Windows and Linux keep the executable name `six_mwt_visualizer` for existing
+scripts; the macOS bundle is `6MWT Visualizer.app`.
+
+The checked-in master is `assets/branding/app_icon.png`. It was created with the
+built-in image generation tool using the main app icon as a reference. Prompt:
+create a square desktop icon with the recognizable navy walking figure and pale
+blue palette and scenery; replace the line chart with four prominent ascending
+columns in teal, orange, purple and coral red in the lower-right foreground,
+with white separation for legibility at small sizes; white background, generous padding, no
+text, border, rounded frame or mockup.
+
+All native icon files are checked in; builds do not need image-generation tools.
+To regenerate them after editing the master, install ImageMagick 7 and run:
+
+```sh
+python3 tool/generate_branding.py
+```
+
+Linux embeds the icon into the executable for direct launches. The build bundle
+also includes `share/applications/de.uniulm.in.se.sixmwt.visualizer.desktop` and
+`share/icons/hicolor/512x512/apps/de.uniulm.in.se.sixmwt.visualizer.png`.
+For an application-menu entry (including Wayland dock icons), copy those into the
+matching directories under `~/.local/share/`. Set the copied desktop entry's
+`Exec` field to the quoted absolute path of the executable in the retained bundle,
+or make `six_mwt_visualizer` available on `PATH`. Keep the bundle's `data/` and
+`lib/` directories beside the executable. Building does not install a menu entry
+or modify your desktop settings.

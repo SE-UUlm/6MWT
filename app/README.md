@@ -1,6 +1,6 @@
-# six_minute_walk_test
+# 6MWT
 
-A new Flutter project.
+Six-minute walk test with sensor-based distance measurement.
 
 ## Timestamps
 
@@ -67,3 +67,28 @@ global OS/plugin access lives in `app/metadata_service.dart` and
 information, authors, the repository link, and bundled open-source licenses.
 Unavailable metadata is displayed as “Not available”; the other content remains
 accessible.
+
+
+## Mobile branding
+
+Android and iOS use `6MWT` for Release/Profile and `6MWT Debug` for Debug.
+The IDs are `de.uniulm.in.se.sixmwt` and `de.uniulm.in.se.sixmwt.debug`.
+The native launch screen uses the walking illustration on white, without a delay.
+
+The icon master is `assets/branding/app_icon.png`, prepared from the existing
+`assets/images/logo.png` with the built-in image generation tool. The original
+in-app illustration is retained. To regenerate native PNG sizes with ImageMagick 7:
+
+```sh
+python3 tool/generate_branding.py
+```
+
+Generation prompt: Preserve the existing blue walking illustration, person pose,
+landscape, trees, clouds and palette; fit the complete illustration centrally onto
+a square opaque white app-icon canvas with generous margins. No text, rounded
+border, external shadow or mockup.
+
+Phone orientation is portrait-up, configured both before Flutter starts and in
+native Android/iPhone settings. iPad configuration is unchanged. Android 16+
+can ignore orientation locks on displays at least 600 dp wide; see the
+[Flutter orientation documentation](https://api.flutter.dev/flutter/services/SystemChrome/setPreferredOrientations.html).
