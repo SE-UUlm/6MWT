@@ -104,7 +104,7 @@ void main() {
       );
       await scrollTo(tester, find.textContaining('Moritz Beck'));
       expect(find.textContaining('Lea-Marie Kindermann'), findsOneWidget);
-      expect(find.textContaining('lucamariej'), findsOneWidget);
+      expect(find.textContaining('Luca-Marie Jamrosy'), findsOneWidget);
       await scrollTo(tester, find.text('GPL-3.0-or-later'));
       expect(find.text(AboutScreen.repositoryUri.toString()), findsOneWidget);
     });
