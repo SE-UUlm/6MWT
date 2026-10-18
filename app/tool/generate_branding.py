@@ -35,7 +35,8 @@ for density, scale in [("mdpi", 1), ("hdpi", 1.5), ("xhdpi", 2), ("xxhdpi", 3), 
 icons = CATALOG / "AppIcon.appiconset"
 for item in json.loads((icons / "Contents.json").read_text())["images"]:
     size = round(float(item["size"].split("x")[0]) * float(item["scale"].rstrip("x")))
-    export(icons / item["filename"], size)
+    # Fill the iOS icon more closely, balancing the small margins at the trees.
+    export(icons / item["filename"], size, round(size * 1.10), round(size * 0.006))
 
 for scale in (1, 2, 3):
     suffix = "" if scale == 1 else f"@{scale}x"
