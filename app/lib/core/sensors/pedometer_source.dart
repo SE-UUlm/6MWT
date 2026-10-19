@@ -10,8 +10,10 @@ import 'sensor_source.dart';
 
 final _log = appLogger('PedometerSource');
 
-// Step counts from the phone's built-in step sensor. The platform delivers
-// counts cumulative since device boot; they are recorded as-is.
+// Cumulative counts from the phone's step sensor are recorded without rebasing;
+// estimators handle their baseline and counter resets.
+// Pedometer 4.2.0 timestamps events when constructing the Dart objects, not when
+// individual steps occur. Converting to UTC preserves that event time basis.
 class PedometerSource implements SensorSource {
   static const id = 'pedometer';
 
@@ -47,7 +49,9 @@ class PedometerSource implements SensorSource {
     }
 
     runZonedGuarded(
-      // Not sure why this is needed but otherwise errors from the Pedometer streams are unhandled exceptions, even though they have working onError handlers
+      // Pedometer 4.2.0's Android _androidStream listens internally without an
+      // onError handler. Those errors can bypass our status-stream handler and
+      // reach this zone instead. See wiki/Development.md for the update check.
       () {
         _stepCountSubscription = Pedometer.stepCountStream.listen(
           (stepCount) {
@@ -84,7 +88,8 @@ class PedometerSource implements SensorSource {
         );
       },
       (error, stack) {
-        // Really only needed so the debugger is not paused every time
+        // Log errors escaping the plugin's internal listener. Unlike errors
+        // received by our stream handlers, these are not forwarded to samples.
         _log.w(
           'Exception caught in Pedometer',
           error: error,

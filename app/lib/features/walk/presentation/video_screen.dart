@@ -50,7 +50,6 @@ class _VideoScreenState extends State<VideoScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Zurück-Button
               Transform.translate(
                 offset: const Offset(-15, -1),
                 child: IconButton(
@@ -67,7 +66,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
               const SizedBox(height: 12),
 
-              // Icon + Titel
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -100,8 +98,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
               const SizedBox(height: 35),
 
-              // Beschreibung
-              // Beschreibung
               Text(
                 l10n.video_text,
                 style: TextStyle(
@@ -113,7 +109,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
               const SizedBox(height: 60),
 
-              // Video-Karte
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -140,7 +135,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
               const SizedBox(height: 190),
 
-              // Continue-Button
               SizedBox(
                 width: double.infinity,
                 height: 54,

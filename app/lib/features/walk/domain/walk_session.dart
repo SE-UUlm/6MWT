@@ -52,9 +52,10 @@ class WalkSessionState {
   }
 }
 
-// Runs the walk test (timer + position tracking) independently of any UI, so
-// the test survives navigation and can continue while the app is in the background
-// or the screen is locked.
+// Independent of the active route; the keep-alive provider owns this session.
+// Deadlines use wall-clock time, with synchronization on app resume. This does
+// not guarantee continuous execution while the OS suspends the app, nor restore
+// an active session after process termination.
 class WalkSession {
   WalkSession({
     required this._sources,
@@ -384,9 +385,10 @@ class WalkSession {
     _ticker?.cancel();
     _ticker = null;
 
-    // Not awaited: cancel() futures of broadcast subscriptions are bound to
-    // the root zone and never complete under fake_async; unsubscribing takes
-    // effect synchronously anyway.
+    // Cancellation stops further event delivery to these listeners. Its future
+    // represents asynchronous subscription cleanup and is not awaited here;
+    // completion of this method waits for source.stop() and the sink flush below,
+    // but does not guarantee that every subscription's cleanup has completed.
     for (final subscription in _sampleSubscriptions) {
       unawaited(subscription.cancel());
     }
