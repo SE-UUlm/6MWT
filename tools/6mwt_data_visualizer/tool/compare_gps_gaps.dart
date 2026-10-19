@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';

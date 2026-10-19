@@ -7,7 +7,7 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
-import 'distance_estimator.dart';
+import 'estimators/distance_estimator.dart';
 import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');

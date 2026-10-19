@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:geolocator/geolocator.dart';
-import '../../../core/domain/sensor_sample.dart';
+import '../../../../core/domain/sensor_sample.dart';
 import 'distance_estimator.dart';
 
 /// Experimental defaults; bounds may underestimate very short clinical steps.

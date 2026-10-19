@@ -6,8 +6,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 

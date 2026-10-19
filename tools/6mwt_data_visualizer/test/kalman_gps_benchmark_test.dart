@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
-import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 

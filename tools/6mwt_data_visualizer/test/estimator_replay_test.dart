@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
-import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
 
 final start = DateTime.utc(2026, 8, 11, 12);
 

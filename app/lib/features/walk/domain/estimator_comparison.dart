@@ -1,4 +1,4 @@
-import 'distance_estimator.dart';
+import 'estimators/distance_estimator.dart';
 
 /// A separately owned estimator instance and its display name.
 class NamedDistanceEstimator {

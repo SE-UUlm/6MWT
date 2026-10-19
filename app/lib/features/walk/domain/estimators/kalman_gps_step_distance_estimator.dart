@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:geolocator/geolocator.dart';
 
-import '../../../core/domain/sensor_sample.dart';
+import '../../../../core/domain/sensor_sample.dart';
 import 'calibrated_step_distance_estimator.dart';
 import 'distance_estimator.dart';
 

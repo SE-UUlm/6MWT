@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/features/walk/domain/calibrated_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
 
 SensorSample gps(
   double t,
