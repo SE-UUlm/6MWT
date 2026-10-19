@@ -9,7 +9,7 @@ import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/map/gps_track_layer.dart';
 import 'package:six_mwt_visualizer/features/map/session_map.dart';
 
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 class _BlankTiles extends TileProvider {
   @override

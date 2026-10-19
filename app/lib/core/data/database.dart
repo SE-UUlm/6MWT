@@ -3,10 +3,9 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'database.steps.dart';
+import '../domain/walk_phase.dart';
 
 part 'database.drift.dart';
-
-enum WalkPhase { idle, running, finished, aborted }
 
 enum Gender { male, female, other }
 

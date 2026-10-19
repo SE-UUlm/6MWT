@@ -81,9 +81,8 @@ void main() {
       expect(rawRef.positionSamples.length, 92);
 
       // Trimmed to 360s window (+ 1 sample buffer before/after)
-      final trimmedRef = session.trimmedReferenceSession;
-      expect(trimmedRef, isNotNull);
-      expect(trimmedRef!.distance, closeTo(626.9, 1.0));
+      final trimmedRef = session.trimmedReferences.single;
+      expect(trimmedRef.distance, closeTo(626.9, 1.0));
       expect(trimmedRef.positionSamples.length, 75);
       expect(trimmedRef.duration, inInclusiveRange(355, 365));
     },
@@ -100,9 +99,8 @@ void main() {
       expect(session.hasReference, isTrue);
 
       // App recording extends to ~397s (6:37)
-      final trimmedRef = session.trimmedReferenceSession;
-      expect(trimmedRef, isNotNull);
-      expect(trimmedRef!.duration, greaterThan(390));
+      final trimmedRef = session.trimmedReferences.single;
+      expect(trimmedRef.duration, greaterThan(390));
       expect(trimmedRef.positionSamples.length, greaterThan(120));
     },
   );

@@ -7,10 +7,6 @@ import '../../l10n/app_localizations.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  // ─────────────────────────────────────────────
-  // Farben
-  // ─────────────────────────────────────────────
-
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color darkBlue = Color(0xFF0C2B68);
   static const Color textBlue = Color(0xFF15356D);
@@ -29,9 +25,6 @@ class HomeScreen extends ConsumerWidget {
         bottom: false,
         child: Column(
           children: [
-            // ═══════════════════════════════════════
-            // ILLUSTRATION
-            // ═══════════════════════════════════════
             Stack(
               children: [
                 Padding(
@@ -69,18 +62,12 @@ class HomeScreen extends ConsumerWidget {
 
             const SizedBox(height: 15),
 
-            // ═══════════════════════════════════════
-            // SCROLLBARER INHALT
-            // ═══════════════════════════════════════
             Expanded(
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.only(bottom: 20),
                 child: Column(
                   children: [
-                    // ─────────────────────────────
-                    // TITEL + UNTERTITEL
-                    // ─────────────────────────────
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: Column(
@@ -115,9 +102,6 @@ class HomeScreen extends ConsumerWidget {
 
                     const SizedBox(height: 22),
 
-                    // ─────────────────────────────
-                    // DREI FEATURE-KARTEN
-                    // ─────────────────────────────
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: Container(
@@ -166,9 +150,6 @@ class HomeScreen extends ConsumerWidget {
 
                     const SizedBox(height: 20),
 
-                    // ─────────────────────────────
-                    // TEST STARTEN
-                    // ─────────────────────────────
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: SizedBox(
@@ -207,9 +188,6 @@ class HomeScreen extends ConsumerWidget {
 
                     const SizedBox(height: 40),
 
-                    // ─────────────────────────────
-                    // MEINE ERGEBNISSE
-                    // ─────────────────────────────
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: _HomeActionCard(
@@ -222,9 +200,6 @@ class HomeScreen extends ConsumerWidget {
 
                     const SizedBox(height: 10),
 
-                    // ─────────────────────────────
-                    // ÜBER DEN 6-MINUTEN-TEST
-                    // ─────────────────────────────
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 9),
                       child: _HomeActionCard(
@@ -246,10 +221,6 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 }
-
-// ═══════════════════════════════════════════════
-// FEATURE-KARTE
-// ═══════════════════════════════════════════════
 
 class _FeatureCard extends StatelessWidget {
   const _FeatureCard({
@@ -306,20 +277,12 @@ class _FeatureCard extends StatelessWidget {
   }
 }
 
-// ═══════════════════════════════════════════════
-// VERTIKALER TRENNER
-// ═══════════════════════════════════════════════
-
 class _VerticalDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(width: 1, height: 105, color: const Color(0xFFE0EAF8));
   }
 }
-
-// ═══════════════════════════════════════════════
-// UNTERE HOME-KARTE
-// ═══════════════════════════════════════════════
 
 class _HomeActionCard extends StatelessWidget {
   const _HomeActionCard({

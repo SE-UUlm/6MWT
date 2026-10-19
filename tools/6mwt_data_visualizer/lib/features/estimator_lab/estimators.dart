@@ -1,14 +1,14 @@
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_step_distance_estimator.dart';
 
-import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
-import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_distance_estimator.dart';
 
-import 'package:six_minute_walk_test/features/walk/domain/calibrated_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
 
-import 'package:six_minute_walk_test/features/walk/domain/adaptive_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/adaptive_gps_step_distance_estimator.dart';
 
 /// Edit this list to choose algorithms and parameters shown in the tool.
 /// Each session gets new instances; multiple configurations of a class are allowed.

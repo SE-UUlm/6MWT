@@ -37,6 +37,8 @@ class SampleRepository implements SampleSink {
 
   @override
   Future<void> flush() async {
+    // Waits only for the batch taken from the buffer by this call, not for
+    // batches already being written by earlier fire-and-forget flush calls.
     if (_buffer.isEmpty) {
       return;
     }

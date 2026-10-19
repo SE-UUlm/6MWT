@@ -1,16 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
-
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
-import 'package:six_minute_walk_test/core/data/providers.dart';
-import 'package:six_minute_walk_test/core/domain/export_metadata.dart';
+import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
@@ -35,20 +30,12 @@ class ResultScreen extends ConsumerWidget {
   static const maxValue = 140;
   static const labelCount = 7;
 
-  // ===========================================================================
-  // FORMAT DURATION
-  // ===========================================================================
-
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
 
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
-
-  // ===========================================================================
-  // PERFORMANCE BAR
-  // ===========================================================================
 
   Widget _buildPerformanceBar(double percentage) {
     return Column(
@@ -63,9 +50,6 @@ class ResultScreen extends ConsumerWidget {
               return Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // ----------------------------------------------------------------
-                  // COLOR GRADIENT
-                  // ----------------------------------------------------------------
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -90,9 +74,6 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  // ----------------------------------------------------------------
-                  // POSITION MARKER
-                  // ----------------------------------------------------------------
                   Positioned(
                     left: position - 2,
                     top: -6,
@@ -129,10 +110,6 @@ class ResultScreen extends ConsumerWidget {
     );
   }
 
-  // ===========================================================================
-  // DETAILS CARD
-  // ===========================================================================
-
   Widget _buildDetailsCard({
     required String title,
     required List<Widget> children,
@@ -160,10 +137,6 @@ class ResultScreen extends ConsumerWidget {
       ),
     );
   }
-
-  // ===========================================================================
-  // DETAIL ROW
-  // ===========================================================================
 
   Widget _buildDetailRow({
     required IconData icon,
@@ -211,38 +184,7 @@ class ResultScreen extends ConsumerWidget {
 
   Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
     try {
-      final export = (await ref
-          .read(walkSessionRepositoryProvider)
-          .exportSession(session.id))!;
-
-      final samples = await ref
-          .read(sampleRepositoryProvider)
-          .exportSession(session.id);
-
-      final profile = await ref
-          .read(profileRepositoryProvider)
-          .exportProfile(session.profileId);
-
-      export['samples'] = samples;
-      export['profile'] = profile;
-      export['exportedAt'] = DateTime.now().toUtc().toIso8601String();
-
-      export.addAll(
-        await ref.read(exportMetadataServiceProvider).getMetadata(),
-      );
-
-      final jsonString = const JsonEncoder().convert(export);
-
-      final dir = await getTemporaryDirectory();
-
-      final file = File(
-        '${dir.path}/6mwt_export_session_${session.id.substring(0, 8)}_'
-        '${DateTime.now().millisecondsSinceEpoch}.json',
-      );
-
-      await file.writeAsString(jsonString);
-
-      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+      await ref.read(sessionExportServiceProvider).shareSession(session.id);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(
@@ -251,10 +193,6 @@ class ResultScreen extends ConsumerWidget {
       }
     }
   }
-
-  // ===========================================================================
-  // BUILD
-  // ===========================================================================
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -267,15 +205,8 @@ class ResultScreen extends ConsumerWidget {
     final weightText = NumberFormat.decimalPattern(
       l10n.localeName,
     ).format(profile.weight);
-    // -------------------------------------------------------------------------
-    // DURATION
-    // -------------------------------------------------------------------------
 
     final durationText = _formatDuration(session.duration);
-
-    // -------------------------------------------------------------------------
-    // ASSESSMENT
-    // -------------------------------------------------------------------------
 
     var percentage = 0.0;
     String category = 'No assessment';
@@ -301,9 +232,6 @@ class ResultScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // =================================================================
-              // BACK BUTTON
-              // =================================================================
               IconButton(
                 onPressed: () => context.pop(),
                 padding: EdgeInsets.zero,
@@ -318,9 +246,6 @@ class ResultScreen extends ConsumerWidget {
 
               const SizedBox(height: 18),
 
-              // =================================================================
-              // HEADER
-              // =================================================================
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -372,9 +297,6 @@ class ResultScreen extends ConsumerWidget {
                 ),
               ),
 
-              // =================================================================
-              // PERFORMANCE CARD
-              // =================================================================
               const SizedBox(height: 24),
 
               Container(
@@ -396,9 +318,6 @@ class ResultScreen extends ConsumerWidget {
 
                     const SizedBox(height: 14),
 
-                    // -----------------------------------------------------------
-                    // PERCENTAGE
-                    // -----------------------------------------------------------
                     Text(
                       '${percentage.round()}%',
                       textAlign: TextAlign.center,
@@ -417,16 +336,10 @@ class ResultScreen extends ConsumerWidget {
 
                     const SizedBox(height: 22),
 
-                    // -----------------------------------------------------------
-                    // BAR
-                    // -----------------------------------------------------------
                     _buildPerformanceBar(percentage),
 
                     const SizedBox(height: 20),
 
-                    // -----------------------------------------------------------
-                    // CATEGORY
-                    // -----------------------------------------------------------
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -467,9 +380,6 @@ class ResultScreen extends ConsumerWidget {
                 ),
               ),
 
-              // =================================================================
-              // TEST DETAILS
-              // =================================================================
               const SizedBox(height: 14),
 
               _buildDetailsCard(
@@ -498,9 +408,6 @@ class ResultScreen extends ConsumerWidget {
                 ],
               ),
 
-              // =================================================================
-              // PROFILE DETAILS
-              // =================================================================
               if (comparisons.isNotEmpty) ...[
                 const SizedBox(height: 14),
                 EstimatorComparisonCard(comparisons: comparisons),
@@ -543,9 +450,6 @@ class ResultScreen extends ConsumerWidget {
                 ],
               ),
 
-              // =================================================================
-              // INFORMATION
-              // =================================================================
               const SizedBox(height: 18),
 
               const Text(
@@ -559,9 +463,6 @@ class ResultScreen extends ConsumerWidget {
                 ),
               ),
 
-              // =================================================================
-              // BACK TO HOME
-              // =================================================================
               const SizedBox(height: 24),
 
               SizedBox(

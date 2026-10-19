@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

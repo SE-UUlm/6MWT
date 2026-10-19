@@ -55,6 +55,17 @@ run successfully before they appear in GitHub's selection list.
 
 For database schema changes, follow [Database Migrations](Database-Migrations.md).
 
+## Pedometer workaround
+
+In `pedometer` 4.2.0, Android's `_androidStream` has an internal subscription
+without an error handler. `PedometerSource` uses `runZonedGuarded` to log errors
+that bypass its normal stream handlers.
+
+After package updates, check `_androidStream` in `lib/pedometer.dart` before
+removing the workaround. Verify error handling on Android with an unavailable
+step sensor or an injected channel error: escaping errors should be logged and
+GPS tracking should remain usable. This device check was not run during R25.
+
 ## Commit Messages
 
 We are following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for our commit messages.

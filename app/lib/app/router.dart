@@ -8,7 +8,6 @@ import 'package:six_minute_walk_test/features/walk/presentation/result_screen.da
 import 'package:six_minute_walk_test/features/walk/presentation/walk_result_arguments.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
-import '../features/debug/gps_test_screen.dart';
 import '../features/home/home_screen.dart';
 import '../features/instructions/instructions_screen_2.dart';
 import '../features/instructions/instructions_screen_3.dart';
@@ -31,10 +30,6 @@ final router = GoRouter(
 
         return WalkScreen(profileId: profileId);
       },
-    ),
-    GoRoute(
-      path: '/debug/gps',
-      builder: (context, state) => const GpsTestScreen(),
     ),
     GoRoute(
       path: '/profile',

@@ -11,7 +11,7 @@ import 'package:six_mwt_visualizer/features/chart/session_chart_data.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/providers/providers.dart';
 
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 void main() {
   final session = fixtures.session([

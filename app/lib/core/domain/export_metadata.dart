@@ -1,9 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-import '../../app/metadata_service.dart';
 import 'app_info.dart';
-
-part 'export_metadata.g.dart';
 
 class ExportMetadataService {
   ExportMetadataService({
@@ -19,9 +14,3 @@ class ExportMetadataService {
     'appInfo': (await loadAppInfo()).toJson(),
   };
 }
-
-@Riverpod(keepAlive: true)
-ExportMetadataService exportMetadataService(Ref ref) => ExportMetadataService(
-  loadAppInfo: () => ref.read(appInfoProvider.future),
-  loadDeviceInfo: DeviceInfoService().load,
-);

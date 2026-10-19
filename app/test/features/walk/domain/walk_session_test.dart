@@ -1,12 +1,12 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
 class FakeSensorSource extends SensorSource {

@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:six_minute_walk_test/core/data/database.dart';
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
-import 'distance_estimator.dart';
+import 'estimators/distance_estimator.dart';
 import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');
@@ -52,9 +52,10 @@ class WalkSessionState {
   }
 }
 
-// Runs the walk test (timer + position tracking) independently of any UI, so
-// the test survives navigation and can continue while the app is in the background
-// or the screen is locked.
+// Independent of the active route; the keep-alive provider owns this session.
+// Deadlines use wall-clock time, with synchronization on app resume. This does
+// not guarantee continuous execution while the OS suspends the app, nor restore
+// an active session after process termination.
 class WalkSession {
   WalkSession({
     required this._sources,
@@ -307,6 +308,8 @@ class WalkSession {
       return;
     }
 
+    // Admission uses the current clock, not the sample timestamp: reports
+    // arriving at or after the deadline are discarded even if timestamped earlier.
     final remaining = _remainingTimeAt(_now());
     if (remaining == Duration.zero) {
       unawaited(_finish());
@@ -365,6 +368,8 @@ class WalkSession {
 
     final stopTracking = _stopTracking();
 
+    // finished marks the end of measurement, not completed persistence: source
+    // shutdown and the sink flush may still be running when this state is emitted.
     _emit(
       WalkSessionState(
         phase: WalkPhase.finished,
@@ -384,9 +389,10 @@ class WalkSession {
     _ticker?.cancel();
     _ticker = null;
 
-    // Not awaited: cancel() futures of broadcast subscriptions are bound to
-    // the root zone and never complete under fake_async; unsubscribing takes
-    // effect synchronously anyway.
+    // Cancellation stops further event delivery to these listeners. Its future
+    // represents asynchronous subscription cleanup and is not awaited here;
+    // completion of this method waits for source.stop() and the sink flush below,
+    // but does not guarantee that every subscription's cleanup has completed.
     for (final subscription in _sampleSubscriptions) {
       unawaited(subscription.cancel());
     }

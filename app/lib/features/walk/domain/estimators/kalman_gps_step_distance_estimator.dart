@@ -1,9 +1,9 @@
+import 'step_calibration_history.dart';
 import 'dart:math' as math;
 
 import 'package:geolocator/geolocator.dart';
 
-import '../../../core/domain/sensor_sample.dart';
-import 'calibrated_step_distance_estimator.dart';
+import '../../../../core/domain/sensor_sample.dart';
 import 'distance_estimator.dart';
 
 /// Step odometry with a scalar Kalman estimate of distance per step.

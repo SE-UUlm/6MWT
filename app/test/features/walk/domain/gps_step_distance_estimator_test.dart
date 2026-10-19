@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/features/walk/domain/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 
 final _epoch = DateTime.utc(2026);
 // Match the geodesic model of the existing GPS implementation.

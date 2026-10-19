@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';

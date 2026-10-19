@@ -436,7 +436,7 @@ not ground truth; three manual references are insufficient to establish general
 
 ## Adding your own DistanceEstimator
 
-Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `app/lib/features/walk/domain/experimental_estimators.dart` for the shared implementations. Keep algorithms independent of widgets, replay state and reference data.
+Extend the app's `DistanceEstimator` (`totalDistance`, `addSample`, `reset`) using the app's `SensorSample` type. See `app/lib/features/walk/domain/estimators/experimental_estimators.dart` for the shared implementations. Keep algorithms independent of widgets, replay state and reference data.
 
 Add the instance to the list in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, for example:
 

@@ -59,6 +59,8 @@ class ProfileRepository {
     'timestamp': row.timestamp.toUtc().toIso8601String(),
     'height': row.height,
     'age': row.age,
+    'weight': row.weight,
+    'gender': row.gender.name,
   };
 
   Future<Map<String, dynamic>?> exportProfile(int profileId) async {

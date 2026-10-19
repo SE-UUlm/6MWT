@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:six_minute_walk_test/app/log.dart';
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +15,8 @@ import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
 import 'walk_result_arguments.dart';
+
+final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
   const WalkScreen({super.key, required this.profileId});
@@ -40,10 +46,22 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   @override
-  void dispose() async {
-    super.dispose();
-    await _session.stopWarmUp();
+  void dispose() {
     _pageController.dispose();
+    unawaited(_stopWarmUp());
+    super.dispose();
+  }
+
+  Future<void> _stopWarmUp() async {
+    try {
+      await _session.stopWarmUp();
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not stop sensor warm-up',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> _loadProfile() async {
@@ -64,7 +82,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  // Status
   String _statusMessage(WalkSessionState state) {
     final errorMessage = state.errorMessage;
 
@@ -89,7 +106,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     }
   }
 
-  // Assessment
   String _assessmentPercentage(WalkSessionState state, WalkSession session) {
     final duration = session.walkDuration - state.remainingTime;
 
@@ -132,7 +148,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     return assessment.category.name;
   }
 
-  // Build
   Widget _buildStopSlider() {
     return Container(
       height: 54,
@@ -221,7 +236,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         return;
       }
 
-      // 6 Minuten vollständig gelaufen
       if (state.phase == WalkPhase.finished && !_resultNavigationTriggered) {
         _resultNavigationTriggered = true;
         _endSession();
@@ -266,18 +280,14 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
-    // Debug Profile Initialization
-
     final lastPosition = state.lastSamples[SampleType.position];
 
-    // Current Postition
     final latitude = lastPosition?.values[PositionKeys.latitude];
 
     final longitude = lastPosition?.values[PositionKeys.longitude];
 
     final accuracy = lastPosition?.values[PositionKeys.accuracy];
 
-    // Duration
     final elapsedDuration = session.walkDuration - state.remainingTime;
 
     final durationText = elapsedDuration <= Duration.zero
@@ -294,7 +304,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // WALK ICON
               Center(
                 child: Container(
                   width: 76,
@@ -313,7 +322,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 10),
 
-              // Timer
               Text(
                 state.formattedRemainingTime,
                 textAlign: TextAlign.center,
@@ -335,7 +343,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 24),
 
-              // Distance + Status
               Row(
                 children: [
                   Expanded(
@@ -361,7 +368,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // Assessment
               _LargeInfoCard(
                 icon: Icons.bar_chart_rounded,
                 title: 'Assessment',
@@ -376,7 +382,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // Current Position
               _LargeInfoCard(
                 icon: Icons.location_on_rounded,
                 title: 'Current Position',
@@ -392,7 +397,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 12),
 
-              // Duration
               Row(
                 children: [
                   Expanded(
@@ -448,12 +452,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
             ),
             Container(color: Colors.white.withValues(alpha: 0.25)),
 
-            // Inhalt
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // Timer
                   Expanded(
                     child: Center(
                       child: Text(
@@ -468,7 +470,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     ),
                   ),
 
-                  // Start / Stop
                   if (state.isRunning)
                     _buildStopSlider()
                   else
@@ -500,7 +501,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
                   const SizedBox(height: 10),
 
-                  // Reset
                   SizedBox(
                     width: double.infinity,
                     height: 60,
@@ -532,7 +532,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     );
   }
 
-  // Duration Formatting
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
@@ -541,7 +540,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 }
 
-// Small Info Card
 class _InfoCard extends StatelessWidget {
   const _InfoCard({
     required this.icon,
@@ -629,7 +627,6 @@ class _InfoCard extends StatelessWidget {
   }
 }
 
-// Large Info Card
 class _LargeInfoCard extends StatelessWidget {
   const _LargeInfoCard({
     required this.icon,

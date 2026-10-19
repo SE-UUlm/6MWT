@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/features/walk/domain/adaptive_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/adaptive_gps_step_distance_estimator.dart';
 import 'calibrated_step_distance_estimator_test.dart' as f;
 
 double meters(AdaptiveGpsStepDistanceEstimator e, String key) =>

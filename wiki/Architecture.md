@@ -17,7 +17,7 @@
 
 ## Directory Structure
 
-Should be state (some directories are not created yet):
+Current structure:
 
 ```
 lib/
@@ -25,18 +25,38 @@ lib/
 │   ├── sensors/            # SensorSource interface + implementations
 │   ├── domain/             # Dart logic and Riverpod providers, no Flutter imports
 │   ├── data/               # persistence
-│   └── presentation/       # Shared Flutter Widgets
+│   └── presentation/       # Shared UI integration, including export/share
 ├── features/               # Feature specific code. Code in a feature directory is not allowed to reference code in a different feature directory
-│   ├── debug/              # gps debug screen
-│   ├── walk/               # walk test (screen, logic etc.)
-│   ├── results/            # result + fitness rating
+│   ├── walk/               # Profile entry, preparation, measurement and results
+│   │   ├── domain/         # Session logic, providers and fitness assessment
+│   │   │   └── estimators/ # Distance algorithms and shared calibration history
+│   │   └── presentation/   # Screens and lifecycle integration
 │   ├── home/               # Home screen
-│   └── profile/            # personal data
+│   ├── history/            # Saved measurements
+│   ├── instructions/       # Test instructions
+│   └── about/              # App and build information
 ├── app/                    # Global app config, router etc.
+├── l10n/                   # Translations and generated localization code
 └── main.dart
 ```
 
 If necessary, feature directories can be further subdivided into sensors, domain, data, presentation
+
+## Shared types and integration
+
+* `core/domain/walk_phase.dart` owns the walk lifecycle enum. Persistence imports
+  this type; domain logic does not import the database just to access it.
+* `AppInfo` and `ExportMetadataService` stay in `core/domain`. Concrete metadata
+  services and their Riverpod composition live in `app/metadata_service.dart`
+  and `app/metadata_providers.dart`, keeping platform dependencies out of these
+  domain modules.
+* Shared sensor providers live in `core/sensors/providers.dart`.
+* The walk session provider remains in `features/walk/domain`. Its Flutter
+  lifecycle integration lives in `features/walk/presentation/walk_session_lifecycle.dart`
+  (`WalkSessionLifecycle`) and is mounted above the navigator by the
+  app builder. Resuming synchronizes an existing session on every route without
+  creating a session just because the app resumed. The widget owns and disposes
+  the lifecycle listener.
 
 
 

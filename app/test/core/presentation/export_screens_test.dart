@@ -1,3 +1,5 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
+import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -128,6 +130,12 @@ void main() {
         expect(session['id'], entry.session.id);
         expect(session['distance'], 450);
         expect(session['samples'], isEmpty);
+        final profile = history
+            ? (exported!['profiles'] as List).single
+            : exported!['profile'];
+        expect(profile['name'], isNull);
+        expect(profile['weight'], 70);
+        expect(profile['gender'], 'other');
         expect(exported!['exportedAt'], endsWith('Z'));
         await tester.pumpWidget(const SizedBox());
         await tester.pump(const Duration(milliseconds: 1));
