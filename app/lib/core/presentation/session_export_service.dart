@@ -59,6 +59,7 @@ class SessionExportService {
     });
   }
 
+  // Metadata describes the app/device at export time, not necessarily at recording.
   Future<Map<String, dynamic>> _withMetadata(
     Map<String, dynamic> export,
   ) async => {

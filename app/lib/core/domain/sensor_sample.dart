@@ -6,8 +6,8 @@ class SensorSample {
     required this.values,
   });
 
-  /// Measurement time in UTC. Every SensorSource implementation must convert
-  /// source timestamps with toUtc() before creating a SensorSample.
+  /// Source timestamp in UTC; its meaning depends on the source (GPS fix time
+  /// or Pedometer Dart-event creation time). Sources convert it with toUtc().
   final DateTime timestamp;
 
   // What are we measuring?

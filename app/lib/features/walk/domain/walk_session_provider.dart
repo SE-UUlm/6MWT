@@ -42,9 +42,8 @@ WalkSessionRow? createWalkSessionRow(
   );
 }
 
-/// Transforms [session.states] into a stream of [WalkSessionRow]s, skipping
-/// emissions where none of the persisted fields have changed. So there we
-/// prevent db writes on every sample
+/// Maps session states to database rows, skipping consecutive identical rows.
+/// A changed distance or duration still produces a row for persistence.
 Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
   WalkSessionRow? last;
 

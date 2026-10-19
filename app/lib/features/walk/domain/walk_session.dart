@@ -308,6 +308,8 @@ class WalkSession {
       return;
     }
 
+    // Admission uses the current clock, not the sample timestamp: reports
+    // arriving at or after the deadline are discarded even if timestamped earlier.
     final remaining = _remainingTimeAt(_now());
     if (remaining == Duration.zero) {
       unawaited(_finish());
@@ -366,6 +368,8 @@ class WalkSession {
 
     final stopTracking = _stopTracking();
 
+    // finished marks the end of measurement, not completed persistence: source
+    // shutdown and the sink flush may still be running when this state is emitted.
     _emit(
       WalkSessionState(
         phase: WalkPhase.finished,
