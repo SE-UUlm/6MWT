@@ -33,10 +33,6 @@ final router = GoRouter(
       },
     ),
     GoRoute(
-      path: '/debug/gps',
-      builder: (context, state) => const GpsTestScreen(),
-    ),
-    GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
     ),
