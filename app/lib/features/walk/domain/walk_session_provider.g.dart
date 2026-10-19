@@ -9,48 +9,6 @@ part of 'walk_session_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(locationService)
-final locationServiceProvider = LocationServiceProvider._();
-
-final class LocationServiceProvider
-    extends
-        $FunctionalProvider<LocationService, LocationService, LocationService>
-    with $Provider<LocationService> {
-  LocationServiceProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'locationServiceProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$locationServiceHash();
-
-  @$internal
-  @override
-  $ProviderElement<LocationService> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  LocationService create(Ref ref) {
-    return locationService(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(LocationService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<LocationService>(value),
-    );
-  }
-}
-
-String _$locationServiceHash() => r'38ada00c14c0c2521e7d291f9897c53df2e7008a';
-
 @ProviderFor(walkSession)
 final walkSessionProvider = WalkSessionProvider._();
 
@@ -90,7 +48,7 @@ final class WalkSessionProvider
   }
 }
 
-String _$walkSessionHash() => r'4ea10e8a661f83892e1518088a68103d4a81793d';
+String _$walkSessionHash() => r'efe89fc38c8b329fd26503b5f544a1b19c358096';
 
 @ProviderFor(walkSessionState)
 final walkSessionStateProvider = WalkSessionStateProvider._();

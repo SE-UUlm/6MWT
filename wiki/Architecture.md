@@ -38,6 +38,22 @@ lib/
 
 If necessary, feature directories can be further subdivided into sensors, domain, data, presentation
 
+## Shared types and integration
+
+* `core/domain/walk_phase.dart` owns the walk lifecycle enum. Persistence imports
+  this type; domain logic does not import the database just to access it.
+* `AppInfo` and `ExportMetadataService` stay in `core/domain`. Concrete metadata
+  services and their Riverpod composition live in `app/metadata_service.dart`
+  and `app/metadata_providers.dart`, keeping platform dependencies out of these
+  domain modules.
+* Shared sensor providers live in `core/sensors/providers.dart`.
+* The walk session provider remains in `features/walk/domain`. Its Flutter
+  lifecycle integration lives in `features/walk/presentation/walk_session_lifecycle.dart`
+  (`WalkSessionLifecycle`) and is mounted above the navigator by the
+  app builder. Resuming synchronizes an existing session on every route without
+  creating a session just because the app resumed. The widget owns and disposes
+  the lifecycle listener.
+
 
 
 ## Potential Sensor pipeline (central abstraction)

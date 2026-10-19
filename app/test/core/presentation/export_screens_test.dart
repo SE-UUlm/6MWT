@@ -1,3 +1,5 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
+import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'dart:convert';
 import 'dart:io';
 

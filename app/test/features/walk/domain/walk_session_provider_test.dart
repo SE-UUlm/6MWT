@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';

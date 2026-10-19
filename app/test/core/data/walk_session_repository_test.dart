@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';

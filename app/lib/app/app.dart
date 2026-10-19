@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import 'router.dart';
+import '../features/walk/presentation/walk_session_lifecycle.dart';
 
 class SixMinuteWalkApp extends StatelessWidget {
   const SixMinuteWalkApp({super.key});
@@ -35,6 +36,8 @@ class SixMinuteWalkApp extends StatelessWidget {
       },
 
       routerConfig: router,
+      builder: (context, child) =>
+          WalkSessionLifecycle(child: child ?? const SizedBox.shrink()),
     );
   }
 }

@@ -1,9 +1,8 @@
-import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
-import 'package:six_minute_walk_test/core/sensors/location_service.dart';
+import 'package:six_minute_walk_test/core/sensors/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'estimators/gps_step_distance_estimator.dart';
@@ -68,9 +67,6 @@ Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
   });
 }
 
-@Riverpod(keepAlive: true)
-LocationService locationService(Ref ref) => LocationService();
-
 // Kept alive for the whole app lifetime, so a running walk test survives
 // navigating between screens.
 @Riverpod(keepAlive: true)
@@ -113,15 +109,7 @@ WalkSession walkSession(Ref ref) {
     session,
   ).listen(walkSessionRepository.saveSession);
 
-  // A Dart timer can be paused while the app is backgrounded. Synchronizing on
-  // resume ensures the visible countdown and the session phase immediately
-  // reflect the wall-clock deadline.
-  final lifecycleListener = AppLifecycleListener(
-    onResume: session.synchronizeWithClock,
-  );
-
   ref.onDispose(() {
-    lifecycleListener.dispose();
     subscription.cancel();
     session.dispose();
   });

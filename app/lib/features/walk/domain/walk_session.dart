@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:six_minute_walk_test/core/data/database.dart';
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
