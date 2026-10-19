@@ -1,7 +1,7 @@
+import 'step_calibration_history.dart';
 import 'dart:math' as math;
 
 import '../../../../core/domain/sensor_sample.dart';
-import 'calibrated_step_distance_estimator.dart';
 import 'distance_estimator.dart';
 
 /// GPS on covered intervals, locally calibrated steps on their complement.

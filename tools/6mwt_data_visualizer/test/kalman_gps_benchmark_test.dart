@@ -5,7 +5,7 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 
 import '../tool/benchmark_support.dart';
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 void main() {
   test('Kalman replay matches direct streaming and resets all state', () {

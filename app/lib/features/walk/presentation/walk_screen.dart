@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +15,8 @@ import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
 import 'walk_result_arguments.dart';
+
+final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
   const WalkScreen({super.key, required this.profileId});
@@ -41,10 +46,22 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   @override
-  void dispose() async {
-    super.dispose();
-    await _session.stopWarmUp();
+  void dispose() {
     _pageController.dispose();
+    unawaited(_stopWarmUp());
+    super.dispose();
+  }
+
+  Future<void> _stopWarmUp() async {
+    try {
+      await _session.stopWarmUp();
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not stop sensor warm-up',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   Future<void> _loadProfile() async {
@@ -263,7 +280,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
-
     final lastPosition = state.lastSamples[SampleType.position];
 
     final latitude = lastPosition?.values[PositionKeys.latitude];

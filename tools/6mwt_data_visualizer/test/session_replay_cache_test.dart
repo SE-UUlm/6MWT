@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_lab.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/session_replay_cache.dart';
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 void main() {
   final a = fixtures.session([fixtures.gps(0, 0), fixtures.gps(10, .0001)]);

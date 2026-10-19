@@ -17,7 +17,7 @@
 
 ## Directory Structure
 
-Should be state (some directories are not created yet):
+Current structure:
 
 ```
 lib/
@@ -25,14 +25,18 @@ lib/
 │   ├── sensors/            # SensorSource interface + implementations
 │   ├── domain/             # Dart logic and Riverpod providers, no Flutter imports
 │   ├── data/               # persistence
-│   └── presentation/       # Shared Flutter Widgets
+│   └── presentation/       # Shared UI integration, including export/share
 ├── features/               # Feature specific code. Code in a feature directory is not allowed to reference code in a different feature directory
-│   ├── debug/              # gps debug screen
-│   ├── walk/               # walk test (screen, logic etc.)
-│   ├── results/            # result + fitness rating
+│   ├── walk/               # Profile entry, preparation, measurement and results
+│   │   ├── domain/         # Session logic, providers and fitness assessment
+│   │   │   └── estimators/ # Distance algorithms and shared calibration history
+│   │   └── presentation/   # Screens and lifecycle integration
 │   ├── home/               # Home screen
-│   └── profile/            # personal data
+│   ├── history/            # Saved measurements
+│   ├── instructions/       # Test instructions
+│   └── about/              # App and build information
 ├── app/                    # Global app config, router etc.
+├── l10n/                   # Translations and generated localization code
 └── main.dart
 ```
 

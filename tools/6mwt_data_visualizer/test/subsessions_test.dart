@@ -13,7 +13,7 @@ import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart'
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 import 'package:six_mwt_visualizer/features/map/gps_track_layer.dart';
 import 'package:six_mwt_visualizer/features/map/session_map.dart';
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 class BlankTiles extends TileProvider {
   @override

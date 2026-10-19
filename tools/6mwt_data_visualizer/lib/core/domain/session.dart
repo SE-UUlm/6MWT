@@ -146,15 +146,6 @@ class Session {
     return sessionStartUtc.add(Duration(seconds: duration));
   }
 
-  /// Returns a trimmed copy of [referenceSession] trimmed to this session's
-  /// active window [sessionStartUtc, sessionEndUtc], plus at most 1 buffer
-  /// sample before the start and 1 buffer sample after the end.
-  Session? get trimmedReferenceSession {
-    final ref = referenceSession;
-    if (ref == null) return null;
-    return ref.trimToWindow(start: sessionStartUtc, end: sessionEndUtc);
-  }
-
   /// Trims this session's samples to [start, end] window, plus at most 1 sample
   /// immediately before start and 1 sample immediately after end for boundary continuity.
   Session trimToWindow({required DateTime start, required DateTime end}) {
@@ -306,20 +297,6 @@ class Session {
     if (steps.isEmpty) return null;
     final values = steps.map((s) => s.values[StepKeys.cumulativeSteps]!);
     return (values.last - values.first).round();
-  }
-
-  /// Cumulative steps count at a given timestamp (nearest sample at or before).
-  double? stepsAtTime(DateTime time) {
-    SensorSample? nearest;
-    for (final sample in stepSamples) {
-      if (sample.timestamp.isBefore(time) ||
-          sample.timestamp.isAtSameMomentAs(time)) {
-        nearest = sample;
-      } else {
-        break;
-      }
-    }
-    return nearest?.values[StepKeys.cumulativeSteps];
   }
 
   factory Session.fromJson(Map<String, dynamic> json) {

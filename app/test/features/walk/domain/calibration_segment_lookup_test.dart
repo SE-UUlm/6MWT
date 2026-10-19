@@ -1,7 +1,7 @@
+import 'package:six_minute_walk_test/features/walk/domain/estimators/step_calibration_history.dart';
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
 
 void main() {
   test('indexed history queries match full scans at boundaries and gaps', () {

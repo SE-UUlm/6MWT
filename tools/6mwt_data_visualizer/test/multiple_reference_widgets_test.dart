@@ -9,7 +9,7 @@ import 'package:six_mwt_visualizer/features/chart/distance_steps_chart.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_lab.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 void main() {
   final session = fixtures.session([

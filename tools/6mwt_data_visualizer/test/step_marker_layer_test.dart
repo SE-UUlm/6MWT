@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/map/step_marker_layer.dart';
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 void main() {
   test(
