@@ -8,21 +8,27 @@ class Profile {
     required this.timestamp,
     required this.height,
     required this.age,
+    this.weight,
+    this.gender,
   });
 
   final int id;
-  final String name;
+  final String? name;
   final DateTime timestamp;
   final int height;
   final int age;
+  final double? weight;
+  final String? gender;
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
       id: json['id'] as int,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       timestamp: DateTime.parse(json['timestamp'] as String),
       height: json['height'] as int,
       age: json['age'] as int,
+      weight: (json['weight'] as num?)?.toDouble(),
+      gender: json['gender'] as String?,
     );
   }
 }

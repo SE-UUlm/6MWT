@@ -1,15 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
-import 'package:six_minute_walk_test/core/domain/export_metadata.dart';
+import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 
 class HistoryScreen extends ConsumerWidget {
@@ -102,45 +97,7 @@ class HistoryScreen extends ConsumerWidget {
 
   Future<void> _exportAllSessions(BuildContext context, WidgetRef ref) async {
     try {
-      final sessions = await ref
-          .read(walkSessionRepositoryProvider)
-          .exportAllSessions();
-
-      final samplesBySession = await ref
-          .read(sampleRepositoryProvider)
-          .exportAllSessions();
-
-      final profiles = await ref
-          .read(profileRepositoryProvider)
-          .exportAllProfiles();
-
-      for (final session in sessions) {
-        final sessionId = session['id'] as String;
-        session['samples'] = samplesBySession[sessionId] ?? [];
-      }
-
-      final export = <String, dynamic>{
-        'exportedAt': DateTime.now().toUtc().toIso8601String(),
-        'profiles': profiles,
-        'sessions': sessions,
-      };
-
-      export.addAll(
-        await ref.read(exportMetadataServiceProvider).getMetadata(),
-      );
-
-      final jsonString = const JsonEncoder().convert(export);
-
-      final dir = await getTemporaryDirectory();
-
-      final file = File(
-        '${dir.path}/6mwt_export_'
-        '${DateTime.now().millisecondsSinceEpoch}.json',
-      );
-
-      await file.writeAsString(jsonString);
-
-      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+      await ref.read(sessionExportServiceProvider).shareAllSessions();
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(

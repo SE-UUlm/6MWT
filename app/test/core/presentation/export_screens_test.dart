@@ -128,6 +128,12 @@ void main() {
         expect(session['id'], entry.session.id);
         expect(session['distance'], 450);
         expect(session['samples'], isEmpty);
+        final profile = history
+            ? (exported!['profiles'] as List).single
+            : exported!['profile'];
+        expect(profile['name'], isNull);
+        expect(profile['weight'], 70);
+        expect(profile['gender'], 'other');
         expect(exported!['exportedAt'], endsWith('Z'));
         await tester.pumpWidget(const SizedBox());
         await tester.pump(const Duration(milliseconds: 1));

@@ -334,6 +334,8 @@ void main() {
       final alice = result.firstWhere((m) => m['name'] == 'Alice');
       expect(alice['height'], 170);
       expect(alice['age'], 30);
+      expect(alice['weight'], 70.5);
+      expect(alice['gender'], 'female');
       expect(alice['id'], isA<int>());
       expect(alice['timestamp'], isA<String>());
 
@@ -387,6 +389,8 @@ void main() {
       expect(result['name'], 'Clara');
       expect(result['height'], 168);
       expect(result['age'], 29);
+      expect(result['weight'], 70.5);
+      expect(result['gender'], 'female');
       expect(result['timestamp'], isA<String>());
     });
 
