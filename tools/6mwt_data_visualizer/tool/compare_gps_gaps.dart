@@ -5,16 +5,14 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
-import 'package:six_mwt_visualizer/core/data/session_loader.dart';
+import 'benchmark_support.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 
 void main() {
   test('compare GPS interval variants over every repository recording', () async {
-    final data = await SessionLoader.loadFromDataDirectory('../../data');
-    expect(data.sessions, isNotEmpty);
-    final sessions = data.sessions.toList()
-      ..sort((a, b) => a.notes.compareTo(b.notes));
+    final sessions = await loadBenchmarkRecordings('../../data');
+    expect(sessions, isNotEmpty);
     final runs = <Map<String, Object?>>[];
     final comparisons = <Map<String, Object?>>[];
     for (final session in sessions) {
@@ -22,35 +20,24 @@ void main() {
       for (final estimator
           in createEstimators().whereType<GpsStepDistanceEstimator>()) {
         final result = replay.run(estimator);
-        expect(result.error, isNull, reason: session.notes);
-        expect(result.distance?.isFinite, isTrue, reason: session.notes);
+        expect(result.error, isNull, reason: session.recordingLabel);
+        expect(
+          result.distance?.isFinite,
+          isTrue,
+          reason: session.recordingLabel,
+        );
         runs.add({
-          'recording': session.notes,
+          'recording': session.recordingLabel,
           'maxGpsIntervalSeconds': estimator.maxGpsInterval.inSeconds,
           'distanceMeters': result.distance,
           'learned': estimator.hasLearnedStepLength,
           'stepLengthMeters': estimator.stepLength,
           'diagnostics': result.additionalInfo,
         });
-        for (final reference in replay.references) {
-          final points = reference.points;
-          if (points == null) continue;
-          final measured =
-              interpolateDistance(result.points, points.last.seconds) -
-              interpolateDistance(result.points, points.first.seconds);
-          final expected = points.last.meters;
-          final delta = measured - expected;
+        for (final row in compareReferences(session, replay, result)) {
           comparisons.add({
-            'recording': session.notes,
-            'reference': reference.label,
-            'manualReference': reference.manual,
+            ...row,
             'maxGpsIntervalSeconds': estimator.maxGpsInterval.inSeconds,
-            'overlapStartSeconds': points.first.seconds,
-            'overlapEndSeconds': points.last.seconds,
-            'estimatedMeters': measured,
-            'referenceMeters': expected,
-            'deltaMeters': delta,
-            'deltaPercent': expected == 0 ? null : 100 * delta / expected,
           });
         }
       }
@@ -87,23 +74,10 @@ weight to each recording/reference pair within its group.
               r['manualReference'] == manual &&
               r['maxGpsIntervalSeconds'] == gap,
         );
-        if (rows.isEmpty) continue;
-        final mae =
-            rows.fold(
-              0.0,
-              (sum, r) => sum + (r['deltaMeters'] as double).abs(),
-            ) /
-            rows.length;
-        final percentages = rows
-            .map((r) => r['deltaPercent'])
-            .whereType<double>();
-        final mape = percentages.isEmpty
-            ? null
-            : percentages.fold(0.0, (sum, p) => sum + p.abs()) /
-                  percentages.length;
+        final summary = summarizeComparisons(rows);
         report.writeln(
-          '| ${manual ? 'Manual' : 'Watch'} | $gap | ${rows.length} | '
-          '${number(mae)} | ${number(mape)} |',
+          '| ${manual ? 'Manual' : 'Watch'} | $gap | ${summary['pairs']} | '
+          '${number(summary['maeMeters'])} | ${number(summary['mapePercent'])} |',
         );
       }
     }
@@ -136,13 +110,30 @@ speed respectively; coordinate failures are available in the JSON diagnostics.
 | Recording | Reference | GPS limit (s) | Overlap (s) | Estimate (m) | Reference (m) | Delta (m) | Delta (%) |
 | --- | --- | ---: | --- | ---: | ---: | ---: | ---: |
 ''');
-    for (final row in comparisons) {
+    for (final row in comparisons.where((row) => row['status'] == 'compared')) {
       report.writeln(
         '| ${cell(row['recording'])} | ${cell(row['reference'])} | '
         '${row['maxGpsIntervalSeconds']} | '
         '${number(row['overlapStartSeconds'])}–${number(row['overlapEndSeconds'])} | '
         '${number(row['estimatedMeters'])} | ${number(row['referenceMeters'])} | '
         '${number(row['deltaMeters'])} | ${number(row['deltaPercent'])} |',
+      );
+    }
+    report.write('''
+## Reference coverage and availability
+
+Coverage is the shared reference interval as a percentage of replay duration;
+it does not measure sensor quality. Unavailable comparisons are excluded from
+aggregates. Zero-distance references contribute to MAE, but not MAPE.
+
+| Recording | Reference | GPS limit (s) | Status | Coverage (%) | Absolute error (m) |
+| --- | --- | ---: | --- | ---: | ---: |
+''');
+    for (final row in comparisons) {
+      report.writeln(
+        '| ${cell(row['recording'])} | ${cell(row['reference'] ?? '—')} | '
+        '${row['maxGpsIntervalSeconds']} | ${row['status']} | '
+        '${number(row['coveragePercent'])} | ${number(row['absoluteErrorMeters'])} |',
       );
     }
     final output = await Directory('build').create(recursive: true);

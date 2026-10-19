@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import '../tool/benchmark_support.dart';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
-import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
@@ -313,9 +314,25 @@ void main() {
     () async {
       final data = Directory('../../data');
       expect(data.existsSync(), isTrue);
-      final loaded = await SessionLoader.loadFromDataDirectory(data.path);
-      expect(loaded.sessions, isNotEmpty);
-      for (final recording in loaded.sessions) {
+      final recordings = await loadBenchmarkRecordings(data.path);
+      expect(recordings, isNotEmpty);
+      expect(
+        recordings.map((s) => s.recordingLabel).toSet(),
+        hasLength(recordings.length),
+      );
+      final files = data
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where(
+            (file) => RegExp(
+              r'^session.*\.json$',
+            ).hasMatch(file.uri.pathSegments.last),
+          );
+      expect(
+        recordings.map((s) => File(s.sourcePath!).absolute.path).toSet(),
+        files.map((file) => file.absolute.path).toSet(),
+      );
+      for (final recording in recordings) {
         final replay = EstimatorReplay(recording);
         expect(
           replay.duration,
