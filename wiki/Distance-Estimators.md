@@ -27,8 +27,20 @@ Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_la
 
 - Calibrated steps requires full GPS/step coverage, at least 6 steps and 5 m per window; accepted GPS has positive accuracy ≤10 m, speed ≤4 m/s and spacing ≤10 s. Stride ratios outside 0.25–2 m are rejected; median stride is clamped to 0.35–1.35 m, default 0.75 m.
 - Adaptive fusion uses calibration windows wholly within adjacent good GPS runs and within 60 seconds of a gap boundary. With one side, hold that stride; with neither, use 0.75 m. No coverage from either sensor means no invented distance.
-- GPS Kalman uses a local east/north plane and constant-velocity state. Reported accuracy supplies a heuristic measurement variance, not calibrated certainty. Long gaps cannot recover route geometry.
-- Kalman GPS + steps learns from sufficiently straight GPS windows (endpoint/polyline ratio ≥0.9), at least 10 s and 8 steps, extending insufficient displacement windows up to 20 s. It rejects implausible stride measurements and applies learned stride to earlier steps too.
+- GPS Kalman uses a local east/north plane and constant-velocity state. Reported accuracy supplies a heuristic measurement variance, not calibrated certainty. After a gap of more than 15 seconds without an accepted fix, two new plausible positions are required before resuming — this recovers from a bad initial fix without bridging the missing geometry. Default parameters:
+
+  | Parameter | Default |
+  | --- | ---: |
+  | `maxAccuracy` | 20 m |
+  | `maxSpeed` | 4 m/s |
+  | `minPositionSigma` | 3 m |
+  | `accelerationSigma` | 1.5 m/s² |
+  | `innovationThreshold` | 9.21 |
+  | `gapSeconds` | 15 s |
+  | `minDistance` | 5 m |
+  | `accuracyDistanceFactor` | 0.5 |
+
+- Kalman GPS + steps learns stride from sufficiently straight GPS windows (endpoint/polyline ratio ≥0.9), at least 10 s and 8 steps. Turns and noisy sections are excluded from calibration. The learned stride applies retroactively to all earlier steps, so the displayed total can decrease after an update.
 - Step-based models select a valid source, establish counter baselines and account for resets. Batched step timing is approximated uniformly between observations; sensor timestamps must remain ordered within each source.
 
 ## Reproducible comparisons
