@@ -50,7 +50,7 @@ is a permanent hardware or strictly per-installation ID. No identifier is stored
 in our database. Other platforms currently export only OS information.
 
 Gradle and Xcode automatically embed `git rev-parse HEAD` during native builds.
-Incremental nativebuilds refresh the hash; hot reload does not. Uncommitted changes 
+Incremental native builds refresh the hash; hot reload does not. Uncommitted changes 
 are not captured by the hash. Builds without Git/repository metadata emit a build warning 
 and export `commitHash: null`, replacing any previous value. Commit embedding is
 implemented for Android and iOS.

@@ -1,6 +1,6 @@
 # App Installation
 
-Download from the [Latest Release](https://github.com/SE-UUlm/6MWT/releases/latest).
+Download the installation package for your platform from the **Assets** section of the [Latest Release](https://github.com/SE-UUlm/6MWT/releases/latest).
 
 ## Requirements
 
@@ -13,15 +13,14 @@ These are build targets, not a tested device matrix. The current release package
 
 ## Android
 
-1. Download `6mwt-VERSION-android.apk` onto the phone.
+1. Download `6mwt-VERSION-android.apk` onto the phone from the release **Assets** (confirm browser warnings such as *File might be harmful* with *Download anyway* if prompted).
 2. Open it from Downloads. If prompted, allow **Install unknown apps** for that browser/file manager, then return and install.
 3. Open **6MWT**. Enable location services and grant precise location and physical activity permissions when requested.
-4. Create a profile, read the instructions and open the walking screen. Allow GPS to acquire a position before starting.
 
 If Android specifically blocks an **unverified developer**, enable its Advanced Flow before retrying the installation:
 
 1. Enable Developer Mode in the system settings. The exact settings path varies by device and Android version.
-2. In Developer Option, select **Install apps from unverified developers** (the wording can vary slightly by device).
+2. In Developer Options, select **Install apps from unverified developers** (the wording can vary slightly by device).
 3. Complete the confirmation that you are enabling the option yourself.
 4. Restart the phone and authenticate again when Android requests it.
 5. Wait for the one-time 24-hour safety delay, then install the APK again.
@@ -33,7 +32,7 @@ This opt-in is only needed where Android enforces developer verification; it is 
 The download is unsigned and cannot be installed by opening it on the phone.
 
 1. Install [Sideloadly](https://sideloadly.io/) on Windows or macOS. Follow its setup instructions for Apple device drivers/iTunes and iCloud on Windows.
-2. Download `6mwt-VERSION-ios-unsigned.ipa` to the computer.
+2. Download `6mwt-VERSION-ios-unsigned.ipa` from the release **Assets** to the computer.
 3. Connect and unlock the iPhone, then accept **Trust This Computer**.
 4. Open Sideloadly, select the device and IPA, enter your Apple account and start signing/installing. Complete account authentication when requested.
 5. On the phone, trust the developer profile under **Settings → General → VPN & Device Management** if requested.
@@ -41,6 +40,12 @@ The download is unsigned and cannot be installed by opening it on the phone.
 7. Open **6MWT** and grant location and Motion & Fitness access.
 
 With a free Apple account the signature normally lasts seven days; re-sign before expiry or configure Sideloadly's automatic refresh. Keep the same account and app identity for updates. See the [Sideloadly FAQ](https://sideloadly.io/faq) for current account limits, renewal and connection troubleshooting.
+
+## Conducting a walk test
+
+During the 6-minute walk test:
+- The phone may be locked and should preferably be carried in a pocket for reliable step detection.
+- An acoustic signal and vibration notify you when the six minutes are up.
 
 ## Updates and problems
 

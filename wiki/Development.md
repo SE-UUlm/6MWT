@@ -22,7 +22,7 @@ flutter devices
 flutter run
 ```
 
-Run `flutter doctor -v` when Flutter setup, a target device or a build does not work as expected.
+Run `flutter doctor -v` when Flutter setup, a target device or a build does not work as expected. GPS coordinates can be simulated in emulators (e.g. via route playback), but hardware step sensors are typically unavailable in emulators and simulators. Testing step-based estimators and real walk tests requires a physical device. Or a prerecorded session in the visualizer, see [Visualizer](Visualizer.md).
 
 ### Visualizer
 
@@ -134,7 +134,7 @@ The native launch screen uses the walking illustration on white, without a delay
 
 The icon master is `assets/branding/app_icon.png`, prepared from the existing
 `assets/images/logo.png` with the built-in image generation tool. The original
-in-app illustration is retained. To regenerate native PNG sizes with ImageMagick 7:
+in-app illustration is retained. To regenerate native PNG sizes with ImageMagick 7, run from `app/`:
 
 ```sh
 python3 tool/generate_branding.py
@@ -150,7 +150,7 @@ The checked-in master is `assets/branding/app_icon.png`.
 It was created using the main app icon as a reference.
 
 All native icon files are checked in; builds do not need image-generation tools.
-To regenerate them after editing the master, install ImageMagick 7 and run:
+To regenerate them after editing the master, install ImageMagick 7 and run from `tools/6mwt_data_visualizer/`:
 
 ```sh
 python3 tool/generate_branding.py
