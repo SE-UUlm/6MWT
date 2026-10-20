@@ -3,11 +3,15 @@
   <img src="wiki/assets/6mwt-wordmark.svg" alt="6MWT" width="250" align="middle">
 </p>
 
-[![Latest release](https://img.shields.io/github/v/release/SE-UUlm/6MWT?label=release)](https://github.com/SE-UUlm/6MWT/releases/latest)
-[![License](https://img.shields.io/github/license/SE-UUlm/6MWT)](LICENSE)
-[![Wiki](https://img.shields.io/badge/docs-wiki-blue)](https://github.com/SE-UUlm/6MWT/wiki)
-[![App CI](https://github.com/SE-UUlm/6MWT/actions/workflows/flutter-ci.yml/badge.svg?branch=main)](https://github.com/SE-UUlm/6MWT/actions/workflows/flutter-ci.yml)
-[![Visualizer CI](https://github.com/SE-UUlm/6MWT/actions/workflows/visualizer-ci.yml/badge.svg?branch=main)](https://github.com/SE-UUlm/6MWT/actions/workflows/visualizer-ci.yml)
+<div align="center">
+
+  [![Latest release](https://img.shields.io/github/v/release/SE-UUlm/6MWT?label=release)](https://github.com/SE-UUlm/6MWT/releases/latest)
+  [![License](https://img.shields.io/github/license/SE-UUlm/6MWT)](LICENSE)
+  [![Wiki](https://img.shields.io/badge/docs-wiki-blue)](https://github.com/SE-UUlm/6MWT/wiki)
+  [![App CI](https://github.com/SE-UUlm/6MWT/actions/workflows/flutter-ci.yml/badge.svg?branch=main)](https://github.com/SE-UUlm/6MWT/actions/workflows/flutter-ci.yml)
+  [![Visualizer CI](https://github.com/SE-UUlm/6MWT/actions/workflows/visualizer-ci.yml/badge.svg?branch=main)](https://github.com/SE-UUlm/6MWT/actions/workflows/visualizer-ci.yml)
+
+</div>
 
 The six-minute walk test (6MWT) measures how far a person can walk in six minutes and is commonly used to assess functional exercise capacity.
 
