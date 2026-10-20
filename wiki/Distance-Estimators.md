@@ -40,6 +40,8 @@ Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_la
   | `minDistance` | 5 m |
   | `accuracyDistanceFactor` | 0.5 |
 
+  `minDistance` was raised from the originally planned 2 m to 5 m after a stationary noise test (Gaussian noise, σ = 1 m per axis, reported accuracy 3 m) accumulated roughly 102 m at 1-second and 71 m at 5-second sampling over six minutes. No reference recordings were used to tune these defaults.
+
 - Kalman GPS + steps learns stride from sufficiently straight GPS windows (endpoint/polyline ratio ≥0.9), at least 10 s and 8 steps. Turns and noisy sections are excluded from calibration. The learned stride applies retroactively to all earlier steps, so the displayed total can decrease after an update.
 - Step-based models select a valid source, establish counter baselines and account for resets. Batched step timing is approximated uniformly between observations; sensor timestamps must remain ordered within each source.
 
