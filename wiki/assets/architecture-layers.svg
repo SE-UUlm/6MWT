@@ -1,36 +1,70 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 470" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 530" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+      <path class="arrow-head" d="M 0 0 L 10 5 L 0 10 z"/>
     </marker>
   </defs>
 
-  <rect x="0" y="0" width="860" height="470" fill="#ffffff"/>
+  <style>
+    .bg        { fill: #ffffff; }
+    .arrow-head { fill: #334155; }
+    .edge      { stroke: #334155; fill: none; }
+
+    .box-presentation { fill: #dbeafe; stroke: #2563eb; }
+    .box-domain       { fill: #dcfce7; stroke: #16a34a; }
+    .box-sensors      { fill: #fef3c7; stroke: #d97706; }
+    .box-data         { fill: #ede9fe; stroke: #7c3aed; }
+
+    .label-title { fill: #0f172a; font-size: 17px; font-weight: 700; }
+    .label-sub   { fill: #334155; font-size: 13px; }
+    .label-hint  { fill: #64748b; font-size: 12px; }
+
+    @media (prefers-color-scheme: dark) {
+      .bg        { fill: #0d1117; }
+      .arrow-head { fill: #94a3b8; }
+      .edge      { stroke: #94a3b8; }
+
+      .box-presentation { fill: #1e3a5f; stroke: #3b82f6; }
+      .box-domain       { fill: #14532d; stroke: #22c55e; }
+      .box-sensors      { fill: #451a03; stroke: #f59e0b; }
+      .box-data         { fill: #2e1065; stroke: #a855f7; }
+
+      .label-title { fill: #f1f5f9; }
+      .label-sub   { fill: #cbd5e1; }
+      .label-hint  { fill: #94a3b8; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="860" height="530"/>
 
   <!-- Presentation Layer -->
-  <rect x="180" y="30" width="500" height="80" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
-  <text x="430" y="65" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Presentation Layer</text>
-  <text x="430" y="90" text-anchor="middle" font-size="13" fill="#334155">Flutter: screens, widgets, Riverpod providers</text>
+  <rect class="box-presentation" x="180" y="30" width="500" height="100" rx="10" stroke-width="2"/>
+  <text class="label-title" x="430" y="68"  text-anchor="middle">Presentation Layer</text>
+  <text class="label-sub"   x="430" y="91"  text-anchor="middle">Flutter — screens, widgets, Riverpod UI providers</text>
+  <text class="label-hint"  x="430" y="112" text-anchor="middle">May use: Domain, Sensors, Data</text>
 
   <!-- Domain Layer -->
-  <rect x="180" y="190" width="500" height="80" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-  <text x="430" y="225" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Domain Layer</text>
-  <text x="430" y="250" text-anchor="middle" font-size="13" fill="#334155">Pure Dart application logic — no Flutter UI</text>
+  <rect class="box-domain" x="180" y="210" width="500" height="100" rx="10" stroke-width="2"/>
+  <text class="label-title" x="430" y="248" text-anchor="middle">Domain Layer</text>
+  <text class="label-sub"   x="430" y="271" text-anchor="middle">Pure Dart — application logic, Riverpod providers, no Flutter UI</text>
+  <text class="label-hint"  x="430" y="292" text-anchor="middle">May use: Sensors, Data</text>
 
   <!-- Sensors -->
-  <rect x="90" y="350" width="330" height="80" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
-  <text x="255" y="385" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Sensors</text>
-  <text x="255" y="410" text-anchor="middle" font-size="13" fill="#334155">Sensor sources: GPS, steps / health</text>
+  <rect class="box-sensors" x="90" y="400" width="330" height="100" rx="10" stroke-width="2"/>
+  <text class="label-title" x="255" y="438" text-anchor="middle">Sensors</text>
+  <text class="label-sub"   x="255" y="461" text-anchor="middle">GPS and pedometer sources</text>
+  <text class="label-hint"  x="255" y="482" text-anchor="middle">Platform integration, permission handling</text>
 
   <!-- Data Layer -->
-  <rect x="440" y="350" width="330" height="80" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
-  <text x="605" y="385" text-anchor="middle" font-size="17" font-weight="700" fill="#0f172a">Data Layer</text>
-  <text x="605" y="410" text-anchor="middle" font-size="13" fill="#334155">Persistence: SQLite, sample recording</text>
+  <rect class="box-data" x="440" y="400" width="330" height="100" rx="10" stroke-width="2"/>
+  <text class="label-title" x="605" y="438" text-anchor="middle">Data Layer</text>
+  <text class="label-sub"   x="605" y="461" text-anchor="middle">Drift/SQLite — profiles, sessions, raw samples</text>
+  <text class="label-hint"  x="605" y="482" text-anchor="middle">Repositories and migrations</text>
 
   <!-- Arrows: A -> B means A may know B -->
-  <line x1="430" y1="110" x2="430" y2="184" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="350" y1="270" x2="278" y2="344" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="510" y1="270" x2="582" y2="344" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <path d="M 180 70 C 60 80, 45 250, 84 372" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <path d="M 680 70 C 800 80, 815 250, 776 372" fill="none" stroke="#334155" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line class="edge" x1="430" y1="130" x2="430" y2="204" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line class="edge" x1="350" y1="310" x2="278" y2="394" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line class="edge" x1="510" y1="310" x2="582" y2="394" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 180 80 C 60 90, 45 270, 84 422" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 680 80 C 800 90, 815 270, 776 422" stroke-width="2.5" marker-end="url(#arrow)"/>
 </svg>

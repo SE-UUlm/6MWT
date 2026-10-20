@@ -1,3 +1,5 @@
+> **Historical project planning.** This page preserves the original requirements and roadmap; it is not a statement of current functionality. See [Project Archive](Project-Archive.md) and [Home](README.md).
+
 # Project Roadmap
 
 This roadmap provides a high-level overview of the project's development from the initial concept to the final submission.

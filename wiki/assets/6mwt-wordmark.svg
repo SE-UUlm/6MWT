@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" role="img" aria-labelledby="title">
+  <title id="title">6MWT</title>
+  <style>
+    .wordmark { fill: #12386b; }
+    .accent { fill: #57a5ef; }
+
+    @media (prefers-color-scheme: dark) {
+      .wordmark { fill: #dcecff; }
+      .accent { fill: #70b8ff; }
+    }
+  </style>
+  <text
+    class="wordmark"
+    x="210"
+    y="124"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="112"
+    font-weight="700"
+    letter-spacing="2"
+    text-anchor="middle"
+  ><tspan class="accent">6</tspan>MWT</text>
+</svg>
