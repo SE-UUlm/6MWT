@@ -34,7 +34,7 @@ cd tools/6mwt_data_visualizer
 flutter run -d linux
 ```
 
-Use `-d macos` or `-d windows` on those hosts. Native desktop builds require the corresponding host OS. For optional authenticated satellite tiles, create an ignored `arcgis.local.json` in the Visualizer directory with `{"ARCGIS_ACCESS_TOKEN":"YOUR_TOKEN"}` and start with `--dart-define-from-file=arcgis.local.json`. Without a token the app uses the anonymous endpoint, which can throttle requests. Never commit tokens.
+Use `-d macos` or `-d windows` on those hosts. Native desktop builds require the corresponding host OS. For optional authenticated satellite tiles, create an ignored `arcgis.local.json` in the Visualizer directory with `{"ARCGIS_ACCESS_TOKEN":"YOUR_TOKEN"}` and start with `--dart-define-from-file=arcgis.local.json`. The token requires the `premium:user:basemaps` (Basemap Styles Service) privilege. Without a token the app uses the anonymous endpoint, which can throttle requests. Never commit tokens.
 
 ## Generation and checks
 
