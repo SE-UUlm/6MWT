@@ -1,4 +1,4 @@
-# Releases
+# Builds and Releases
 
 App and visualizer are released together. Both `app/pubspec.yaml` and
 `tools/6mwt_data_visualizer/pubspec.yaml` must contain the same
@@ -6,12 +6,48 @@ App and visualizer are released together. Both `app/pubspec.yaml` and
 a Git tag does not change Flutter's version. A tag `vMAJOR.MINOR.PATCH` identifies
 the source commit and triggers `.github/workflows/release.yml`.
 
+## Local builds
+
+Install dependencies first as described in [Development](Development.md). From `app/`:
+
+### App
+
+```sh
+flutter build apk --release
+flutter build ios --release --no-codesign
+```
+
+The APK is `build/app/outputs/flutter-apk/app-release.apk`. The unsigned iOS device bundle is `build/ios/iphoneos/Runner.app` (macOS/Xcode required). CI packages it as `Payload/Runner.app` inside an IPA; the unsigned bundle requires local signing before installation. To reproduce that packaging from `app/`:
+
+```sh
+mkdir -p build/ipa-staging/Payload
+cp -R build/ios/iphoneos/Runner.app build/ipa-staging/Payload/Runner.app
+(cd build/ipa-staging && zip -qry ../six-minute-walk-test-unsigned.ipa Payload)
+```
+
+### Visualizer
+
+From `tools/6mwt_data_visualizer/`, build on the matching host:
+
+```sh
+flutter build linux --release
+flutter build windows --release
+flutter build macos --release
+```
+
+| Target | Output to package in full |
+| --- | --- |
+| Linux | `build/linux/x64/release/bundle/` |
+| Windows | `build/windows/x64/runner/Release/` |
+| macOS | `build/macos/Build/Products/Release/6MWT Visualizer.app` |
+
+
 ## Prepare a release
 
-1. Update both pubspec versions in a PR. Increase the build number for each new
-   release; never reset it when the visible version changes. For example,
-   `1.0.0+1` → `1.0.1+2` for a fix, then `1.1.0+3` for a feature release.
-   The first release can use the current `1.0.0+1`.
+1. Update both pubspec versions in a PR. Increase the visible version, 
+   for example `1.0.0+1` → `1.0.1+1`. If the app is
+   later distributed through Google Play, the App Store or TestFlight, use a
+   monotonically increasing build number required by that platform instead.
 2. Merge the PR into `main` and wait for the automated checks and builds.
    App and visualizer changes trigger the visualizer checks and all three desktop
    builds automatically. Download the signed main APK and desktop artifacts for
@@ -47,9 +83,7 @@ overview of triggers, checks and builds.
 
 All newly uploaded Actions artifacts (Android, iOS and desktop, including release
 workflow intermediates) have `retention-days: 7`. GitHub automatically deletes
-these artifacts seven days after upload. Existing artifacts keep their original
-retention; this change does not retroactively delete them. Caches have their own
-retention rules.
+these artifacts seven days after upload. Caches have their own retention rules.
 
 Downloads attached to a **published GitHub Release are separate copies** and do
 not expire with the Actions artifacts. They remain until explicitly deleted.
@@ -62,10 +96,12 @@ using the real Android key, but only uploads seven-day Actions artifacts and nev
 creates a GitHub release. It is not normally needed before tagging. Manual runs
 on commits outside main are rejected.
 
-## Android key setup (once, before merging the workflow)
+## Android key setup (once)
 
-Use one permanent key for main and releases. If an existing production key is
-available, reuse it. Otherwise create it on a trusted machine, outside the repo:
+This has been already done for the ci and the keystore is saved in GitHub secrets.
+The following information might still be useful for forks or for setting up local signed builds.
+
+Use one permanent key for main and releases. Create it on a trusted machine, outside the repo:
 
 ```sh
 keytool -genkeypair -v -keystore /secure/location/6mwt-release.jks \
@@ -108,26 +144,7 @@ device identifier. Subsequent main and release builds use the same certificate.
 
 ## Downloads and installation
 
-- **Android:** `6mwt-VERSION-android.apk`, a universal APK signed with the permanent
-  key. Enable installation from the download source on the Android device.
-- **iOS:** `6mwt-VERSION-ios-unsigned.ipa`. Sign/install with Sideloadly or AltStore
-  using your Apple account. This is not a directly installable App Store IPA;
-  local provisioning restrictions and expiry apply.
-- **Windows x64:** `6mwt-visualizer-VERSION-windows-x64.zip`. Extract the entire
-  archive and run `six_mwt_visualizer.exe`. Keep DLLs and `data` alongside it.
-  The Microsoft Visual C++ 2015–2022 x64 runtime may need installing.
-- **Linux x64:** `6mwt-visualizer-VERSION-linux-x64.tar.gz`. Built on Ubuntu 24.04;
-  use Ubuntu 24.04 or a compatible system with GTK 3 and the C++ runtime installed.
-  Extract the whole bundle and run `./six_mwt_visualizer`. The archive is not a
-  fully static executable and does not bundle system GTK/glibc libraries.
-- **macOS:** `6mwt-visualizer-VERSION-macos-universal.zip`. Extract the `.app` for
-  Intel or Apple Silicon. It uses ad-hoc signing, with no Developer ID or Apple
-  notarization. macOS may require allowing it through Privacy & Security after
-  the first launch attempt; managed machines may prohibit this.
-
-Visualizer archives contain the app and its runtime files, not this repository's
-recordings. Open your own recordings using its folder/file picker. Desktop
-installers and store distribution are outside this release workflow.
+See [App Installation](App-Installation.md) and [Visualizer](Visualizer.md) for requirements, download names and user instructions.
 
 ## Verification
 

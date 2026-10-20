@@ -1,94 +1,21 @@
-# 6MWT
+# 6MWT App
 
-Six-minute walk test with sensor-based distance measurement.
+Record a six-minute walk with GPS and steps, estimate distance, inspect results and export recordings.
 
-## Timestamps
+The Android and iOS app guides users through profile entry, preparation, the timed walk and its result. Completed recordings are stored locally and can be reviewed in history or exported as JSON for the desktop Visualizer.
 
-Create and store timestamps in UTC. Sensor sources normalize their timestamps
-before creating `SensorSample`; session starts use `DateTime.now().toUtc()`.
-Profile creation uses the database's UTC timestamp default. JSON exports convert
-all timestamps to UTC explicitly, including older records, and include `Z`.
+- GPS and available step data feed the primary distance estimate; additional estimators provide live comparisons.
+- Raw sensor samples are retained for later inspection and algorithm replay.
+- Location access is required to start a test; step recording also depends on permission and sensor availability.
 
-For dates and clock times in the UI, call `.toLocal()` before formatting to use
-the current device timezone. Durations such as the test countdown are unchanged.
-The current screens do not display calendar dates or clock times.
+The Flutter implementation lives in `lib/`, automated checks in `test/`, and versioned database snapshots in [drift_schemas/](drift_schemas/README.md). See [Architecture](../wiki/Architecture.md) for component responsibilities and [Data and Tools](../wiki/Data-and-Tools.md) for exports.
 
-## Distance comparisons
+Start, instructions and profile entry
 
-See [Distance Estimators](../wiki/Distance-Estimators.md) in the wiki for the
-algorithms, app integration, configuration, diagnostics, and benchmarks.
+<img src="../wiki/assets/app-home.png" alt="App home screen" width="220"> <img src="../wiki/assets/app-instructions.png" alt="App test instructions" width="220"> <img src="../wiki/assets/app-profile.png" alt="App profile entry with synthetic data" width="220">
 
-## Getting Started
+Walking test, result and history
 
-This project is a starting point for a Flutter application.
+<img src="../wiki/assets/app-walk.png" alt="App during a walk test at Uni Ulm" width="220"> <img src="../wiki/assets/app-result.png" alt="App result with synthetic data" width="220"> <img src="../wiki/assets/app-history.png" alt="App history with synthetic completed and stopped tests" width="220">
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Export metadata
-
-Both single-session and history JSON exports include `deviceInfo` and `appInfo`
-objects at the top level. They describe the device and installed app **at export
-time**, not at the original recording time. Existing session data is unchanged.
-
-- `deviceInfo`: `manufacturer`, `model`, `os`, `osVersion`, `deviceId`, and
-  `deviceIdType`. iOS models use the machine identifier (for example `iPhone17,1`).
-- `appInfo`: `version`, `buildNumber` (both strings), and the full `commitHash`.
-- Unavailable values are JSON `null`; metadata lookup failures do not prevent export.
-
-Android uses `Settings.Secure.ANDROID_ID` (`deviceIdType: androidId`), scoped to
-signing key, user, and device on Android 8+. It generally survives reinstalling
-with the same signing key. iOS uses `identifierForVendor`
-(`deviceIdType: identifierForVendor`), shared by apps from the same vendor. It can
-change after all that vendor's apps are removed and one is reinstalled. Neither
-is a permanent hardware or strictly per-installation ID. No identifier is stored
-in our database. Other platforms currently export only OS information.
-
-Gradle and Xcode automatically embed `git rev-parse HEAD` during native builds.
-Normal `flutter run` and `flutter build` commands need no extra arguments, locally
-or in CI. A PR build may embed its checked-out merge commit. Incremental native
-builds refresh the hash; hot reload does not. Uncommitted changes are not captured
-by the hash. Builds without Git/repository metadata emit a build warning and
-export `commitHash: null`, replacing any previous value. Commit embedding is
-implemented for Android and iOS.
-
-The annotated `appInfoProvider` in `core/domain/app_info.dart`
-exposes the installed version, build number, and embedded hash for reuse by the
-About screen. Models, export composition, and their annotated providers live in `core/domain`;
-global OS/plugin access lives in `app/metadata_service.dart` and
-`app/platform_metadata.dart`. The home screen info button opens `/about`, showing build metadata, project
-information, authors, the repository link, and bundled open-source licenses.
-Unavailable metadata is displayed as “Not available”; the other content remains
-accessible.
-
-
-## Mobile branding
-
-Android and iOS use `6MWT` for Release/Profile and `6MWT Debug` for Debug.
-The IDs are `de.uniulm.in.se.sixmwt` and `de.uniulm.in.se.sixmwt.debug`.
-The native launch screen uses the walking illustration on white, without a delay.
-
-The icon master is `assets/branding/app_icon.png`, prepared from the existing
-`assets/images/logo.png` with the built-in image generation tool. The original
-in-app illustration is retained. To regenerate native PNG sizes with ImageMagick 7:
-
-```sh
-python3 tool/generate_branding.py
-```
-
-Generation prompt: Preserve the existing blue walking illustration, person pose,
-landscape, trees, clouds and palette; fit the complete illustration centrally onto
-a square opaque white app-icon canvas with generous margins. No text, rounded
-border, external shadow or mockup.
-
-Phone orientation is portrait-up, configured both before Flutter starts and in
-native Android/iPhone settings. iPad configuration is unchanged. Android 16+
-can ignore orientation locks on displays at least 600 dp wide; see the
-[Flutter orientation documentation](https://api.flutter.dev/flutter/services/SystemChrome/setPreferredOrientations.html).
+[Installation](../wiki/App-Installation.md) · [Development](../wiki/Development.md) · [Latest Release](https://github.com/SE-UUlm/6MWT/releases/latest)

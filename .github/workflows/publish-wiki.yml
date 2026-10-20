@@ -5,6 +5,7 @@ on:
     paths:
       - wiki/**
       - .github/workflows/publish-wiki.yml
+      - .github/scripts/prepare_wiki.py
 
 permissions:
   contents: write
@@ -20,14 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Add auto-generated hint
-        run: |
-          TIMESTAMP=$(date -u +"%Y-%m-%d, %H:%M:%S UTC")
-          NOTICE="_This document was generated on $TIMESTAMP. Please do not edit this page directly._"
-
-          find "./wiki" -type f -name "*.md" ! -name "_*" | while read -r file; do
-            echo "Processing $file..."
-            sed -i "1s/^/$NOTICE\n\n/" "$file"
-          done
+      - name: Prepare Wiki links
+        run: python3 .github/scripts/prepare_wiki.py wiki-publish
 
       - uses: Andrew-Chen-Wang/github-wiki-action@v5
+        with:
+          path: wiki-publish

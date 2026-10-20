@@ -1,9 +1,11 @@
 name: Check for Broken Links
 on:
   push:
+  pull_request:
 
 permissions:
   contents: read
+  pull-requests: read
 
 jobs:
   check-for-broken-links:
@@ -22,21 +24,20 @@ jobs:
           filters: |
             docs:
               - 'wiki/**'
-              - 'README.md'
+              - '**/*.md'
+              - '**/*.markdown'
+              - '**/*.mdown'
+              - '**/*.mdx'
+              - '.github/scripts/**'
+              - '.github/workflows/publish-wiki.yml'
               - '.github/workflows/check-for-broken-links.yml'
 
       - name: No relevant changes
         if: steps.changes.outputs.docs == 'false'
-        run: echo "No documentation or link-check workflow changes; check passed without checking links."
+        run: echo "No relevant changes; external link checking skipped."
 
-      - name: Check for Broken Links in README
+      - name: Check links in all Markdown files
         if: steps.changes.outputs.docs != 'false'
         uses: becheran/mlc@v1
         with:
-          args: README.md
-
-      - name: Check for Broken Links in Wiki
-        if: steps.changes.outputs.docs != 'false'
-        uses: becheran/mlc@v1
-        with:
-          args: wiki/
+          args: --gitignore --markup-types md .

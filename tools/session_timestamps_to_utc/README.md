@@ -1,18 +1,15 @@
 # Session timestamps to UTC
 
-Converts timestamps in recorded `session.json` files to UTC. Older app versions
-saved GPS timestamps in UTC but step timestamps in local time without a timezone.
-This made the sensor streams appear shifted when comparing or replaying sessions.
-The tool normalizes these older recordings so both streams share the same time basis.
+Normalize older recordings whose step timestamps use local time while GPS uses UTC.
 
-```bash
+This repairs apparent time shifts between sensor streams during visualization and replay. The script scans `data/**/session.json`, estimates the missing timezone offset from the session start and the first UTC GPS sample, and writes timestamps in UTC. It requires Python 3.10+.
+
+Run from the repository root:
+
+```sh
 python3 tools/session_timestamps_to_utc/convert.py
 ```
 
-Requires Python 3.10+. Directly overwrites all changed `data/**/session.json`
-files; no options or backups. Prints the changed folders and assumed UTC offsets.
+**Overwrites changed `data/**/session.json` files without backups.** Review the [assumptions and usage](../../wiki/Data-and-Tools.md#timestamp-converter) first.
 
-The offset is inferred from local `startedAt` and the first UTC GPS sample,
-rounded to 15 minutes. This assumes both refer to approximately the same time.
-Existing UTC timestamps and `reference.json` remain unchanged.
-Files without enough information are skipped with an error.
+Back up recordings before running it and inspect the changes afterward. Existing UTC timestamps and reference files remain unchanged; files without enough information are skipped with an error. It does not automatically process other filenames such as `session_phone.json`.
