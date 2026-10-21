@@ -147,6 +147,7 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
       'Calibration windows': '$_updates',
       'Rejected calibration windows': '$_rejectedWindows',
       'Default length active': '${_updates == 0}',
+      'Odometry profile': 'SEUU-6MWT-Gait-v1',
       'GPS fallback distance': '${_gpsDistance.toStringAsFixed(2)} m',
       'GPS rejected': '${_history.rejectedGps}',
       'Step counter resets': '${_history.resets}',
