@@ -21,11 +21,24 @@ class SessionDetailScreen extends ConsumerStatefulWidget {
 
 class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
   bool _showChart = true;
-  bool _showLab = false;
+  int _view = 0;
+  bool _labOpened = false;
+  int _recordingIndex = 0;
+
+  @override
+  void didUpdateWidget(SessionDetailScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.session, widget.session)) {
+      _recordingIndex = 0;
+      _labOpened = _view == 1;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final session = widget.session;
+    final recording = session
+        .recordings[_recordingIndex.clamp(0, session.recordings.length - 1)];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -38,29 +51,31 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          child: SegmentedButton<bool>(
+          child: SegmentedButton<int>(
             segments: const [
               ButtonSegment(
-                value: false,
+                value: 0,
                 label: Text('Recording'),
                 icon: Icon(Icons.map_outlined),
               ),
               ButtonSegment(
-                value: true,
+                value: 1,
                 label: Text('Estimator Lab'),
                 icon: Icon(Icons.science_outlined),
               ),
             ],
-            selected: {_showLab},
-            onSelectionChanged: (selection) =>
-                setState(() => _showLab = selection.single),
+            selected: {_view},
+            onSelectionChanged: (selection) => setState(() {
+              _view = selection.single;
+              if (_view == 1) _labOpened = true;
+            }),
           ),
         ),
         // Main content: map & chart on the left, info panel on the right
         Expanded(
           // Keep the lab mounted when switching tabs so parameter variants survive.
           child: IndexedStack(
-            index: _showLab ? 1 : 0,
+            index: _view,
             children: [
               Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -75,19 +90,36 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                         Expanded(
                           flex: _showChart ? 3 : 1,
                           child: SessionMap(
+                            key: ObjectKey(session),
                             session: session,
                             onReferenceSaved: (updated) => ref
                                 .read(exportDataProvider.notifier)
                                 .replaceSession(session, updated),
                           ),
                         ),
+                        if (session.isGroup)
+                          DropdownButton<int>(
+                            value: _recordingIndex,
+                            isExpanded: true,
+                            items: [
+                              for (final (i, s) in session.recordings.indexed)
+                                DropdownMenuItem(
+                                  value: i,
+                                  child: Text(
+                                    'Recording details: ${s.deviceLabel}',
+                                  ),
+                                ),
+                            ],
+                            onChanged: (i) =>
+                                setState(() => _recordingIndex = i!),
+                          ),
                         // Chart view (Phase 2)
                         if (_showChart) ...[
                           const Divider(height: 1),
                           Expanded(
                             flex: 2,
                             child: DistanceStepsChart(
-                              session: session,
+                              session: recording,
                               onClose: () => setState(() => _showChart = false),
                             ),
                           ),
@@ -100,12 +132,15 @@ class _SessionDetailScreenState extends ConsumerState<SessionDetailScreen> {
                     width: 260,
                     child: Material(
                       color: Theme.of(context).colorScheme.surfaceContainerLow,
-                      child: SessionInfoPanel(session: session),
+                      child: SessionInfoPanel(session: recording),
                     ),
                   ),
                 ],
               ),
-              EstimatorLab(session: session),
+              if (_labOpened)
+                EstimatorLab(session: session)
+              else
+                const SizedBox.shrink(),
             ],
           ),
         ),

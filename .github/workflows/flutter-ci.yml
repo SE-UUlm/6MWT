@@ -34,6 +34,7 @@ jobs:
             app:
               - 'app/**'
               - '.github/workflows/flutter-ci.yml'
+              - '.github/flutter-version.yaml'
 
   test:
     name: ${{ matrix.check.name }}
@@ -65,6 +66,7 @@ jobs:
         if: needs.changes.outputs.relevant != 'false'
         uses: subosito/flutter-action@v2
         with:
+          flutter-version-file: .github/flutter-version.yaml
           channel: stable
           cache: true
           cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}

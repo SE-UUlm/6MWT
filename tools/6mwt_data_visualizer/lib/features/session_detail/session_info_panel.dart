@@ -54,13 +54,31 @@ class SessionInfoPanel extends StatelessWidget {
             _InfoRow(
               icon: Icons.person_outline,
               label: 'Name',
-              value: session.profile!.name,
+              value: session.profile!.name ?? 'Not specified',
             ),
             _InfoRow(
               icon: Icons.cake_outlined,
               label: 'Age / Height',
               value:
                   '${session.profile!.age} years · ${session.profile!.height} cm',
+            ),
+            _InfoRow(
+              icon: Icons.monitor_weight_outlined,
+              label: 'Weight',
+              value: session.profile!.weight == null
+                  ? 'Not specified'
+                  : '${session.profile!.weight} kg',
+            ),
+            _InfoRow(
+              icon: Icons.person_outline,
+              label: 'Gender',
+              value: switch (session.profile!.gender) {
+                'male' => 'Male',
+                'female' => 'Female',
+                'other' => 'Other',
+                final String value => value,
+                null => 'Not specified',
+              },
             ),
           ],
           const SizedBox(height: 10),

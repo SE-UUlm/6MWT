@@ -2,9 +2,12 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'database.steps.dart';
+import '../domain/walk_phase.dart';
+
 part 'database.drift.dart';
 
-enum WalkPhase { idle, running, finished, aborted }
+enum Gender { male, female, other }
 
 class DurationConverter extends TypeConverter<Duration, int> {
   const DurationConverter();
@@ -37,6 +40,8 @@ class Profiles extends Table {
   DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
   IntColumn get height => integer()();
   IntColumn get age => integer()();
+  TextColumn get gender => textEnum<Gender>()();
+  RealColumn get weight => real()();
 }
 
 @DataClassName('WalkSessionRow')
@@ -60,7 +65,27 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: stepByStep(
+      from1To2: (m, schema) async {
+        // Backfill old test profiles only. New profiles must supply both values.
+        // Rebuilding the table keeps schema 2 free of permanent SQL defaults.
+        await m.alterTable(
+          TableMigration(
+            schema.profiles,
+            newColumns: [schema.profiles.gender, schema.profiles.weight],
+            columnTransformer: {
+              schema.profiles.gender: const Constant('other'),
+              schema.profiles.weight: const Constant(0.0),
+            },
+          ),
+        );
+      },
+    ),
+  );
 
   static QueryExecutor _openConnection() {
     return driftDatabase(

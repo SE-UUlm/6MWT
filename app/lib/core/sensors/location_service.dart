@@ -45,23 +45,25 @@ class LocationService {
       locationSettings = AndroidSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 1,
+        intervalDuration: const Duration(seconds: 1),
 
-        // Keeps location tracking active during a walk test when  the app
-        // is backgrounded or the screen is locked.
+        // Supports background tracking with a foreground notification and wake
+        // lock; it does not guarantee uninterrupted execution or process survival.
         foregroundNotificationConfig: const ForegroundNotificationConfig(
           notificationTitle: 'Walk test in progress',
           notificationText: 'Location tracking is active.',
           setOngoing: true,
+          enableWakeLock: true,
         ),
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       locationSettings = AppleSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 1,
+        activityType: ActivityType.fitness,
         pauseLocationUpdatesAutomatically: false,
-        // Keeps location tracking active during a walk test when  the app
-        // is backgrounded or the screen is locked. This requires the `location` background
-        // mode in Runner/Info.plist.
+        // Allows background updates with the `location` mode in Runner/Info.plist;
+        // delivery remains subject to OS restrictions.
         allowBackgroundLocationUpdates: true,
         // Make the ongoing background location use visible to the user.
         showBackgroundLocationIndicator: true,

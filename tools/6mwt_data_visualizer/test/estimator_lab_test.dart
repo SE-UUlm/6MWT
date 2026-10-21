@@ -1,80 +1,49 @@
-import 'dart:ui' show PointerDeviceKind;
-
+import 'package:six_mwt_visualizer/features/estimator_lab/session_replay_cache.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_lab.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 
-import 'estimator_replay_test.dart' as fixtures;
+import 'support/replay_fixtures.dart' as fixtures;
 
 String tooltipText(LineTooltipItem item) =>
     TextSpan(text: item.text, children: item.children).toPlainText();
 
 void main() {
-  testWidgets('horizontal scrollbar exposes diagnostics in a narrow window', (
+  testWidgets('diagnostics expand and collapse inside their distance cell', (
     tester,
   ) async {
-    tester.view.physicalSize = const Size(900, 1400);
+    tester.view.physicalSize = const Size(1400, 1000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
-
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
           body: EstimatorLab(
-            session: fixtures.session(
-              [fixtures.gps(0, 0), fixtures.gps(5, 0.00005)],
-              reference: fixtures.session([
-                fixtures.gps(0, 0, distance: 0),
-                fixtures.gps(5, 0.00005, distance: 5),
-              ]),
-            ),
+            replayLoader: (s) async => runSessionReplay(s),
+            session: fixtures.session([
+              fixtures.gps(0, 0),
+              fixtures.gps(5, 0.00005),
+            ]),
           ),
         ),
       ),
     );
     await tester.pumpAndSettle();
-
-    final scrollView = find.byWidgetPredicate(
-      (widget) =>
-          widget is SingleChildScrollView &&
-          widget.scrollDirection == Axis.horizontal,
+    expect(find.textContaining('Rejected GPS:'), findsNothing);
+    final index = createEstimators().indexWhere(
+      (e) => e.additionalInfo.containsKey('Rejected GPS'),
     );
-    final controller = tester
-        .widget<SingleChildScrollView>(scrollView)
-        .controller!;
-    expect(controller.position.maxScrollExtent, greaterThan(0));
-    final scrollbar = tester.widget<Scrollbar>(
-      find.byWidgetPredicate(
-        (widget) => widget is Scrollbar && widget.controller == controller,
-      ),
-    );
-    expect(scrollbar.thumbVisibility, isTrue);
-
-    // The extra variants make the table taller than the window. Reach its
-    // bottom scrollbar through the surrounding vertical list first.
-    await tester.drag(find.byType(ListView), const Offset(0, -2400));
+    final button = find.byKey(ValueKey('info-0-$index'));
+    await tester.ensureVisible(button);
+    await tester.tap(button);
     await tester.pumpAndSettle();
-    final viewport = tester.getRect(scrollView);
-    final diagnostics = find.textContaining('Calibration: Default').first;
-    expect(tester.getRect(diagnostics).right, greaterThan(viewport.right));
-
-    await tester.dragFrom(
-      Offset(viewport.left + 24, viewport.bottom - 5),
-      const Offset(600, 0),
-      kind: PointerDeviceKind.mouse,
-    );
+    expect(find.textContaining('Rejected GPS:'), findsOneWidget);
+    await tester.tap(button);
     await tester.pumpAndSettle();
-
-    expect(controller.offset, greaterThan(0));
-    final diagnosticsRect = tester.getRect(diagnostics);
-    expect(diagnosticsRect.left, greaterThanOrEqualTo(viewport.left));
-    expect(diagnosticsRect.right, lessThanOrEqualTo(viewport.right));
-    expect(tester.takeException(), isNull);
-
-    await tester.pumpWidget(const SizedBox.shrink());
+    expect(find.textContaining('Rejected GPS:'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 
@@ -98,9 +67,15 @@ void main() {
       );
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: EstimatorLab(session: session)),
+          home: Scaffold(
+            body: EstimatorLab(
+              replayLoader: (s) async => runSessionReplay(s),
+              session: session,
+            ),
+          ),
         ),
       );
+      await tester.pumpAndSettle();
       expect(find.text('Reference (dashed)'), findsOneWidget);
       final chart = tester.widget<LineChart>(find.byType(LineChart));
       final bars = chart.data.lineBarsData;
@@ -161,7 +136,10 @@ void main() {
       }
       final expectedDelta = (bars.first.spots.last.y * 0.8 - 80)
           .toStringAsFixed(2);
-      expect((table.rows.first.cells[3].child as Text).data, expectedDelta);
+      expect(
+        find.textContaining('Δ Reference: $expectedDelta m'),
+        findsWidgets,
+      );
       expect(tester.takeException(), isNull);
     },
   );
@@ -180,6 +158,7 @@ void main() {
         theme: theme,
         home: Scaffold(
           body: EstimatorLab(
+            replayLoader: (s) async => runSessionReplay(s),
             session: fixtures.session([
               fixtures.gps(0, 0),
               fixtures.gps(10, longitude),
@@ -189,6 +168,7 @@ void main() {
       );
 
       await tester.pumpWidget(lab(1));
+      await tester.pumpAndSettle();
       expect(find.byType(TextFormField), findsNothing);
       expect(
         find.byWidgetPredicate((widget) => widget is DropdownButton),
@@ -204,6 +184,12 @@ void main() {
             (estimator) => estimator.additionalInfo.containsKey('Rejected GPS'),
           )
           .length;
+      for (final button in tester.widgetList<TextButton>(
+        find.byWidgetPredicate((w) => w is TextButton),
+      )) {
+        button.onPressed?.call();
+      }
+      await tester.pump();
       expect(
         find.textContaining('Rejected GPS: 1'),
         findsNWidgets(gpsDiagnosticsCount),
@@ -224,6 +210,14 @@ void main() {
 
       // Changing sessions creates fresh estimators and updates their diagnostics.
       await tester.pumpWidget(lab(0.0001));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Rejected GPS:'), findsNothing);
+      for (final button in tester.widgetList<TextButton>(
+        find.byWidgetPredicate((w) => w is TextButton),
+      )) {
+        button.onPressed?.call();
+      }
+      await tester.pump();
       expect(
         find.textContaining('Rejected GPS: 0'),
         findsNWidgets(gpsDiagnosticsCount),

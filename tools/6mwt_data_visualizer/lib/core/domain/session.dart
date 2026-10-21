@@ -8,21 +8,27 @@ class Profile {
     required this.timestamp,
     required this.height,
     required this.age,
+    this.weight,
+    this.gender,
   });
 
   final int id;
-  final String name;
+  final String? name;
   final DateTime timestamp;
   final int height;
   final int age;
+  final double? weight;
+  final String? gender;
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return Profile(
       id: json['id'] as int,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       timestamp: DateTime.parse(json['timestamp'] as String),
       height: json['height'] as int,
       age: json['age'] as int,
+      weight: (json['weight'] as num?)?.toDouble(),
+      gender: json['gender'] as String?,
     );
   }
 }
@@ -38,14 +44,33 @@ class Session {
     required this.profileId,
     required this.samples,
     this.profile,
+    this.sourcePath,
+    List<Session> subsessions = const [],
     Session? referenceSession,
     List<Session>? references,
     this.referenceDirectory,
     this.referenceName,
     this.isManualReference = false,
-  }) : references = List.unmodifiable(
+  }) : subsessions = List.unmodifiable(subsessions),
+       references = List.unmodifiable(
          references ?? (referenceSession == null ? [] : [referenceSession]),
        );
+
+  /// Device recordings grouped by their containing folder. Metadata on the
+  /// group retains the first recording for compatibility; use [recordings]
+  /// for per-device measurements and replay, never combine sensor streams.
+  final List<Session> subsessions;
+  bool get isGroup => subsessions.isNotEmpty;
+  List<Session> get recordings => isGroup ? subsessions : [this];
+  String get deviceLabel => sourcePath == null
+      ? (notes.isEmpty ? id : notes)
+      : Uri.file(sourcePath!).pathSegments.last
+            .replaceFirst(RegExp(r'\.json$'), '')
+            .replaceFirst('session_', '');
+  final String? sourcePath;
+  String get recordingLabel => sourcePath == null
+      ? (notes.isEmpty ? id : notes)
+      : '${Uri.file(sourcePath!).pathSegments.reversed.take(2).toList().reversed.join('/')} · $id';
 
   final String id;
   final String notes;
@@ -82,6 +107,11 @@ class Session {
 
   /// Start time of the session in UTC (based on first GPS timestamp or startedAt).
   DateTime get sessionStartUtc {
+    if (isGroup) {
+      return subsessions
+          .map((s) => s.sessionStartUtc)
+          .reduce((a, b) => a.isBefore(b) ? a : b);
+    }
     if (positionSamples.isNotEmpty) {
       return positionSamples.first.timestamp;
     }
@@ -91,6 +121,11 @@ class Session {
   /// Calculated end time of the active session in UTC.
   /// Based on the latest sample timestamp of this session (or sessionStartUtc + duration if no samples).
   DateTime get sessionEndUtc {
+    if (isGroup) {
+      return subsessions
+          .map((s) => s.sessionEndUtc)
+          .reduce((a, b) => a.isAfter(b) ? a : b);
+    }
     DateTime? latest;
 
     if (positionSamples.isNotEmpty) {
@@ -109,15 +144,6 @@ class Session {
     }
 
     return sessionStartUtc.add(Duration(seconds: duration));
-  }
-
-  /// Returns a trimmed copy of [referenceSession] trimmed to this session's
-  /// active window [sessionStartUtc, sessionEndUtc], plus at most 1 buffer
-  /// sample before the start and 1 buffer sample after the end.
-  Session? get trimmedReferenceSession {
-    final ref = referenceSession;
-    if (ref == null) return null;
-    return ref.trimToWindow(start: sessionStartUtc, end: sessionEndUtc);
   }
 
   /// Trims this session's samples to [start, end] window, plus at most 1 sample
@@ -213,16 +239,28 @@ class Session {
   }
 
   Session copyWith({
+    String? id,
+    List<Session>? subsessions,
     Session? referenceSession,
     List<Session>? references,
     Profile? profile,
     String? referenceDirectory,
     String? referenceName,
     String? notes,
+    String? sourcePath,
   }) {
     return Session(
-      id: id,
+      id: id ?? this.id,
+      subsessions:
+          subsessions ??
+          (references == null
+              ? this.subsessions
+              : [
+                  for (final s in this.subsessions)
+                    s.copyWith(references: references),
+                ]),
       notes: notes ?? this.notes,
+      sourcePath: sourcePath ?? this.sourcePath,
       startedAt: startedAt,
       duration: duration,
       distance: distance,
@@ -259,20 +297,6 @@ class Session {
     if (steps.isEmpty) return null;
     final values = steps.map((s) => s.values[StepKeys.cumulativeSteps]!);
     return (values.last - values.first).round();
-  }
-
-  /// Cumulative steps count at a given timestamp (nearest sample at or before).
-  double? stepsAtTime(DateTime time) {
-    SensorSample? nearest;
-    for (final sample in stepSamples) {
-      if (sample.timestamp.isBefore(time) ||
-          sample.timestamp.isAtSameMomentAs(time)) {
-        nearest = sample;
-      } else {
-        break;
-      }
-    }
-    return nearest?.values[StepKeys.cumulativeSteps];
   }
 
   factory Session.fromJson(Map<String, dynamic> json) {

@@ -1,0 +1,107 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  # A manual run builds and checks the selected main commit without publishing.
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Require a commit from main
+        run: git merge-base --is-ancestor HEAD origin/main
+      - name: Validate version
+        id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ "$EVENT_NAME" = push ]; then
+            python3 tools/release/version.py --tag "$TAG" --output "$GITHUB_OUTPUT"
+          else
+            python3 tools/release/version.py --output "$GITHUB_OUTPUT"
+          fi
+      - name: Test release helpers
+        run: python3 -m unittest discover -s tools/release -p 'test_*.py'
+
+  checks:
+    needs: validate
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [app, tools/6mwt_data_visualizer]
+    defaults:
+      run:
+        working-directory: ${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .github/flutter-version.yaml
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze --no-pub
+      - run: flutter test --no-pub
+
+  android:
+    needs: validate
+    uses: ./.github/workflows/build-android.yml
+    with:
+      sign: true
+    secrets:
+      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+  ios:
+    needs: validate
+    uses: ./.github/workflows/build-ios.yml
+
+  desktop:
+    needs: validate
+    uses: ./.github/workflows/build-visualizer.yml
+
+  publish:
+    if: github.event_name == 'push'
+    needs: [validate, checks, android, ios, desktop]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_VERSION: ${{ needs.validate.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Prepare release files
+        run: |
+          mkdir dist
+          cp artifacts/android-release-apk/app-release.apk "dist/6mwt-$RELEASE_VERSION-android.apk"
+          cp artifacts/ios-unsigned-ipa/six-minute-walk-test-unsigned.ipa "dist/6mwt-$RELEASE_VERSION-ios-unsigned.ipa"
+          cp artifacts/visualizer-*/* dist/
+          test "$(find dist -maxdepth 1 -type f | wc -l)" -eq 5
+      - name: Publish complete release
+        run: python3 tools/release/publish.py

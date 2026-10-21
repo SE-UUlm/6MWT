@@ -8,11 +8,29 @@ void main() {
     if (!Directory(dataDir).existsSync()) return;
 
     final data = await SessionLoader.loadFromDataDirectory(dataDir);
-    final sessionFolders = Directory(dataDir)
+    final recordingFiles = Directory(dataDir)
         .listSync()
         .whereType<Directory>()
-        .where((folder) => File('${folder.path}/session.json').existsSync());
-    expect(data.sessions.length, sessionFolders.length);
+        .expand((folder) => folder.listSync().whereType<File>())
+        .where((file) {
+          final name = file.uri.pathSegments.last;
+          return name == 'session.json' ||
+              (name.startsWith('session_') && name.endsWith('.json'));
+        });
+    expect(
+      data.sessions.expand((s) => s.recordings).length,
+      recordingFiles.length,
+    );
+    final together = data.sessions.where(
+      (s) => s.sourcePath!.contains('Uni together 1/'),
+    );
+    expect(together, hasLength(1));
+    expect(together.single.subsessions, hasLength(3));
+    final second = data.sessions.singleWhere(
+      (s) => s.notes == 'Uni together 2',
+    );
+    expect(second.subsessions, hasLength(3));
+    expect(together.every((s) => s.hasReference), isTrue);
 
     // Basauri should not have a reference
     final basauri = data.sessions.firstWhere(
@@ -63,9 +81,8 @@ void main() {
       expect(rawRef.positionSamples.length, 92);
 
       // Trimmed to 360s window (+ 1 sample buffer before/after)
-      final trimmedRef = session.trimmedReferenceSession;
-      expect(trimmedRef, isNotNull);
-      expect(trimmedRef!.distance, closeTo(626.9, 1.0));
+      final trimmedRef = session.trimmedReferences.single;
+      expect(trimmedRef.distance, closeTo(626.9, 1.0));
       expect(trimmedRef.positionSamples.length, 75);
       expect(trimmedRef.duration, inInclusiveRange(355, 365));
     },
@@ -82,9 +99,8 @@ void main() {
       expect(session.hasReference, isTrue);
 
       // App recording extends to ~397s (6:37)
-      final trimmedRef = session.trimmedReferenceSession;
-      expect(trimmedRef, isNotNull);
-      expect(trimmedRef!.duration, greaterThan(390));
+      final trimmedRef = session.trimmedReferences.single;
+      expect(trimmedRef.duration, greaterThan(390));
       expect(trimmedRef.positionSamples.length, greaterThan(120));
     },
   );

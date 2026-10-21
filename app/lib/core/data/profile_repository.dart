@@ -20,14 +20,18 @@ class ProfileRepository {
     String? name,
     required int height,
     required int age,
+    required double weight,
+    required Gender gender,
   }) async {
-    // Look for an existing profile with the same name, height, and age.
+    // Reuse a profile only when all provided details match.
     final query = _db.select(_db.profiles)
       ..where(
         (row) =>
             row.name.equalsNullable(name) &
             row.height.equals(height) &
-            row.age.equals(age),
+            row.age.equals(age) &
+            row.weight.equals(weight) &
+            row.gender.equalsValue(gender),
       );
 
     final existing = await query.get();
@@ -39,7 +43,13 @@ class ProfileRepository {
     return _db
         .into(_db.profiles)
         .insert(
-          ProfilesCompanion.insert(height: height, age: age, name: Value(name)),
+          ProfilesCompanion.insert(
+            height: height,
+            age: age,
+            name: Value(name),
+            gender: gender,
+            weight: weight,
+          ),
         );
   }
 
@@ -49,6 +59,8 @@ class ProfileRepository {
     'timestamp': row.timestamp.toUtc().toIso8601String(),
     'height': row.height,
     'age': row.age,
+    'weight': row.weight,
+    'gender': row.gender.name,
   };
 
   Future<Map<String, dynamic>?> exportProfile(int profileId) async {

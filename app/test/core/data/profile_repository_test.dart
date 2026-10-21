@@ -26,6 +26,8 @@ void main() {
       final repository = ProfileRepository(db);
 
       final id = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 170,
         age: 30,
@@ -38,19 +40,25 @@ void main() {
       expect(profile!.name, 'Alice');
       expect(profile.height, 170);
       expect(profile.age, 30);
+      expect(profile.weight, 70.5);
+      expect(profile.gender, Gender.female);
     });
 
     test(
-      'returns existing id when profile with same name, height and age exists',
+      'returns existing id when profile with same name, height, age, weight and gender exists',
       () async {
         final repository = ProfileRepository(db);
 
         final firstId = await repository.ensureProfile(
+          weight: 70.5,
+          gender: Gender.female,
           name: 'Bob',
           height: 180,
           age: 25,
         );
         final secondId = await repository.ensureProfile(
+          weight: 70.5,
+          gender: Gender.female,
           name: 'Bob',
           height: 180,
           age: 25,
@@ -64,11 +72,15 @@ void main() {
       final repository = ProfileRepository(db);
 
       final id1 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 170,
         age: 30,
       );
       final id2 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Bob',
         height: 170,
         age: 30,
@@ -81,11 +93,15 @@ void main() {
       final repository = ProfileRepository(db);
 
       final id1 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 170,
         age: 30,
       );
       final id2 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 175,
         age: 30,
@@ -98,11 +114,15 @@ void main() {
       final repository = ProfileRepository(db);
 
       final id1 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 170,
         age: 30,
       );
       final id2 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Alice',
         height: 170,
         age: 31,
@@ -111,11 +131,70 @@ void main() {
       expect(id1, isNot(equals(id2)));
     });
 
+    for (final name in <String?>['Alice', null]) {
+      test('distinguishes weight and gender for name=$name', () async {
+        final repository = ProfileRepository(db);
+        final original = await repository.ensureProfile(
+          name: name,
+          height: 170,
+          age: 30,
+          weight: 70.5,
+          gender: Gender.female,
+        );
+        final differentWeight = await repository.ensureProfile(
+          name: name,
+          height: 170,
+          age: 30,
+          weight: 70.6,
+          gender: Gender.female,
+        );
+        final differentGender = await repository.ensureProfile(
+          name: name,
+          height: 170,
+          age: 30,
+          weight: 70.5,
+          gender: Gender.other,
+        );
+        expect({original, differentWeight, differentGender}, hasLength(3));
+        expect(
+          await repository.ensureProfile(
+            name: name,
+            height: 170,
+            age: 30,
+            weight: 70.6,
+            gender: Gender.female,
+          ),
+          differentWeight,
+        );
+        expect(
+          await repository.ensureProfile(
+            name: name,
+            height: 170,
+            age: 30,
+            weight: 70.5,
+            gender: Gender.other,
+          ),
+          differentGender,
+        );
+        expect(await db.select(db.profiles).get(), hasLength(3));
+      });
+    }
+
     test('handles null name correctly and deduplicates', () async {
       final repository = ProfileRepository(db);
 
-      final id1 = await repository.ensureProfile(height: 165, age: 40);
-      final id2 = await repository.ensureProfile(height: 165, age: 40);
+      final id1 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        height: 165,
+        age: 40,
+      );
+      final id2 = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        height: 165,
+        age: 40,
+      );
 
       expect(id1, equals(id2));
 
@@ -130,10 +209,14 @@ void main() {
         final repository = ProfileRepository(db);
 
         final idWithoutName = await repository.ensureProfile(
+          weight: 70.5,
+          gender: Gender.female,
           height: 170,
           age: 30,
         );
         final idWithName = await repository.ensureProfile(
+          weight: 70.5,
+          gender: Gender.female,
           name: 'Alice',
           height: 170,
           age: 30,
@@ -146,9 +229,27 @@ void main() {
     test('does not create duplicate rows in the database', () async {
       final repository = ProfileRepository(db);
 
-      await repository.ensureProfile(name: 'Eve', height: 160, age: 22);
-      await repository.ensureProfile(name: 'Eve', height: 160, age: 22);
-      await repository.ensureProfile(name: 'Eve', height: 160, age: 22);
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        name: 'Eve',
+        height: 160,
+        age: 22,
+      );
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        name: 'Eve',
+        height: 160,
+        age: 22,
+      );
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        name: 'Eve',
+        height: 160,
+        age: 22,
+      );
 
       final allRows = await db.select(db.profiles).get();
       expect(allRows, hasLength(1));
@@ -159,6 +260,8 @@ void main() {
       final before = DateTime.now();
 
       final id = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Timo',
         height: 182,
         age: 27,
@@ -188,6 +291,8 @@ void main() {
           .into(db.profiles)
           .insert(
             ProfilesCompanion.insert(
+              weight: 70.5,
+              gender: Gender.female,
               height: 180,
               age: 30,
               timestamp: Value(instant.toLocal()),
@@ -207,8 +312,20 @@ void main() {
     test('returns all profiles with correct fields', () async {
       final repository = ProfileRepository(db);
 
-      await repository.ensureProfile(name: 'Alice', height: 170, age: 30);
-      await repository.ensureProfile(name: 'Bob', height: 185, age: 25);
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        name: 'Alice',
+        height: 170,
+        age: 30,
+      );
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        name: 'Bob',
+        height: 185,
+        age: 25,
+      );
 
       final result = await repository.exportAllProfiles();
 
@@ -217,6 +334,8 @@ void main() {
       final alice = result.firstWhere((m) => m['name'] == 'Alice');
       expect(alice['height'], 170);
       expect(alice['age'], 30);
+      expect(alice['weight'], 70.5);
+      expect(alice['gender'], 'female');
       expect(alice['id'], isA<int>());
       expect(alice['timestamp'], isA<String>());
 
@@ -228,7 +347,12 @@ void main() {
     test('handles null name in exported map', () async {
       final repository = ProfileRepository(db);
 
-      await repository.ensureProfile(height: 175, age: 35);
+      await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
+        height: 175,
+        age: 35,
+      );
 
       final result = await repository.exportAllProfiles();
 
@@ -251,6 +375,8 @@ void main() {
       final repository = ProfileRepository(db);
 
       final id = await repository.ensureProfile(
+        weight: 70.5,
+        gender: Gender.female,
         name: 'Clara',
         height: 168,
         age: 29,
@@ -263,6 +389,8 @@ void main() {
       expect(result['name'], 'Clara');
       expect(result['height'], 168);
       expect(result['age'], 29);
+      expect(result['weight'], 70.5);
+      expect(result['gender'], 'female');
       expect(result['timestamp'], isA<String>());
     });
 

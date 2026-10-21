@@ -1,14 +1,15 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:clock/clock.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/calibrated_step_distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/adaptive_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/adaptive_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
-import 'package:six_minute_walk_test/features/walk/domain/kalman_gps_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 

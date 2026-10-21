@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,13 +9,14 @@ import 'package:six_minute_walk_test/core/data/profile_repository.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/features/walk/domain/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
-import 'package:six_minute_walk_test/features/walk/domain/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/estimator_comparison_card.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
 
@@ -23,6 +25,8 @@ final profile = Profile(
   timestamp: DateTime.utc(2026),
   height: 170,
   age: 30,
+  weight: 70,
+  gender: Gender.other,
 );
 
 class TestProfileRepository extends ProfileRepository {
@@ -71,7 +75,11 @@ void main() {
               TestProfileRepository(db),
             ),
           ],
-          child: MaterialApp.router(routerConfig: router),
+          child: MaterialApp.router(
+            routerConfig: router,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+          ),
         ),
       );
       await tester.pumpAndSettle();

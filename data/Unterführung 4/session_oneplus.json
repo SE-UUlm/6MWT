@@ -1,0 +1,4459 @@
+{
+    "id": "fd708515d3bd010efe944117a3f9bb75",
+    "startedAt": "2026-10-21T14:04:51.370163Z",
+    "duration": 360,
+    "distance": 193.0794420579942,
+    "phase": "finished",
+    "profileId": 1,
+    "samples": [
+        {
+            "id": 2,
+            "timestamp": "2026-10-21T14:04:25.012094Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 1.0
+            }
+        },
+        {
+            "id": 3,
+            "timestamp": "2026-10-21T14:04:50.700064Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 57.0
+            }
+        },
+        {
+            "id": 1,
+            "timestamp": "2026-10-21T14:04:51.118Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989445,
+                "longitude": 9.9837392,
+                "accuracy": 3.4670000076293945,
+                "altitude": 538.6728515625,
+                "speed": 1.0376553535461426,
+                "heading": 62.464134216308594
+            }
+        },
+        {
+            "id": 4,
+            "timestamp": "2026-10-21T14:04:52.021815Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 0.0
+            }
+        },
+        {
+            "id": 5,
+            "timestamp": "2026-10-21T14:04:52.178Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989489,
+                "longitude": 9.9837392,
+                "accuracy": 3.4649999141693115,
+                "altitude": 539.022216796875,
+                "speed": 0.6354504823684692,
+                "heading": 73.68550109863281
+            }
+        },
+        {
+            "id": 6,
+            "timestamp": "2026-10-21T14:04:53.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989703,
+                "longitude": 9.9837103,
+                "accuracy": 3.321000099182129,
+                "altitude": 538.4532470703125,
+                "speed": 1.142674207687378,
+                "heading": 354.31787109375
+            }
+        },
+        {
+            "id": 7,
+            "timestamp": "2026-10-21T14:04:55.115Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989601,
+                "longitude": 9.9837197,
+                "accuracy": 3.0850000381469727,
+                "altitude": 538.4532470703125,
+                "speed": 0.20024633407592773,
+                "heading": 84.9588851928711
+            }
+        },
+        {
+            "id": 8,
+            "timestamp": "2026-10-21T14:04:55.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989906,
+                "longitude": 9.9837113,
+                "accuracy": 3.056999921798706,
+                "altitude": 538.678466796875,
+                "speed": 1.106525182723999,
+                "heading": 359.8961181640625
+            }
+        },
+        {
+            "id": 9,
+            "timestamp": "2026-10-21T14:04:56.828Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989709,
+                "longitude": 9.9837157,
+                "accuracy": 3.0460000038146973,
+                "altitude": 538.678466796875,
+                "speed": 0.5841014385223389,
+                "heading": 61.97132873535156
+            }
+        },
+        {
+            "id": 10,
+            "timestamp": "2026-10-21T14:04:57.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990027,
+                "longitude": 9.9837172,
+                "accuracy": 3.053999900817871,
+                "altitude": 539.02392578125,
+                "speed": 1.1164885759353638,
+                "heading": 25.23141860961914
+            }
+        },
+        {
+            "id": 11,
+            "timestamp": "2026-10-21T14:04:58.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990234,
+                "longitude": 9.9837232,
+                "accuracy": 3.1480000019073486,
+                "altitude": 539.428466796875,
+                "speed": 1.3353646993637085,
+                "heading": 25.049596786499023
+            }
+        },
+        {
+            "id": 12,
+            "timestamp": "2026-10-21T14:04:59.850Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989888,
+                "longitude": 9.983719,
+                "accuracy": 3.1640000343322754,
+                "altitude": 539.428466796875,
+                "speed": 0.7376263737678528,
+                "heading": 61.209388732910156
+            }
+        },
+        {
+            "id": 13,
+            "timestamp": "2026-10-21T14:05:01.455Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990038,
+                "longitude": 9.983727,
+                "accuracy": 3.174999952316284,
+                "altitude": 539.8876953125,
+                "speed": 1.3743538856506348,
+                "heading": 81.39590454101562
+            }
+        },
+        {
+            "id": 14,
+            "timestamp": "2026-10-21T14:05:02.039823Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 1.0
+            }
+        },
+        {
+            "id": 15,
+            "timestamp": "2026-10-21T14:05:02.476Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990164,
+                "longitude": 9.9837285,
+                "accuracy": 3.180000066757202,
+                "altitude": 539.7061767578125,
+                "speed": 1.4382431507110596,
+                "heading": 80.5151138305664
+            }
+        },
+        {
+            "id": 16,
+            "timestamp": "2026-10-21T14:05:02.701276Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 69.0
+            }
+        },
+        {
+            "id": 17,
+            "timestamp": "2026-10-21T14:05:03.555Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990288,
+                "longitude": 9.9837298,
+                "accuracy": 3.2249999046325684,
+                "altitude": 539.8963623046875,
+                "speed": 1.520517110824585,
+                "heading": 79.7118148803711
+            }
+        },
+        {
+            "id": 18,
+            "timestamp": "2026-10-21T14:05:03.701425Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 71.0
+            }
+        },
+        {
+            "id": 19,
+            "timestamp": "2026-10-21T14:05:04.575Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990425,
+                "longitude": 9.9837347,
+                "accuracy": 3.2339999675750732,
+                "altitude": 540.004150390625,
+                "speed": 1.5781608819961548,
+                "heading": 78.22528839111328
+            }
+        },
+        {
+            "id": 20,
+            "timestamp": "2026-10-21T14:05:04.701625Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 73.0
+            }
+        },
+        {
+            "id": 21,
+            "timestamp": "2026-10-21T14:05:05.702013Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 75.0
+            }
+        },
+        {
+            "id": 22,
+            "timestamp": "2026-10-21T14:05:05.912Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990575,
+                "longitude": 9.983743,
+                "accuracy": 3.36299991607666,
+                "altitude": 540.514404296875,
+                "speed": 1.6225248575210571,
+                "heading": 77.6355209350586
+            }
+        },
+        {
+            "id": 23,
+            "timestamp": "2026-10-21T14:05:06.701230Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 77.0
+            }
+        },
+        {
+            "id": 24,
+            "timestamp": "2026-10-21T14:05:06.932Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990687,
+                "longitude": 9.9837482,
+                "accuracy": 3.499000072479248,
+                "altitude": 541.220947265625,
+                "speed": 1.5360044240951538,
+                "heading": 76.843505859375
+            }
+        },
+        {
+            "id": 25,
+            "timestamp": "2026-10-21T14:05:07.487Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990778,
+                "longitude": 9.9837518,
+                "accuracy": 3.621999979019165,
+                "altitude": 540.634521484375,
+                "speed": 1.512891173362732,
+                "heading": 76.650390625
+            }
+        },
+        {
+            "id": 26,
+            "timestamp": "2026-10-21T14:05:07.701635Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 79.0
+            }
+        },
+        {
+            "id": 27,
+            "timestamp": "2026-10-21T14:05:08.488Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.39909,
+                "longitude": 9.9837613,
+                "accuracy": 3.75600004196167,
+                "altitude": 540.75634765625,
+                "speed": 1.525430679321289,
+                "heading": 77.47953033447266
+            }
+        },
+        {
+            "id": 28,
+            "timestamp": "2026-10-21T14:05:08.701633Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 81.0
+            }
+        },
+        {
+            "id": 29,
+            "timestamp": "2026-10-21T14:05:09.528Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991035,
+                "longitude": 9.9837726,
+                "accuracy": 3.940000057220459,
+                "altitude": 540.5687255859375,
+                "speed": 1.5509544610977173,
+                "heading": 77.31556701660156
+            }
+        },
+        {
+            "id": 30,
+            "timestamp": "2026-10-21T14:05:09.700889Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 83.0
+            }
+        },
+        {
+            "id": 31,
+            "timestamp": "2026-10-21T14:05:10.528Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399116,
+                "longitude": 9.9837817,
+                "accuracy": 4.13700008392334,
+                "altitude": 539.8658447265625,
+                "speed": 1.5281178951263428,
+                "heading": 77.48944854736328
+            }
+        },
+        {
+            "id": 32,
+            "timestamp": "2026-10-21T14:05:10.700671Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 85.0
+            }
+        },
+        {
+            "id": 33,
+            "timestamp": "2026-10-21T14:05:10.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399144,
+                "longitude": 9.9837868,
+                "accuracy": 4.348999977111816,
+                "altitude": 539.710693359375,
+                "speed": 0.8413289785385132,
+                "heading": 48.78499984741211
+            }
+        },
+        {
+            "id": 34,
+            "timestamp": "2026-10-21T14:05:11.628Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991315,
+                "longitude": 9.9837842,
+                "accuracy": 4.415999889373779,
+                "altitude": 539.710693359375,
+                "speed": 1.5706490278244019,
+                "heading": 73.83161163330078
+            }
+        },
+        {
+            "id": 35,
+            "timestamp": "2026-10-21T14:05:11.700309Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 87.0
+            }
+        },
+        {
+            "id": 36,
+            "timestamp": "2026-10-21T14:05:12.700577Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 89.0
+            }
+        },
+        {
+            "id": 37,
+            "timestamp": "2026-10-21T14:05:13.550Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991445,
+                "longitude": 9.9837852,
+                "accuracy": 4.644999980926514,
+                "altitude": 538.7080078125,
+                "speed": 1.599204182624817,
+                "heading": 78.14619445800781
+            }
+        },
+        {
+            "id": 38,
+            "timestamp": "2026-10-21T14:05:13.701392Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 91.0
+            }
+        },
+        {
+            "id": 39,
+            "timestamp": "2026-10-21T14:05:14.550Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991579,
+                "longitude": 9.9837831,
+                "accuracy": 4.636000156402588,
+                "altitude": 537.91357421875,
+                "speed": 1.617748737335205,
+                "heading": 77.44580841064453
+            }
+        },
+        {
+            "id": 40,
+            "timestamp": "2026-10-21T14:05:14.700485Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 93.0
+            }
+        },
+        {
+            "id": 41,
+            "timestamp": "2026-10-21T14:05:15.531Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991726,
+                "longitude": 9.9837785,
+                "accuracy": 4.607999801635742,
+                "altitude": 537.7823486328125,
+                "speed": 1.6266199350357056,
+                "heading": 76.19482421875
+            }
+        },
+        {
+            "id": 42,
+            "timestamp": "2026-10-21T14:05:15.700122Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 95.0
+            }
+        },
+        {
+            "id": 43,
+            "timestamp": "2026-10-21T14:05:16.532Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991874,
+                "longitude": 9.9837724,
+                "accuracy": 4.4720001220703125,
+                "altitude": 537.243408203125,
+                "speed": 1.6104137897491455,
+                "heading": 75.59693145751953
+            }
+        },
+        {
+            "id": 44,
+            "timestamp": "2026-10-21T14:05:16.701422Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 97.0
+            }
+        },
+        {
+            "id": 45,
+            "timestamp": "2026-10-21T14:05:17.552Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991993,
+                "longitude": 9.9837681,
+                "accuracy": 4.370999813079834,
+                "altitude": 537.5604248046875,
+                "speed": 1.5821212530136108,
+                "heading": 76.85948944091797
+            }
+        },
+        {
+            "id": 46,
+            "timestamp": "2026-10-21T14:05:17.700441Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 99.0
+            }
+        },
+        {
+            "id": 47,
+            "timestamp": "2026-10-21T14:05:18.632Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992088,
+                "longitude": 9.9837656,
+                "accuracy": 4.324999809265137,
+                "altitude": 537.955810546875,
+                "speed": 1.5271058082580566,
+                "heading": 78.83134460449219
+            }
+        },
+        {
+            "id": 48,
+            "timestamp": "2026-10-21T14:05:18.699642Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 101.0
+            }
+        },
+        {
+            "id": 50,
+            "timestamp": "2026-10-21T14:05:19.672Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992178,
+                "longitude": 9.9837637,
+                "accuracy": 4.313000202178955,
+                "altitude": 538.552978515625,
+                "speed": 1.4983506202697754,
+                "heading": 79.99092102050781
+            }
+        },
+        {
+            "id": 49,
+            "timestamp": "2026-10-21T14:05:19.701515Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 103.0
+            }
+        },
+        {
+            "id": 51,
+            "timestamp": "2026-10-21T14:05:20.698809Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 105.0
+            }
+        },
+        {
+            "id": 52,
+            "timestamp": "2026-10-21T14:05:21.700859Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 107.0
+            }
+        },
+        {
+            "id": 53,
+            "timestamp": "2026-10-21T14:05:21.732Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992285,
+                "longitude": 9.983764,
+                "accuracy": 4.320000171661377,
+                "altitude": 539.484130859375,
+                "speed": 1.4903197288513184,
+                "heading": 81.95047760009766
+            }
+        },
+        {
+            "id": 54,
+            "timestamp": "2026-10-21T14:05:22.699957Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 109.0
+            }
+        },
+        {
+            "id": 55,
+            "timestamp": "2026-10-21T14:05:22.812Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992393,
+                "longitude": 9.9837662,
+                "accuracy": 4.434999942779541,
+                "altitude": 540.0230712890625,
+                "speed": 1.481980800628662,
+                "heading": 80.82730102539062
+            }
+        },
+        {
+            "id": 56,
+            "timestamp": "2026-10-21T14:05:23.699460Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 111.0
+            }
+        },
+        {
+            "id": 57,
+            "timestamp": "2026-10-21T14:05:23.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399278,
+                "longitude": 9.9837875,
+                "accuracy": 5.0269999504089355,
+                "altitude": 540.3875732421875,
+                "speed": 0.3531305193901062,
+                "heading": 3.4202256202697754
+            }
+        },
+        {
+            "id": 58,
+            "timestamp": "2026-10-21T14:05:24.702539Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 112.0
+            }
+        },
+        {
+            "id": 59,
+            "timestamp": "2026-10-21T14:05:24.912Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992612,
+                "longitude": 9.9837692,
+                "accuracy": 5.177999973297119,
+                "altitude": 540.3875732421875,
+                "speed": 1.430341362953186,
+                "heading": 80.91248321533203
+            }
+        },
+        {
+            "id": 60,
+            "timestamp": "2026-10-21T14:05:25.700821Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 114.0
+            }
+        },
+        {
+            "id": 61,
+            "timestamp": "2026-10-21T14:05:26.700816Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 116.0
+            }
+        },
+        {
+            "id": 62,
+            "timestamp": "2026-10-21T14:05:27.012Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992731,
+                "longitude": 9.9837762,
+                "accuracy": 5.434999942779541,
+                "altitude": 540.9598388671875,
+                "speed": 1.4234905242919922,
+                "heading": 82.82131958007812
+            }
+        },
+        {
+            "id": 63,
+            "timestamp": "2026-10-21T14:05:27.700548Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 118.0
+            }
+        },
+        {
+            "id": 64,
+            "timestamp": "2026-10-21T14:05:28.700790Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 120.0
+            }
+        },
+        {
+            "id": 65,
+            "timestamp": "2026-10-21T14:05:29.310Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992871,
+                "longitude": 9.9837776,
+                "accuracy": 5.4070000648498535,
+                "altitude": 540.657958984375,
+                "speed": 1.6440483331680298,
+                "heading": 56.241458892822266
+            }
+        },
+        {
+            "id": 66,
+            "timestamp": "2026-10-21T14:05:29.700670Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 121.0
+            }
+        },
+        {
+            "id": 67,
+            "timestamp": "2026-10-21T14:05:30.548Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399296,
+                "longitude": 9.9837831,
+                "accuracy": 5.7230000495910645,
+                "altitude": 540.460693359375,
+                "speed": 1.737804651260376,
+                "heading": 67.6442642211914
+            }
+        },
+        {
+            "id": 68,
+            "timestamp": "2026-10-21T14:05:30.700950Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 123.0
+            }
+        },
+        {
+            "id": 69,
+            "timestamp": "2026-10-21T14:05:31.700760Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 125.0
+            }
+        },
+        {
+            "id": 70,
+            "timestamp": "2026-10-21T14:05:31.768Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993053,
+                "longitude": 9.983789,
+                "accuracy": 6.011000156402588,
+                "altitude": 540.91943359375,
+                "speed": 1.7162985801696777,
+                "heading": 73.21607208251953
+            }
+        },
+        {
+            "id": 71,
+            "timestamp": "2026-10-21T14:05:32.700677Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 127.0
+            }
+        },
+        {
+            "id": 72,
+            "timestamp": "2026-10-21T14:05:33.074Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399315,
+                "longitude": 9.983797,
+                "accuracy": 6.208000183105469,
+                "altitude": 540.56640625,
+                "speed": 1.6569145917892456,
+                "heading": 75.048583984375
+            }
+        },
+        {
+            "id": 73,
+            "timestamp": "2026-10-21T14:05:33.700472Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 129.0
+            }
+        },
+        {
+            "id": 74,
+            "timestamp": "2026-10-21T14:05:34.214Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399325,
+                "longitude": 9.9838055,
+                "accuracy": 6.144999980926514,
+                "altitude": 540.2291259765625,
+                "speed": 1.5604140758514404,
+                "heading": 78.10474395751953
+            }
+        },
+        {
+            "id": 75,
+            "timestamp": "2026-10-21T14:05:34.700421Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 131.0
+            }
+        },
+        {
+            "id": 76,
+            "timestamp": "2026-10-21T14:05:35.700444Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 133.0
+            }
+        },
+        {
+            "id": 77,
+            "timestamp": "2026-10-21T14:05:36.072Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993301,
+                "longitude": 9.9838173,
+                "accuracy": 6.071000099182129,
+                "altitude": 539.9462890625,
+                "speed": 1.5421671867370605,
+                "heading": 81.88565063476562
+            }
+        },
+        {
+            "id": 78,
+            "timestamp": "2026-10-21T14:05:37.070838Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 0.0
+            }
+        },
+        {
+            "id": 79,
+            "timestamp": "2026-10-21T14:05:38.067052Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 1.0
+            }
+        },
+        {
+            "id": 80,
+            "timestamp": "2026-10-21T14:05:38.394Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993284,
+                "longitude": 9.9838329,
+                "accuracy": 6.124000072479248,
+                "altitude": 539.9447021484375,
+                "speed": 1.7887873649597168,
+                "heading": 130.48617553710938
+            }
+        },
+        {
+            "id": 81,
+            "timestamp": "2026-10-21T14:05:38.700049Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 135.0
+            }
+        },
+        {
+            "id": 82,
+            "timestamp": "2026-10-21T14:05:39.700679Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 139.0
+            }
+        },
+        {
+            "id": 83,
+            "timestamp": "2026-10-21T14:05:40.699952Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 144.0
+            }
+        },
+        {
+            "id": 84,
+            "timestamp": "2026-10-21T14:05:41.287Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993339,
+                "longitude": 9.9838456,
+                "accuracy": 6.74399995803833,
+                "altitude": 539.950439453125,
+                "speed": 1.548545479774475,
+                "heading": 108.390869140625
+            }
+        },
+        {
+            "id": 85,
+            "timestamp": "2026-10-21T14:05:41.700054Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 146.0
+            }
+        },
+        {
+            "id": 86,
+            "timestamp": "2026-10-21T14:05:42.699951Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 148.0
+            }
+        },
+        {
+            "id": 87,
+            "timestamp": "2026-10-21T14:05:43.699413Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 149.0
+            }
+        },
+        {
+            "id": 88,
+            "timestamp": "2026-10-21T14:05:44.700133Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 150.0
+            }
+        },
+        {
+            "id": 89,
+            "timestamp": "2026-10-21T14:05:44.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993367,
+                "longitude": 9.9838666,
+                "accuracy": 9.875,
+                "altitude": 539.96240234375,
+                "speed": 1.484540343284607,
+                "heading": 93.8270263671875
+            }
+        },
+        {
+            "id": 90,
+            "timestamp": "2026-10-21T14:05:45.699184Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 152.0
+            }
+        },
+        {
+            "id": 91,
+            "timestamp": "2026-10-21T14:05:46.700583Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 154.0
+            }
+        },
+        {
+            "id": 92,
+            "timestamp": "2026-10-21T14:05:47.700276Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 156.0
+            }
+        },
+        {
+            "id": 93,
+            "timestamp": "2026-10-21T14:05:48.700344Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 158.0
+            }
+        },
+        {
+            "id": 94,
+            "timestamp": "2026-10-21T14:05:49.700126Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 160.0
+            }
+        },
+        {
+            "id": 95,
+            "timestamp": "2026-10-21T14:05:49.905Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993435,
+                "longitude": 9.9838768,
+                "accuracy": 10.894000053405762,
+                "altitude": 539.97265625,
+                "speed": 1.4254875183105469,
+                "heading": 87.26641082763672
+            }
+        },
+        {
+            "id": 96,
+            "timestamp": "2026-10-21T14:05:50.700043Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 162.0
+            }
+        },
+        {
+            "id": 97,
+            "timestamp": "2026-10-21T14:05:51.700286Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 164.0
+            }
+        },
+        {
+            "id": 98,
+            "timestamp": "2026-10-21T14:05:52.150Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993469,
+                "longitude": 9.9838919,
+                "accuracy": 11.256999969482422,
+                "altitude": 539.9833984375,
+                "speed": 1.466247797012329,
+                "heading": 81.41028594970703
+            }
+        },
+        {
+            "id": 99,
+            "timestamp": "2026-10-21T14:05:52.699693Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 166.0
+            }
+        },
+        {
+            "id": 100,
+            "timestamp": "2026-10-21T14:05:53.700536Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 168.0
+            }
+        },
+        {
+            "id": 101,
+            "timestamp": "2026-10-21T14:05:54.698688Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 170.0
+            }
+        },
+        {
+            "id": 102,
+            "timestamp": "2026-10-21T14:05:55.611Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993466,
+                "longitude": 9.9839086,
+                "accuracy": 11.569999694824219,
+                "altitude": 539.9940185546875,
+                "speed": 1.4434741735458374,
+                "heading": 89.02709197998047
+            }
+        },
+        {
+            "id": 103,
+            "timestamp": "2026-10-21T14:05:55.700423Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 172.0
+            }
+        },
+        {
+            "id": 104,
+            "timestamp": "2026-10-21T14:05:56.700443Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 174.0
+            }
+        },
+        {
+            "id": 105,
+            "timestamp": "2026-10-21T14:05:57.698946Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 176.0
+            }
+        },
+        {
+            "id": 106,
+            "timestamp": "2026-10-21T14:05:58.069Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993489,
+                "longitude": 9.9839217,
+                "accuracy": 9.359000205993652,
+                "altitude": 540.001220703125,
+                "speed": 1.4581412076950073,
+                "heading": 89.04690551757812
+            }
+        },
+        {
+            "id": 107,
+            "timestamp": "2026-10-21T14:05:58.698689Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 178.0
+            }
+        },
+        {
+            "id": 108,
+            "timestamp": "2026-10-21T14:05:59.698825Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 180.0
+            }
+        },
+        {
+            "id": 109,
+            "timestamp": "2026-10-21T14:06:00.700080Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 182.0
+            }
+        },
+        {
+            "id": 110,
+            "timestamp": "2026-10-21T14:06:01.700997Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 184.0
+            }
+        },
+        {
+            "id": 111,
+            "timestamp": "2026-10-21T14:06:02.701532Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 186.0
+            }
+        },
+        {
+            "id": 112,
+            "timestamp": "2026-10-21T14:06:03.151Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399352,
+                "longitude": 9.9839404,
+                "accuracy": 10.164999961853027,
+                "altitude": 540.0189208984375,
+                "speed": 1.470223307609558,
+                "heading": 89.2938232421875
+            }
+        },
+        {
+            "id": 113,
+            "timestamp": "2026-10-21T14:06:03.700557Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 188.0
+            }
+        },
+        {
+            "id": 114,
+            "timestamp": "2026-10-21T14:06:04.700559Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 190.0
+            }
+        },
+        {
+            "id": 115,
+            "timestamp": "2026-10-21T14:06:05.701721Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 192.0
+            }
+        },
+        {
+            "id": 116,
+            "timestamp": "2026-10-21T14:06:06.701730Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 194.0
+            }
+        },
+        {
+            "id": 117,
+            "timestamp": "2026-10-21T14:06:07.700292Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 195.0
+            }
+        },
+        {
+            "id": 118,
+            "timestamp": "2026-10-21T14:06:07.925Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993507,
+                "longitude": 9.9839547,
+                "accuracy": 10.814000129699707,
+                "altitude": 540.03662109375,
+                "speed": 1.5853424072265625,
+                "heading": 105.7405014038086
+            }
+        },
+        {
+            "id": 119,
+            "timestamp": "2026-10-21T14:06:08.700316Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 197.0
+            }
+        },
+        {
+            "id": 120,
+            "timestamp": "2026-10-21T14:06:09.701124Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 199.0
+            }
+        },
+        {
+            "id": 121,
+            "timestamp": "2026-10-21T14:06:10.700335Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 201.0
+            }
+        },
+        {
+            "id": 122,
+            "timestamp": "2026-10-21T14:06:10.947Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993588,
+                "longitude": 9.9839669,
+                "accuracy": 11.282999992370605,
+                "altitude": 540.04736328125,
+                "speed": 1.5090631246566772,
+                "heading": 90.55410766601562
+            }
+        },
+        {
+            "id": 123,
+            "timestamp": "2026-10-21T14:06:11.700521Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 202.0
+            }
+        },
+        {
+            "id": 124,
+            "timestamp": "2026-10-21T14:06:12.699926Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 204.0
+            }
+        },
+        {
+            "id": 125,
+            "timestamp": "2026-10-21T14:06:13.671Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993668,
+                "longitude": 9.9839759,
+                "accuracy": 11.463000297546387,
+                "altitude": 540.05810546875,
+                "speed": 1.45131254196167,
+                "heading": 87.89533996582031
+            }
+        },
+        {
+            "id": 126,
+            "timestamp": "2026-10-21T14:06:13.702611Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 206.0
+            }
+        },
+        {
+            "id": 127,
+            "timestamp": "2026-10-21T14:06:14.700874Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 208.0
+            }
+        },
+        {
+            "id": 128,
+            "timestamp": "2026-10-21T14:06:15.000Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399373,
+                "longitude": 9.9839956,
+                "accuracy": 63.24800109863281,
+                "altitude": 540.065185546875,
+                "speed": 1.142220139503479,
+                "heading": 71.86408233642578
+            }
+        },
+        {
+            "id": 129,
+            "timestamp": "2026-10-21T14:06:15.699284Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 209.0
+            }
+        },
+        {
+            "id": 130,
+            "timestamp": "2026-10-21T14:06:15.811Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993733,
+                "longitude": 9.9839809,
+                "accuracy": 11.270999908447266,
+                "altitude": 540.065185546875,
+                "speed": 1.402575969696045,
+                "heading": 80.67588806152344
+            }
+        },
+        {
+            "id": 131,
+            "timestamp": "2026-10-21T14:06:16.699938Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 211.0
+            }
+        },
+        {
+            "id": 132,
+            "timestamp": "2026-10-21T14:06:17.700306Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 213.0
+            }
+        },
+        {
+            "id": 133,
+            "timestamp": "2026-10-21T14:06:18.700131Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 215.0
+            }
+        },
+        {
+            "id": 134,
+            "timestamp": "2026-10-21T14:06:19.700792Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 217.0
+            }
+        },
+        {
+            "id": 135,
+            "timestamp": "2026-10-21T14:06:20.309Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993825,
+                "longitude": 9.9839816,
+                "accuracy": 11.371000289916992,
+                "altitude": 532.322509765625,
+                "speed": 1.033809781074524,
+                "heading": 48.542171478271484
+            }
+        },
+        {
+            "id": 136,
+            "timestamp": "2026-10-21T14:06:20.700010Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 218.0
+            }
+        },
+        {
+            "id": 137,
+            "timestamp": "2026-10-21T14:06:21.700196Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 219.0
+            }
+        },
+        {
+            "id": 138,
+            "timestamp": "2026-10-21T14:06:22.700072Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 220.0
+            }
+        },
+        {
+            "id": 139,
+            "timestamp": "2026-10-21T14:06:23.350Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993924,
+                "longitude": 9.9839886,
+                "accuracy": 11.802000045776367,
+                "altitude": 532.3486328125,
+                "speed": 1.3170815706253052,
+                "heading": 83.74386596679688
+            }
+        },
+        {
+            "id": 140,
+            "timestamp": "2026-10-21T14:06:23.700505Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 222.0
+            }
+        },
+        {
+            "id": 141,
+            "timestamp": "2026-10-21T14:06:24.391Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399405,
+                "longitude": 9.9839981,
+                "accuracy": 11.729999542236328,
+                "altitude": 521.295654296875,
+                "speed": 1.6489784717559814,
+                "heading": 39.17251968383789
+            }
+        },
+        {
+            "id": 142,
+            "timestamp": "2026-10-21T14:06:24.700126Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 224.0
+            }
+        },
+        {
+            "id": 143,
+            "timestamp": "2026-10-21T14:06:25.430Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399414,
+                "longitude": 9.9840078,
+                "accuracy": 11.487000465393066,
+                "altitude": 521.0845947265625,
+                "speed": 1.550628662109375,
+                "heading": 55.6581916809082
+            }
+        },
+        {
+            "id": 144,
+            "timestamp": "2026-10-21T14:06:25.700146Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 225.0
+            }
+        },
+        {
+            "id": 145,
+            "timestamp": "2026-10-21T14:06:26.700341Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 227.0
+            }
+        },
+        {
+            "id": 146,
+            "timestamp": "2026-10-21T14:06:27.005Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994184,
+                "longitude": 9.9840259,
+                "accuracy": 10.984999656677246,
+                "altitude": 521.4141235351562,
+                "speed": 1.3200292587280273,
+                "heading": 75.69927215576172
+            }
+        },
+        {
+            "id": 147,
+            "timestamp": "2026-10-21T14:06:27.699777Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 229.0
+            }
+        },
+        {
+            "id": 148,
+            "timestamp": "2026-10-21T14:06:28.115Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399423,
+                "longitude": 9.9840404,
+                "accuracy": 10.638999938964844,
+                "altitude": 525.69873046875,
+                "speed": 1.4686033725738525,
+                "heading": 61.7722282409668
+            }
+        },
+        {
+            "id": 149,
+            "timestamp": "2026-10-21T14:06:28.700400Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 231.0
+            }
+        },
+        {
+            "id": 150,
+            "timestamp": "2026-10-21T14:06:28.709Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994209,
+                "longitude": 9.9840569,
+                "accuracy": 10.583999633789062,
+                "altitude": 537.502197265625,
+                "speed": 1.3868708610534668,
+                "heading": 68.54650115966797
+            }
+        },
+        {
+            "id": 151,
+            "timestamp": "2026-10-21T14:06:29.353Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994148,
+                "longitude": 9.9840803,
+                "accuracy": 10.407999992370605,
+                "altitude": 569.794189453125,
+                "speed": 1.312456727027893,
+                "heading": 79.13491821289062
+            }
+        },
+        {
+            "id": 152,
+            "timestamp": "2026-10-21T14:06:29.699602Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 232.0
+            }
+        },
+        {
+            "id": 153,
+            "timestamp": "2026-10-21T14:06:30.102Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994104,
+                "longitude": 9.984098,
+                "accuracy": 10.309000015258789,
+                "altitude": 571.174560546875,
+                "speed": 1.2888944149017334,
+                "heading": 85.44024658203125
+            }
+        },
+        {
+            "id": 154,
+            "timestamp": "2026-10-21T14:06:30.700244Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 234.0
+            }
+        },
+        {
+            "id": 155,
+            "timestamp": "2026-10-21T14:06:31.172Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994066,
+                "longitude": 9.9841212,
+                "accuracy": 10.25,
+                "altitude": 573.38916015625,
+                "speed": 1.2858750820159912,
+                "heading": 88.88713073730469
+            }
+        },
+        {
+            "id": 156,
+            "timestamp": "2026-10-21T14:06:31.700120Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 236.0
+            }
+        },
+        {
+            "id": 157,
+            "timestamp": "2026-10-21T14:06:31.988Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994024,
+                "longitude": 9.9841434,
+                "accuracy": 10.178000450134277,
+                "altitude": 573.38916015625,
+                "speed": 1.3164645433425903,
+                "heading": 91.51468658447266
+            }
+        },
+        {
+            "id": 158,
+            "timestamp": "2026-10-21T14:06:32.698859Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 238.0
+            }
+        },
+        {
+            "id": 159,
+            "timestamp": "2026-10-21T14:06:33.009Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994014,
+                "longitude": 9.9841669,
+                "accuracy": 12.494999885559082,
+                "altitude": 575.7998046875,
+                "speed": 1.3226900100708008,
+                "heading": 93.65513610839844
+            }
+        },
+        {
+            "id": 160,
+            "timestamp": "2026-10-21T14:06:33.699023Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 240.0
+            }
+        },
+        {
+            "id": 161,
+            "timestamp": "2026-10-21T14:06:33.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399401,
+                "longitude": 9.9842064,
+                "accuracy": 14.104000091552734,
+                "altitude": 583.691650390625,
+                "speed": 0.24746857583522797,
+                "heading": 69.28257751464844
+            }
+        },
+        {
+            "id": 162,
+            "timestamp": "2026-10-21T14:06:34.698839Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 242.0
+            }
+        },
+        {
+            "id": 163,
+            "timestamp": "2026-10-21T14:06:35.089Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993958,
+                "longitude": 9.9841922,
+                "accuracy": 14.803999900817871,
+                "altitude": 583.691650390625,
+                "speed": 1.336860179901123,
+                "heading": 88.3681411743164
+            }
+        },
+        {
+            "id": 164,
+            "timestamp": "2026-10-21T14:06:35.700070Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 244.0
+            }
+        },
+        {
+            "id": 165,
+            "timestamp": "2026-10-21T14:06:35.713Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993908,
+                "longitude": 9.9842059,
+                "accuracy": 14.180000305175781,
+                "altitude": 577.7081298828125,
+                "speed": 1.3914272785186768,
+                "heading": 90.74890899658203
+            }
+        },
+        {
+            "id": 166,
+            "timestamp": "2026-10-21T14:06:36.700953Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 246.0
+            }
+        },
+        {
+            "id": 167,
+            "timestamp": "2026-10-21T14:06:36.774Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993853,
+                "longitude": 9.9842327,
+                "accuracy": 13.449999809265137,
+                "altitude": 584.0704345703125,
+                "speed": 1.4290003776550293,
+                "heading": 92.7386474609375
+            }
+        },
+        {
+            "id": 168,
+            "timestamp": "2026-10-21T14:06:37.229Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993838,
+                "longitude": 9.9842523,
+                "accuracy": 10.706000328063965,
+                "altitude": 584.4190673828125,
+                "speed": 1.4322935342788696,
+                "heading": 92.33415222167969
+            }
+        },
+        {
+            "id": 169,
+            "timestamp": "2026-10-21T14:06:37.701598Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 248.0
+            }
+        },
+        {
+            "id": 170,
+            "timestamp": "2026-10-21T14:06:38.127Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993838,
+                "longitude": 9.9842664,
+                "accuracy": 10.07699966430664,
+                "altitude": 584.00830078125,
+                "speed": 1.429197907447815,
+                "heading": 91.32487487792969
+            }
+        },
+        {
+            "id": 171,
+            "timestamp": "2026-10-21T14:06:38.702841Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 249.0
+            }
+        },
+        {
+            "id": 172,
+            "timestamp": "2026-10-21T14:06:38.893Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993843,
+                "longitude": 9.984286,
+                "accuracy": 9.477999687194824,
+                "altitude": 584.00830078125,
+                "speed": 1.4156464338302612,
+                "heading": 90.49112701416016
+            }
+        },
+        {
+            "id": 173,
+            "timestamp": "2026-10-21T14:06:39.700784Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 251.0
+            }
+        },
+        {
+            "id": 174,
+            "timestamp": "2026-10-21T14:06:39.953Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993848,
+                "longitude": 9.9843045,
+                "accuracy": 6.951000213623047,
+                "altitude": 585.64501953125,
+                "speed": 1.4382715225219727,
+                "heading": 89.99808502197266
+            }
+        },
+        {
+            "id": 175,
+            "timestamp": "2026-10-21T14:06:40.700704Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 253.0
+            }
+        },
+        {
+            "id": 176,
+            "timestamp": "2026-10-21T14:06:41.079Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993916,
+                "longitude": 9.9843178,
+                "accuracy": 6.505000114440918,
+                "altitude": 587.16943359375,
+                "speed": 1.9996429681777954,
+                "heading": 48.74177169799805
+            }
+        },
+        {
+            "id": 177,
+            "timestamp": "2026-10-21T14:06:41.700492Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 255.0
+            }
+        },
+        {
+            "id": 178,
+            "timestamp": "2026-10-21T14:06:42.154Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3993927,
+                "longitude": 9.9843339,
+                "accuracy": 6.163000106811523,
+                "altitude": 587.16943359375,
+                "speed": 1.747527003288269,
+                "heading": 60.62224197387695
+            }
+        },
+        {
+            "id": 179,
+            "timestamp": "2026-10-21T14:06:42.700188Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 257.0
+            }
+        },
+        {
+            "id": 180,
+            "timestamp": "2026-10-21T14:06:43.700524Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 259.0
+            }
+        },
+        {
+            "id": 181,
+            "timestamp": "2026-10-21T14:06:44.700097Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 261.0
+            }
+        },
+        {
+            "id": 182,
+            "timestamp": "2026-10-21T14:06:45.701503Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 263.0
+            }
+        },
+        {
+            "id": 183,
+            "timestamp": "2026-10-21T14:06:46.141Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399461,
+                "longitude": 9.9845028,
+                "accuracy": 7.15500020980835,
+                "altitude": 592.5511474609375,
+                "speed": 1.9136812686920166,
+                "heading": 53.914390563964844
+            }
+        },
+        {
+            "id": 184,
+            "timestamp": "2026-10-21T14:06:46.700450Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 265.0
+            }
+        },
+        {
+            "id": 185,
+            "timestamp": "2026-10-21T14:06:46.711Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995598,
+                "longitude": 9.9847437,
+                "accuracy": 7.21999979019165,
+                "altitude": 592.5511474609375,
+                "speed": 2.6322383880615234,
+                "heading": 33.71158218383789
+            }
+        },
+        {
+            "id": 186,
+            "timestamp": "2026-10-21T14:06:47.700092Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 266.0
+            }
+        },
+        {
+            "id": 187,
+            "timestamp": "2026-10-21T14:06:47.810Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996042,
+                "longitude": 9.9848583,
+                "accuracy": 7.4070000648498535,
+                "altitude": 591.91943359375,
+                "speed": 2.3953793048858643,
+                "heading": 37.40291976928711
+            }
+        },
+        {
+            "id": 188,
+            "timestamp": "2026-10-21T14:06:48.698772Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 268.0
+            }
+        },
+        {
+            "id": 189,
+            "timestamp": "2026-10-21T14:06:48.969Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996117,
+                "longitude": 9.9848968,
+                "accuracy": 7.48799991607666,
+                "altitude": 594.149169921875,
+                "speed": 1.5988894701004028,
+                "heading": 54.085716247558594
+            }
+        },
+        {
+            "id": 190,
+            "timestamp": "2026-10-21T14:06:49.698774Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 270.0
+            }
+        },
+        {
+            "id": 191,
+            "timestamp": "2026-10-21T14:06:50.700596Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 272.0
+            }
+        },
+        {
+            "id": 192,
+            "timestamp": "2026-10-21T14:06:51.148Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996187,
+                "longitude": 9.9849081,
+                "accuracy": 5.933000087738037,
+                "altitude": 595.6705322265625,
+                "speed": 1.446584939956665,
+                "heading": 51.11516571044922
+            }
+        },
+        {
+            "id": 193,
+            "timestamp": "2026-10-21T14:06:51.700408Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 273.0
+            }
+        },
+        {
+            "id": 194,
+            "timestamp": "2026-10-21T14:06:52.699758Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 275.0
+            }
+        },
+        {
+            "id": 195,
+            "timestamp": "2026-10-21T14:06:53.698682Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 276.0
+            }
+        },
+        {
+            "id": 196,
+            "timestamp": "2026-10-21T14:06:54.701183Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 277.0
+            }
+        },
+        {
+            "id": 197,
+            "timestamp": "2026-10-21T14:06:55.567Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996174,
+                "longitude": 9.9848885,
+                "accuracy": 3.880000114440918,
+                "altitude": 581.43701171875,
+                "speed": 1.1884082555770874,
+                "heading": 88.89472198486328
+            }
+        },
+        {
+            "id": 198,
+            "timestamp": "2026-10-21T14:06:55.700924Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 279.0
+            }
+        },
+        {
+            "id": 199,
+            "timestamp": "2026-10-21T14:06:56.627Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996129,
+                "longitude": 9.9848759,
+                "accuracy": 4.017000198364258,
+                "altitude": 581.494873046875,
+                "speed": 1.34571373462677,
+                "heading": 104.80561065673828
+            }
+        },
+        {
+            "id": 200,
+            "timestamp": "2026-10-21T14:06:56.699037Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 281.0
+            }
+        },
+        {
+            "id": 201,
+            "timestamp": "2026-10-21T14:06:57.699869Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 283.0
+            }
+        },
+        {
+            "id": 202,
+            "timestamp": "2026-10-21T14:06:58.700228Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 285.0
+            }
+        },
+        {
+            "id": 203,
+            "timestamp": "2026-10-21T14:06:58.727Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3996036,
+                "longitude": 9.9848713,
+                "accuracy": 4.1529998779296875,
+                "altitude": 580.1630859375,
+                "speed": 1.3648942708969116,
+                "heading": 97.36365509033203
+            }
+        },
+        {
+            "id": 204,
+            "timestamp": "2026-10-21T14:06:59.699956Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 287.0
+            }
+        },
+        {
+            "id": 205,
+            "timestamp": "2026-10-21T14:06:59.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995688,
+                "longitude": 9.9848581,
+                "accuracy": 4.206999778747559,
+                "altitude": 579.4541015625,
+                "speed": 0.3038424253463745,
+                "heading": 134.37496948242188
+            }
+        },
+        {
+            "id": 206,
+            "timestamp": "2026-10-21T14:07:00.700181Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 288.0
+            }
+        },
+        {
+            "id": 207,
+            "timestamp": "2026-10-21T14:07:00.847Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995824,
+                "longitude": 9.9848618,
+                "accuracy": 4.2779998779296875,
+                "altitude": 579.4541015625,
+                "speed": 1.3001278638839722,
+                "heading": 90.8048095703125
+            }
+        },
+        {
+            "id": 208,
+            "timestamp": "2026-10-21T14:07:01.700501Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 290.0
+            }
+        },
+        {
+            "id": 209,
+            "timestamp": "2026-10-21T14:07:01.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995543,
+                "longitude": 9.9848533,
+                "accuracy": 4.135000228881836,
+                "altitude": 578.415771484375,
+                "speed": 0.5486130714416504,
+                "heading": 123.34029388427734
+            }
+        },
+        {
+            "id": 210,
+            "timestamp": "2026-10-21T14:07:02.700374Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 292.0
+            }
+        },
+        {
+            "id": 211,
+            "timestamp": "2026-10-21T14:07:03.151Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995672,
+                "longitude": 9.9848564,
+                "accuracy": 4.107999801635742,
+                "altitude": 576.4747314453125,
+                "speed": 1.262947678565979,
+                "heading": 96.77372741699219
+            }
+        },
+        {
+            "id": 212,
+            "timestamp": "2026-10-21T14:07:03.700054Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 294.0
+            }
+        },
+        {
+            "id": 213,
+            "timestamp": "2026-10-21T14:07:03.928Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995574,
+                "longitude": 9.9848553,
+                "accuracy": 4.0279998779296875,
+                "altitude": 576.4747314453125,
+                "speed": 1.3996144533157349,
+                "heading": 125.7325210571289
+            }
+        },
+        {
+            "id": 214,
+            "timestamp": "2026-10-21T14:07:04.698882Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 296.0
+            }
+        },
+        {
+            "id": 215,
+            "timestamp": "2026-10-21T14:07:04.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995331,
+                "longitude": 9.9848513,
+                "accuracy": 4.14900016784668,
+                "altitude": 575.5565185546875,
+                "speed": 1.0583211183547974,
+                "heading": 95.91829681396484
+            }
+        },
+        {
+            "id": 216,
+            "timestamp": "2026-10-21T14:07:05.534Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995468,
+                "longitude": 9.9848539,
+                "accuracy": 4.186999797821045,
+                "altitude": 575.5565185546875,
+                "speed": 1.31549870967865,
+                "heading": 93.63420867919922
+            }
+        },
+        {
+            "id": 217,
+            "timestamp": "2026-10-21T14:07:05.699748Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 298.0
+            }
+        },
+        {
+            "id": 218,
+            "timestamp": "2026-10-21T14:07:05.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995335,
+                "longitude": 9.9848547,
+                "accuracy": 4.23799991607666,
+                "altitude": 575.0677490234375,
+                "speed": 1.205255150794983,
+                "heading": 90.69694519042969
+            }
+        },
+        {
+            "id": 219,
+            "timestamp": "2026-10-21T14:07:06.652Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399547,
+                "longitude": 9.9848567,
+                "accuracy": 4.3470001220703125,
+                "altitude": 575.0677490234375,
+                "speed": 1.4136141538619995,
+                "heading": 90.05655670166016
+            }
+        },
+        {
+            "id": 220,
+            "timestamp": "2026-10-21T14:07:06.699019Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 300.0
+            }
+        },
+        {
+            "id": 221,
+            "timestamp": "2026-10-21T14:07:07.699811Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 302.0
+            }
+        },
+        {
+            "id": 222,
+            "timestamp": "2026-10-21T14:07:08.654Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995314,
+                "longitude": 9.9848642,
+                "accuracy": 4.553999900817871,
+                "altitude": 574.715576171875,
+                "speed": 1.383788824081421,
+                "heading": 97.24022674560547
+            }
+        },
+        {
+            "id": 223,
+            "timestamp": "2026-10-21T14:07:08.699441Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 304.0
+            }
+        },
+        {
+            "id": 225,
+            "timestamp": "2026-10-21T14:07:09.694Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995208,
+                "longitude": 9.9848682,
+                "accuracy": 4.431000232696533,
+                "altitude": 573.14404296875,
+                "speed": 1.218361258506775,
+                "heading": 98.9291000366211
+            }
+        },
+        {
+            "id": 224,
+            "timestamp": "2026-10-21T14:07:09.699452Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 306.0
+            }
+        },
+        {
+            "id": 226,
+            "timestamp": "2026-10-21T14:07:10.701018Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 308.0
+            }
+        },
+        {
+            "id": 227,
+            "timestamp": "2026-10-21T14:07:10.734Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995112,
+                "longitude": 9.9848722,
+                "accuracy": 4.3429999351501465,
+                "altitude": 572.792236328125,
+                "speed": 1.0726258754730225,
+                "heading": 100.02433013916016
+            }
+        },
+        {
+            "id": 228,
+            "timestamp": "2026-10-21T14:07:11.700492Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 310.0
+            }
+        },
+        {
+            "id": 229,
+            "timestamp": "2026-10-21T14:07:11.815Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995024,
+                "longitude": 9.9848763,
+                "accuracy": 4.1579999923706055,
+                "altitude": 572.6146240234375,
+                "speed": 0.9228604435920715,
+                "heading": 99.39091491699219
+            }
+        },
+        {
+            "id": 230,
+            "timestamp": "2026-10-21T14:07:12.700644Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 312.0
+            }
+        },
+        {
+            "id": 231,
+            "timestamp": "2026-10-21T14:07:13.310Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994919,
+                "longitude": 9.9848797,
+                "accuracy": 3.890000104904175,
+                "altitude": 572.574462890625,
+                "speed": 1.0290755033493042,
+                "heading": 102.91783905029297
+            }
+        },
+        {
+            "id": 232,
+            "timestamp": "2026-10-21T14:07:13.700602Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 313.0
+            }
+        },
+        {
+            "id": 233,
+            "timestamp": "2026-10-21T14:07:14.700337Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 315.0
+            }
+        },
+        {
+            "id": 234,
+            "timestamp": "2026-10-21T14:07:15.700173Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 316.0
+            }
+        },
+        {
+            "id": 235,
+            "timestamp": "2026-10-21T14:07:15.707Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994832,
+                "longitude": 9.9848853,
+                "accuracy": 4.281000137329102,
+                "altitude": 572.572509765625,
+                "speed": 1.280385971069336,
+                "heading": 102.49927520751953
+            }
+        },
+        {
+            "id": 236,
+            "timestamp": "2026-10-21T14:07:16.700878Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 317.0
+            }
+        },
+        {
+            "id": 237,
+            "timestamp": "2026-10-21T14:07:17.700246Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 319.0
+            }
+        },
+        {
+            "id": 238,
+            "timestamp": "2026-10-21T14:07:18.699937Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 320.0
+            }
+        },
+        {
+            "id": 239,
+            "timestamp": "2026-10-21T14:07:19.512Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994736,
+                "longitude": 9.9848856,
+                "accuracy": 5.63700008392334,
+                "altitude": 572.573974609375,
+                "speed": 1.4585179090499878,
+                "heading": 93.53092956542969
+            }
+        },
+        {
+            "id": 240,
+            "timestamp": "2026-10-21T14:07:19.700850Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 322.0
+            }
+        },
+        {
+            "id": 241,
+            "timestamp": "2026-10-21T14:07:20.700273Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 324.0
+            }
+        },
+        {
+            "id": 242,
+            "timestamp": "2026-10-21T14:07:21.700491Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 326.0
+            }
+        },
+        {
+            "id": 243,
+            "timestamp": "2026-10-21T14:07:22.699690Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 328.0
+            }
+        },
+        {
+            "id": 244,
+            "timestamp": "2026-10-21T14:07:23.554Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994647,
+                "longitude": 9.9848761,
+                "accuracy": 6.663000106811523,
+                "altitude": 572.57861328125,
+                "speed": 1.3333561420440674,
+                "heading": 92.4767074584961
+            }
+        },
+        {
+            "id": 245,
+            "timestamp": "2026-10-21T14:07:23.700234Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 329.0
+            }
+        },
+        {
+            "id": 246,
+            "timestamp": "2026-10-21T14:07:24.699843Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 331.0
+            }
+        },
+        {
+            "id": 247,
+            "timestamp": "2026-10-21T14:07:25.701273Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 332.0
+            }
+        },
+        {
+            "id": 248,
+            "timestamp": "2026-10-21T14:07:26.701054Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 334.0
+            }
+        },
+        {
+            "id": 249,
+            "timestamp": "2026-10-21T14:07:27.116Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399462,
+                "longitude": 9.9848604,
+                "accuracy": 7.190000057220459,
+                "altitude": 572.583251953125,
+                "speed": 1.3598281145095825,
+                "heading": 90.9514389038086
+            }
+        },
+        {
+            "id": 250,
+            "timestamp": "2026-10-21T14:07:27.701106Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 336.0
+            }
+        },
+        {
+            "id": 251,
+            "timestamp": "2026-10-21T14:07:28.700283Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 338.0
+            }
+        },
+        {
+            "id": 252,
+            "timestamp": "2026-10-21T14:07:29.700272Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 340.0
+            }
+        },
+        {
+            "id": 253,
+            "timestamp": "2026-10-21T14:07:30.700008Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 341.0
+            }
+        },
+        {
+            "id": 254,
+            "timestamp": "2026-10-21T14:07:31.700764Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 343.0
+            }
+        },
+        {
+            "id": 255,
+            "timestamp": "2026-10-21T14:07:32.701119Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 345.0
+            }
+        },
+        {
+            "id": 256,
+            "timestamp": "2026-10-21T14:07:33.700085Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 347.0
+            }
+        },
+        {
+            "id": 257,
+            "timestamp": "2026-10-21T14:07:34.700156Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 349.0
+            }
+        },
+        {
+            "id": 258,
+            "timestamp": "2026-10-21T14:07:34.749Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994707,
+                "longitude": 9.9848499,
+                "accuracy": 11.902999877929688,
+                "altitude": 572.59130859375,
+                "speed": 1.4980250597000122,
+                "heading": 74.99353790283203
+            }
+        },
+        {
+            "id": 259,
+            "timestamp": "2026-10-21T14:07:35.701083Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 351.0
+            }
+        },
+        {
+            "id": 260,
+            "timestamp": "2026-10-21T14:07:36.215Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994741,
+                "longitude": 9.984837,
+                "accuracy": 15.444000244140625,
+                "altitude": 572.5936279296875,
+                "speed": 1.4715492725372314,
+                "heading": 73.54209899902344
+            }
+        },
+        {
+            "id": 261,
+            "timestamp": "2026-10-21T14:07:36.700034Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 353.0
+            }
+        },
+        {
+            "id": 262,
+            "timestamp": "2026-10-21T14:07:37.700179Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 355.0
+            }
+        },
+        {
+            "id": 263,
+            "timestamp": "2026-10-21T14:07:38.698857Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 357.0
+            }
+        },
+        {
+            "id": 264,
+            "timestamp": "2026-10-21T14:07:39.246Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994728,
+                "longitude": 9.9848224,
+                "accuracy": 12.307999610900879,
+                "altitude": 572.59716796875,
+                "speed": 1.5112618207931519,
+                "heading": 105.34794616699219
+            }
+        },
+        {
+            "id": 265,
+            "timestamp": "2026-10-21T14:07:39.700677Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 359.0
+            }
+        },
+        {
+            "id": 266,
+            "timestamp": "2026-10-21T14:07:40.699755Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 361.0
+            }
+        },
+        {
+            "id": 267,
+            "timestamp": "2026-10-21T14:07:40.871Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994789,
+                "longitude": 9.9848091,
+                "accuracy": 12.07800006866455,
+                "altitude": 572.5982666015625,
+                "speed": 1.4242557287216187,
+                "heading": 88.31485748291016
+            }
+        },
+        {
+            "id": 268,
+            "timestamp": "2026-10-21T14:07:41.700594Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 363.0
+            }
+        },
+        {
+            "id": 269,
+            "timestamp": "2026-10-21T14:07:42.700862Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 365.0
+            }
+        },
+        {
+            "id": 270,
+            "timestamp": "2026-10-21T14:07:43.700807Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 367.0
+            }
+        },
+        {
+            "id": 271,
+            "timestamp": "2026-10-21T14:07:44.388Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994872,
+                "longitude": 9.9847982,
+                "accuracy": 9.659000396728516,
+                "altitude": 572.6029052734375,
+                "speed": 1.4239338636398315,
+                "heading": 88.22633361816406
+            }
+        },
+        {
+            "id": 272,
+            "timestamp": "2026-10-21T14:07:44.700817Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 368.0
+            }
+        },
+        {
+            "id": 273,
+            "timestamp": "2026-10-21T14:07:45.700720Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 370.0
+            }
+        },
+        {
+            "id": 274,
+            "timestamp": "2026-10-21T14:07:46.699253Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 372.0
+            }
+        },
+        {
+            "id": 275,
+            "timestamp": "2026-10-21T14:07:47.149Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994915,
+                "longitude": 9.9847841,
+                "accuracy": 9.937000274658203,
+                "altitude": 572.6064453125,
+                "speed": 1.4037593603134155,
+                "heading": 88.40877532958984
+            }
+        },
+        {
+            "id": 276,
+            "timestamp": "2026-10-21T14:07:47.699992Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 374.0
+            }
+        },
+        {
+            "id": 277,
+            "timestamp": "2026-10-21T14:07:48.700417Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 376.0
+            }
+        },
+        {
+            "id": 278,
+            "timestamp": "2026-10-21T14:07:49.272Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994953,
+                "longitude": 9.9847713,
+                "accuracy": 10.182999610900879,
+                "altitude": 572.608642578125,
+                "speed": 1.3918159008026123,
+                "heading": 88.36695861816406
+            }
+        },
+        {
+            "id": 279,
+            "timestamp": "2026-10-21T14:07:49.700673Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 378.0
+            }
+        },
+        {
+            "id": 280,
+            "timestamp": "2026-10-21T14:07:50.700669Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 380.0
+            }
+        },
+        {
+            "id": 281,
+            "timestamp": "2026-10-21T14:07:51.700007Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 382.0
+            }
+        },
+        {
+            "id": 282,
+            "timestamp": "2026-10-21T14:07:52.122Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994986,
+                "longitude": 9.984758,
+                "accuracy": 10.355999946594238,
+                "altitude": 572.6121826171875,
+                "speed": 1.3444896936416626,
+                "heading": 89.0743179321289
+            }
+        },
+        {
+            "id": 283,
+            "timestamp": "2026-10-21T14:07:52.700473Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 384.0
+            }
+        },
+        {
+            "id": 284,
+            "timestamp": "2026-10-21T14:07:53.700178Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 386.0
+            }
+        },
+        {
+            "id": 285,
+            "timestamp": "2026-10-21T14:07:54.699905Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 388.0
+            }
+        },
+        {
+            "id": 286,
+            "timestamp": "2026-10-21T14:07:55.084Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995017,
+                "longitude": 9.9847426,
+                "accuracy": 10.685999870300293,
+                "altitude": 572.61572265625,
+                "speed": 1.3892929553985596,
+                "heading": 89.23564147949219
+            }
+        },
+        {
+            "id": 287,
+            "timestamp": "2026-10-21T14:07:55.700417Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 389.0
+            }
+        },
+        {
+            "id": 288,
+            "timestamp": "2026-10-21T14:07:56.701158Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 391.0
+            }
+        },
+        {
+            "id": 289,
+            "timestamp": "2026-10-21T14:07:57.701316Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 393.0
+            }
+        },
+        {
+            "id": 290,
+            "timestamp": "2026-10-21T14:07:58.149Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995064,
+                "longitude": 9.98473,
+                "accuracy": 10.756999969482422,
+                "altitude": 572.6180419921875,
+                "speed": 1.4200570583343506,
+                "heading": 77.68871307373047
+            }
+        },
+        {
+            "id": 291,
+            "timestamp": "2026-10-21T14:07:58.701673Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 395.0
+            }
+        },
+        {
+            "id": 292,
+            "timestamp": "2026-10-21T14:07:59.700976Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 397.0
+            }
+        },
+        {
+            "id": 293,
+            "timestamp": "2026-10-21T14:07:59.755Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399496,
+                "longitude": 9.9847234,
+                "accuracy": 10.753000259399414,
+                "altitude": 572.620361328125,
+                "speed": 1.719467043876648,
+                "heading": 126.40188598632812
+            }
+        },
+        {
+            "id": 294,
+            "timestamp": "2026-10-21T14:08:00.700128Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 398.0
+            }
+        },
+        {
+            "id": 295,
+            "timestamp": "2026-10-21T14:08:01.137Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995011,
+                "longitude": 9.9847121,
+                "accuracy": 10.805999755859375,
+                "altitude": 572.6226806640625,
+                "speed": 1.4238029718399048,
+                "heading": 105.16621398925781
+            }
+        },
+        {
+            "id": 296,
+            "timestamp": "2026-10-21T14:08:01.700475Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 400.0
+            }
+        },
+        {
+            "id": 297,
+            "timestamp": "2026-10-21T14:08:01.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399502,
+                "longitude": 9.9847269,
+                "accuracy": 101.83999633789062,
+                "altitude": 557.2119140625,
+                "speed": 1.0439034700393677,
+                "heading": 83.27302551269531
+            }
+        },
+        {
+            "id": 298,
+            "timestamp": "2026-10-21T14:08:02.700652Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 401.0
+            }
+        },
+        {
+            "id": 299,
+            "timestamp": "2026-10-21T14:08:03.139Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399507,
+                "longitude": 9.9847135,
+                "accuracy": 11.734000205993652,
+                "altitude": 557.5546875,
+                "speed": 1.3241721391677856,
+                "heading": 85.6197280883789
+            }
+        },
+        {
+            "id": 300,
+            "timestamp": "2026-10-21T14:08:03.700604Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 403.0
+            }
+        },
+        {
+            "id": 301,
+            "timestamp": "2026-10-21T14:08:04.699603Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 405.0
+            }
+        },
+        {
+            "id": 302,
+            "timestamp": "2026-10-21T14:08:05.700185Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 407.0
+            }
+        },
+        {
+            "id": 303,
+            "timestamp": "2026-10-21T14:08:06.393Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3995067,
+                "longitude": 9.984686,
+                "accuracy": 18.4060001373291,
+                "altitude": 576.319580078125,
+                "speed": 1.3457262516021729,
+                "heading": 84.47855377197266
+            }
+        },
+        {
+            "id": 304,
+            "timestamp": "2026-10-21T14:08:06.700724Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 409.0
+            }
+        },
+        {
+            "id": 305,
+            "timestamp": "2026-10-21T14:08:07.000Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399504,
+                "longitude": 9.9846661,
+                "accuracy": 21.895999908447266,
+                "altitude": 576.32958984375,
+                "speed": 1.2596871852874756,
+                "heading": 89.36185455322266
+            }
+        },
+        {
+            "id": 306,
+            "timestamp": "2026-10-21T14:08:07.700110Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 410.0
+            }
+        },
+        {
+            "id": 307,
+            "timestamp": "2026-10-21T14:08:08.700325Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 412.0
+            }
+        },
+        {
+            "id": 308,
+            "timestamp": "2026-10-21T14:08:09.699940Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 414.0
+            }
+        },
+        {
+            "id": 309,
+            "timestamp": "2026-10-21T14:08:10.000Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399489,
+                "longitude": 9.9846157,
+                "accuracy": 23.777999877929688,
+                "altitude": 569.32080078125,
+                "speed": 1.5569429397583008,
+                "heading": 120.14127349853516
+            }
+        },
+        {
+            "id": 310,
+            "timestamp": "2026-10-21T14:08:10.454Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994925,
+                "longitude": 9.984634,
+                "accuracy": 20.290000915527344,
+                "altitude": 569.32080078125,
+                "speed": 1.618938684463501,
+                "heading": 117.1015396118164
+            }
+        },
+        {
+            "id": 311,
+            "timestamp": "2026-10-21T14:08:10.699901Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 416.0
+            }
+        },
+        {
+            "id": 312,
+            "timestamp": "2026-10-21T14:08:11.075Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994967,
+                "longitude": 9.9846482,
+                "accuracy": 17.56399917602539,
+                "altitude": 572.5665283203125,
+                "speed": 1.6034060716629028,
+                "heading": 113.67063903808594
+            }
+        },
+        {
+            "id": 313,
+            "timestamp": "2026-10-21T14:08:11.699857Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 417.0
+            }
+        },
+        {
+            "id": 314,
+            "timestamp": "2026-10-21T14:08:12.049Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994911,
+                "longitude": 9.984615,
+                "accuracy": 15.986000061035156,
+                "altitude": 572.5665283203125,
+                "speed": 1.4904155731201172,
+                "heading": 111.66080474853516
+            }
+        },
+        {
+            "id": 315,
+            "timestamp": "2026-10-21T14:08:12.699680Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 418.0
+            }
+        },
+        {
+            "id": 316,
+            "timestamp": "2026-10-21T14:08:13.089Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994883,
+                "longitude": 9.9845636,
+                "accuracy": 14.79699993133545,
+                "altitude": 571.18359375,
+                "speed": 1.4695563316345215,
+                "heading": 107.90740203857422
+            }
+        },
+        {
+            "id": 317,
+            "timestamp": "2026-10-21T14:08:13.634Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399488,
+                "longitude": 9.9845133,
+                "accuracy": 13.555999755859375,
+                "altitude": 565.030517578125,
+                "speed": 1.3946033716201782,
+                "heading": 105.00470733642578
+            }
+        },
+        {
+            "id": 318,
+            "timestamp": "2026-10-21T14:08:13.700265Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 419.0
+            }
+        },
+        {
+            "id": 319,
+            "timestamp": "2026-10-21T14:08:14.165Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994883,
+                "longitude": 9.9844934,
+                "accuracy": 12.545999526977539,
+                "altitude": 563.5540771484375,
+                "speed": 1.368657112121582,
+                "heading": 101.9375
+            }
+        },
+        {
+            "id": 320,
+            "timestamp": "2026-10-21T14:08:14.700200Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 421.0
+            }
+        },
+        {
+            "id": 321,
+            "timestamp": "2026-10-21T14:08:15.189Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994866,
+                "longitude": 9.9844749,
+                "accuracy": 9.788999557495117,
+                "altitude": 563.5540771484375,
+                "speed": 1.330969214439392,
+                "heading": 99.43498229980469
+            }
+        },
+        {
+            "id": 322,
+            "timestamp": "2026-10-21T14:08:15.700281Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 423.0
+            }
+        },
+        {
+            "id": 323,
+            "timestamp": "2026-10-21T14:08:16.067Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994856,
+                "longitude": 9.9844599,
+                "accuracy": 8.62399959564209,
+                "altitude": 549.5770263671875,
+                "speed": 1.3481693267822266,
+                "heading": 97.31280517578125
+            }
+        },
+        {
+            "id": 324,
+            "timestamp": "2026-10-21T14:08:16.700393Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 425.0
+            }
+        },
+        {
+            "id": 325,
+            "timestamp": "2026-10-21T14:08:17.310Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994845,
+                "longitude": 9.984444,
+                "accuracy": 6.702000141143799,
+                "altitude": 553.78564453125,
+                "speed": 1.2910274267196655,
+                "heading": 94.64276885986328
+            }
+        },
+        {
+            "id": 326,
+            "timestamp": "2026-10-21T14:08:17.699950Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 426.0
+            }
+        },
+        {
+            "id": 327,
+            "timestamp": "2026-10-21T14:08:18.700628Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 427.0
+            }
+        },
+        {
+            "id": 328,
+            "timestamp": "2026-10-21T14:08:19.700451Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 429.0
+            }
+        },
+        {
+            "id": 329,
+            "timestamp": "2026-10-21T14:08:20.700732Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 430.0
+            }
+        },
+        {
+            "id": 330,
+            "timestamp": "2026-10-21T14:08:21.700807Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 432.0
+            }
+        },
+        {
+            "id": 331,
+            "timestamp": "2026-10-21T14:08:22.700128Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 434.0
+            }
+        },
+        {
+            "id": 332,
+            "timestamp": "2026-10-21T14:08:23.700286Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 435.0
+            }
+        },
+        {
+            "id": 333,
+            "timestamp": "2026-10-21T14:08:24.700175Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 437.0
+            }
+        },
+        {
+            "id": 334,
+            "timestamp": "2026-10-21T14:08:25.700107Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 439.0
+            }
+        },
+        {
+            "id": 335,
+            "timestamp": "2026-10-21T14:08:26.700497Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 441.0
+            }
+        },
+        {
+            "id": 336,
+            "timestamp": "2026-10-21T14:08:27.700449Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 443.0
+            }
+        },
+        {
+            "id": 337,
+            "timestamp": "2026-10-21T14:08:28.699791Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 445.0
+            }
+        },
+        {
+            "id": 338,
+            "timestamp": "2026-10-21T14:08:28.999Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399433,
+                "longitude": 9.9843156,
+                "accuracy": 8.567999839782715,
+                "altitude": 542.2147216796875,
+                "speed": 1.7317051887512207,
+                "heading": 135.74740600585938
+            }
+        },
+        {
+            "id": 339,
+            "timestamp": "2026-10-21T14:08:29.674Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994524,
+                "longitude": 9.9843712,
+                "accuracy": 8.767999649047852,
+                "altitude": 542.2147216796875,
+                "speed": 1.6755222082138062,
+                "heading": 121.9608383178711
+            }
+        },
+        {
+            "id": 340,
+            "timestamp": "2026-10-21T14:08:29.699798Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 447.0
+            }
+        },
+        {
+            "id": 341,
+            "timestamp": "2026-10-21T14:08:30.268Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3994377,
+                "longitude": 9.9843376,
+                "accuracy": 9.777999877929688,
+                "altitude": 543.307373046875,
+                "speed": 1.5974724292755127,
+                "heading": 122.39339447021484
+            }
+        },
+        {
+            "id": 342,
+            "timestamp": "2026-10-21T14:08:30.700922Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 449.0
+            }
+        },
+        {
+            "id": 343,
+            "timestamp": "2026-10-21T14:08:31.146Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399381,
+                "longitude": 9.9842063,
+                "accuracy": 11.366999626159668,
+                "altitude": 543.088134765625,
+                "speed": 1.7265498638153076,
+                "heading": 124.23590850830078
+            }
+        },
+        {
+            "id": 344,
+            "timestamp": "2026-10-21T14:08:31.700412Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 451.0
+            }
+        },
+        {
+            "id": 345,
+            "timestamp": "2026-10-21T14:08:31.755Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992761,
+                "longitude": 9.983929,
+                "accuracy": 11.484000205993652,
+                "altitude": 543.088134765625,
+                "speed": 1.9694461822509766,
+                "heading": 132.32232666015625
+            }
+        },
+        {
+            "id": 346,
+            "timestamp": "2026-10-21T14:08:32.349Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399241,
+                "longitude": 9.9838313,
+                "accuracy": 11.208999633789062,
+                "altitude": 546.593994140625,
+                "speed": 1.5044721364974976,
+                "heading": 112.9510498046875
+            }
+        },
+        {
+            "id": 347,
+            "timestamp": "2026-10-21T14:08:32.698940Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 453.0
+            }
+        },
+        {
+            "id": 348,
+            "timestamp": "2026-10-21T14:08:33.157Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3992265,
+                "longitude": 9.9837935,
+                "accuracy": 10.701000213623047,
+                "altitude": 547.531982421875,
+                "speed": 1.5360134840011597,
+                "heading": 109.4996566772461
+            }
+        },
+        {
+            "id": 349,
+            "timestamp": "2026-10-21T14:08:33.699601Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 455.0
+            }
+        },
+        {
+            "id": 350,
+            "timestamp": "2026-10-21T14:08:34.098Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399214,
+                "longitude": 9.9837796,
+                "accuracy": 10.41100025177002,
+                "altitude": 548.251953125,
+                "speed": 1.5169527530670166,
+                "heading": 106.27983856201172
+            }
+        },
+        {
+            "id": 351,
+            "timestamp": "2026-10-21T14:08:34.700703Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 457.0
+            }
+        },
+        {
+            "id": 352,
+            "timestamp": "2026-10-21T14:08:34.845Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399203,
+                "longitude": 9.9837744,
+                "accuracy": 9.95199966430664,
+                "altitude": 548.251953125,
+                "speed": 1.4979251623153687,
+                "heading": 104.29353332519531
+            }
+        },
+        {
+            "id": 353,
+            "timestamp": "2026-10-21T14:08:35.529Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991938,
+                "longitude": 9.9837726,
+                "accuracy": 8.935999870300293,
+                "altitude": 547.042724609375,
+                "speed": 1.5161255598068237,
+                "heading": 103.45171356201172
+            }
+        },
+        {
+            "id": 354,
+            "timestamp": "2026-10-21T14:08:35.700469Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 459.0
+            }
+        },
+        {
+            "id": 355,
+            "timestamp": "2026-10-21T14:08:36.700872Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 461.0
+            }
+        },
+        {
+            "id": 356,
+            "timestamp": "2026-10-21T14:08:37.179Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991775,
+                "longitude": 9.9837709,
+                "accuracy": 6.863999843597412,
+                "altitude": 546.3885498046875,
+                "speed": 1.5413380861282349,
+                "heading": 103.06172180175781
+            }
+        },
+        {
+            "id": 357,
+            "timestamp": "2026-10-21T14:08:37.700491Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 462.0
+            }
+        },
+        {
+            "id": 358,
+            "timestamp": "2026-10-21T14:08:37.947Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991628,
+                "longitude": 9.98377,
+                "accuracy": 6.478000164031982,
+                "altitude": 546.3885498046875,
+                "speed": 1.5749202966690063,
+                "heading": 106.63714599609375
+            }
+        },
+        {
+            "id": 359,
+            "timestamp": "2026-10-21T14:08:38.669Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991439,
+                "longitude": 9.9837695,
+                "accuracy": 6.453999996185303,
+                "altitude": 547.6044921875,
+                "speed": 1.9406037330627441,
+                "heading": 129.24375915527344
+            }
+        },
+        {
+            "id": 360,
+            "timestamp": "2026-10-21T14:08:38.700743Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 464.0
+            }
+        },
+        {
+            "id": 361,
+            "timestamp": "2026-10-21T14:08:39.699612Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 466.0
+            }
+        },
+        {
+            "id": 362,
+            "timestamp": "2026-10-21T14:08:40.700803Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 468.0
+            }
+        },
+        {
+            "id": 364,
+            "timestamp": "2026-10-21T14:08:41.691Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991332,
+                "longitude": 9.9837775,
+                "accuracy": 6.40500020980835,
+                "altitude": 549.575439453125,
+                "speed": 1.6019576787948608,
+                "heading": 109.64891052246094
+            }
+        },
+        {
+            "id": 363,
+            "timestamp": "2026-10-21T14:08:41.700742Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 470.0
+            }
+        },
+        {
+            "id": 365,
+            "timestamp": "2026-10-21T14:08:42.699936Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 472.0
+            }
+        },
+        {
+            "id": 366,
+            "timestamp": "2026-10-21T14:08:42.731Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3991071,
+                "longitude": 9.9837904,
+                "accuracy": 6.297999858856201,
+                "altitude": 550.5701904296875,
+                "speed": 1.6211888790130615,
+                "heading": 111.33522033691406
+            }
+        },
+        {
+            "id": 367,
+            "timestamp": "2026-10-21T14:08:43.700335Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 474.0
+            }
+        },
+        {
+            "id": 368,
+            "timestamp": "2026-10-21T14:08:43.752Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990836,
+                "longitude": 9.9838047,
+                "accuracy": 6.041999816894531,
+                "altitude": 550.79541015625,
+                "speed": 1.709368109703064,
+                "heading": 113.60102081298828
+            }
+        },
+        {
+            "id": 369,
+            "timestamp": "2026-10-21T14:08:44.700372Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 476.0
+            }
+        },
+        {
+            "id": 370,
+            "timestamp": "2026-10-21T14:08:44.793Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399067,
+                "longitude": 9.9838143,
+                "accuracy": 5.7270002365112305,
+                "altitude": 551.185791015625,
+                "speed": 1.702401876449585,
+                "heading": 111.82730865478516
+            }
+        },
+        {
+            "id": 371,
+            "timestamp": "2026-10-21T14:08:45.701013Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 478.0
+            }
+        },
+        {
+            "id": 372,
+            "timestamp": "2026-10-21T14:08:45.832Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399049,
+                "longitude": 9.9838202,
+                "accuracy": 5.291999816894531,
+                "altitude": 552.4390869140625,
+                "speed": 2.0947201251983643,
+                "heading": 130.78102111816406
+            }
+        },
+        {
+            "id": 373,
+            "timestamp": "2026-10-21T14:08:46.701152Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 480.0
+            }
+        },
+        {
+            "id": 374,
+            "timestamp": "2026-10-21T14:08:46.892Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399039,
+                "longitude": 9.983824,
+                "accuracy": 4.980999946594238,
+                "altitude": 551.300537109375,
+                "speed": 1.9063167572021484,
+                "heading": 122.4527359008789
+            }
+        },
+        {
+            "id": 375,
+            "timestamp": "2026-10-21T14:08:47.699883Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 482.0
+            }
+        },
+        {
+            "id": 376,
+            "timestamp": "2026-10-21T14:08:48.097Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3990233,
+                "longitude": 9.9838258,
+                "accuracy": 4.651000022888184,
+                "altitude": 553.107177734375,
+                "speed": 1.7617169618606567,
+                "heading": 113.51325988769531
+            }
+        },
+        {
+            "id": 377,
+            "timestamp": "2026-10-21T14:08:48.700311Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 484.0
+            }
+        },
+        {
+            "id": 378,
+            "timestamp": "2026-10-21T14:08:48.973Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.399008,
+                "longitude": 9.9838243,
+                "accuracy": 4.540999889373779,
+                "altitude": 553.107177734375,
+                "speed": 1.6203588247299194,
+                "heading": 111.21647644042969
+            }
+        },
+        {
+            "id": 379,
+            "timestamp": "2026-10-21T14:08:49.429Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989984,
+                "longitude": 9.983822,
+                "accuracy": 4.49399995803833,
+                "altitude": 552.2578125,
+                "speed": 1.5412675142288208,
+                "heading": 109.57676696777344
+            }
+        },
+        {
+            "id": 380,
+            "timestamp": "2026-10-21T14:08:49.700283Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 485.0
+            }
+        },
+        {
+            "id": 381,
+            "timestamp": "2026-10-21T14:08:50.489Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989852,
+                "longitude": 9.9838187,
+                "accuracy": 4.519000053405762,
+                "altitude": 550.776611328125,
+                "speed": 1.497398018836975,
+                "heading": 105.39497375488281
+            }
+        },
+        {
+            "id": 382,
+            "timestamp": "2026-10-21T14:08:50.700540Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 487.0
+            }
+        },
+        {
+            "id": 383,
+            "timestamp": "2026-10-21T14:08:51.569Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989732,
+                "longitude": 9.9838133,
+                "accuracy": 4.5329999923706055,
+                "altitude": 548.6279296875,
+                "speed": 1.4283604621887207,
+                "heading": 102.85842895507812
+            }
+        },
+        {
+            "id": 384,
+            "timestamp": "2026-10-21T14:08:51.700570Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 489.0
+            }
+        },
+        {
+            "id": 385,
+            "timestamp": "2026-10-21T14:08:52.232Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.398963,
+                "longitude": 9.9838074,
+                "accuracy": 4.442999839782715,
+                "altitude": 548.3031005859375,
+                "speed": 1.6071950197219849,
+                "heading": 134.0279541015625
+            }
+        },
+        {
+            "id": 386,
+            "timestamp": "2026-10-21T14:08:52.700106Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 491.0
+            }
+        },
+        {
+            "id": 387,
+            "timestamp": "2026-10-21T14:08:53.491Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989524,
+                "longitude": 9.9837987,
+                "accuracy": 4.414000034332275,
+                "altitude": 548.479248046875,
+                "speed": 1.2709294557571411,
+                "heading": 108.59832763671875
+            }
+        },
+        {
+            "id": 388,
+            "timestamp": "2026-10-21T14:08:53.700268Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 492.0
+            }
+        },
+        {
+            "id": 389,
+            "timestamp": "2026-10-21T14:08:54.700162Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 494.0
+            }
+        },
+        {
+            "id": 390,
+            "timestamp": "2026-10-21T14:08:55.172Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989434,
+                "longitude": 9.9837937,
+                "accuracy": 4.375,
+                "altitude": 547.16064453125,
+                "speed": 1.1406289339065552,
+                "heading": 102.8681411743164
+            }
+        },
+        {
+            "id": 391,
+            "timestamp": "2026-10-21T14:08:55.700562Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 495.0
+            }
+        },
+        {
+            "id": 392,
+            "timestamp": "2026-10-21T14:08:56.700553Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "cumulative_steps": 496.0
+            }
+        },
+        {
+            "id": 393,
+            "timestamp": "2026-10-21T14:08:57.073Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989333,
+                "longitude": 9.9837857,
+                "accuracy": 4.48199987411499,
+                "altitude": 546.0103759765625,
+                "speed": 0.5269923210144043,
+                "heading": 294.32257080078125
+            }
+        },
+        {
+            "id": 394,
+            "timestamp": "2026-10-21T14:08:58.307946Z",
+            "sourceId": "pedometer",
+            "type": "steps",
+            "values": {
+                "pedestrian_status": 0.0
+            }
+        },
+        {
+            "id": 395,
+            "timestamp": "2026-10-21T14:08:59.095Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989342,
+                "longitude": 9.9837701,
+                "accuracy": 4.671999931335449,
+                "altitude": 544.325439453125,
+                "speed": 0.2869642376899719,
+                "heading": 299.5828552246094
+            }
+        },
+        {
+            "id": 396,
+            "timestamp": "2026-10-21T14:09:02.066Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989364,
+                "longitude": 9.9837556,
+                "accuracy": 4.058000087738037,
+                "altitude": 542.583251953125,
+                "speed": 0.10552464425563812,
+                "heading": 252.81326293945312
+            }
+        },
+        {
+            "id": 397,
+            "timestamp": "2026-10-21T14:09:05.157Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989362,
+                "longitude": 9.9837418,
+                "accuracy": 3.388000011444092,
+                "altitude": 541.28759765625,
+                "speed": 0.10261403024196625,
+                "heading": 233.05357360839844
+            }
+        },
+        {
+            "id": 398,
+            "timestamp": "2026-10-21T14:09:17.116Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989446,
+                "longitude": 9.9837348,
+                "accuracy": 3.049999952316284,
+                "altitude": 540.081787109375,
+                "speed": 0.15822605788707733,
+                "heading": 319.05889892578125
+            }
+        },
+        {
+            "id": 399,
+            "timestamp": "2026-10-21T14:09:36.118Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989517,
+                "longitude": 9.9837452,
+                "accuracy": 3.0,
+                "altitude": 540.1220703125,
+                "speed": 0.07509005069732666,
+                "heading": 0.0
+            }
+        },
+        {
+            "id": 400,
+            "timestamp": "2026-10-21T14:09:47.174Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989498,
+                "longitude": 9.9837587,
+                "accuracy": 3.0,
+                "altitude": 540.109375,
+                "speed": 0.05163798853754997,
+                "heading": 0.0
+            }
+        },
+        {
+            "id": 401,
+            "timestamp": "2026-10-21T14:09:59.182Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989495,
+                "longitude": 9.9837722,
+                "accuracy": 3.0,
+                "altitude": 540.8597412109375,
+                "speed": 0.06705047935247421,
+                "heading": 0.0
+            }
+        },
+        {
+            "id": 402,
+            "timestamp": "2026-10-21T14:10:14.161Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.398948,
+                "longitude": 9.9837863,
+                "accuracy": 3.0,
+                "altitude": 541.325439453125,
+                "speed": 0.06676189601421356,
+                "heading": 0.0
+            }
+        },
+        {
+            "id": 403,
+            "timestamp": "2026-10-21T14:10:38.176Z",
+            "sourceId": "gps",
+            "type": "position",
+            "values": {
+                "latitude": 48.3989474,
+                "longitude": 9.9837999,
+                "accuracy": 3.3970000743865967,
+                "altitude": 541.7822265625,
+                "speed": 0.10104158520698547,
+                "heading": 70.59391784667969
+            }
+        }
+    ],
+    "profile": {
+        "id": 1,
+        "name": "Moritz",
+        "timestamp": "2026-10-21T14:04:10.000Z",
+        "height": 189,
+        "age": 27
+    }
+}

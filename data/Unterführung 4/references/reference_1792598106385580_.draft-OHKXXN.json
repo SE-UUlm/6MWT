@@ -1,0 +1,531 @@
+{
+  "id": "manual-1792598106316924",
+  "notes": "Manual reference",
+  "startedAt": "2026-10-21T14:04:50.813Z",
+  "duration": 360,
+  "distance": 378.81853744613727,
+  "phase": "completed",
+  "profileId": 5,
+  "referenceName": "Manual reference",
+  "referenceKind": "manual",
+  "timingModel": "constant_speed",
+  "samples": [
+    {
+      "id": 1,
+      "timestamp": "2026-10-21T14:05:00.737186Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.398913678632326,
+        "longitude": 9.983670979055292,
+        "distance": 10.442959713537826
+      }
+    },
+    {
+      "id": 2,
+      "timestamp": "2026-10-21T14:05:10.329249Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.399004448064254,
+        "longitude": 9.983672159631407,
+        "distance": 20.53643635432381
+      }
+    },
+    {
+      "id": 3,
+      "timestamp": "2026-10-21T14:05:18.821826Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.3990842655551,
+        "longitude": 9.983686303525344,
+        "distance": 29.472951091432908
+      }
+    },
+    {
+      "id": 4,
+      "timestamp": "2026-10-21T14:05:28.493822Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39917503904944,
+        "longitude": 9.98370398257065,
+        "distance": 39.65053884770026
+      }
+    },
+    {
+      "id": 5,
+      "timestamp": "2026-10-21T14:05:37.531308Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39926033432741,
+        "longitude": 9.983694554404204,
+        "distance": 49.16044770095719
+      }
+    },
+    {
+      "id": 6,
+      "timestamp": "2026-10-21T14:05:46.664645Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39934641110445,
+        "longitude": 9.983706340434395,
+        "distance": 58.771218059758546
+      }
+    },
+    {
+      "id": 7,
+      "timestamp": "2026-10-21T14:05:53.741703Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39941292487841,
+        "longitude": 9.98371812646467,
+        "distance": 66.21821973689606
+      }
+    },
+    {
+      "id": 8,
+      "timestamp": "2026-10-21T14:05:58.254361Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39942309931219,
+        "longitude": 9.983780595055528,
+        "distance": 70.9667710695145
+      }
+    },
+    {
+      "id": 9,
+      "timestamp": "2026-10-21T14:06:06.523276Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39942309931219,
+        "longitude": 9.983898455357487,
+        "distance": 79.66793323496705
+      }
+    },
+    {
+      "id": 10,
+      "timestamp": "2026-10-21T14:06:13.097820Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39943014063052,
+        "longitude": 9.983991563022904,
+        "distance": 86.58615306735636
+      }
+    },
+    {
+      "id": 11,
+      "timestamp": "2026-10-21T14:06:22.689899Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39943014063052,
+        "longitude": 9.984128282946287,
+        "distance": 96.67964544914003
+      }
+    },
+    {
+      "id": 12,
+      "timestamp": "2026-10-21T14:06:28.979073Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39943248773647,
+        "longitude": 9.984217855460294,
+        "distance": 103.2975786686841
+      }
+    },
+    {
+      "id": 13,
+      "timestamp": "2026-10-21T14:06:38.240673Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39943327156063,
+        "longitude": 9.984349859656188,
+        "distance": 113.04331671236991
+      }
+    },
+    {
+      "id": 14,
+      "timestamp": "2026-10-21T14:06:45.863977Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.399435139148224,
+        "longitude": 9.984458481391952,
+        "distance": 121.06511860520766
+      }
+    },
+    {
+      "id": 15,
+      "timestamp": "2026-10-21T14:06:52.276458Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39941860921002,
+        "longitude": 9.984546424895713,
+        "distance": 127.81280378945284
+      }
+    },
+    {
+      "id": 16,
+      "timestamp": "2026-10-21T14:07:02.800789Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39937244888006,
+        "longitude": 9.984679347778812,
+        "distance": 138.8872813325434
+      }
+    },
+    {
+      "id": 17,
+      "timestamp": "2026-10-21T14:07:07.748022Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39934936680522,
+        "longitude": 9.984740696801795,
+        "distance": 144.09312392987906
+      }
+    },
+    {
+      "id": 18,
+      "timestamp": "2026-10-21T14:07:12.018262Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39932842767739,
+        "longitude": 9.98479275405514,
+        "distance": 148.5865851652518
+      }
+    },
+    {
+      "id": 19,
+      "timestamp": "2026-10-21T14:07:16.770270Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39935014976394,
+        "longitude": 9.984852060393022,
+        "distance": 153.58699825142645
+      }
+    },
+    {
+      "id": 20,
+      "timestamp": "2026-10-21T14:07:25.191263Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39942754077784,
+        "longitude": 9.984880686513575,
+        "distance": 162.44818868953598
+      }
+    },
+    {
+      "id": 21,
+      "timestamp": "2026-10-21T14:07:27.916992Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39945333523081,
+        "longitude": 9.984880686513575,
+        "distance": 165.31640099497864
+      }
+    },
+    {
+      "id": 22,
+      "timestamp": "2026-10-21T14:07:33.743096Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39950764408474,
+        "longitude": 9.984895002426752,
+        "distance": 171.44705739207626
+      }
+    },
+    {
+      "id": 23,
+      "timestamp": "2026-10-21T14:07:40.667320Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39957281766354,
+        "longitude": 9.98490522726393,
+        "distance": 178.73323632419599
+      }
+    },
+    {
+      "id": 24,
+      "timestamp": "2026-10-21T14:07:45.545114Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39961897781168,
+        "longitude": 9.98490522726393,
+        "distance": 183.86601061026178
+      }
+    },
+    {
+      "id": 25,
+      "timestamp": "2026-10-21T14:07:47.933177Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39963798737056,
+        "longitude": 9.984923634253143,
+        "distance": 186.3789064348834
+      }
+    },
+    {
+      "id": 26,
+      "timestamp": "2026-10-21T14:07:56.417602Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39955788048066,
+        "longitude": 9.984915452101106,
+        "distance": 195.30684442035937
+      }
+    },
+    {
+      "id": 27,
+      "timestamp": "2026-10-21T14:07:58.588734Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39953751468735,
+        "longitude": 9.984911361025068,
+        "distance": 197.5914693076986
+      }
+    },
+    {
+      "id": 28,
+      "timestamp": "2026-10-21T14:08:06.192662Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39946555624331,
+        "longitude": 9.984911361025068,
+        "distance": 205.5928832148569
+      }
+    },
+    {
+      "id": 29,
+      "timestamp": "2026-10-21T14:08:11.819303Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39941531975622,
+        "longitude": 9.984884777589615,
+        "distance": 211.51364939985692
+      }
+    },
+    {
+      "id": 30,
+      "timestamp": "2026-10-21T14:08:22.093338Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39933657251385,
+        "longitude": 9.98479888781628,
+        "distance": 222.32474640060016
+      }
+    },
+    {
+      "id": 31,
+      "timestamp": "2026-10-21T14:08:27.048520Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.399354222180605,
+        "longitude": 9.984733453423098,
+        "distance": 227.5389543835962
+      }
+    },
+    {
+      "id": 32,
+      "timestamp": "2026-10-21T14:08:30.860727Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39936644321691,
+        "longitude": 9.984682329237293,
+        "distance": 231.55043940437372
+      }
+    },
+    {
+      "id": 33,
+      "timestamp": "2026-10-21T14:08:34.020284Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39938544908188,
+        "longitude": 9.984647563649764,
+        "distance": 234.87515798107088
+      }
+    },
+    {
+      "id": 34,
+      "timestamp": "2026-10-21T14:08:44.481907Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39942754077784,
+        "longitude": 9.984512598081562,
+        "distance": 245.88364928407142
+      }
+    },
+    {
+      "id": 35,
+      "timestamp": "2026-10-21T14:08:53.576155Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.399437041805676,
+        "longitude": 9.9843837662745,
+        "distance": 255.45328725741354
+      }
+    },
+    {
+      "id": 36,
+      "timestamp": "2026-10-21T14:09:07.663051Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39944518662475,
+        "longitude": 9.984183354901441,
+        "distance": 270.2765574801517
+      }
+    },
+    {
+      "id": 37,
+      "timestamp": "2026-10-21T14:09:13.063693Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39946012384072,
+        "longitude": 9.984109738356183,
+        "distance": 275.95951111052204
+      }
+    },
+    {
+      "id": 38,
+      "timestamp": "2026-10-21T14:09:23.681752Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39945876384584,
+        "longitude": 9.98395840848387,
+        "distance": 287.1326153642033
+      }
+    },
+    {
+      "id": 39,
+      "timestamp": "2026-10-21T14:09:29.570941Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39946148004727,
+        "longitude": 9.983874567101433,
+        "distance": 293.3296545108622
+      }
+    },
+    {
+      "id": 40,
+      "timestamp": "2026-10-21T14:09:42.534289Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39945062281721,
+        "longitude": 9.983690520032528,
+        "distance": 306.9706448502365
+      }
+    },
+    {
+      "id": 41,
+      "timestamp": "2026-10-21T14:09:48.575543Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39939359769771,
+        "longitude": 9.98368438627119,
+        "distance": 313.3276975965183
+      }
+    },
+    {
+      "id": 42,
+      "timestamp": "2026-10-21T14:09:57.512484Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39930941800306,
+        "longitude": 9.983672113043115,
+        "distance": 322.7318049938386
+      }
+    },
+    {
+      "id": 43,
+      "timestamp": "2026-10-21T14:10:02.552426Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39926189757387,
+        "longitude": 9.983665979281977,
+        "distance": 328.0352036397685
+      }
+    },
+    {
+      "id": 44,
+      "timestamp": "2026-10-21T14:10:11.762416Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39917500523302,
+        "longitude": 9.983655754444719,
+        "distance": 337.7266338358416
+      }
+    },
+    {
+      "id": 45,
+      "timestamp": "2026-10-21T14:10:26.543239Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.399035155871495,
+        "longitude": 9.983659845520716,
+        "distance": 353.2801061392009
+      }
+    },
+    {
+      "id": 46,
+      "timestamp": "2026-10-21T14:10:33.001126Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39897405783928,
+        "longitude": 9.983657802835618,
+        "distance": 360.07557088006274
+      }
+    },
+    {
+      "id": 47,
+      "timestamp": "2026-10-21T14:10:39.750564Z",
+      "type": "position",
+      "sourceId": "manual-reference",
+      "values": {
+        "latitude": 48.39891024350295,
+        "longitude": 9.983661893911655,
+        "distance": 367.1778263250179
+      }
+    }
+  ]
+}

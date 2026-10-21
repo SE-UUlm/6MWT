@@ -1,3 +1,5 @@
+> **Historical project planning.** This page preserves the original requirements and roadmap; it is not a statement of current functionality. See [Project Archive](Project-Archive.md) and [Home](README.md).
+
 # Requirements
 
 This page documents the functional and non-functional requirements of the 6MWT application.

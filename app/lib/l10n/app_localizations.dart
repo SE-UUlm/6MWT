@@ -365,8 +365,26 @@ abstract class AppLocalizations {
   /// No description provided for @profile_info.
   ///
   /// In de, this message translates to:
-  /// **'Bitte füllen Sie Alter und Körpergröße aus.'**
+  /// **'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.'**
   String get profile_info;
+
+  /// No description provided for @profileAgeOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.'**
+  String get profileAgeOutOfRange;
+
+  /// No description provided for @profileHeightOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.'**
+  String get profileHeightOutOfRange;
+
+  /// No description provided for @profileWeightOutOfRange.
+  ///
+  /// In de, this message translates to:
+  /// **'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.'**
+  String get profileWeightOutOfRange;
 
   /// No description provided for @field1.
   ///
@@ -380,17 +398,23 @@ abstract class AppLocalizations {
   /// **'Alter in Jahren'**
   String get field2;
 
-  /// No description provided for @field3_1.
+  /// No description provided for @genderMale.
   ///
   /// In de, this message translates to:
   /// **'Männlich'**
-  String get field3_1;
+  String get genderMale;
 
-  /// No description provided for @field3_2.
+  /// No description provided for @genderFemale.
   ///
   /// In de, this message translates to:
   /// **'Weiblich'**
-  String get field3_2;
+  String get genderFemale;
+
+  /// No description provided for @genderOther.
+  ///
+  /// In de, this message translates to:
+  /// **'Divers/Keine Angabe'**
+  String get genderOther;
 
   /// No description provided for @field4.
   ///
@@ -481,6 +505,72 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Zurücksetzen'**
   String get walk_reset;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Über die App'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutProject.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.'**
+  String get aboutProject;
+
+  /// No description provided for @aboutVersion.
+  ///
+  /// In de, this message translates to:
+  /// **'App-Version'**
+  String get aboutVersion;
+
+  /// No description provided for @aboutBuild.
+  ///
+  /// In de, this message translates to:
+  /// **'Buildnummer'**
+  String get aboutBuild;
+
+  /// No description provided for @aboutCommit.
+  ///
+  /// In de, this message translates to:
+  /// **'Commit-Hash'**
+  String get aboutCommit;
+
+  /// No description provided for @aboutUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Nicht verfügbar'**
+  String get aboutUnavailable;
+
+  /// No description provided for @aboutAuthors.
+  ///
+  /// In de, this message translates to:
+  /// **'Autoren'**
+  String get aboutAuthors;
+
+  /// No description provided for @aboutRepository.
+  ///
+  /// In de, this message translates to:
+  /// **'GitHub-Repository'**
+  String get aboutRepository;
+
+  /// No description provided for @aboutProjectLicense.
+  ///
+  /// In de, this message translates to:
+  /// **'Projektlizenz'**
+  String get aboutProjectLicense;
+
+  /// No description provided for @aboutLicenses.
+  ///
+  /// In de, this message translates to:
+  /// **'Open-Source-Lizenzen'**
+  String get aboutLicenses;
+
+  /// No description provided for @aboutLinkError.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Link konnte nicht geöffnet werden.'**
+  String get aboutLinkError;
 }
 
 class _AppLocalizationsDelegate

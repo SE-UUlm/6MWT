@@ -151,7 +151,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_sub2 => 'Anthropometrie';
 
   @override
-  String get profile_info => 'Bitte füllen Sie Alter und Körpergröße aus.';
+  String get profile_info =>
+      'Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.';
+
+  @override
+  String get profileAgeOutOfRange =>
+      'Bitte geben Sie ein Alter zwischen 1 und 120 Jahren ein.';
+
+  @override
+  String get profileHeightOutOfRange =>
+      'Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.';
+
+  @override
+  String get profileWeightOutOfRange =>
+      'Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.';
 
   @override
   String get field1 => 'Name';
@@ -160,10 +173,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get field2 => 'Alter in Jahren';
 
   @override
-  String get field3_1 => 'Männlich';
+  String get genderMale => 'Männlich';
 
   @override
-  String get field3_2 => 'Weiblich';
+  String get genderFemale => 'Weiblich';
+
+  @override
+  String get genderOther => 'Divers/Keine Angabe';
 
   @override
   String get field4 => 'Höhe';
@@ -212,4 +228,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walk_reset => 'Zurücksetzen';
+
+  @override
+  String get aboutTitle => 'About the app';
+
+  @override
+  String get aboutProject =>
+      'This 6mwt app was developed as part of a Software Engineering project during the summer semester of 2026 at Ulm University.';
+
+  @override
+  String get aboutVersion => 'App version';
+
+  @override
+  String get aboutBuild => 'Build number';
+
+  @override
+  String get aboutCommit => 'Commit hash';
+
+  @override
+  String get aboutUnavailable => 'Not available';
+
+  @override
+  String get aboutAuthors => 'Authors';
+
+  @override
+  String get aboutRepository => 'GitHub repository';
+
+  @override
+  String get aboutProjectLicense => 'Project license';
+
+  @override
+  String get aboutLicenses => 'Open-source licenses';
+
+  @override
+  String get aboutLinkError => 'The link could not be opened.';
 }

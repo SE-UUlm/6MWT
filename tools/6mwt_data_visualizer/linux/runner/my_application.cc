@@ -45,14 +45,22 @@ static void my_application_activate(GApplication* application) {
   if (use_header_bar) {
     GtkHeaderBar* header_bar = GTK_HEADER_BAR(gtk_header_bar_new());
     gtk_widget_show(GTK_WIDGET(header_bar));
-    gtk_header_bar_set_title(header_bar, "six_mwt_visualizer");
+    gtk_header_bar_set_title(header_bar, "6MWT Visualizer");
     gtk_header_bar_set_show_close_button(header_bar, TRUE);
     gtk_window_set_titlebar(window, GTK_WIDGET(header_bar));
   } else {
-    gtk_window_set_title(window, "six_mwt_visualizer");
+    gtk_window_set_title(window, "6MWT Visualizer");
   }
 
   gtk_window_set_default_size(window, 1280, 720);
+  g_autoptr(GError) icon_error = nullptr;
+  g_autoptr(GdkPixbuf) icon = gdk_pixbuf_new_from_resource(
+      "/de/uniulm/in/se/sixmwt/visualizer/app_icon.png", &icon_error);
+  if (icon != nullptr) {
+    gtk_window_set_icon(window, icon);
+  } else {
+    g_warning("Could not load application icon: %s", icon_error->message);
+  }
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(
@@ -141,6 +149,7 @@ MyApplication* my_application_new() {
   // corresponding .desktop file. This ensures better integration by allowing
   // the application to be recognized beyond its binary name.
   g_set_prgname(APPLICATION_ID);
+  g_set_application_name("6MWT Visualizer");
 
   return MY_APPLICATION(g_object_new(my_application_get_type(),
                                      "application-id", APPLICATION_ID, "flags",

@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,7 +16,14 @@ void main() {
     // Insert a profile to satisfy the foreign key constraint.
     await db
         .into(db.profiles)
-        .insert(ProfilesCompanion.insert(height: 180, age: 27));
+        .insert(
+          ProfilesCompanion.insert(
+            height: 180,
+            age: 27,
+            weight: 75,
+            gender: Gender.male,
+          ),
+        );
   });
 
   tearDown(() async {
@@ -26,7 +34,14 @@ void main() {
   Future<int> insertProfile({int height = 170, int age = 30}) async {
     return db
         .into(db.profiles)
-        .insert(ProfilesCompanion.insert(height: height, age: age));
+        .insert(
+          ProfilesCompanion.insert(
+            height: height,
+            age: age,
+            weight: 70,
+            gender: Gender.other,
+          ),
+        );
   }
 
   test('saves results and lists them newest first', () async {
@@ -138,6 +153,8 @@ void main() {
             height: 165,
             age: 40,
             name: const Value('Ada'),
+            weight: 65,
+            gender: Gender.female,
           ),
         );
 

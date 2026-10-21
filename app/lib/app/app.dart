@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import 'router.dart';
+import '../features/walk/presentation/walk_session_lifecycle.dart';
 
 class SixMinuteWalkApp extends StatelessWidget {
   const SixMinuteWalkApp({super.key});
@@ -10,7 +12,7 @@ class SixMinuteWalkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: '6MWT',
+      title: kDebugMode ? '6MWT Debug' : '6MWT',
 
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
 
@@ -34,6 +36,8 @@ class SixMinuteWalkApp extends StatelessWidget {
       },
 
       routerConfig: router,
+      builder: (context, child) =>
+          WalkSessionLifecycle(child: child ?? const SizedBox.shrink()),
     );
   }
 }

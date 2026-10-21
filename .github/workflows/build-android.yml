@@ -1,0 +1,96 @@
+name: Build android
+
+on:
+  workflow_call:
+    inputs:
+      sign:
+        type: boolean
+        default: false
+    secrets:
+      ANDROID_KEYSTORE_BASE64:
+        required: false
+      ANDROID_KEYSTORE_PASSWORD:
+        required: false
+      ANDROID_KEY_ALIAS:
+        required: false
+      ANDROID_KEY_PASSWORD:
+        required: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    env:
+      GRADLE_OPTS: -Dorg.gradle.caching=true -Dorg.gradle.parallel=true
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v5
+        with:
+          # Populate shared caches on main and reusable caches within each PR.
+          cache-read-only: false
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version-file: .github/flutter-version.yaml
+          channel: stable
+          cache: true
+          # Separate SDK caches retain each job's downloaded engine artifacts.
+          cache-key: flutter-:os:-:arch:-:channel:-:version:-:hash:-${{ github.job }}
+          pub-cache-key: flutter-pub-:os:-:arch:-:channel:-:version:-${{ hashFiles('app/pubspec.lock') }}
+
+      - name: Configure release signing
+        if: inputs.sign
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: python3 ../tools/release/configure_signing.py
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Android APK
+        env:
+          REQUIRE_RELEASE_SIGNING: ${{ inputs.sign }}
+        run: flutter build apk --release --no-pub
+
+      - name: Verify APK signature and version
+        env:
+          SIGNED: ${{ inputs.sign }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: python3 ../tools/release/verify_apk.py
+
+      - name: Remove signing material
+        if: always() && inputs.sign
+        run: |
+          rm -f android/key.properties "$RUNNER_TEMP/release-keystore.jks"
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-release-apk
+          path: app/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          # APKs are already compressed.
+          compression-level: 0
+          retention-days: 7
+

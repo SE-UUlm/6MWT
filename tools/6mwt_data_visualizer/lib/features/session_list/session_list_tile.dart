@@ -22,10 +22,19 @@ class SessionListTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    final posCount = session.positionSamples.length;
+    final posCount = session.recordings.fold<int>(
+      0,
+      (sum, s) => sum + s.positionSamples.length,
+    );
+    final stepCount = session.recordings.fold<int>(
+      0,
+      (sum, s) => sum + s.stepSamples.length,
+    );
 
     final refSession = session.referenceSession;
-    final distText = refSession != null
+    final distText = session.isGroup
+        ? '${session.subsessions.length} subsessions'
+        : refSession != null
         ? '${session.distance.toStringAsFixed(0)} m (Ref: ${refSession.distance.toStringAsFixed(0)} m)'
         : '${session.distance.toStringAsFixed(0)} m';
 
@@ -37,9 +46,7 @@ class SessionListTile extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              session.notes.isNotEmpty
-                  ? session.notes
-                  : session.id.substring(0, 8),
+              session.notes.isNotEmpty ? session.notes : session.id,
               style: textTheme.bodyMedium?.copyWith(
                 fontWeight: isSelected ? FontWeight.bold : null,
               ),
@@ -82,9 +89,10 @@ class SessionListTile extends StatelessWidget {
         ],
       ),
       subtitle: Text(
+        '${session.sourcePath == null || session.isGroup ? '' : '${session.recordingLabel}\n'}'
         '${formatDate(session.startedAt)}  ·  '
         '$distText  ·  '
-        '$posCount GPS  ·  ${session.stepSamples.length} Steps',
+        '$posCount GPS  ·  $stepCount Steps',
         style: textTheme.bodySmall?.copyWith(
           color: colorScheme.onSurfaceVariant,
         ),

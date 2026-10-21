@@ -1,82 +1,57 @@
-# Architecture of the 6MWT App
+# Architecture
+
+The app follows a **feature-first layered architecture**: features own their presentation and domain code; shared infrastructure lives in `core/`.
 
 ## Layers
-![Layer dependencies](assets/architecture-layers.svg) 
 
+![Layer overview: the presentation layer uses the domain layer; the domain layer uses sensor and data layers; presentation also connects to sensors and data for platform integration.](assets/architecture-layers.svg)
 
-* Presentation Layer: Flutter GUI. 
-  * Allowed to interact with Data Layer directly
-  * Riverpod-Provider go here
-* Domain Layer: pure dart (no flutter) application logic
-  * Flutter Plugin Datatypes are allowed like Position from geolocator
-* Data Layer: Persistence
-  * SQLite Storage
-* Sensors: Sensor sources with interfaces
-  * GPS, steps, health
+Arrows indicate allowed dependencies (A → B means A may use B). Riverpod composes dependencies and state across all layers; go_router handles navigation.
 
-## Directory Structure
+## Features
 
-Should be state (some directories are not created yet):
+- **`features/walk`** — the core 6-minute walk test: profile entry, preparation, active walk, result screen, distance estimation and walk-session lifecycle
+- **`features/history`** — list and detail view of past test sessions
+- **`features/home`** — entry point and navigation hub
+- **`features/about`** — app info and legal notices
+- **`features/instructions`** — standardized test instructions shown before a walk
 
-```
-lib/
-├── core/                   # Shared code between features
-│   ├── sensors/            # SensorSource interface + implementations
-│   ├── domain/             # pure Dart logic, no Flutter imports
-│   ├── data/               # persistence
-│   └── presentation/       # Shared Flutter Widgets
-├── features/               # Feature specific code. Code in a feature directory is not allowed to reference code in a different feature directory
-│   ├── debug/              # gps debug screen
-│   ├── walk/               # walk test (screen, logic etc.)
-│   ├── results/            # result + fitness rating
-│   ├── home/               # Home screen
-│   └── profile/            # personal data
-├── app/                    # Global app config, router etc.
-└── main.dart
-```
+## Core
 
-If necessary, feature directories can be further subdivided into sensors, domain, data, presentation
+`core/` contains shared infrastructure used across features:
 
+- **`core/domain/`** — shared sample types, phase definitions, export models and interfaces
+- **`core/data/`** — Drift/SQLite database, repositories for profiles, sessions and raw samples; see [Database Migrations](Database-Migrations.md)
+- **`core/sensors/`** — GPS and pedometer sources, permission handling and platform integration
+- **`core/presentation/`** — shared widgets and presentation utilities
 
+## App
 
-## Potential Sensor pipeline (central abstraction)
+`app/` contains app-level wiring: router, provider composition and metadata services.
 
-Maybe Something like:
+## Localization
 
-```dart
-abstract class SensorSource {
-  String get id;                    // e.g. "gps", "healthkit_hr", "gadgetbridge_spo2"
-  Stream<SensorSample> get samples; // sample = timestamp + type + values
-  Future<void> start();
-  Future<void> stop();
-}
-```
+`l10n/` contains user-facing strings as ARB files compiled to typed Dart classes via `flutter gen-l10n`. All UI text goes through these generated classes. The app supports German and English. Also see [Generation and checks](Development.md#generation-and-checks).
 
-Independent consumers subscribe to the active sources:
+## Recording data flow
 
-| Consumer | Responsibility |
-|---|---|
-| **Recorder** | Persists every raw sample to the local DB. The CSV/JSON export for algorithm development is just a query over this table. |
-| **Aggregators** | Condense streams into metrics, e.g. `DistanceEstimator` (interface; currently GPS-based, later swappable for step-based or sensor-fusion variants). Probably has to be modified to be compatible. |
+1. `WalkSession` starts required GPS and optional pedometer sources. Warm-up acquires sensors without recording or feeding estimators.
+2. Initial and live samples use the shared `SensorSample` representation. Active recording sends them to the sample sink and to separate primary/comparison estimator instances.
+3. The primary `GpsStepDistanceEstimator` supplies the displayed/persisted distance. Comparison failures are isolated; comparison results remain in memory for the current result and are not exported or stored in history.
+4. Repositories persist profiles, sessions and raw samples in SQLite. Result/history export adds current device and app metadata to JSON.
 
-Which sources are active is configured per test mode. This makes the watch-only test a non-special case: the watch is simply another `SensorSource`.
+See [Data and Tools](Data-and-Tools.md) for the export contract and [Distance Estimators](Distance-Estimators.md) for algorithm behavior.
 
-New distance algorithms can be developed and compared offline against the recorded raw data.
+## Lifecycle and platform boundaries
 
+The keep-alive walk provider owns the active session independently of a screen. `WalkSessionLifecycle`, mounted above navigation, synchronizes an existing session when the app resumes. Deadlines use wall-clock time; an active test is not restored after process termination.
 
-## Technologies
+Android location uses a foreground notification and wake lock; iOS enables background location. These support recording and generally work but do not guarantee execution or sensor delivery under OS restrictions. GPS currently requests high accuracy with `distanceFilter: 1` (and a one-second requested Android interval).
 
-| Component | Choice | Rationale |
-|---|---|---|
-| State management / DI | **Riverpod** | Connects the UI to the engine without the engine knowing Flutter; easy to test. |
-| Navigation | **go_router** | Declarative routes for the many screens. |
+Domain modules use shared interfaces; concrete platform metadata access lives in `app/`. UI-specific lifecycle behavior belongs in presentation. Database upgrades follow [Database Migrations](Database-Migrations.md).
 
-### Potential future technologies
+## Visualizer replay
 
+Opening Recording does not start estimator replay. Opening the Lab calculates in a background isolate; results are cached per loaded session and invalidated when files/references change. Each subsession receives fresh estimator instances. Errors are isolated and diagnostics are snapshotted. References use their actual overlapping UTC interval; a manual route's timing is an explicit constant-speed approximation.
 
-| Component | Choice | Rationale |
-|---|---|---|
-| Database | **drift** (SQLite) | Type-safe queries; suited for the large sample table; export is trivial. `shared_preferences` only for settings. |
-| Background | **flutter_foreground_task** (Android), background location mode (iOS) | Requires a UI-free engine. |
-| Health data | **health** package | One API for HealthKit and Health Connect; fits behind `SensorSource`. |
-| Steps / acceleration | `pedometer` / `sensors_plus` | Each its own `SensorSource`. |
+Potential future experiments are tracked separately in [Outlook](Outlook.md).

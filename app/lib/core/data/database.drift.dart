@@ -60,7 +60,33 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     requiredDuringInsert: true,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, name, timestamp, height, age];
+  late final GeneratedColumnWithTypeConverter<Gender, String> gender =
+      GeneratedColumn<String>(
+        'gender',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<Gender>($ProfilesTable.$convertergender);
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
+    'weight',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    timestamp,
+    height,
+    age,
+    gender,
+    weight,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -104,6 +130,14 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
     } else if (isInserting) {
       context.missing(_ageMeta);
     }
+    if (data.containsKey('weight')) {
+      context.handle(
+        _weightMeta,
+        weight.isAcceptableOrUnknown(data['weight']!, _weightMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_weightMeta);
+    }
     return context;
   }
 
@@ -133,6 +167,16 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
         DriftSqlType.int,
         data['${effectivePrefix}age'],
       )!,
+      gender: $ProfilesTable.$convertergender.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}gender'],
+        )!,
+      ),
+      weight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}weight'],
+      )!,
     );
   }
 
@@ -140,6 +184,9 @@ class $ProfilesTable extends Profiles with TableInfo<$ProfilesTable, Profile> {
   $ProfilesTable createAlias(String alias) {
     return $ProfilesTable(attachedDatabase, alias);
   }
+
+  static JsonTypeConverter2<Gender, String, String> $convertergender =
+      const EnumNameConverter<Gender>(Gender.values);
 }
 
 class Profile extends DataClass implements Insertable<Profile> {
@@ -148,12 +195,16 @@ class Profile extends DataClass implements Insertable<Profile> {
   final DateTime timestamp;
   final int height;
   final int age;
+  final Gender gender;
+  final double weight;
   const Profile({
     required this.id,
     this.name,
     required this.timestamp,
     required this.height,
     required this.age,
+    required this.gender,
+    required this.weight,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -165,6 +216,12 @@ class Profile extends DataClass implements Insertable<Profile> {
     map['timestamp'] = Variable<DateTime>(timestamp);
     map['height'] = Variable<int>(height);
     map['age'] = Variable<int>(age);
+    {
+      map['gender'] = Variable<String>(
+        $ProfilesTable.$convertergender.toSql(gender),
+      );
+    }
+    map['weight'] = Variable<double>(weight);
     return map;
   }
 
@@ -175,6 +232,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       timestamp: Value(timestamp),
       height: Value(height),
       age: Value(age),
+      gender: Value(gender),
+      weight: Value(weight),
     );
   }
 
@@ -189,6 +248,10 @@ class Profile extends DataClass implements Insertable<Profile> {
       timestamp: serializer.fromJson<DateTime>(json['timestamp']),
       height: serializer.fromJson<int>(json['height']),
       age: serializer.fromJson<int>(json['age']),
+      gender: $ProfilesTable.$convertergender.fromJson(
+        serializer.fromJson<String>(json['gender']),
+      ),
+      weight: serializer.fromJson<double>(json['weight']),
     );
   }
   @override
@@ -200,6 +263,10 @@ class Profile extends DataClass implements Insertable<Profile> {
       'timestamp': serializer.toJson<DateTime>(timestamp),
       'height': serializer.toJson<int>(height),
       'age': serializer.toJson<int>(age),
+      'gender': serializer.toJson<String>(
+        $ProfilesTable.$convertergender.toJson(gender),
+      ),
+      'weight': serializer.toJson<double>(weight),
     };
   }
 
@@ -209,12 +276,16 @@ class Profile extends DataClass implements Insertable<Profile> {
     DateTime? timestamp,
     int? height,
     int? age,
+    Gender? gender,
+    double? weight,
   }) => Profile(
     id: id ?? this.id,
     name: name.present ? name.value : this.name,
     timestamp: timestamp ?? this.timestamp,
     height: height ?? this.height,
     age: age ?? this.age,
+    gender: gender ?? this.gender,
+    weight: weight ?? this.weight,
   );
   Profile copyWithCompanion(ProfilesCompanion data) {
     return Profile(
@@ -223,6 +294,8 @@ class Profile extends DataClass implements Insertable<Profile> {
       timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
       height: data.height.present ? data.height.value : this.height,
       age: data.age.present ? data.age.value : this.age,
+      gender: data.gender.present ? data.gender.value : this.gender,
+      weight: data.weight.present ? data.weight.value : this.weight,
     );
   }
 
@@ -233,13 +306,16 @@ class Profile extends DataClass implements Insertable<Profile> {
           ..write('name: $name, ')
           ..write('timestamp: $timestamp, ')
           ..write('height: $height, ')
-          ..write('age: $age')
+          ..write('age: $age, ')
+          ..write('gender: $gender, ')
+          ..write('weight: $weight')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, timestamp, height, age);
+  int get hashCode =>
+      Object.hash(id, name, timestamp, height, age, gender, weight);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -248,7 +324,9 @@ class Profile extends DataClass implements Insertable<Profile> {
           other.name == this.name &&
           other.timestamp == this.timestamp &&
           other.height == this.height &&
-          other.age == this.age);
+          other.age == this.age &&
+          other.gender == this.gender &&
+          other.weight == this.weight);
 }
 
 class ProfilesCompanion extends UpdateCompanion<Profile> {
@@ -257,12 +335,16 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
   final Value<DateTime> timestamp;
   final Value<int> height;
   final Value<int> age;
+  final Value<Gender> gender;
+  final Value<double> weight;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.timestamp = const Value.absent(),
     this.height = const Value.absent(),
     this.age = const Value.absent(),
+    this.gender = const Value.absent(),
+    this.weight = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -270,14 +352,20 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     this.timestamp = const Value.absent(),
     required int height,
     required int age,
+    required Gender gender,
+    required double weight,
   }) : height = Value(height),
-       age = Value(age);
+       age = Value(age),
+       gender = Value(gender),
+       weight = Value(weight);
   static Insertable<Profile> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<DateTime>? timestamp,
     Expression<int>? height,
     Expression<int>? age,
+    Expression<String>? gender,
+    Expression<double>? weight,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -285,6 +373,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       if (timestamp != null) 'timestamp': timestamp,
       if (height != null) 'height': height,
       if (age != null) 'age': age,
+      if (gender != null) 'gender': gender,
+      if (weight != null) 'weight': weight,
     });
   }
 
@@ -294,6 +384,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     Value<DateTime>? timestamp,
     Value<int>? height,
     Value<int>? age,
+    Value<Gender>? gender,
+    Value<double>? weight,
   }) {
     return ProfilesCompanion(
       id: id ?? this.id,
@@ -301,6 +393,8 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
       timestamp: timestamp ?? this.timestamp,
       height: height ?? this.height,
       age: age ?? this.age,
+      gender: gender ?? this.gender,
+      weight: weight ?? this.weight,
     );
   }
 
@@ -322,6 +416,14 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
     if (age.present) {
       map['age'] = Variable<int>(age.value);
     }
+    if (gender.present) {
+      map['gender'] = Variable<String>(
+        $ProfilesTable.$convertergender.toSql(gender.value),
+      );
+    }
+    if (weight.present) {
+      map['weight'] = Variable<double>(weight.value);
+    }
     return map;
   }
 
@@ -332,7 +434,9 @@ class ProfilesCompanion extends UpdateCompanion<Profile> {
           ..write('name: $name, ')
           ..write('timestamp: $timestamp, ')
           ..write('height: $height, ')
-          ..write('age: $age')
+          ..write('age: $age, ')
+          ..write('gender: $gender, ')
+          ..write('weight: $weight')
           ..write(')'))
         .toString();
   }
@@ -1187,6 +1291,8 @@ typedef $$ProfilesTableCreateCompanionBuilder =
       Value<DateTime> timestamp,
       required int height,
       required int age,
+      required Gender gender,
+      required double weight,
     });
 typedef $$ProfilesTableUpdateCompanionBuilder =
     ProfilesCompanion Function({
@@ -1195,6 +1301,8 @@ typedef $$ProfilesTableUpdateCompanionBuilder =
       Value<DateTime> timestamp,
       Value<int> height,
       Value<int> age,
+      Value<Gender> gender,
+      Value<double> weight,
     });
 
 final class $$ProfilesTableReferences
@@ -1251,6 +1359,17 @@ class $$ProfilesTableFilterComposer
 
   ColumnFilters<int> get age => $composableBuilder(
     column: $table.age,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Gender, Gender, String> get gender =>
+      $composableBuilder(
+        column: $table.gender,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  ColumnFilters<double> get weight => $composableBuilder(
+    column: $table.weight,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1313,6 +1432,16 @@ class $$ProfilesTableOrderingComposer
     column: $table.age,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get gender => $composableBuilder(
+    column: $table.gender,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get weight => $composableBuilder(
+    column: $table.weight,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ProfilesTableAnnotationComposer
@@ -1338,6 +1467,12 @@ class $$ProfilesTableAnnotationComposer
 
   GeneratedColumn<int> get age =>
       $composableBuilder(column: $table.age, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<Gender, String> get gender =>
+      $composableBuilder(column: $table.gender, builder: (column) => column);
+
+  GeneratedColumn<double> get weight =>
+      $composableBuilder(column: $table.weight, builder: (column) => column);
 
   Expression<T> walkSessionsRefs<T extends Object>(
     Expression<T> Function($$WalkSessionsTableAnnotationComposer a) f,
@@ -1398,12 +1533,16 @@ class $$ProfilesTableTableManager
                 Value<DateTime> timestamp = const Value.absent(),
                 Value<int> height = const Value.absent(),
                 Value<int> age = const Value.absent(),
+                Value<Gender> gender = const Value.absent(),
+                Value<double> weight = const Value.absent(),
               }) => ProfilesCompanion(
                 id: id,
                 name: name,
                 timestamp: timestamp,
                 height: height,
                 age: age,
+                gender: gender,
+                weight: weight,
               ),
           createCompanionCallback:
               ({
@@ -1412,12 +1551,16 @@ class $$ProfilesTableTableManager
                 Value<DateTime> timestamp = const Value.absent(),
                 required int height,
                 required int age,
+                required Gender gender,
+                required double weight,
               }) => ProfilesCompanion.insert(
                 id: id,
                 name: name,
                 timestamp: timestamp,
                 height: height,
                 age: age,
+                gender: gender,
+                weight: weight,
               ),
           withReferenceMapper: (p0) => p0
               .map(
