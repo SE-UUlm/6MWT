@@ -69,4 +69,41 @@ class WalkSessionRepository {
     final rows = await _db.select(_db.walkSessions).get();
     return [for (final row in rows) _rowToMap(row)];
   }
+
+  /// Deletes a session and its associated sensor samples atomically.
+  /// If the associated profile is not used by any other session, it is also cleaned up.
+  Future<void> deleteSession(String sessionId) async {
+    await _db.transaction(() async {
+      final session = await (_db.select(
+        _db.walkSessions,
+      )..where((row) => row.id.equals(sessionId))).getSingleOrNull();
+
+      if (session == null) {
+        return;
+      }
+
+      final profileId = session.profileId;
+
+      // Delete associated sensor samples
+      await (_db.delete(
+        _db.sensorSamples,
+      )..where((row) => row.sessionId.equals(sessionId))).go();
+
+      // Delete walk session row
+      await (_db.delete(
+        _db.walkSessions,
+      )..where((row) => row.id.equals(sessionId))).go();
+
+      // Keep shared profiles, clean up unreferenced profiles
+      final remainingWithProfile = await (_db.select(
+        _db.walkSessions,
+      )..where((row) => row.profileId.equals(profileId))).get();
+
+      if (remainingWithProfile.isEmpty) {
+        await (_db.delete(
+          _db.profiles,
+        )..where((row) => row.id.equals(profileId))).go();
+      }
+    });
+  }
 }

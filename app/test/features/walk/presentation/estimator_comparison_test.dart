@@ -1,6 +1,7 @@
 import 'package:six_minute_walk_test/core/data/sample_repository.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,6 +56,17 @@ void main() {
       addTearDown(tester.view.resetDevicePixelRatio);
       final db = AppDatabase(NativeDatabase.memory());
       addTearDown(db.close);
+      await db
+          .into(db.profiles)
+          .insert(
+            ProfilesCompanion.insert(
+              id: const Value(1),
+              height: 170,
+              age: 30,
+              weight: 70,
+              gender: Gender.other,
+            ),
+          );
       final source = InitialSampleFakeSensorSource([steps(100)]);
       final session = WalkSession(
         sources: [source],
@@ -69,6 +81,10 @@ void main() {
         walkDuration: const Duration(seconds: 5),
         now: () => tester.binding.clock.now(),
       );
+      final sessionSub = deduplicatedSaves(
+        session,
+      ).listen(WalkSessionRepository(db).saveSession);
+      addTearDown(sessionSub.cancel);
       router.go('/walk', extra: 1);
       await tester.pumpWidget(
         ProviderScope(
@@ -215,12 +231,37 @@ void main() {
     (tester) async {
       final db = AppDatabase(NativeDatabase.memory());
       addTearDown(db.close);
-      final sampleRepo = SampleRepository(db);
+      await db
+          .into(db.profiles)
+          .insert(
+            ProfilesCompanion.insert(
+              id: const Value(1),
+              height: 170,
+              age: 30,
+              weight: 70,
+              gender: Gender.other,
+            ),
+          );
 
       const sessionId = 'session-live-test';
       final t1 = DateTime.utc(2026, 7, 1, 12, 0, 0);
       final t2 = DateTime.utc(2026, 7, 1, 12, 0, 1);
       final t3 = DateTime.utc(2026, 7, 1, 12, 0, 2);
+
+      await db
+          .into(db.walkSessions)
+          .insert(
+            WalkSessionsCompanion.insert(
+              id: sessionId,
+              startedAt: t1,
+              duration: const Duration(minutes: 6),
+              distance: 55.6,
+              phase: WalkPhase.finished,
+              profileId: 1,
+            ),
+          );
+
+      final sampleRepo = SampleRepository(db);
 
       sampleRepo.addSample(
         sessionId,

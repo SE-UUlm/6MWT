@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
+import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
@@ -190,6 +191,60 @@ class ResultScreen extends ConsumerWidget {
           context,
         ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
       }
+    }
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final activeSession = ref.read(walkSessionProvider);
+    final l10n = AppLocalizations.of(context)!;
+
+    if (activeSession.state.isRunning &&
+        activeSession.state.sessionId == session.id) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.cannotDeleteActiveSession)));
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.deleteSessionDialogTitle),
+        content: Text(l10n.deleteSessionDialogMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
+
+    try {
+      await ref.read(walkSessionRepositoryProvider).deleteSession(session.id);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.sessionDeleted)));
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/');
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error deleting session: $e')));
     }
   }
 
@@ -560,24 +615,23 @@ class ResultScreen extends ConsumerWidget {
 
               const SizedBox(height: 24),
 
-              SizedBox(
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go('/');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    foregroundColor: Colors.white,
-                    elevation: 3,
-                    shadowColor: Colors.black.withValues(alpha: 0.25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
+              OutlinedButton.icon(
+                onPressed: () => _confirmDelete(context, ref),
+                icon: const Icon(Icons.delete_outline, color: Colors.red),
+                label: Text(
+                  l10n.deleteSession,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red,
                   ),
-                  child: const Text(
-                    'Back to Home',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.red,
+                  side: const BorderSide(color: Colors.red),
+                  minimumSize: const Size.fromHeight(54),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
                 ),
               ),

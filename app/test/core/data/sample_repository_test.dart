@@ -3,12 +3,59 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/sample_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 
 void main() {
   late AppDatabase db;
 
-  setUp(() {
+  setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
+    await db
+        .into(db.profiles)
+        .insert(
+          ProfilesCompanion.insert(
+            height: 175,
+            age: 30,
+            weight: 70,
+            gender: Gender.male,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'session-1',
+            startedAt: DateTime.utc(2026, 7, 1),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'session-2',
+            startedAt: DateTime.utc(2026, 7, 2),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'old-session',
+            startedAt: DateTime.utc(2026, 6, 1),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
   });
 
   tearDown(() async {

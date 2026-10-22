@@ -262,4 +262,27 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aboutLinkError => 'Der Link konnte nicht geöffnet werden.';
+
+  @override
+  String get deleteSession => 'Gehtest löschen';
+
+  @override
+  String get deleteSessionDialogTitle => 'Gehtest löschen?';
+
+  @override
+  String get deleteSessionDialogMessage =>
+      'Möchten Sie diesen aufgezeichneten Gehtest wirklich löschen? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get sessionDeleted => 'Gehtest gelöscht';
+
+  @override
+  String get cannotDeleteActiveSession =>
+      'Ein aktiver Gehtest kann nicht gelöscht werden.';
 }

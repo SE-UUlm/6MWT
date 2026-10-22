@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drift/drift.dart' show Value;
 import 'package:drift/native.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
@@ -132,5 +135,225 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('Retry'), findsNothing);
+  });
+
+  group('Delete session functionality', () {
+    testWidgets('shows delete session button at the bottom', (tester) async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [databaseProvider.overrideWithValue(db)],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(session: testSession),
+          ),
+        ),
+      );
+
+      final deleteButtonFinder = find.widgetWithText(
+        OutlinedButton,
+        'Delete walk test',
+      );
+      await tester.ensureVisible(deleteButtonFinder);
+      await tester.pumpAndSettle();
+      expect(deleteButtonFinder, findsOneWidget);
+    });
+
+    testWidgets('cancelling dialog does not delete session', (tester) async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+      final repo = WalkSessionRepository(db);
+
+      await db
+          .into(db.profiles)
+          .insert(
+            ProfilesCompanion.insert(
+              id: const Value(1),
+              height: 170,
+              age: 30,
+              weight: 70,
+              gender: Gender.male,
+            ),
+          );
+      await repo.saveSession(testSession.session);
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            walkSessionRepositoryProvider.overrideWithValue(repo),
+          ],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(session: testSession),
+          ),
+        ),
+      );
+
+      final deleteButtonFinder = find.widgetWithText(
+        OutlinedButton,
+        'Delete walk test',
+      );
+      await tester.ensureVisible(deleteButtonFinder);
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.text('Delete walk test?'), findsOneWidget);
+
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsNothing);
+
+      // Session must still exist in DB
+      final sessionInDb = await (db.select(
+        db.walkSessions,
+      )..where((s) => s.id.equals(testSession.session.id))).getSingleOrNull();
+      expect(sessionInDb, isNotNull);
+    });
+
+    testWidgets(
+      'confirming delete calls deleteSession and removes session from DB',
+      (tester) async {
+        final db = AppDatabase(NativeDatabase.memory());
+        addTearDown(db.close);
+        final repo = WalkSessionRepository(db);
+
+        await db
+            .into(db.profiles)
+            .insert(
+              ProfilesCompanion.insert(
+                id: const Value(1),
+                height: 170,
+                age: 30,
+                weight: 70,
+                gender: Gender.male,
+              ),
+            );
+        await repo.saveSession(testSession.session);
+
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              databaseProvider.overrideWithValue(db),
+              walkSessionRepositoryProvider.overrideWithValue(repo),
+            ],
+            child: MaterialApp(
+              locale: const Locale('en'),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: ResultScreen(session: testSession),
+            ),
+          ),
+        );
+
+        final deleteButtonFinder = find.widgetWithText(
+          OutlinedButton,
+          'Delete walk test',
+        );
+        await tester.ensureVisible(deleteButtonFinder);
+        await tester.tap(deleteButtonFinder);
+        await tester.pumpAndSettle();
+
+        expect(find.byType(AlertDialog), findsOneWidget);
+
+        await tester.tap(find.widgetWithText(TextButton, 'Delete'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Walk test deleted'), findsOneWidget);
+
+        final sessionInDb = await (db.select(
+          db.walkSessions,
+        )..where((s) => s.id.equals(testSession.session.id))).getSingleOrNull();
+        expect(sessionInDb, isNull);
+      },
+    );
+
+    testWidgets('prevents deleting session if it is currently running', (
+      tester,
+    ) async {
+      final db = AppDatabase(NativeDatabase.memory());
+      addTearDown(db.close);
+      final repo = WalkSessionRepository(db);
+
+      final runningSession = WalkSession(
+        sources: [],
+        distanceEstimator: GpsDistanceEstimator(),
+      );
+      // Put session into running state with testSession.session.id
+      runningSession.profileId = 1;
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            walkSessionRepositoryProvider.overrideWithValue(repo),
+            walkSessionProvider.overrideWithValue(runningSession),
+          ],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(session: testSession),
+          ),
+        ),
+      );
+
+      // Start the session so isRunning is true
+      await runningSession.start();
+
+      // Now create a result screen with matching sessionId
+      final activeResultSession = WalkSessionWithProfile(
+        session: WalkSessionRow(
+          id: runningSession.state.sessionId!,
+          startedAt: DateTime.utc(2026),
+          duration: const Duration(minutes: 6),
+          distance: 100,
+          phase: WalkPhase.running,
+          profileId: 1,
+        ),
+        profile: testSession.profile,
+      );
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            databaseProvider.overrideWithValue(db),
+            walkSessionRepositoryProvider.overrideWithValue(repo),
+            walkSessionProvider.overrideWithValue(runningSession),
+          ],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(session: activeResultSession),
+          ),
+        ),
+      );
+
+      final deleteButtonFinder = find.widgetWithText(
+        OutlinedButton,
+        'Delete walk test',
+      );
+      await tester.ensureVisible(deleteButtonFinder);
+      await tester.tap(deleteButtonFinder);
+      await tester.pumpAndSettle();
+
+      // Dialog must NOT be shown, instead error SnackBar
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(
+        find.text('An active walk test cannot be deleted.'),
+        findsOneWidget,
+      );
+
+      await runningSession.dispose();
+    });
   });
 }
