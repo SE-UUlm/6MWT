@@ -571,6 +571,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Der Link konnte nicht geöffnet werden.'**
   String get aboutLinkError;
+
+  /// No description provided for @deleteSession.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest löschen'**
+  String get deleteSession;
+
+  /// No description provided for @deleteSessionDialogTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest löschen?'**
+  String get deleteSessionDialogTitle;
+
+  /// No description provided for @deleteSessionDialogMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchten Sie diesen aufgezeichneten Gehtest wirklich löschen? Dies kann nicht rückgängig gemacht werden.'**
+  String get deleteSessionDialogMessage;
+
+  /// No description provided for @cancel.
+  ///
+  /// In de, this message translates to:
+  /// **'Abbrechen'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In de, this message translates to:
+  /// **'Löschen'**
+  String get delete;
+
+  /// No description provided for @sessionDeleted.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest gelöscht'**
+  String get sessionDeleted;
+
+  /// No description provided for @cannotDeleteActiveSession.
+  ///
+  /// In de, this message translates to:
+  /// **'Ein aktiver Gehtest kann nicht gelöscht werden.'**
+  String get cannotDeleteActiveSession;
 }
 
 class _AppLocalizationsDelegate

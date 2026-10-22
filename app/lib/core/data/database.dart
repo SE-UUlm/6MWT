@@ -69,6 +69,12 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
+    beforeOpen: (details) async {
+      await customStatement('PRAGMA foreign_keys = ON');
+      await customStatement(
+        'DELETE FROM sensor_samples WHERE session_id NOT IN (SELECT id FROM walk_sessions);',
+      );
+    },
     onUpgrade: stepByStep(
       from1To2: (m, schema) async {
         // Backfill old test profiles only. New profiles must supply both values.

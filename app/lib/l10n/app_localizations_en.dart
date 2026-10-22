@@ -262,4 +262,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutLinkError => 'The link could not be opened.';
+
+  @override
+  String get deleteSession => 'Delete walk test';
+
+  @override
+  String get deleteSessionDialogTitle => 'Delete walk test?';
+
+  @override
+  String get deleteSessionDialogMessage =>
+      'Are you sure you want to delete this recorded walk test? This cannot be undone.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get sessionDeleted => 'Walk test deleted';
+
+  @override
+  String get cannotDeleteActiveSession =>
+      'An active walk test cannot be deleted.';
 }
