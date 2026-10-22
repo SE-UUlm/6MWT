@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,20 +10,18 @@ import 'package:six_minute_walk_test/core/presentation/session_export_service.da
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
-import '../domain/estimator_comparison.dart';
+import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
 
+final _log = appLogger('ResultScreen');
+
 class ResultScreen extends ConsumerWidget {
-  ResultScreen({
-    super.key,
-    required WalkSessionWithProfile session,
-    this.comparisons = const [],
-  }) : session = session.session,
-       profile = session.profile;
+  ResultScreen({super.key, required WalkSessionWithProfile session})
+    : session = session.session,
+      profile = session.profile;
 
   final WalkSessionRow session;
   final Profile profile;
-  final List<EstimatorComparison> comparisons;
 
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
@@ -196,6 +195,10 @@ class ResultScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final comparisonsAsync = ref.watch(
+      sessionEstimatorComparisonsProvider(session.id),
+    );
+
     final l10n = AppLocalizations.of(context)!;
     final genderLabel = switch (profile.gender) {
       Gender.male => l10n.genderMale,
@@ -218,6 +221,8 @@ class ResultScreen extends ConsumerWidget {
         ageInYears: profile.age,
         heightInCm: profile.height.toDouble(),
       );
+
+      _log.t('Calculated fitness: $assessment');
 
       percentage = assessment.percentOfExpected;
       category = assessment.category.name;
@@ -408,12 +413,7 @@ class ResultScreen extends ConsumerWidget {
                 ],
               ),
 
-              if (comparisons.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                EstimatorComparisonCard(comparisons: comparisons),
-              ],
               const SizedBox(height: 14),
-
               _buildDetailsCard(
                 title: 'Your Profile',
                 children: [
@@ -450,7 +450,102 @@ class ResultScreen extends ConsumerWidget {
                 ],
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 14),
+
+              comparisonsAsync.when(
+                data: (comparisons) {
+                  if (comparisons.isEmpty) return const SizedBox.shrink();
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 14),
+                    child: EstimatorComparisonCard(comparisons: comparisons),
+                  );
+                },
+                loading: () => Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Distance comparison',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: primaryBlue,
+                              ),
+                            ),
+                            SizedBox(width: 14),
+                            Text(
+                              'Calculating distance comparisons...',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                error: (error, st) => Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: Container(
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.red.shade200),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.red.shade50.withValues(alpha: 0.5),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.error_outline_rounded,
+                              color: Colors.red.shade700,
+                              size: 22,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Distance comparison',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Could not calculate distance comparisons.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.red.shade900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
 
               const Text(
                 'The result provides an orientation based on '

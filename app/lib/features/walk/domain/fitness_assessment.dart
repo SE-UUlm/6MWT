@@ -15,9 +15,6 @@
 // test is linearly scaled to a six-minute-equivalent distance before it is
 // compared against the reference. This makes short debug runs (e.g. one
 // minute) produce a usable result; real tests are always six minutes.
-import 'package:six_minute_walk_test/app/log.dart';
-
-final _log = appLogger('FitnessAssessment');
 
 const _referenceTestDuration = Duration(minutes: 6);
 
@@ -103,8 +100,6 @@ FitnessAssessment assessFitness({
     normativeReference:
         'CRC2023-Stach-UULM-6MWT', // (Stach et al., Clin Res Cardiol 2023)
   );
-
-  _log.t('Calculated fitness: $assessment');
 
   return assessment;
 }

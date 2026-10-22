@@ -63,6 +63,31 @@ void main() {
     expect(result.first['id'], isA<int>());
   });
 
+  test('loads session samples ordered by timestamp', () async {
+    final repository = SampleRepository(db);
+    final t1 = DateTime.utc(2026, 7, 1, 12, 0, 1);
+    final t2 = DateTime.utc(2026, 7, 1, 12, 0, 2);
+
+    repository.addSample('session-1', createSample(t1, 48.1));
+    repository.addSample(
+      'session-1',
+      SensorSample(
+        timestamp: t2,
+        sourceId: 'pedometer',
+        type: SampleType.steps,
+        values: {StepKeys.cumulativeSteps: 10.0},
+      ),
+    );
+    repository.addSample('session-2', createSample(t1, 49.0));
+
+    final samples = await repository.loadSessionSamples('session-1');
+    expect(samples, hasLength(2));
+    expect(samples[0].type, SampleType.position);
+    expect(samples[0].values[PositionKeys.latitude], 48.1);
+    expect(samples[1].type, SampleType.steps);
+    expect(samples[1].values[StepKeys.cumulativeSteps], 10.0);
+  });
+
   test(
     'preserves UTC timestamps and precision for GPS and step samples',
     () async {

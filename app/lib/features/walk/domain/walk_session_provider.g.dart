@@ -88,3 +88,84 @@ final class WalkSessionStateProvider
 }
 
 String _$walkSessionStateHash() => r'3d26b6e8e1a02f2dc5e0a92e38cfee295c1821af';
+
+@ProviderFor(sessionEstimatorComparisons)
+final sessionEstimatorComparisonsProvider =
+    SessionEstimatorComparisonsFamily._();
+
+final class SessionEstimatorComparisonsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<EstimatorComparison>>,
+          List<EstimatorComparison>,
+          FutureOr<List<EstimatorComparison>>
+        >
+    with
+        $FutureModifier<List<EstimatorComparison>>,
+        $FutureProvider<List<EstimatorComparison>> {
+  SessionEstimatorComparisonsProvider._({
+    required SessionEstimatorComparisonsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'sessionEstimatorComparisonsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$sessionEstimatorComparisonsHash();
+
+  @override
+  String toString() {
+    return r'sessionEstimatorComparisonsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<EstimatorComparison>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<EstimatorComparison>> create(Ref ref) {
+    final argument = this.argument as String;
+    return sessionEstimatorComparisons(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SessionEstimatorComparisonsProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$sessionEstimatorComparisonsHash() =>
+    r'43a0d2224ff6a721ce25250bfa18bf5ab8cdf196';
+
+final class SessionEstimatorComparisonsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<FutureOr<List<EstimatorComparison>>, String> {
+  SessionEstimatorComparisonsFamily._()
+    : super(
+        retry: null,
+        name: r'sessionEstimatorComparisonsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  SessionEstimatorComparisonsProvider call(String sessionId) =>
+      SessionEstimatorComparisonsProvider._(argument: sessionId, from: this);
+
+  @override
+  String toString() => r'sessionEstimatorComparisonsProvider';
+}
