@@ -497,31 +497,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                         ),
                       ),
                     ),
-
-                  const SizedBox(height: 10),
-
-                  SizedBox(
-                    width: double.infinity,
-                    height: 60,
-                    child: OutlinedButton(
-                      onPressed: session.reset,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: primaryBlue,
-                        backgroundColor: Colors.white.withValues(alpha: 0.85),
-                        side: const BorderSide(color: primaryBlue, width: 1.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14),
-                        ),
-                      ),
-                      child: const Text(
-                        'Reset',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
