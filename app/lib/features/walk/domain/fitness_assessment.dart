@@ -15,6 +15,7 @@
 // test is linearly scaled to a six-minute-equivalent distance before it is
 // compared against the reference. This makes short debug runs (e.g. one
 // minute) produce a usable result; real tests are always six minutes.
+
 const _referenceTestDuration = Duration(minutes: 6);
 
 // The published reference table only covers these ranges. Inputs outside of
@@ -50,6 +51,7 @@ class FitnessAssessment {
   const FitnessAssessment({
     required this.percentOfExpected,
     required this.category,
+    this.normativeReference = 'unknown',
   });
 
   // The walked distance as a percentage of the expected distance. 100 means
@@ -57,6 +59,13 @@ class FitnessAssessment {
   final double percentOfExpected;
 
   final FitnessCategory category;
+
+  /// Clinical reference standard
+  final String normativeReference;
+
+  @override
+  String toString() =>
+      'FitnessAssessment(${percentOfExpected.toStringAsFixed(1)}%, ${category.name}, ref: $normativeReference)';
 }
 
 // Assesses a walk test. [duration] and [distance] describe the actual
@@ -85,10 +94,14 @@ FitnessAssessment assessFitness({
     heightInCm: heightInCm,
   );
 
-  return FitnessAssessment(
+  final assessment = FitnessAssessment(
     percentOfExpected: sixMinuteDistance / expectedDistance * 100,
     category: _categorize(sixMinuteDistance, expectedDistance),
+    normativeReference:
+        'CRC2023-Stach-UULM-6MWT', // (Stach et al., Clin Res Cardiol 2023)
   );
+
+  return assessment;
 }
 
 // The expected (50th percentile) six-minute walking distance for a healthy

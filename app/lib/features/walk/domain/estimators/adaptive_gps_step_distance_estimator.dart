@@ -122,7 +122,7 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
   Map<String, String> get additionalInfo {
     _calculate();
     return {
-      'Estimate': 'Provisional; gaps may be revised up or down',
+      'Estimate': 'Provisional; gaps may be revised up or down; adaptiveuu6mwt',
       'Recent step length': '${_currentLength.toStringAsFixed(3)} m',
       'Calibration windows': '$_windowCount',
       'GPS distance': '${_gpsMeters.toStringAsFixed(2)} m',
@@ -133,6 +133,7 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
       'Uncovered duration': '${_uncovered.toStringAsFixed(1)} s',
       'Correction from following calibration':
           '${_correction.toStringAsFixed(2)} m',
+      'version': 'UULM-6MWT-AGSDE-v1',
       'GPS rejected': '${_history.rejectedGps}',
       'Step counter resets': '${_history.resets}',
       'GPS source': _history.gpsSource ?? 'None',

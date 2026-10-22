@@ -57,6 +57,21 @@ class SampleRepository implements SampleSink {
     return query.get();
   }
 
+  Future<List<SensorSample>> loadSessionSamples(String sessionId) async {
+    await flush();
+    final rows = await _loadSession(sessionId);
+    return rows.map((row) {
+      final decoded = jsonDecode(row.values) as Map<String, dynamic>;
+      final values = decoded.map((k, v) => MapEntry(k, (v as num).toDouble()));
+      return SensorSample(
+        timestamp: row.timestamp.toUtc(),
+        type: SampleType.fromWireName(row.type),
+        sourceId: row.sourceId,
+        values: values,
+      );
+    }).toList();
+  }
+
   static Map<String, dynamic> _rowToMap(SensorSampleRow row) => {
     'id': row.id,
     // Older recordings may still contain local timestamps with an offset.

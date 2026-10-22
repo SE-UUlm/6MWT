@@ -14,7 +14,6 @@ import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dar
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
-import 'walk_result_arguments.dart';
 
 final _log = appLogger('WalkScreen');
 
@@ -268,15 +267,15 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       return;
     }
 
-    final result = WalkResultArguments(
-      session: WalkSessionWithProfile(session: sessionRow, profile: profile),
-      comparisons: _session.state.comparisons,
+    final sessionWithProfile = WalkSessionWithProfile(
+      session: sessionRow,
+      profile: profile,
     );
     await _session.reset();
 
     if (!mounted) return;
 
-    context.pushReplacement('/result', extra: result);
+    context.pushReplacement('/result', extra: sessionWithProfile);
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
