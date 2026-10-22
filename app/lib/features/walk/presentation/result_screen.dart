@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
@@ -60,9 +61,6 @@ class ResultScreen extends ConsumerWidget {
               return Stack(
                 clipBehavior: Clip.none,
                 children: [
-                  // ----------------------------------------------------------------
-                  // COLOR GRADIENT
-                  // ----------------------------------------------------------------
                   Positioned.fill(
                     child: Container(
                       decoration: BoxDecoration(
@@ -87,9 +85,6 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  // ----------------------------------------------------------------
-                  // POSITION MARKER
-                  // ----------------------------------------------------------------
                   Positioned(
                     left: position - 2,
                     top: -6,
@@ -116,7 +111,7 @@ class ResultScreen extends ConsumerWidget {
               Expanded(
                 child: Text(
                   '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
-                  style: TextStyle(fontSize: 11, color: Colors.black54),
+                  style: const TextStyle(fontSize: 11, color: Colors.black54),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -206,6 +201,10 @@ class ResultScreen extends ConsumerWidget {
     );
   }
 
+  // ===========================================================================
+  // EXPORT SESSION
+  // ===========================================================================
+
   Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
     try {
       final export = (await ref
@@ -229,7 +228,8 @@ class ResultScreen extends ConsumerWidget {
       final dir = await getTemporaryDirectory();
 
       final file = File(
-        '${dir.path}/6mwt_export_session_${session.id.substring(0, 8)}_'
+        '${dir.path}/6mwt_export_session_'
+        '${session.id.substring(0, 8)}_'
         '${DateTime.now().millisecondsSinceEpoch}.json',
       );
 
@@ -238,9 +238,11 @@ class ResultScreen extends ConsumerWidget {
       await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+        final l10n = AppLocalizations.of(context)!;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.result_export_failed(e.toString()))),
+        );
       }
     }
   }
@@ -251,6 +253,8 @@ class ResultScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     // -------------------------------------------------------------------------
     // DURATION
     // -------------------------------------------------------------------------
@@ -262,7 +266,7 @@ class ResultScreen extends ConsumerWidget {
     // -------------------------------------------------------------------------
 
     var percentage = 0.0;
-    String category = 'No assessment';
+    String category = l10n.result_no_assessment;
 
     if (session.phase == WalkPhase.finished) {
       final assessment = assessFitness(
@@ -278,7 +282,6 @@ class ResultScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
@@ -324,10 +327,10 @@ class ResultScreen extends ConsumerWidget {
 
                   const SizedBox(width: 18),
 
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Test Results',
-                      style: TextStyle(
+                      l10n.result_title,
+                      style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
@@ -346,10 +349,9 @@ class ResultScreen extends ConsumerWidget {
 
               const SizedBox(height: 18),
 
-              const Text(
-                'Here are your results from the\n'
-                '6-minute walk test.',
-                style: TextStyle(
+              Text(
+                l10n.result_description,
+                style: const TextStyle(
                   fontSize: 15,
                   height: 1.3,
                   color: Colors.black87,
@@ -370,9 +372,9 @@ class ResultScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'Performance',
-                      style: TextStyle(
+                    Text(
+                      l10n.result_performance,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
@@ -380,9 +382,7 @@ class ResultScreen extends ConsumerWidget {
 
                     const SizedBox(height: 14),
 
-                    // -----------------------------------------------------------
                     // PERCENTAGE
-                    // -----------------------------------------------------------
                     Text(
                       '${percentage.round()}%',
                       textAlign: TextAlign.center,
@@ -393,24 +393,23 @@ class ResultScreen extends ConsumerWidget {
                       ),
                     ),
 
-                    const Text(
-                      'of expected distance',
+                    Text(
+                      l10n.result_expected_distance,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15, color: Colors.black54),
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black54,
+                      ),
                     ),
 
                     const SizedBox(height: 22),
 
-                    // -----------------------------------------------------------
-                    // BAR
-                    // -----------------------------------------------------------
+                    // PERFORMANCE BAR
                     _buildPerformanceBar(percentage),
 
                     const SizedBox(height: 20),
 
-                    // -----------------------------------------------------------
                     // CATEGORY
-                    // -----------------------------------------------------------
                     Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -434,11 +433,10 @@ class ResultScreen extends ConsumerWidget {
 
                           const SizedBox(height: 6),
 
-                          const Text(
-                            'Your performance is based on your '
-                            'age, height and walking distance.',
+                          Text(
+                            l10n.result_performance_explanation,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13,
                               height: 1.3,
                               color: Colors.black54,
@@ -457,58 +455,62 @@ class ResultScreen extends ConsumerWidget {
               const SizedBox(height: 14),
 
               _buildDetailsCard(
-                title: 'Test Details',
+                title: l10n.result_test_details,
                 children: [
                   _buildDetailRow(
                     icon: Icons.swap_horiz_rounded,
-                    label: 'Distance walked',
+                    label: l10n.result_distance_walked,
                     value: '${session.distance.toStringAsFixed(1)} m',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.access_time_rounded,
-                    label: 'Test duration',
+                    label: l10n.result_test_duration,
                     value: durationText,
                   ),
 
                   _buildDetailRow(
                     icon: Icons.flag_rounded,
-                    label: 'Test status',
+                    label: l10n.result_test_status,
                     value: session.phase == WalkPhase.aborted
-                        ? 'Stopped early'
-                        : 'Completed',
+                        ? l10n.result_stopped_early
+                        : l10n.result_completed,
                     showDivider: false,
                   ),
                 ],
               ),
 
               // =================================================================
-              // PROFILE DETAILS
+              // ESTIMATOR COMPARISON
               // =================================================================
               if (comparisons.isNotEmpty) ...[
                 const SizedBox(height: 14),
                 EstimatorComparisonCard(comparisons: comparisons),
               ],
+
+              // =================================================================
+              // PROFILE DETAILS
+              // =================================================================
               const SizedBox(height: 14),
 
               _buildDetailsCard(
-                title: 'Your Profile',
+                title: l10n.result_profile,
                 children: [
                   _buildDetailRow(
                     icon: Icons.person_outline_rounded,
-                    label: 'Name',
+                    label: l10n.result_name,
                     value: profile.name ?? '-',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.cake_outlined,
-                    label: 'Age',
-                    value: '${profile.age} years',
+                    label: l10n.result_age,
+                    value: '${profile.age} ${l10n.result_years}',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.height_rounded,
-                    label: 'Height',
+                    label: l10n.result_height,
                     value: '${profile.height} cm',
                     showDivider: false,
                   ),
@@ -520,11 +522,10 @@ class ResultScreen extends ConsumerWidget {
               // =================================================================
               const SizedBox(height: 18),
 
-              const Text(
-                'The result provides an orientation based on '
-                'your recorded walking distance and personal data.',
+              Text(
+                l10n.result_information,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   height: 1.35,
                   color: Colors.black54,
@@ -551,9 +552,12 @@ class ResultScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(14),
                     ),
                   ),
-                  child: const Text(
-                    'Back to Home',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  child: Text(
+                    l10n.result_back_home,
+                    style: const TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

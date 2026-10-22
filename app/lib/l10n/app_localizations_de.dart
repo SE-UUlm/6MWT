@@ -40,10 +40,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get home_resultsb => 'Frühere Tests ansehen';
 
   @override
-  String get home_instruction => 'Über den 6 Minuten Test';
+  String get home_instruction => 'Über den 6-Minuten-Gehtest';
 
   @override
   String get home_instructionsb => 'Ausführliche Anleitung';
+
+  @override
+  String get appProfile => 'Patientenprofil einrichten';
+
+  @override
+  String get appCountdown => '6-Minuten-Countdown';
+
+  @override
+  String get appResult => 'Ergebnisse und Werte';
 
   @override
   String get startTest => 'Test starten';
@@ -128,7 +137,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get instructions_6_text =>
-      'Your walking distance is classified based on reference values and you get an overview of your performance and values reached.';
+      'Ihre Gehstrecke wird anhand von Referenzwerten eingeordnet. Außerdem erhalten Sie einen Überblick über Ihre Leistung und die erreichten Werte.';
 
   @override
   String get instructions_7_welc => 'Sie sind bereit!';
@@ -212,4 +221,111 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walk_reset => 'Zurücksetzen';
+
+  @override
+  String get walk_status_not_started => 'Noch nicht gestartet';
+
+  @override
+  String get walk_status_waiting_gps => 'Warte auf GPS...';
+
+  @override
+  String get walk_status_walking => 'In Bewegung';
+
+  @override
+  String get walk_status_finished => 'Abgeschlossen';
+
+  @override
+  String get walk_status_stopped => 'Abgebrochen';
+
+  @override
+  String get walk_not_started_yet => 'Noch nicht gestartet';
+
+  @override
+  String get walk_loading => 'Wird geladen...';
+
+  @override
+  String get walk_slide_to_stop => 'Zum Beenden schieben';
+
+  @override
+  String get walk_result_load_error => 'Ergebnis konnte nicht geladen werden';
+
+  @override
+  String get walk_expected_distance => 'der erwarteten Gehstrecke';
+
+  @override
+  String get walk_no_position => 'Noch keine Position';
+
+  @override
+  String get walk_accuracy => 'Genauigkeit';
+
+  @override
+  String get walk_of_six_minutes => 'von 6:00 Minuten';
+
+  @override
+  String get walk_years => 'Jahre';
+
+  @override
+  String get result_title => 'Testergebnisse';
+
+  @override
+  String get result_description =>
+      'Hier sind Ihre Ergebnisse aus dem 6-Minuten-Gehtest.';
+
+  @override
+  String get result_performance => 'Leistung';
+
+  @override
+  String get result_expected_distance => 'der erwarteten Gehstrecke';
+
+  @override
+  String get result_performance_explanation =>
+      'Ihre Leistung basiert auf Ihrem Alter, Ihrer Körpergröße und Ihrer Gehstrecke.';
+
+  @override
+  String get result_no_assessment => 'Keine Bewertung';
+
+  @override
+  String get result_test_details => 'Testdetails';
+
+  @override
+  String get result_distance_walked => 'Zurückgelegte Strecke';
+
+  @override
+  String get result_test_duration => 'Testdauer';
+
+  @override
+  String get result_test_status => 'Teststatus';
+
+  @override
+  String get result_stopped_early => 'Vorzeitig abgebrochen';
+
+  @override
+  String get result_completed => 'Abgeschlossen';
+
+  @override
+  String get result_profile => 'Ihr Profil';
+
+  @override
+  String get result_name => 'Name';
+
+  @override
+  String get result_age => 'Alter';
+
+  @override
+  String get result_years => 'Jahre';
+
+  @override
+  String get result_height => 'Körpergröße';
+
+  @override
+  String get result_information =>
+      'Das Ergebnis bietet eine Orientierung auf Grundlage Ihrer aufgezeichneten Gehstrecke und persönlichen Daten.';
+
+  @override
+  String get result_back_home => 'Zurück zur Startseite';
+
+  @override
+  String result_export_failed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
 }

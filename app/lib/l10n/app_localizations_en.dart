@@ -16,37 +16,46 @@ class AppLocalizationsEn extends AppLocalizations {
       'Standardized assessment of functional exercise capacity';
 
   @override
-  String get home_walk => 'Gehen';
+  String get home_walk => 'Walk';
 
   @override
-  String get home_walksb => 'So weit wie möglich in 6 Minuten gehen';
+  String get home_walksb => 'Walk as far as possible in 6 minutes';
 
   @override
-  String get home_performance => 'Leistung';
+  String get home_performance => 'Performance';
 
   @override
-  String get home_performancesb => 'Deine Ausdauer objektiv messen';
+  String get home_performancesb => 'Measure your endurance objectively';
 
   @override
-  String get home_progress => 'Fortschritt';
+  String get home_progress => 'Progress';
 
   @override
-  String get home_progresssb => 'Ergebnisse vergleichen';
+  String get home_progresssb => 'Compare results';
 
   @override
-  String get home_result => 'Meine Ergebnisse';
+  String get home_result => 'My Results';
 
   @override
-  String get home_resultsb => 'Frühere Tests ansehen';
+  String get home_resultsb => 'View previous tests';
 
   @override
-  String get home_instruction => 'Über den 6 Minuten Test';
+  String get home_instruction => 'About the 6-Minute Walk Test';
 
   @override
-  String get home_instructionsb => 'Ausführliche Anleitung';
+  String get home_instructionsb => 'Detailed instructions';
 
   @override
-  String get startTest => 'Start test';
+  String get appProfile => 'Set Up Patient Profile';
+
+  @override
+  String get appCountdown => '6-Minute Countdown';
+
+  @override
+  String get appResult => 'Results and Measurements';
+
+  @override
+  String get startTest => 'Start Test';
 
   @override
   String get settings => 'Settings';
@@ -65,10 +74,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This app guides you step by step through the 6-Minute Walk Test (6MWT). The test helps assess your physical performance based on the distance covered in six minutes.';
 
   @override
-  String get instructions_2_welc => 'Test procedure';
+  String get instructions_2_welc => 'Test Procedure';
 
   @override
-  String get bulletPoint_1 => 'Enter personal data';
+  String get bulletPoint_1 => 'Enter personal information';
 
   @override
   String get bulletPoint_2 => 'Start the test';
@@ -77,45 +86,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bulletPoint_3 => 'Walk for 6 minutes';
 
   @override
-  String get bulletPoint_4 => 'Results';
+  String get bulletPoint_4 => 'View results';
 
   @override
   String get instructions_2_text =>
-      'The test only takes six minutes. During this time, the app measures the distance covered and the remaining time.';
+      'The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.';
 
   @override
-  String get instructions_3_welc => 'Personal data';
+  String get instructions_3_welc => 'Personal Information';
 
   @override
   String get instructions_3_text =>
-      'For the most accurate analysis possible, we need some information such as age, height, weight, and sex. This data helps us better interpret your results.';
+      'For the most accurate analysis possible, we need some information, such as your age, height, weight, and sex. This information helps us interpret your results more accurately.';
 
   @override
-  String get instructions_4_welc => 'During the test';
+  String get instructions_4_welc => 'During the Test';
 
   @override
   String get instructions_4_text =>
-      'Walk for six minutes at your normal, brisk pace. The app displays the remaining time and the distance you have already covered.';
+      'Walk at your normal, brisk pace for six minutes. The app displays the remaining time and the distance you have already covered.';
 
   @override
   String get instructions_4_text_2 =>
       'Stop the test if you experience chest pain, dizziness, or severe shortness of breath.';
 
   @override
-  String get instructions_5_welc => 'Stopping the test';
+  String get instructions_5_welc => 'Stopping the Test';
 
   @override
   String get instructions_5_text =>
-      'If necessary, you can stop the test at any time and then decide how you would like to proceed:';
+      'If needed, you can stop the test at any time and then decide how you would like to proceed:';
 
   @override
-  String get instructions_5_c1 => 'Interim results will be saved';
+  String get instructions_5_c1 => 'Partial results will be saved';
 
   @override
   String get instructions_5_c2 => 'The results will be displayed';
 
   @override
-  String get instructions_5_c3 => 'The informational value may be limited';
+  String get instructions_5_c3 =>
+      'The results may have limited informative value';
 
   @override
   String get instructions_5_f1 => 'All previous data will be discarded';
@@ -124,92 +134,199 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instructions_5_f2 => 'You can start the test again';
 
   @override
-  String get instructions_6_welc => 'Overview of results';
+  String get instructions_6_welc => 'Overview of Results';
 
   @override
   String get instructions_6_text =>
-      'Your walking distance is classified based on reference values, and you get an overview of your performance and the values achieved.';
+      'Your walking distance is assessed using reference values. You will also receive an overview of your performance and the values achieved.';
 
   @override
-  String get instructions_7_welc => 'You are ready!';
+  String get instructions_7_welc => 'You\'re Ready!';
 
   @override
   String get instructions_7_text =>
-      'Now that you know how it works, you can start and complete a test at any time!';
+      'Now that you know how it works, you can start and complete a test whenever you\'re ready!';
 
   @override
-  String get profile_title => 'Vorkalibrierung';
+  String get profile_title => 'Initial Setup';
 
   @override
   String get profile_text =>
-      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein';
+      'To obtain the most accurate test results possible, please enter all information correctly.';
 
   @override
-  String get profile_sub1 => 'Patienteninformationen';
+  String get profile_sub1 => 'Patient Information';
 
   @override
-  String get profile_sub2 => 'Anthropometrie';
+  String get profile_sub2 => 'Anthropometry';
 
   @override
-  String get profile_info => 'Bitte füllen Sie Alter und Körpergröße aus.';
+  String get profile_info => 'Please enter your age and height.';
 
   @override
   String get field1 => 'Name';
 
   @override
-  String get field2 => 'Alter in Jahren';
+  String get field2 => 'Age in years';
 
   @override
-  String get field3_1 => 'Männlich';
+  String get field3_1 => 'Male';
 
   @override
-  String get field3_2 => 'Weiblich';
+  String get field3_2 => 'Female';
 
   @override
-  String get field4 => 'Höhe';
+  String get field4 => 'Height';
 
   @override
-  String get field5 => 'Gewicht';
+  String get field5 => 'Weight';
 
   @override
   String get profile_footer =>
-      'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.';
+      'Your privacy is important to us. This information will not be used for any other purpose.';
 
   @override
-  String get video_title => 'Testvorbereitung';
+  String get video_title => 'Test Preparation';
 
   @override
   String get video_text =>
-      'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
+      'Walk back and forth along the marked course (e.g., 6 meters), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.';
 
   @override
   String get walk_info =>
-      'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.';
+      'Please cover as much distance as possible in 6 minutes.';
 
   @override
-  String get walk_idstance => 'Distanz';
+  String get walk_idstance => 'Distance';
 
   @override
   String get walk_status => 'Status';
 
   @override
-  String get walk_assessment => 'Bewertung';
+  String get walk_assessment => 'Assessment';
 
   @override
-  String get walk_start => 'Noch nicht gestartet';
+  String get walk_start => 'Not started yet';
 
   @override
-  String get walk_position => 'Aktuelle Position';
+  String get walk_position => 'Current Position';
 
   @override
-  String get walk_duration => 'Dauer';
+  String get walk_duration => 'Duration';
 
   @override
-  String get walk_profile => 'Profil';
+  String get walk_profile => 'Profile';
 
   @override
-  String get walk_test_start => 'Starte Test';
+  String get walk_test_start => 'Start Test';
 
   @override
-  String get walk_reset => 'Zurücksetzen';
+  String get walk_reset => 'Reset';
+
+  @override
+  String get walk_status_not_started => 'Not started yet';
+
+  @override
+  String get walk_status_waiting_gps => 'Waiting for GPS...';
+
+  @override
+  String get walk_status_walking => 'Walking';
+
+  @override
+  String get walk_status_finished => 'Completed';
+
+  @override
+  String get walk_status_stopped => 'Stopped';
+
+  @override
+  String get walk_not_started_yet => 'Not started yet';
+
+  @override
+  String get walk_loading => 'Loading...';
+
+  @override
+  String get walk_slide_to_stop => 'Slide to stop';
+
+  @override
+  String get walk_result_load_error => 'Could not load results';
+
+  @override
+  String get walk_expected_distance => 'of the expected walking distance';
+
+  @override
+  String get walk_no_position => 'No position available yet';
+
+  @override
+  String get walk_accuracy => 'Accuracy';
+
+  @override
+  String get walk_of_six_minutes => 'of 6:00 minutes';
+
+  @override
+  String get walk_years => 'years';
+
+  @override
+  String get result_title => 'Test Results';
+
+  @override
+  String get result_description =>
+      'Here are your results from the 6-Minute Walk Test.';
+
+  @override
+  String get result_performance => 'Performance';
+
+  @override
+  String get result_expected_distance => 'of the expected walking distance';
+
+  @override
+  String get result_performance_explanation =>
+      'Your performance is based on your age, height, and walking distance.';
+
+  @override
+  String get result_no_assessment => 'No assessment';
+
+  @override
+  String get result_test_details => 'Test Details';
+
+  @override
+  String get result_distance_walked => 'Distance Walked';
+
+  @override
+  String get result_test_duration => 'Test Duration';
+
+  @override
+  String get result_test_status => 'Test Status';
+
+  @override
+  String get result_stopped_early => 'Stopped Early';
+
+  @override
+  String get result_completed => 'Completed';
+
+  @override
+  String get result_profile => 'Your Profile';
+
+  @override
+  String get result_name => 'Name';
+
+  @override
+  String get result_age => 'Age';
+
+  @override
+  String get result_years => 'years';
+
+  @override
+  String get result_height => 'Height';
+
+  @override
+  String get result_information =>
+      'The result provides guidance based on your recorded walking distance and personal information.';
+
+  @override
+  String get result_back_home => 'Back to Home';
+
+  @override
+  String result_export_failed(String error) {
+    return 'Export failed: $error';
+  }
 }

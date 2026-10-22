@@ -18,7 +18,9 @@ class InstructionsScreen1 extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF111111)),
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Color(0xFF111111), size: 28),
+        leading: const Icon(Icons.chevron_left),
       ),
       body: SafeArea(
         child: Padding(
