@@ -229,6 +229,10 @@ void main() {
   testWidgets(
     'ResultScreen live calculates and displays all estimators including main estimator and its additional info',
     (tester) async {
+      final recordedProfile = profile.copyWith(
+        height: 180,
+        gender: Gender.female,
+      );
       final db = AppDatabase(NativeDatabase.memory());
       addTearDown(db.close);
       await db
@@ -236,10 +240,10 @@ void main() {
           .insert(
             ProfilesCompanion.insert(
               id: const Value(1),
-              height: 170,
+              height: recordedProfile.height,
               age: 30,
               weight: 70,
-              gender: Gender.other,
+              gender: recordedProfile.gender,
             ),
           );
 
@@ -300,6 +304,15 @@ void main() {
           values: {StepKeys.cumulativeSteps: 25.0},
         ),
       );
+      sampleRepo.addSample(
+        sessionId,
+        SensorSample(
+          timestamp: t3.add(const Duration(seconds: 10)),
+          type: SampleType.steps,
+          sourceId: PedometerSource.id,
+          values: {StepKeys.cumulativeSteps: 35.0},
+        ),
+      );
       await sampleRepo.flush();
 
       final session = WalkSessionWithProfile(
@@ -311,7 +324,7 @@ void main() {
           phase: WalkPhase.finished,
           profileId: 1,
         ),
-        profile: profile,
+        profile: recordedProfile,
       );
 
       await tester.pumpWidget(
@@ -340,6 +353,12 @@ void main() {
       expect(find.text('Kalman GPS'), findsOneWidget);
       expect(find.text('Filtered GPS'), findsOneWidget);
       expect(find.text('Steps'), findsOneWidget);
+
+      final card = tester.widget<EstimatorComparisonCard>(
+        find.byType(EstimatorComparisonCard),
+      );
+      expect(card.comparisons.first.distance, closeTo(7.434, 1e-6));
+      expect(card.comparisons.first.additionalInfo['Step length'], '0.743 m');
 
       // Verify additional info from main estimator is displayed
       expect(find.text('GPS fallback timeout: 5.0 s'), findsOneWidget);
