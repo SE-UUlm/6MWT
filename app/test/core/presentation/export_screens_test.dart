@@ -58,6 +58,7 @@ void main() {
           );
         });
         Map<String, dynamic>? exported;
+        Map<String, dynamic>? shareArguments;
         final messenger = tester.binding.defaultBinaryMessenger;
         const pathChannel = MethodChannel('plugins.flutter.io/path_provider');
         const shareChannel = MethodChannel('dev.fluttercommunity.plus/share');
@@ -66,6 +67,7 @@ void main() {
           (_) async => directory.path,
         );
         messenger.setMockMethodCallHandler(shareChannel, (call) async {
+          shareArguments = Map<String, dynamic>.from(call.arguments as Map);
           final path = (call.arguments['paths'] as List).single as String;
           exported =
               jsonDecode(await File(path).readAsString())
@@ -108,13 +110,32 @@ void main() {
             ),
           ),
         );
+        final shareButton = find.widgetWithIcon(IconButton, Icons.share);
+        final expectedOrigin = tester.getRect(shareButton);
         await tester.runAsync(() async {
-          await tester.tap(find.byIcon(Icons.share));
+          await tester.tap(shareButton);
           for (var attempt = 0; attempt < 100 && exported == null; attempt++) {
             await Future<void>.delayed(const Duration(milliseconds: 10));
           }
         });
         expect(exported, isNotNull);
+        expect(
+          shareArguments!.keys,
+          containsAll(['originX', 'originY', 'originWidth', 'originHeight']),
+          reason: 'iOS requires a nonempty share sheet origin inside its view.',
+        );
+        final origin = Rect.fromLTWH(
+          (shareArguments!['originX'] as num).toDouble(),
+          (shareArguments!['originY'] as num).toDouble(),
+          (shareArguments!['originWidth'] as num).toDouble(),
+          (shareArguments!['originHeight'] as num).toDouble(),
+        );
+        expect(origin, expectedOrigin);
+        expect(origin.isEmpty, isFalse);
+        final viewport =
+            Offset.zero &
+            (tester.view.physicalSize / tester.view.devicePixelRatio);
+        expect(viewport.intersect(origin), origin);
         expect(
           exported!['deviceInfo']['deviceId'],
           unavailable ? null : 'test-id',

@@ -37,11 +37,13 @@ class HistoryScreen extends ConsumerWidget {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              _exportAllSessions(context, ref);
-            },
-            icon: const Icon(Icons.share),
+          Builder(
+            builder: (shareContext) => IconButton(
+              onPressed: () {
+                _exportAllSessions(shareContext, ref);
+              },
+              icon: const Icon(Icons.share),
+            ),
           ),
         ],
       ),
@@ -97,7 +99,9 @@ class HistoryScreen extends ConsumerWidget {
 
   Future<void> _exportAllSessions(BuildContext context, WidgetRef ref) async {
     try {
-      await ref.read(sessionExportServiceProvider).shareAllSessions();
+      await ref
+          .read(sessionExportServiceProvider)
+          .shareAllSessions(context: context);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(
