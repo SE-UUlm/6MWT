@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 
+import '../../app/log.dart';
 import 'database.dart';
+
+final _log = appLogger('WalkSessionRepository');
 
 /// A history entry with the profile that was active during the walk session.
 class WalkSessionWithProfile {
@@ -79,6 +82,7 @@ class WalkSessionRepository {
       )..where((row) => row.id.equals(sessionId))).getSingleOrNull();
 
       if (session == null) {
+        _log.w('Cannot delete session $sessionId: not found');
         return;
       }
 
@@ -103,7 +107,10 @@ class WalkSessionRepository {
         await (_db.delete(
           _db.profiles,
         )..where((row) => row.id.equals(profileId))).go();
+        _log.i('Deleted profile $profileId: no sessions reference it anymore');
       }
+
+      _log.i('Deleted session $sessionId');
     });
   }
 }

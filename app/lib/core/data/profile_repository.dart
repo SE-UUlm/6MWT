@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 
+import '../../app/log.dart';
 import 'database.dart';
+
+final _log = appLogger('ProfileRepository');
 
 class ProfileRepository {
   ProfileRepository(this._db);
@@ -36,11 +39,12 @@ class ProfileRepository {
 
     final existing = await query.get();
     if (existing.isNotEmpty) {
+      _log.d('Reusing profile ${existing.first.id}');
       return existing.first.id;
     }
 
     // No matching profile found – create a new one.
-    return _db
+    final id = await _db
         .into(_db.profiles)
         .insert(
           ProfilesCompanion.insert(
@@ -51,6 +55,8 @@ class ProfileRepository {
             weight: weight,
           ),
         );
+    _log.i('Created profile $id');
+    return id;
   }
 
   static Map<String, dynamic> _rowToMap(Profile row) => {

@@ -2,10 +2,13 @@ import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../app/log.dart';
 import 'database.steps.dart';
 import '../domain/walk_phase.dart';
 
 part 'database.drift.dart';
+
+final _log = appLogger('AppDatabase');
 
 enum Gender { male, female, other }
 
@@ -70,13 +73,29 @@ class AppDatabase extends _$AppDatabase {
   @override
   MigrationStrategy get migration => MigrationStrategy(
     beforeOpen: (details) async {
+      if (details.wasCreated) {
+        _log.i('Database created (schema ${details.versionNow})');
+      } else if (details.hadUpgrade) {
+        _log.i(
+          'Database upgraded from schema ${details.versionBefore} '
+          'to ${details.versionNow}',
+        );
+      } else {
+        _log.d('Database opened (schema ${details.versionNow})');
+      }
       await customStatement('PRAGMA foreign_keys = ON');
-      await customStatement(
+      final orphans = await customUpdate(
         'DELETE FROM sensor_samples WHERE session_id NOT IN (SELECT id FROM walk_sessions);',
+        updates: {sensorSamples},
+        updateKind: UpdateKind.delete,
       );
+      if (orphans > 0) {
+        _log.w('Removed $orphans orphaned sensor samples');
+      }
     },
     onUpgrade: stepByStep(
       from1To2: (m, schema) async {
+        _log.i('Migrating database from schema 1 to 2');
         // Backfill old test profiles only. New profiles must supply both values.
         // Rebuilding the table keeps schema 2 free of permanent SQL defaults.
         await m.alterTable(

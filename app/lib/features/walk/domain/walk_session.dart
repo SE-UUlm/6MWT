@@ -145,6 +145,7 @@ class WalkSession {
     try {
       await _startSources();
     } on Exception catch (exception) {
+      _log.e('Cannot warm up sensors', error: exception);
       await _stopSources();
       _emit(
         WalkSessionState(
@@ -188,6 +189,7 @@ class WalkSession {
 
     final startedAt = _now().toUtc();
     final sessionId = _generateSessionId();
+    _log.i('Starting walk test (session $sessionId)');
 
     _distanceEstimator.reset();
     _resetComparisons();
@@ -205,6 +207,7 @@ class WalkSession {
     try {
       await _startSources();
     } on Exception catch (exception) {
+      _log.e('Cannot start walk test (session $sessionId)', error: exception);
       await _stopTracking();
 
       _emit(
@@ -243,6 +246,10 @@ class WalkSession {
       return;
     }
 
+    _log.i(
+      'Aborting walk test (session ${_state.sessionId}), '
+      '${remaining.inSeconds}s remaining',
+    );
     await _stopTracking();
 
     _emit(
@@ -259,6 +266,7 @@ class WalkSession {
   }
 
   Future<void> reset() async {
+    _log.d('Resetting walk session');
     if (_state.isRunning ||
         _activeSources.isNotEmpty ||
         _sampleSubscriptions.isNotEmpty) {
@@ -376,6 +384,10 @@ class WalkSession {
       return;
     }
 
+    _log.i(
+      'Walk test finished (session ${_state.sessionId}), '
+      'distance ${_state.distance.toStringAsFixed(1)} m',
+    );
     final stopTracking = _stopTracking();
 
     // finished marks the end of measurement, not completed persistence: source
@@ -421,6 +433,7 @@ class WalkSession {
 
       await source.start();
       _activeSources.add(source);
+      _log.i('Started source ${source.sourceId}');
     }
 
     for (final source in _optionalSources) {
@@ -431,6 +444,7 @@ class WalkSession {
       try {
         await source.start();
         _activeSources.add(source);
+        _log.i('Started optional source ${source.sourceId}');
       } on Exception catch (e) {
         _log.w('Cannot start optional source ${source.sourceId}', error: e);
         // Optional sources may be missing (no wearable, no permission,
@@ -469,8 +483,10 @@ class WalkSession {
     for (final source in sourcesToStop) {
       try {
         await source.stop();
-      } on Exception {
+        _log.d('Stopped source ${source.sourceId}');
+      } on Exception catch (exception) {
         // Stopping one source must not prevent stopping the others.
+        _log.w('Cannot stop source ${source.sourceId}', error: exception);
       }
     }
   }
