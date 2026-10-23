@@ -23,6 +23,19 @@ Only primary distance drives assessment and persistence. Comparison diagnostics 
 
 ## Configuration and assumptions
 
+### Initial step length from profile data
+
+`GpsStepDistanceEstimator` estimates the initial step length as
+`heightCm / 100 * factor`. The factor is 0.415 for `male`, 0.413 for `female`,
+and 0.414 for other or unspecified gender. Missing or invalid height uses
+0.70 m. Age and weight are not used.
+
+Once enough good GPS and step data are available, the learned step length
+replaces this estimate and corrects earlier step-based distance.
+The app uses the selected profile; Visualizer replay uses the recording's profile.
+
+### Algorithm parameters
+
 Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, then hot restart. The GUI displays the configured variants; it does not edit parameters. GPS/step variants compare 5, 10 and 15-second maximum GPS intervals, all with a 5-second fallback delay. Consult constructor/config defaults in the shared implementation when changing a parameter.
 
 - Calibrated steps requires full GPS/step coverage, at least 6 steps and 5 m per window; accepted GPS has positive accuracy ≤10 m, speed ≤4 m/s and spacing ≤10 s. Stride ratios outside 0.25–2 m are rejected; median stride is clamped to 0.35–1.35 m, default 0.75 m.

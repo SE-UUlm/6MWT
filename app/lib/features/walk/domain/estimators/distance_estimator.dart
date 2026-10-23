@@ -10,6 +10,10 @@ abstract class DistanceEstimator {
   /// Implementations can report counters or settings; reset must clear run state.
   Map<String, String> get additionalInfo => const {};
 
+  /// Supplies optional profile data before a new run. Fixed comparison
+  /// estimators keep their configured parameters unless they override this.
+  void configureProfile({num? heightCm, String? gender}) {}
+
   void addSample(SensorSample sample);
 
   void reset();

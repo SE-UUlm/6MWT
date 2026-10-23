@@ -2,6 +2,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
 import 'distance_estimator.dart';
+import 'default_step_length.dart';
 
 /// GPS distance with a phone-step fallback and a session-local stride estimate.
 ///
@@ -52,6 +53,7 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
   double _gpsDistance = 0;
   double _totalDistance = 0;
   double? _learnedStepLength;
+  double _initialStepLength = defaultStepLength;
   int _acceptedGpsIntervals = 0;
   int _rejectedGpsGap = 0;
   int _rejectedGpsCoordinates = 0;
@@ -70,7 +72,15 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
 
   bool get hasLearnedStepLength => _learnedStepLength != null;
 
-  double get stepLength => _learnedStepLength ?? defaultStepLength;
+  double get stepLength => _learnedStepLength ?? _initialStepLength;
+
+  @override
+  void configureProfile({num? heightCm, String? gender}) {
+    _initialStepLength = estimateDefaultStepLength(
+      heightCm: heightCm,
+      gender: gender,
+    );
+  }
 
   @override
   Map<String, String> get additionalInfo => {

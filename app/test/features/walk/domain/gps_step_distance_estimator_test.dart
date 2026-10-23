@@ -52,6 +52,25 @@ void main() {
     estimator = GpsStepDistanceEstimator(stepSourceId: 'pedometer');
   });
 
+  test('profile default is corrected by learning and survives reset', () {
+    estimator.configureProfile(heightCm: 180, gender: 'female');
+    estimator.addSample(_steps(0, 1000));
+    estimator.addSample(_steps(10, 1010));
+    expect(estimator.totalDistance, closeTo(7.434, 1e-6));
+    expect(estimator.hasLearnedStepLength, isFalse);
+    expect(estimator.additionalInfo['Calibration'], 'Default');
+
+    _walk(estimator, start: 10, initialSteps: 1010);
+    expect(estimator.stepLength, closeTo(1, 1e-6));
+    // Fifteen GPS metres plus the ten earlier steps corrected to one metre.
+    expect(estimator.totalDistance, closeTo(25, 1e-6));
+
+    estimator.reset();
+    expect(estimator.hasLearnedStepLength, isFalse);
+    expect(estimator.stepLength, closeTo(0.7434, 1e-9));
+    expect(estimator.totalDistance, 0);
+  });
+
   test('good GPS supplies distance even without a step sensor', () {
     for (var i = 0; i <= 20; i++) {
       estimator.addSample(_gps(i, i.toDouble()));

@@ -36,6 +36,7 @@ Session session(
   List<SensorSample> samples, {
   Session? reference,
   DateTime? startedAt,
+  Profile? profile,
 }) => Session(
   id: 'test',
   notes: '',
@@ -46,6 +47,7 @@ Session session(
   profileId: 0,
   samples: samples,
   referenceSession: reference,
+  profile: profile,
 );
 
 class RecordingEstimator extends DistanceEstimator {

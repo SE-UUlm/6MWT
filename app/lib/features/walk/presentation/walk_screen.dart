@@ -71,7 +71,13 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     if (!mounted) return;
 
     final session = ref.read(walkSessionProvider);
-    session.profileId = widget.profileId;
+    if (profile != null) {
+      session.setProfile(
+        id: profile.id,
+        heightCm: profile.height,
+        gender: profile.gender.name,
+      );
+    }
 
     setState(() {
       _profile = profile;
@@ -476,9 +482,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                       width: double.infinity,
                       height: 60,
                       child: ElevatedButton(
-                        onPressed: () async {
-                          await session.start();
-                        },
+                        onPressed: _profile == null
+                            ? null
+                            : () async {
+                                await session.start();
+                              },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryBlue,
                           foregroundColor: Colors.white,
