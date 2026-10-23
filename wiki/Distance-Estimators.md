@@ -27,7 +27,7 @@ Only primary distance drives assessment and persistence. Comparison diagnostics 
 
 `GpsStepDistanceEstimator` estimates the initial step length as
 `heightCm / 100 * factor`. The factor is 0.415 for `male`, 0.413 for `female`,
-and 0.414 for other or unspecified gender. Missing or invalid height uses
+and 0.414 for other or unspecified gender. Missing or invalid height (e.g. in older exports) uses
 0.70 m. Age and weight are not used.
 
 Once enough good GPS and step data are available, the learned step length

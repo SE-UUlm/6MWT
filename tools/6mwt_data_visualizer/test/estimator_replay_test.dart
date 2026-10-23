@@ -295,13 +295,16 @@ void main() {
         recordings.map((s) => s.recordingLabel).toSet(),
         hasLength(recordings.length),
       );
+      // The loader reads one folder level; data/synthetic/ is benchmarked separately.
       final files = data
           .listSync(recursive: true)
           .whereType<File>()
           .where(
-            (file) => RegExp(
-              r'^session.*\.json$',
-            ).hasMatch(file.uri.pathSegments.last),
+            (file) =>
+                RegExp(
+                  r'^session.*\.json$',
+                ).hasMatch(file.uri.pathSegments.last) &&
+                file.parent.parent.absolute.path == data.absolute.path,
           );
       expect(
         recordings.map((s) => File(s.sourcePath!).absolute.path).toSet(),

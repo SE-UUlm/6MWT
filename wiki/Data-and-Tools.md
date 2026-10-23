@@ -84,6 +84,37 @@ The converter preserves GPS coordinates, altitude, speed, cumulative distance, s
 | `--first-span-only` | `False` | Optional: Only include the first continuous timer span |
 | `--trim-after-vehicle` | `False` | Optional: Trim records after speed exceeds `--max-speed` |
 
+## Synthetic data
+
+Generate deterministic six-minute walks with exact ground truth to probe distance estimators in situations that are rare or hard to record. Requires Python 3.10+ and no packages. From the repository root:
+
+```sh
+python3 tools/synthetic_data/generate.py
+```
+
+**Replaces `data/synthetic/` completely.** `-o <dir>` writes elsewhere; `--only <name> ...` regenerates selected scenarios without deleting the others or rewriting the README. Each scenario folder contains an app-style `session.json` (GPS `position` and pedometer `steps` samples, starting with a counter baseline) and a `reference.json` with the simulated route as 1 Hz positions and cumulative `distance`. The generated `data/synthetic/README.md` lists every scenario with its true distance, steps, mean stride and GPS fix count. Coordinates and the profile are synthetic.
+
+### Scenarios
+
+Scenarios are defined in `scenarios()` at the end of the script; names are prefixed by the aspect they test. Unless stated otherwise, a walk uses good 1 Hz GPS, a counter reading every second, 0.72 m stride and 1.85 steps/s.
+
+| Prefix | Covers |
+| --- | --- |
+| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), multipath jumps, one fix every ~5 s (older app versions) |
+| `route_` | Zigzag, circles, 30 m and 10 m shuttles with slowdown at turns, stops with GPS jitter |
+| `steps_` | Counter readings per step, every 10 steps, in 30 s batches or 10 s late; broken counters (undercounting, overcounting, frozen, erratic, counting while standing, missing) |
+| `stride_` | Short (0.45 m) and long (0.95 m) strides, fatigue during a GPS outage, stride changes measured by GPS before a gap, alternating stride with intermittent GPS |
+
+### Models
+
+The walker follows a polyline with cadence and stride profiles plus small cadence variation; true distance and steps are integrated every 50 ms. GPS presets (`GOOD`, `MEDIUM`, `BAD`, `VERY_BAD`, `OUTAGE`, `INACCURATE_STABLE`) model fused phone positions: a slowly wandering offset driven by a correlated error velocity, little independent per-fix noise and a reported accuracy radius. They are loosely calibrated against the 1 Hz recordings in `data/`: good conditions add about 1–3 % to a raw GPS sum, medium ones roughly 12–16 %. Reported speed reads about 10 % low, as observed on real devices. Step counter output is derived from the true step count with optional factors, freezes, delays, ghost steps and delivery modes.
+
+### Evaluating estimators
+
+Open `data/synthetic/` in the [Visualizer](Visualizer.md); the Estimator Lab compares each estimator against the ground-truth reference. For tables across all scenarios, load the folder in a Visualizer test with `loadBenchmarkRecordings('../../data/synthetic')` from `tool/benchmark_support.dart` and reuse `compareReferences` and `summaryLines`, as in `test/gps_step_benchmark_test.dart`. The existing benchmarks read only the top level of `data/`, so synthetic walks never mix with real recordings.
+
+Use synthetic results to find failure modes and check that a change does not break other situations, not to claim real-world accuracy. The sensor models are simplified, scenarios are hand-picked, and parameters tuned only on them will overfit. Confirm improvements on real recordings, keeping 1 Hz and 5 s GPS recordings apart. Scenarios without steps and GPS, or with a stride change during an outage, have no recoverable answer and test graceful degradation only.
+
 ## Timestamp converter
 
 Normalize older recordings whose step timestamps use local time while GPS uses UTC. Not really needed anymore.
