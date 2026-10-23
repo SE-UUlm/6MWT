@@ -1,0 +1,4350 @@
+{
+ "id": "synthetic-stride_variable_intermittent_gps-truth",
+ "notes": "Synthetic ground truth",
+ "startedAt": "2026-01-15T10:00:00.000000Z",
+ "duration": 360,
+ "distance": 458.63267723941885,
+ "phase": "finished",
+ "profileId": 1,
+ "samples": [
+  {
+   "id": 1,
+   "timestamp": "2026-01-15T10:00:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957,
+    "distance": 0.0,
+    "speed": 0.0
+   }
+  },
+  {
+   "id": 2,
+   "timestamp": "2026-01-15T10:00:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957015012132754,
+    "distance": 1.1090407749221916,
+    "speed": 1.1108506139152297
+   }
+  },
+  {
+   "id": 3,
+   "timestamp": "2026-01-15T10:00:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957030213492084,
+    "distance": 2.232060908625842,
+    "speed": 1.1240517710924922
+   }
+  },
+  {
+   "id": 4,
+   "timestamp": "2026-01-15T10:00:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957045502388976,
+    "distance": 3.3615479932034833,
+    "speed": 1.1256801447689584
+   }
+  },
+  {
+   "id": 5,
+   "timestamp": "2026-01-15T10:00:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957060673596697,
+    "distance": 4.482340637700847,
+    "speed": 1.1138815630290844
+   }
+  },
+  {
+   "id": 6,
+   "timestamp": "2026-01-15T10:00:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957075567548767,
+    "distance": 5.582650661429874,
+    "speed": 1.0897919593766492
+   }
+  },
+  {
+   "id": 7,
+   "timestamp": "2026-01-15T10:00:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95709032956553,
+    "distance": 6.673213793186916,
+    "speed": 1.0869962331268537
+   }
+  },
+  {
+   "id": 8,
+   "timestamp": "2026-01-15T10:00:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.9571051824087,
+    "distance": 7.770486843675237,
+    "speed": 1.1043162270173965
+   }
+  },
+  {
+   "id": 9,
+   "timestamp": "2026-01-15T10:00:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957120249132839,
+    "distance": 8.883560627924018,
+    "speed": 1.126333979798101
+   }
+  },
+  {
+   "id": 10,
+   "timestamp": "2026-01-15T10:00:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957135608434719,
+    "distance": 10.018248972394115,
+    "speed": 1.142351395532695
+   }
+  },
+  {
+   "id": 11,
+   "timestamp": "2026-01-15T10:00:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957150981466093,
+    "distance": 11.153951601018527,
+    "speed": 1.1419855260706548
+   }
+  },
+  {
+   "id": 12,
+   "timestamp": "2026-01-15T10:00:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95716648416487,
+    "distance": 12.299233577162067,
+    "speed": 1.1417548613645132
+   }
+  },
+  {
+   "id": 13,
+   "timestamp": "2026-01-15T10:00:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957181979988388,
+    "distance": 13.44400763454786,
+    "speed": 1.1581336151564332
+   }
+  },
+  {
+   "id": 14,
+   "timestamp": "2026-01-15T10:00:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957197585011494,
+    "distance": 14.596848953140945,
+    "speed": 1.1532875723112366
+   }
+  },
+  {
+   "id": 15,
+   "timestamp": "2026-01-15T10:00:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957213504118986,
+    "distance": 15.772893663099858,
+    "speed": 1.1928051396323789
+   }
+  },
+  {
+   "id": 16,
+   "timestamp": "2026-01-15T10:00:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957229647896137,
+    "distance": 16.965536135467527,
+    "speed": 1.1940790587755303
+   }
+  },
+  {
+   "id": 17,
+   "timestamp": "2026-01-15T10:00:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957245824839214,
+    "distance": 18.160628783658172,
+    "speed": 1.190026527970914
+   }
+  },
+  {
+   "id": 18,
+   "timestamp": "2026-01-15T10:00:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957261953151773,
+    "distance": 19.35212878911963,
+    "speed": 1.1844252708031535
+   }
+  },
+  {
+   "id": 19,
+   "timestamp": "2026-01-15T10:00:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957277990117579,
+    "distance": 20.53688043485106,
+    "speed": 1.1767113268484917
+   }
+  },
+  {
+   "id": 20,
+   "timestamp": "2026-01-15T10:00:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957293785119962,
+    "distance": 21.703756718994683,
+    "speed": 1.1587722339551323
+   }
+  },
+  {
+   "id": 21,
+   "timestamp": "2026-01-15T10:00:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95730936377781,
+    "distance": 22.854650269975707,
+    "speed": 1.140358691957704
+   }
+  },
+  {
+   "id": 22,
+   "timestamp": "2026-01-15T10:00:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957324813289157,
+    "distance": 23.996002955660806,
+    "speed": 1.131400673900895
+   }
+  },
+  {
+   "id": 23,
+   "timestamp": "2026-01-15T10:00:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957340266368826,
+    "distance": 25.137619255885564,
+    "speed": 1.155524783159502
+   }
+  },
+  {
+   "id": 24,
+   "timestamp": "2026-01-15T10:00:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957355785512602,
+    "distance": 26.28411612763805,
+    "speed": 1.1473753065523897
+   }
+  },
+  {
+   "id": 25,
+   "timestamp": "2026-01-15T10:00:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957371403774465,
+    "distance": 27.437935476511907,
+    "speed": 1.1548004284978728
+   }
+  },
+  {
+   "id": 26,
+   "timestamp": "2026-01-15T10:00:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957386976991073,
+    "distance": 28.588427048849066,
+    "speed": 1.1429487529233442
+   }
+  },
+  {
+   "id": 27,
+   "timestamp": "2026-01-15T10:00:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957402304952451,
+    "distance": 29.720800073065572,
+    "speed": 1.1202144795747655
+   }
+  },
+  {
+   "id": 28,
+   "timestamp": "2026-01-15T10:00:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957417331200107,
+    "distance": 30.830883604733913,
+    "speed": 1.099050254481223
+   }
+  },
+  {
+   "id": 29,
+   "timestamp": "2026-01-15T10:00:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95743195310704,
+    "distance": 31.911095941105728,
+    "speed": 1.0676032579762025
+   }
+  },
+  {
+   "id": 30,
+   "timestamp": "2026-01-15T10:00:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957446237448389,
+    "distance": 32.966370182365566,
+    "speed": 1.0470523013915203
+   }
+  },
+  {
+   "id": 31,
+   "timestamp": "2026-01-15T10:00:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957460544935014,
+    "distance": 34.023354310726745,
+    "speed": 1.077109129747818
+   }
+  },
+  {
+   "id": 32,
+   "timestamp": "2026-01-15T10:00:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957475061892765,
+    "distance": 35.095813390293756,
+    "speed": 1.0689354657426173
+   }
+  },
+  {
+   "id": 33,
+   "timestamp": "2026-01-15T10:00:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957489677565192,
+    "distance": 36.17556514448114,
+    "speed": 1.0707982289169728
+   }
+  },
+  {
+   "id": 34,
+   "timestamp": "2026-01-15T10:00:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95750433503823,
+    "distance": 37.25840497298154,
+    "speed": 1.0722696457856125
+   }
+  },
+  {
+   "id": 35,
+   "timestamp": "2026-01-15T10:00:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95751878200873,
+    "distance": 38.32569365356157,
+    "speed": 1.0778634119150872
+   }
+  },
+  {
+   "id": 36,
+   "timestamp": "2026-01-15T10:00:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957533264524889,
+    "distance": 39.39560831583291,
+    "speed": 1.0464172517326855
+   }
+  },
+  {
+   "id": 37,
+   "timestamp": "2026-01-15T10:00:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957547493117703,
+    "distance": 40.44676406167734,
+    "speed": 1.0540351584453214
+   }
+  },
+  {
+   "id": 38,
+   "timestamp": "2026-01-15T10:00:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95756193985701,
+    "distance": 41.514035662513116,
+    "speed": 1.0692862913430627
+   }
+  },
+  {
+   "id": 39,
+   "timestamp": "2026-01-15T10:00:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957576513894798,
+    "distance": 42.59071160388306,
+    "speed": 1.0761660313027654
+   }
+  },
+  {
+   "id": 40,
+   "timestamp": "2026-01-15T10:00:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957591034481988,
+    "distance": 43.66343881288311,
+    "speed": 1.0757435297599987
+   }
+  },
+  {
+   "id": 41,
+   "timestamp": "2026-01-15T10:00:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957605788301546,
+    "distance": 44.75339636549014,
+    "speed": 1.0983776274419732
+   }
+  },
+  {
+   "id": 42,
+   "timestamp": "2026-01-15T10:00:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957620542792046,
+    "distance": 45.84340348491606,
+    "speed": 1.0878183956024636
+   }
+  },
+  {
+   "id": 43,
+   "timestamp": "2026-01-15T10:00:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957635287425239,
+    "distance": 46.93268238291723,
+    "speed": 1.0967779871710397
+   }
+  },
+  {
+   "id": 44,
+   "timestamp": "2026-01-15T10:00:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957650073943828,
+    "distance": 48.02505561886812,
+    "speed": 1.0890391139839815
+   }
+  },
+  {
+   "id": 45,
+   "timestamp": "2026-01-15T10:00:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957664869408775,
+    "distance": 49.11808977875364,
+    "speed": 1.0897786268989993
+   }
+  },
+  {
+   "id": 46,
+   "timestamp": "2026-01-15T10:00:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957679501371391,
+    "distance": 50.19904499174943,
+    "speed": 1.0793133832238189
+   }
+  },
+  {
+   "id": 47,
+   "timestamp": "2026-01-15T10:00:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957694088176737,
+    "distance": 51.27666415289364,
+    "speed": 1.0804348698765975
+   }
+  },
+  {
+   "id": 48,
+   "timestamp": "2026-01-15T10:00:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95770863730701,
+    "distance": 52.351500019102396,
+    "speed": 1.0725430129027724
+   }
+  },
+  {
+   "id": 49,
+   "timestamp": "2026-01-15T10:00:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957722941542105,
+    "distance": 53.40824393666631,
+    "speed": 1.049262466369177
+   }
+  },
+  {
+   "id": 50,
+   "timestamp": "2026-01-15T10:00:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957737178215497,
+    "distance": 54.459996645680825,
+    "speed": 1.058963910215609
+   }
+  },
+  {
+   "id": 51,
+   "timestamp": "2026-01-15T10:00:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957751465094077,
+    "distance": 55.51545832802637,
+    "speed": 1.0641957163594837
+   }
+  },
+  {
+   "id": 52,
+   "timestamp": "2026-01-15T10:00:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957765864366355,
+    "distance": 56.579223240643294,
+    "speed": 1.078358217474726
+   }
+  },
+  {
+   "id": 53,
+   "timestamp": "2026-01-15T10:00:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957780410080352,
+    "distance": 57.65380672509461,
+    "speed": 1.0738868891467865
+   }
+  },
+  {
+   "id": 54,
+   "timestamp": "2026-01-15T10:00:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95779502553538,
+    "distance": 58.73354241869502,
+    "speed": 1.0835252589489508
+   }
+  },
+  {
+   "id": 55,
+   "timestamp": "2026-01-15T10:00:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957809794244296,
+    "distance": 59.82459994197946,
+    "speed": 1.0885871776927674
+   }
+  },
+  {
+   "id": 56,
+   "timestamp": "2026-01-15T10:00:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957824377323808,
+    "distance": 60.90194385232274,
+    "speed": 1.0739491824626441
+   }
+  },
+  {
+   "id": 57,
+   "timestamp": "2026-01-15T10:00:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957838834613012,
+    "distance": 61.969994840583716,
+    "speed": 1.062029487207657
+   }
+  },
+  {
+   "id": 58,
+   "timestamp": "2026-01-15T10:00:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957853401409016,
+    "distance": 63.04613578563072,
+    "speed": 1.0931376938154422
+   }
+  },
+  {
+   "id": 59,
+   "timestamp": "2026-01-15T10:00:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95786820080441,
+    "distance": 64.13946031226426,
+    "speed": 1.098082218496615
+   }
+  },
+  {
+   "id": 60,
+   "timestamp": "2026-01-15T10:00:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957883233909552,
+    "distance": 65.25005044961472,
+    "speed": 1.1194134632786592
+   }
+  },
+  {
+   "id": 61,
+   "timestamp": "2026-01-15T10:01:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95789830568204,
+    "distance": 66.36349718723548,
+    "speed": 1.1056585468928948
+   }
+  },
+  {
+   "id": 62,
+   "timestamp": "2026-01-15T10:01:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957918146265728,
+    "distance": 67.82924603659427,
+    "speed": 1.482451141963633
+   }
+  },
+  {
+   "id": 63,
+   "timestamp": "2026-01-15T10:01:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957938359933374,
+    "distance": 69.32255694709293,
+    "speed": 1.4925641840808688
+   }
+  },
+  {
+   "id": 64,
+   "timestamp": "2026-01-15T10:01:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95795840272117,
+    "distance": 70.80324388715273,
+    "speed": 1.4650339733269162
+   }
+  },
+  {
+   "id": 65,
+   "timestamp": "2026-01-15T10:01:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957978352258523,
+    "distance": 72.2770418298219,
+    "speed": 1.488043093346348
+   }
+  },
+  {
+   "id": 66,
+   "timestamp": "2026-01-15T10:01:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957998459919205,
+    "distance": 73.76252133828373,
+    "speed": 1.479771023827621
+   }
+  },
+  {
+   "id": 67,
+   "timestamp": "2026-01-15T10:01:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958018506333241,
+    "distance": 75.24347617144619,
+    "speed": 1.4739358924721584
+   }
+  },
+  {
+   "id": 68,
+   "timestamp": "2026-01-15T10:01:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958038365569895,
+    "distance": 76.71060303282248,
+    "speed": 1.479099495974168
+   }
+  },
+  {
+   "id": 69,
+   "timestamp": "2026-01-15T10:01:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958058546440954,
+    "distance": 78.20149105300916,
+    "speed": 1.4750589897210369
+   }
+  },
+  {
+   "id": 70,
+   "timestamp": "2026-01-15T10:01:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958075866970875,
+    "distance": 79.48106766220164,
+    "speed": 1.1043825708623616
+   }
+  },
+  {
+   "id": 71,
+   "timestamp": "2026-01-15T10:01:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42200446923064,
+    "longitude": 9.958082891312378,
+    "distance": 80.49751475523254,
+    "speed": 1.0729425944513724
+   }
+  },
+  {
+   "id": 72,
+   "timestamp": "2026-01-15T10:01:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42201576845103,
+    "longitude": 9.958082891312378,
+    "distance": 81.75534396901539,
+    "speed": 1.4441427973843335
+   }
+  },
+  {
+   "id": 73,
+   "timestamp": "2026-01-15T10:01:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42202951612408,
+    "longitude": 9.958082891312378,
+    "distance": 83.28573493243671,
+    "speed": 1.533747645791054
+   }
+  },
+  {
+   "id": 74,
+   "timestamp": "2026-01-15T10:01:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42204318151735,
+    "longitude": 9.958082891312378,
+    "distance": 84.80696651223103,
+    "speed": 1.5142612095376755
+   }
+  },
+  {
+   "id": 75,
+   "timestamp": "2026-01-15T10:01:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422056736208255,
+    "longitude": 9.958082891312378,
+    "distance": 86.3158747031235,
+    "speed": 1.5120503551105695
+   }
+  },
+  {
+   "id": 76,
+   "timestamp": "2026-01-15T10:01:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422070322195864,
+    "longitude": 9.958082891312378,
+    "distance": 87.82826684408616,
+    "speed": 1.522200020102268
+   }
+  },
+  {
+   "id": 77,
+   "timestamp": "2026-01-15T10:01:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42208398498418,
+    "longitude": 9.958082891312378,
+    "distance": 89.34920843924947,
+    "speed": 1.5132999152178446
+   }
+  },
+  {
+   "id": 78,
+   "timestamp": "2026-01-15T10:01:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42209768532109,
+    "longitude": 9.958082891312378,
+    "distance": 90.87432994439479,
+    "speed": 1.5359145250014274
+   }
+  },
+  {
+   "id": 79,
+   "timestamp": "2026-01-15T10:01:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4221116576453,
+    "longitude": 9.958082891312378,
+    "distance": 92.42972907507155,
+    "speed": 1.5538774158059816
+   }
+  },
+  {
+   "id": 80,
+   "timestamp": "2026-01-15T10:01:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42212550504384,
+    "longitude": 9.958082891312378,
+    "distance": 93.97122148065321,
+    "speed": 1.5202470078862806
+   }
+  },
+  {
+   "id": 81,
+   "timestamp": "2026-01-15T10:01:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42213898108994,
+    "longitude": 9.958082891312378,
+    "distance": 95.47137493203373,
+    "speed": 1.4968738143698557
+   }
+  },
+  {
+   "id": 82,
+   "timestamp": "2026-01-15T10:01:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422152368985934,
+    "longitude": 9.958082891312378,
+    "distance": 96.96171551436467,
+    "speed": 1.4937950978410128
+   }
+  },
+  {
+   "id": 83,
+   "timestamp": "2026-01-15T10:01:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42216591378523,
+    "longitude": 9.958082891312378,
+    "distance": 98.46952257167237,
+    "speed": 1.51429277807049
+   }
+  },
+  {
+   "id": 84,
+   "timestamp": "2026-01-15T10:01:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42217948811324,
+    "longitude": 9.958082891312378,
+    "distance": 99.98061676623234,
+    "speed": 1.5152423672556852
+   }
+  },
+  {
+   "id": 85,
+   "timestamp": "2026-01-15T10:01:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422193049441965,
+    "longitude": 9.958082891312378,
+    "distance": 101.49026387965228,
+    "speed": 1.5112172244248248
+   }
+  },
+  {
+   "id": 86,
+   "timestamp": "2026-01-15T10:01:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42220672754051,
+    "longitude": 9.958082891312378,
+    "distance": 103.01290981055537,
+    "speed": 1.5289736937818668
+   }
+  },
+  {
+   "id": 87,
+   "timestamp": "2026-01-15T10:01:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42222042239003,
+    "longitude": 9.958082891312378,
+    "distance": 104.53742045921697,
+    "speed": 1.525591897093028
+   }
+  },
+  {
+   "id": 88,
+   "timestamp": "2026-01-15T10:01:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422234122422985,
+    "longitude": 9.958082891312378,
+    "distance": 106.06250812670197,
+    "speed": 1.532185181004838
+   }
+  },
+  {
+   "id": 89,
+   "timestamp": "2026-01-15T10:01:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422247866670155,
+    "longitude": 9.958082891312378,
+    "distance": 107.59251772162062,
+    "speed": 1.535029722187732
+   }
+  },
+  {
+   "id": 90,
+   "timestamp": "2026-01-15T10:01:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422261674879636,
+    "longitude": 9.958082891312378,
+    "distance": 109.1296476014515,
+    "speed": 1.5474991051336187
+   }
+  },
+  {
+   "id": 91,
+   "timestamp": "2026-01-15T10:01:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42227569923515,
+    "longitude": 9.958082891312378,
+    "distance": 110.69083885746808,
+    "speed": 1.5730964952393405
+   }
+  },
+  {
+   "id": 92,
+   "timestamp": "2026-01-15T10:01:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422289778190944,
+    "longitude": 9.958082891312378,
+    "distance": 112.25810821634795,
+    "speed": 1.5722222168624147
+   }
+  },
+  {
+   "id": 93,
+   "timestamp": "2026-01-15T10:01:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42230390430825,
+    "longitude": 9.958082891312378,
+    "distance": 113.83062759488992,
+    "speed": 1.5603872947082207
+   }
+  },
+  {
+   "id": 94,
+   "timestamp": "2026-01-15T10:01:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422317987869135,
+    "longitude": 9.958082891312378,
+    "distance": 115.39840959230516,
+    "speed": 1.5612636782735285
+   }
+  },
+  {
+   "id": 95,
+   "timestamp": "2026-01-15T10:01:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42233192588716,
+    "longitude": 9.958082891312378,
+    "distance": 116.94998975849543,
+    "speed": 1.5249607087283874
+   }
+  },
+  {
+   "id": 96,
+   "timestamp": "2026-01-15T10:01:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422345737818986,
+    "longitude": 9.958082891312378,
+    "distance": 118.48753400953207,
+    "speed": 1.5439000047190237
+   }
+  },
+  {
+   "id": 97,
+   "timestamp": "2026-01-15T10:01:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42235940049116,
+    "longitude": 9.958082891312378,
+    "distance": 120.00846267620437,
+    "speed": 1.5276081839196773
+   }
+  },
+  {
+   "id": 98,
+   "timestamp": "2026-01-15T10:01:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4223730379685,
+    "longitude": 9.958082891312378,
+    "distance": 121.52658665374307,
+    "speed": 1.5147675218840337
+   }
+  },
+  {
+   "id": 99,
+   "timestamp": "2026-01-15T10:01:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42238658914649,
+    "longitude": 9.958082891312378,
+    "distance": 123.0351037878931,
+    "speed": 1.5158415925119515
+   }
+  },
+  {
+   "id": 100,
+   "timestamp": "2026-01-15T10:01:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42240027244239,
+    "longitude": 9.958082891312378,
+    "distance": 124.55832828661387,
+    "speed": 1.5253742502501193
+   }
+  },
+  {
+   "id": 101,
+   "timestamp": "2026-01-15T10:01:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42241389669362,
+    "longitude": 9.958082891312378,
+    "distance": 126.07497993370207,
+    "speed": 1.5208002967203702
+   }
+  },
+  {
+   "id": 102,
+   "timestamp": "2026-01-15T10:01:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4224274722107,
+    "longitude": 9.958082891312378,
+    "distance": 127.58620649513605,
+    "speed": 1.5138860794129956
+   }
+  },
+  {
+   "id": 103,
+   "timestamp": "2026-01-15T10:01:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244014314754,
+    "longitude": 9.958082891312378,
+    "distance": 128.99673518432058,
+    "speed": 1.246703300590237
+   }
+  },
+  {
+   "id": 104,
+   "timestamp": "2026-01-15T10:01:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958082016458725,
+    "distance": 130.06463094813458,
+    "speed": 0.9276037644291169
+   }
+  },
+  {
+   "id": 105,
+   "timestamp": "2026-01-15T10:01:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958067728942305,
+    "distance": 131.12013975180267,
+    "speed": 1.1872188421849736
+   }
+  },
+  {
+   "id": 106,
+   "timestamp": "2026-01-15T10:01:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958049538598612,
+    "distance": 132.4639749814034,
+    "speed": 1.4291969811819938
+   }
+  },
+  {
+   "id": 107,
+   "timestamp": "2026-01-15T10:01:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958030338966614,
+    "distance": 133.88237269347812,
+    "speed": 1.4135293891107792
+   }
+  },
+  {
+   "id": 108,
+   "timestamp": "2026-01-15T10:01:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958011085840473,
+    "distance": 135.30472235461295,
+    "speed": 1.422008301640832
+   }
+  },
+  {
+   "id": 109,
+   "timestamp": "2026-01-15T10:01:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957991768207135,
+    "distance": 136.7318375686482,
+    "speed": 1.4219745144347016
+   }
+  },
+  {
+   "id": 110,
+   "timestamp": "2026-01-15T10:01:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957972810132894,
+    "distance": 138.13238988822226,
+    "speed": 1.3926155207692517
+   }
+  },
+  {
+   "id": 111,
+   "timestamp": "2026-01-15T10:01:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95795402225448,
+    "distance": 139.52036877018787,
+    "speed": 1.383084505599003
+   }
+  },
+  {
+   "id": 112,
+   "timestamp": "2026-01-15T10:01:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95793528970431,
+    "distance": 140.9042602064606,
+    "speed": 1.385966793107877
+   }
+  },
+  {
+   "id": 113,
+   "timestamp": "2026-01-15T10:01:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957916666271982,
+    "distance": 142.2800904206079,
+    "speed": 1.3797036155750226
+   }
+  },
+  {
+   "id": 114,
+   "timestamp": "2026-01-15T10:01:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957897766911989,
+    "distance": 143.67630514894407,
+    "speed": 1.4080909878278496
+   }
+  },
+  {
+   "id": 115,
+   "timestamp": "2026-01-15T10:01:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957878926795704,
+    "distance": 145.06814317136863,
+    "speed": 1.3800969103363143
+   }
+  },
+  {
+   "id": 116,
+   "timestamp": "2026-01-15T10:01:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957859919221992,
+    "distance": 146.47235232847174,
+    "speed": 1.4227508462518734
+   }
+  },
+  {
+   "id": 117,
+   "timestamp": "2026-01-15T10:01:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957840708142525,
+    "distance": 147.8915957371176,
+    "speed": 1.401487781462936
+   }
+  },
+  {
+   "id": 118,
+   "timestamp": "2026-01-15T10:01:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957821457017664,
+    "distance": 149.31379755110646,
+    "speed": 1.448435812813035
+   }
+  },
+  {
+   "id": 119,
+   "timestamp": "2026-01-15T10:01:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957801582657765,
+    "distance": 150.78204166181916,
+    "speed": 1.4917016912035606
+   }
+  },
+  {
+   "id": 120,
+   "timestamp": "2026-01-15T10:01:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957781160153308,
+    "distance": 152.29078066261562,
+    "speed": 1.516380239622608
+   }
+  },
+  {
+   "id": 121,
+   "timestamp": "2026-01-15T10:02:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957760732641223,
+    "distance": 153.7998896083848,
+    "speed": 1.4943621923477766
+   }
+  },
+  {
+   "id": 122,
+   "timestamp": "2026-01-15T10:02:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957745401894632,
+    "distance": 154.93246839378457,
+    "speed": 1.1321982784906386
+   }
+  },
+  {
+   "id": 123,
+   "timestamp": "2026-01-15T10:02:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957730353666488,
+    "distance": 156.0441757624551,
+    "speed": 1.09199501802681
+   }
+  },
+  {
+   "id": 124,
+   "timestamp": "2026-01-15T10:02:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957715517151122,
+    "distance": 157.14024257524875,
+    "speed": 1.0929613214922032
+   }
+  },
+  {
+   "id": 125,
+   "timestamp": "2026-01-15T10:02:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95770067890154,
+    "distance": 158.23643750537434,
+    "speed": 1.1082138251590175
+   }
+  },
+  {
+   "id": 126,
+   "timestamp": "2026-01-15T10:02:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957685695855076,
+    "distance": 159.34332949294716,
+    "speed": 1.107396827120975
+   }
+  },
+  {
+   "id": 127,
+   "timestamp": "2026-01-15T10:02:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957670755122477,
+    "distance": 160.44709548894642,
+    "speed": 1.1061808038006202
+   }
+  },
+  {
+   "id": 128,
+   "timestamp": "2026-01-15T10:02:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957655665604417,
+    "distance": 161.5618532037604,
+    "speed": 1.1163009412505576
+   }
+  },
+  {
+   "id": 129,
+   "timestamp": "2026-01-15T10:02:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957640488998573,
+    "distance": 162.68304464161,
+    "speed": 1.1243072813889012
+   }
+  },
+  {
+   "id": 130,
+   "timestamp": "2026-01-15T10:02:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957625257384697,
+    "distance": 163.80829986914296,
+    "speed": 1.1271258971345453
+   }
+  },
+  {
+   "id": 131,
+   "timestamp": "2026-01-15T10:02:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957609765295942,
+    "distance": 164.9527980160922,
+    "speed": 1.1497296128856243
+   }
+  },
+  {
+   "id": 132,
+   "timestamp": "2026-01-15T10:02:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957594272204112,
+    "distance": 166.09737026660412,
+    "speed": 1.1443962054786678
+   }
+  },
+  {
+   "id": 133,
+   "timestamp": "2026-01-15T10:02:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957578875246949,
+    "distance": 167.23484044385722,
+    "speed": 1.1197671416435158
+   }
+  },
+  {
+   "id": 134,
+   "timestamp": "2026-01-15T10:02:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95756380851975,
+    "distance": 168.34791445430707,
+    "speed": 1.1119905642911359
+   }
+  },
+  {
+   "id": 135,
+   "timestamp": "2026-01-15T10:02:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95754892248691,
+    "distance": 169.44763943465972,
+    "speed": 1.097768115849418
+   }
+  },
+  {
+   "id": 136,
+   "timestamp": "2026-01-15T10:02:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957533932484534,
+    "distance": 170.55504529924656,
+    "speed": 1.1099966818598341
+   }
+  },
+  {
+   "id": 137,
+   "timestamp": "2026-01-15T10:02:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957518917849473,
+    "distance": 171.66427093533963,
+    "speed": 1.1042757794999047
+   }
+  },
+  {
+   "id": 138,
+   "timestamp": "2026-01-15T10:02:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957503979144521,
+    "distance": 172.76788713619533,
+    "speed": 1.1048614342366918
+   }
+  },
+  {
+   "id": 139,
+   "timestamp": "2026-01-15T10:02:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957488993874199,
+    "distance": 173.87494341423618,
+    "speed": 1.106144632901408
+   }
+  },
+  {
+   "id": 140,
+   "timestamp": "2026-01-15T10:02:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957473944425445,
+    "distance": 174.98674095713412,
+    "speed": 1.0970411840291805
+   }
+  },
+  {
+   "id": 141,
+   "timestamp": "2026-01-15T10:02:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95745885622959,
+    "distance": 176.10140099238603,
+    "speed": 1.120002200759769
+   }
+  },
+  {
+   "id": 142,
+   "timestamp": "2026-01-15T10:02:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957443614219581,
+    "distance": 177.2274242477032,
+    "speed": 1.1211516241381445
+   }
+  },
+  {
+   "id": 143,
+   "timestamp": "2026-01-15T10:02:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957428277922242,
+    "distance": 178.3604131018179,
+    "speed": 1.135652847887136
+   }
+  },
+  {
+   "id": 144,
+   "timestamp": "2026-01-15T10:02:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957413045090892,
+    "distance": 179.48575827179081,
+    "speed": 1.117336629087937
+   }
+  },
+  {
+   "id": 145,
+   "timestamp": "2026-01-15T10:02:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957398007623613,
+    "distance": 180.59667066760173,
+    "speed": 1.1025421353683427
+   }
+  },
+  {
+   "id": 146,
+   "timestamp": "2026-01-15T10:02:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957383100687002,
+    "distance": 181.69793994114875,
+    "speed": 1.0854865630283248
+   }
+  },
+  {
+   "id": 147,
+   "timestamp": "2026-01-15T10:02:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957368318490477,
+    "distance": 182.7899938790445,
+    "speed": 1.1002770423579025
+   }
+  },
+  {
+   "id": 148,
+   "timestamp": "2026-01-15T10:02:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957353541913594,
+    "distance": 183.8816326586652,
+    "speed": 1.0798355578526604
+   }
+  },
+  {
+   "id": 149,
+   "timestamp": "2026-01-15T10:02:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957338705833985,
+    "distance": 184.97766727921936,
+    "speed": 1.1066717955592682
+   }
+  },
+  {
+   "id": 150,
+   "timestamp": "2026-01-15T10:02:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957323621021311,
+    "distance": 186.09207737757689,
+    "speed": 1.1210667465294784
+   }
+  },
+  {
+   "id": 151,
+   "timestamp": "2026-01-15T10:02:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957308262995609,
+    "distance": 187.22667144264287,
+    "speed": 1.1496917651520397
+   }
+  },
+  {
+   "id": 152,
+   "timestamp": "2026-01-15T10:02:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957292871098673,
+    "distance": 188.36376778906117,
+    "speed": 1.1393832259342378
+   }
+  },
+  {
+   "id": 153,
+   "timestamp": "2026-01-15T10:02:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957277330754113,
+    "distance": 189.51183089617086,
+    "speed": 1.1473871377943616
+   }
+  },
+  {
+   "id": 154,
+   "timestamp": "2026-01-15T10:02:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957261805122117,
+    "distance": 190.65880709357864,
+    "speed": 1.1455870463416002
+   }
+  },
+  {
+   "id": 155,
+   "timestamp": "2026-01-15T10:02:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957246306999224,
+    "distance": 191.80375102036734,
+    "speed": 1.1450401238792454
+   }
+  },
+  {
+   "id": 156,
+   "timestamp": "2026-01-15T10:02:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957230817871674,
+    "distance": 192.94803040459908,
+    "speed": 1.1496460651231952
+   }
+  },
+  {
+   "id": 157,
+   "timestamp": "2026-01-15T10:02:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957215338232666,
+    "distance": 194.0916088102306,
+    "speed": 1.1500609950772294
+   }
+  },
+  {
+   "id": 158,
+   "timestamp": "2026-01-15T10:02:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957199954466162,
+    "distance": 195.2281045105751,
+    "speed": 1.1328688873472794
+   }
+  },
+  {
+   "id": 159,
+   "timestamp": "2026-01-15T10:02:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957184644522863,
+    "distance": 196.35914642568213,
+    "speed": 1.1256143798798275
+   }
+  },
+  {
+   "id": 160,
+   "timestamp": "2026-01-15T10:02:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957169376372317,
+    "distance": 197.48710084712226,
+    "speed": 1.133636488009982
+   }
+  },
+  {
+   "id": 161,
+   "timestamp": "2026-01-15T10:02:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957154000628472,
+    "distance": 198.62300386294118,
+    "speed": 1.139437884440391
+   }
+  },
+  {
+   "id": 162,
+   "timestamp": "2026-01-15T10:02:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95713852824286,
+    "distance": 199.76604641477198,
+    "speed": 1.1453511495508946
+   }
+  },
+  {
+   "id": 163,
+   "timestamp": "2026-01-15T10:02:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95712329316305,
+    "distance": 200.8915576925743,
+    "speed": 1.1192830470771318
+   }
+  },
+  {
+   "id": 164,
+   "timestamp": "2026-01-15T10:02:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957108216648894,
+    "distance": 202.0053547272378,
+    "speed": 1.1065155705196577
+   }
+  },
+  {
+   "id": 165,
+   "timestamp": "2026-01-15T10:02:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957093308665492,
+    "distance": 203.10670133379003,
+    "speed": 1.1040854723053297
+   }
+  },
+  {
+   "id": 166,
+   "timestamp": "2026-01-15T10:02:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95707843934674,
+    "distance": 204.20519153920432,
+    "speed": 1.101335284053665
+   }
+  },
+  {
+   "id": 167,
+   "timestamp": "2026-01-15T10:02:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95706345326305,
+    "distance": 205.31230790577933,
+    "speed": 1.1099072275531014
+   }
+  },
+  {
+   "id": 168,
+   "timestamp": "2026-01-15T10:02:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957048456837516,
+    "distance": 206.42018828952178,
+    "speed": 1.0923632429083496
+   }
+  },
+  {
+   "id": 169,
+   "timestamp": "2026-01-15T10:02:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957033762287889,
+    "distance": 207.50576719921722,
+    "speed": 1.0905726361903116
+   }
+  },
+  {
+   "id": 170,
+   "timestamp": "2026-01-15T10:02:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957019283243994,
+    "distance": 208.57542534341442,
+    "speed": 1.0015585298939265
+   }
+  },
+  {
+   "id": 171,
+   "timestamp": "2026-01-15T10:02:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957007299130485,
+    "distance": 209.4607672698851,
+    "speed": 0.7904389037550905
+   }
+  },
+  {
+   "id": 172,
+   "timestamp": "2026-01-15T10:02:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244753083689,
+    "longitude": 9.957,
+    "distance": 210.18086723717522,
+    "speed": 0.7116350746415254
+   }
+  },
+  {
+   "id": 173,
+   "timestamp": "2026-01-15T10:02:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244035421216,
+    "longitude": 9.957,
+    "distance": 210.97976910154514,
+    "speed": 0.8789098733737847
+   }
+  },
+  {
+   "id": 174,
+   "timestamp": "2026-01-15T10:02:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422431416039416,
+    "longitude": 9.957,
+    "distance": 211.97476649212467,
+    "speed": 1.1020375656791253
+   }
+  },
+  {
+   "id": 175,
+   "timestamp": "2026-01-15T10:02:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42242139313982,
+    "longitude": 9.957,
+    "distance": 213.09051567486918,
+    "speed": 1.1188330140060976
+   }
+  },
+  {
+   "id": 176,
+   "timestamp": "2026-01-15T10:02:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42241131289638,
+    "longitude": 9.957,
+    "distance": 214.21264837491216,
+    "speed": 1.123354517916703
+   }
+  },
+  {
+   "id": 177,
+   "timestamp": "2026-01-15T10:02:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42240114016567,
+    "longitude": 9.957,
+    "distance": 215.34507675753034,
+    "speed": 1.1451597792137533
+   }
+  },
+  {
+   "id": 178,
+   "timestamp": "2026-01-15T10:02:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42239080072805,
+    "longitude": 9.957,
+    "distance": 216.4960629524733,
+    "speed": 1.144920393812777
+   }
+  },
+  {
+   "id": 179,
+   "timestamp": "2026-01-15T10:02:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42238060605062,
+    "longitude": 9.957,
+    "distance": 217.63093444453048,
+    "speed": 1.1294129950884637
+   }
+  },
+  {
+   "id": 180,
+   "timestamp": "2026-01-15T10:02:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42237048360815,
+    "longitude": 9.957,
+    "distance": 218.75776474050724,
+    "speed": 1.1294494857833233
+   }
+  },
+  {
+   "id": 181,
+   "timestamp": "2026-01-15T10:03:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42236024155449,
+    "longitude": 9.957,
+    "distance": 219.8979101534911,
+    "speed": 1.1436745370090335
+   }
+  },
+  {
+   "id": 182,
+   "timestamp": "2026-01-15T10:03:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42234645435129,
+    "longitude": 9.957,
+    "distance": 221.43270161425804,
+    "speed": 1.5357962612946143
+   }
+  },
+  {
+   "id": 183,
+   "timestamp": "2026-01-15T10:03:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42233278674601,
+    "longitude": 9.957,
+    "distance": 222.95417943392977,
+    "speed": 1.509177160406594
+   }
+  },
+  {
+   "id": 184,
+   "timestamp": "2026-01-15T10:03:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42231939755588,
+    "longitude": 9.957,
+    "distance": 224.4446640788015,
+    "speed": 1.4892952980357936
+   }
+  },
+  {
+   "id": 185,
+   "timestamp": "2026-01-15T10:03:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422305933324154,
+    "longitude": 9.957,
+    "distance": 225.9435023549875,
+    "speed": 1.5055530103389918
+   }
+  },
+  {
+   "id": 186,
+   "timestamp": "2026-01-15T10:03:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422292447019416,
+    "longitude": 9.957,
+    "distance": 227.4447977982443,
+    "speed": 1.4914993769808278
+   }
+  },
+  {
+   "id": 187,
+   "timestamp": "2026-01-15T10:03:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42227901475915,
+    "longitude": 9.957,
+    "distance": 228.940077010979,
+    "speed": 1.4839807172002502
+   }
+  },
+  {
+   "id": 188,
+   "timestamp": "2026-01-15T10:03:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42226549333493,
+    "longitude": 9.957,
+    "distance": 230.44528195505802,
+    "speed": 1.5088797692599962
+   }
+  },
+  {
+   "id": 189,
+   "timestamp": "2026-01-15T10:03:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42225215261877,
+    "longitude": 9.957,
+    "distance": 231.93037047872988,
+    "speed": 1.4799426415368782
+   }
+  },
+  {
+   "id": 190,
+   "timestamp": "2026-01-15T10:03:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422238709687356,
+    "longitude": 9.957,
+    "distance": 233.42683760331192,
+    "speed": 1.5101107864225822
+   }
+  },
+  {
+   "id": 191,
+   "timestamp": "2026-01-15T10:03:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42222522287049,
+    "longitude": 9.957,
+    "distance": 234.92819005723476,
+    "speed": 1.5014940984016745
+   }
+  },
+  {
+   "id": 192,
+   "timestamp": "2026-01-15T10:03:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42221172172992,
+    "longitude": 9.957,
+    "distance": 236.43113702493787,
+    "speed": 1.4857895808566164
+   }
+  },
+  {
+   "id": 193,
+   "timestamp": "2026-01-15T10:03:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42219834070398,
+    "longitude": 9.957,
+    "distance": 237.92071283266378,
+    "speed": 1.4943405294167722
+   }
+  },
+  {
+   "id": 194,
+   "timestamp": "2026-01-15T10:03:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422184728151336,
+    "longitude": 9.957,
+    "distance": 239.4360621930271,
+    "speed": 1.5167671956381938
+   }
+  },
+  {
+   "id": 195,
+   "timestamp": "2026-01-15T10:03:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4221713149324,
+    "longitude": 9.957,
+    "distance": 240.92922172481363,
+    "speed": 1.4867368980329785
+   }
+  },
+  {
+   "id": 196,
+   "timestamp": "2026-01-15T10:03:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422158039217464,
+    "longitude": 9.957,
+    "distance": 242.4070743114498,
+    "speed": 1.4719788489073493
+   }
+  },
+  {
+   "id": 197,
+   "timestamp": "2026-01-15T10:03:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4221449519008,
+    "longitude": 9.957,
+    "distance": 243.8639544028173,
+    "speed": 1.448166260603145
+   }
+  },
+  {
+   "id": 198,
+   "timestamp": "2026-01-15T10:03:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422131847079136,
+    "longitude": 9.957,
+    "distance": 245.32278314996879,
+    "speed": 1.4595460085164635
+   }
+  },
+  {
+   "id": 199,
+   "timestamp": "2026-01-15T10:03:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42211855707602,
+    "longitude": 9.957,
+    "distance": 246.8022262975592,
+    "speed": 1.489836769172418
+   }
+  },
+  {
+   "id": 200,
+   "timestamp": "2026-01-15T10:03:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422105099194475,
+    "longitude": 9.957,
+    "distance": 248.30035767106557,
+    "speed": 1.5096304670830043
+   }
+  },
+  {
+   "id": 201,
+   "timestamp": "2026-01-15T10:03:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42209152811885,
+    "longitude": 9.957,
+    "distance": 249.81108980949327,
+    "speed": 1.5149730021506131
+   }
+  },
+  {
+   "id": 202,
+   "timestamp": "2026-01-15T10:03:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422077864720976,
+    "longitude": 9.957,
+    "distance": 251.33209926072092,
+    "speed": 1.5144830038026924
+   }
+  },
+  {
+   "id": 203,
+   "timestamp": "2026-01-15T10:03:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422064377641675,
+    "longitude": 9.957,
+    "distance": 252.8334809284563,
+    "speed": 1.487581852295083
+   }
+  },
+  {
+   "id": 204,
+   "timestamp": "2026-01-15T10:03:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422050920285784,
+    "longitude": 9.957,
+    "distance": 254.331553786106,
+    "speed": 1.4843078120481488
+   }
+  },
+  {
+   "id": 205,
+   "timestamp": "2026-01-15T10:03:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42203763848923,
+    "longitude": 9.957,
+    "distance": 255.81008337852379,
+    "speed": 1.479507870623781
+   }
+  },
+  {
+   "id": 206,
+   "timestamp": "2026-01-15T10:03:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42202447726867,
+    "longitude": 9.957,
+    "distance": 257.2751904509443,
+    "speed": 1.465549942193907
+   }
+  },
+  {
+   "id": 207,
+   "timestamp": "2026-01-15T10:03:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42201174835406,
+    "longitude": 9.957,
+    "distance": 258.6921732261876,
+    "speed": 1.2946405350424572
+   }
+  },
+  {
+   "id": 208,
+   "timestamp": "2026-01-15T10:03:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42200164633786,
+    "longitude": 9.957,
+    "distance": 259.8167296689614,
+    "speed": 0.9845517991250278
+   }
+  },
+  {
+   "id": 209,
+   "timestamp": "2026-01-15T10:03:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95701104576723,
+    "distance": 260.81602037818834,
+    "speed": 1.1128109881900723
+   }
+  },
+  {
+   "id": 210,
+   "timestamp": "2026-01-15T10:03:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957028449015333,
+    "distance": 262.1017079004984,
+    "speed": 1.4312725434510398
+   }
+  },
+  {
+   "id": 211,
+   "timestamp": "2026-01-15T10:03:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957047809782926,
+    "distance": 263.5320097135648,
+    "speed": 1.4268660959395478
+   }
+  },
+  {
+   "id": 212,
+   "timestamp": "2026-01-15T10:03:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957067104881077,
+    "distance": 264.95746011135424,
+    "speed": 1.4280874082449346
+   }
+  },
+  {
+   "id": 213,
+   "timestamp": "2026-01-15T10:03:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957086639715763,
+    "distance": 266.4006213566988,
+    "speed": 1.457054662644173
+   }
+  },
+  {
+   "id": 214,
+   "timestamp": "2026-01-15T10:03:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957106331700905,
+    "distance": 267.85539229565177,
+    "speed": 1.4716202451222822
+   }
+  },
+  {
+   "id": 215,
+   "timestamp": "2026-01-15T10:03:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957126422809896,
+    "distance": 269.33964902665366,
+    "speed": 1.4913023109810777
+   }
+  },
+  {
+   "id": 216,
+   "timestamp": "2026-01-15T10:03:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957146608752018,
+    "distance": 270.8309116781216,
+    "speed": 1.493016028812501
+   }
+  },
+  {
+   "id": 217,
+   "timestamp": "2026-01-15T10:03:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95716679469224,
+    "distance": 272.3221741892941,
+    "speed": 1.4912462561962911
+   }
+  },
+  {
+   "id": 218,
+   "timestamp": "2026-01-15T10:03:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957186938235083,
+    "distance": 273.8103045389249,
+    "speed": 1.4789726723354806
+   }
+  },
+  {
+   "id": 219,
+   "timestamp": "2026-01-15T10:03:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957206768785545,
+    "distance": 275.2753121706743,
+    "speed": 1.4669600627669204
+   }
+  },
+  {
+   "id": 220,
+   "timestamp": "2026-01-15T10:03:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957226774729946,
+    "distance": 276.75327725718324,
+    "speed": 1.5018923193555902
+   }
+  },
+  {
+   "id": 221,
+   "timestamp": "2026-01-15T10:03:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957246780700226,
+    "distance": 278.23124425540453,
+    "speed": 1.4646612525839995
+   }
+  },
+  {
+   "id": 222,
+   "timestamp": "2026-01-15T10:03:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95726650930674,
+    "distance": 279.68872064576226,
+    "speed": 1.4544130858937703
+   }
+  },
+  {
+   "id": 223,
+   "timestamp": "2026-01-15T10:03:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95728630641713,
+    "distance": 281.1512578487763,
+    "speed": 1.458710239219021
+   }
+  },
+  {
+   "id": 224,
+   "timestamp": "2026-01-15T10:03:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957306040657203,
+    "distance": 282.60915042569627,
+    "speed": 1.457985636952439
+   }
+  },
+  {
+   "id": 225,
+   "timestamp": "2026-01-15T10:03:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957325833240555,
+    "distance": 284.071353187922,
+    "speed": 1.4676680119977696
+   }
+  },
+  {
+   "id": 226,
+   "timestamp": "2026-01-15T10:03:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957345789014434,
+    "distance": 285.5456118619842,
+    "speed": 1.4811602071513834
+   }
+  },
+  {
+   "id": 227,
+   "timestamp": "2026-01-15T10:03:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957365787287593,
+    "distance": 287.02301022531316,
+    "speed": 1.4641644439364985
+   }
+  },
+  {
+   "id": 228,
+   "timestamp": "2026-01-15T10:03:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957385479361445,
+    "distance": 288.47778771801273,
+    "speed": 1.451886440840446
+   }
+  },
+  {
+   "id": 229,
+   "timestamp": "2026-01-15T10:03:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957405214360994,
+    "distance": 289.9357364021555,
+    "speed": 1.4412451983231351
+   }
+  },
+  {
+   "id": 230,
+   "timestamp": "2026-01-15T10:03:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957424636416992,
+    "distance": 291.3705659754698,
+    "speed": 1.4348744205841515
+   }
+  },
+  {
+   "id": 231,
+   "timestamp": "2026-01-15T10:03:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95744401843981,
+    "distance": 292.8024380459535,
+    "speed": 1.4379825407000777
+   }
+  },
+  {
+   "id": 232,
+   "timestamp": "2026-01-15T10:03:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957463384260933,
+    "distance": 294.23311319509787,
+    "speed": 1.4223592616301448
+   }
+  },
+  {
+   "id": 233,
+   "timestamp": "2026-01-15T10:03:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957482771565239,
+    "distance": 295.6653754422104,
+    "speed": 1.4278200223933588
+   }
+  },
+  {
+   "id": 234,
+   "timestamp": "2026-01-15T10:03:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957502019610947,
+    "distance": 297.0873497799034,
+    "speed": 1.430963494959164
+   }
+  },
+  {
+   "id": 235,
+   "timestamp": "2026-01-15T10:03:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957521266379075,
+    "distance": 298.5092297346178,
+    "speed": 1.4253942000041866
+   }
+  },
+  {
+   "id": 236,
+   "timestamp": "2026-01-15T10:03:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.9575405210154,
+    "distance": 299.9316909625298,
+    "speed": 1.4121981486049975
+   }
+  },
+  {
+   "id": 237,
+   "timestamp": "2026-01-15T10:03:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95755966140049,
+    "distance": 301.3457117324296,
+    "speed": 1.4169884703579432
+   }
+  },
+  {
+   "id": 238,
+   "timestamp": "2026-01-15T10:03:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957578831823929,
+    "distance": 302.76195162420566,
+    "speed": 1.4336678508281508
+   }
+  },
+  {
+   "id": 239,
+   "timestamp": "2026-01-15T10:03:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957598173021454,
+    "distance": 304.1908076732336,
+    "speed": 1.424746903898666
+   }
+  },
+  {
+   "id": 240,
+   "timestamp": "2026-01-15T10:03:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957617483747281,
+    "distance": 305.6174125859564,
+    "speed": 1.4318004213382292
+   }
+  },
+  {
+   "id": 241,
+   "timestamp": "2026-01-15T10:04:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957636878152368,
+    "distance": 307.0501994124372,
+    "speed": 1.425254311662977
+   }
+  },
+  {
+   "id": 242,
+   "timestamp": "2026-01-15T10:04:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957651364870818,
+    "distance": 308.1204245244405,
+    "speed": 1.0831608368139243
+   }
+  },
+  {
+   "id": 243,
+   "timestamp": "2026-01-15T10:04:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957666024688098,
+    "distance": 309.20343753686296,
+    "speed": 1.080716746389668
+   }
+  },
+  {
+   "id": 244,
+   "timestamp": "2026-01-15T10:04:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957680803387651,
+    "distance": 310.2952331314299,
+    "speed": 1.1002865067906695
+   }
+  },
+  {
+   "id": 245,
+   "timestamp": "2026-01-15T10:04:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957695871866925,
+    "distance": 311.4084365785531,
+    "speed": 1.1130482355116733
+   }
+  },
+  {
+   "id": 246,
+   "timestamp": "2026-01-15T10:04:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95771110497566,
+    "distance": 312.5338022407369,
+    "speed": 1.1290992468051537
+   }
+  },
+  {
+   "id": 247,
+   "timestamp": "2026-01-15T10:04:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957726317021752,
+    "distance": 313.6576118729508,
+    "speed": 1.1149609217016092
+   }
+  },
+  {
+   "id": 248,
+   "timestamp": "2026-01-15T10:04:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95774138425149,
+    "distance": 314.7707230089944,
+    "speed": 1.1080270611985383
+   }
+  },
+  {
+   "id": 249,
+   "timestamp": "2026-01-15T10:04:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957756367788239,
+    "distance": 315.8776512171344,
+    "speed": 1.0999487076580174
+   }
+  },
+  {
+   "id": 250,
+   "timestamp": "2026-01-15T10:04:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957771233158208,
+    "distance": 316.9758497010488,
+    "speed": 1.0938281645025676
+   }
+  },
+  {
+   "id": 251,
+   "timestamp": "2026-01-15T10:04:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957785896896148,
+    "distance": 318.05915235739207,
+    "speed": 1.0859473334045566
+   }
+  },
+  {
+   "id": 252,
+   "timestamp": "2026-01-15T10:04:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957800530805113,
+    "distance": 319.14025135942296,
+    "speed": 1.0854984641911343
+   }
+  },
+  {
+   "id": 253,
+   "timestamp": "2026-01-15T10:04:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957815323337549,
+    "distance": 320.2330688760962,
+    "speed": 1.1069220391399202
+   }
+  },
+  {
+   "id": 254,
+   "timestamp": "2026-01-15T10:04:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957830413811848,
+    "distance": 321.3478972344638,
+    "speed": 1.1219470807806435
+   }
+  },
+  {
+   "id": 255,
+   "timestamp": "2026-01-15T10:04:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957845576700638,
+    "distance": 322.4680753071089,
+    "speed": 1.1326104995597601
+   }
+  },
+  {
+   "id": 256,
+   "timestamp": "2026-01-15T10:04:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957860765149785,
+    "distance": 323.59014168431656,
+    "speed": 1.122885583724214
+   }
+  },
+  {
+   "id": 257,
+   "timestamp": "2026-01-15T10:04:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957875834094052,
+    "distance": 324.70337948343445,
+    "speed": 1.1188274914030394
+   }
+  },
+  {
+   "id": 258,
+   "timestamp": "2026-01-15T10:04:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957890987493695,
+    "distance": 325.8228565330448,
+    "speed": 1.1167737854985287
+   }
+  },
+  {
+   "id": 259,
+   "timestamp": "2026-01-15T10:04:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957906071578384,
+    "distance": 326.9372128504691,
+    "speed": 1.1198768961596588
+   }
+  },
+  {
+   "id": 260,
+   "timestamp": "2026-01-15T10:04:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957921311385375,
+    "distance": 328.06307335504374,
+    "speed": 1.123483076019435
+   }
+  },
+  {
+   "id": 261,
+   "timestamp": "2026-01-15T10:04:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957936381745672,
+    "distance": 329.1764157653172,
+    "speed": 1.0967092995726995
+   }
+  },
+  {
+   "id": 262,
+   "timestamp": "2026-01-15T10:04:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957951399740253,
+    "distance": 330.28588959032504,
+    "speed": 1.1162150540094713
+   }
+  },
+  {
+   "id": 263,
+   "timestamp": "2026-01-15T10:04:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957966510753103,
+    "distance": 331.40223526074624,
+    "speed": 1.1233011647156061
+   }
+  },
+  {
+   "id": 264,
+   "timestamp": "2026-01-15T10:04:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.957981786653141,
+    "distance": 332.5307621858448,
+    "speed": 1.1306366640073346
+   }
+  },
+  {
+   "id": 265,
+   "timestamp": "2026-01-15T10:04:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95799696624235,
+    "distance": 333.65217402365664,
+    "speed": 1.1032282613645437
+   }
+  },
+  {
+   "id": 266,
+   "timestamp": "2026-01-15T10:04:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958011915518625,
+    "distance": 334.75657119481593,
+    "speed": 1.104358328250619
+   }
+  },
+  {
+   "id": 267,
+   "timestamp": "2026-01-15T10:04:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95802673432778,
+    "distance": 335.8513299381636,
+    "speed": 1.0822725370167818
+   }
+  },
+  {
+   "id": 268,
+   "timestamp": "2026-01-15T10:04:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95804132083523,
+    "distance": 336.928927091867,
+    "speed": 1.072638022592661
+   }
+  },
+  {
+   "id": 269,
+   "timestamp": "2026-01-15T10:04:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958055958355231,
+    "distance": 338.01029286397693,
+    "speed": 1.0914404371775808
+   }
+  },
+  {
+   "id": 270,
+   "timestamp": "2026-01-15T10:04:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.958069240118956,
+    "distance": 338.99150038300655,
+    "speed": 0.8895342414460815
+   }
+  },
+  {
+   "id": 271,
+   "timestamp": "2026-01-15T10:04:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422,
+    "longitude": 9.95808000091706,
+    "distance": 339.7864682975164,
+    "speed": 0.7233353988006549
+   }
+  },
+  {
+   "id": 272,
+   "timestamp": "2026-01-15T10:04:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42200460291933,
+    "longitude": 9.958082891312378,
+    "distance": 340.51239698013205,
+    "speed": 0.7864854715364247
+   }
+  },
+  {
+   "id": 273,
+   "timestamp": "2026-01-15T10:04:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42201243863825,
+    "longitude": 9.958082891312378,
+    "distance": 341.38466921010763,
+    "speed": 0.9623216114411677
+   }
+  },
+  {
+   "id": 274,
+   "timestamp": "2026-01-15T10:04:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42202202524816,
+    "longitude": 9.958082891312378,
+    "distance": 342.4518506254299,
+    "speed": 1.1222041232487971
+   }
+  },
+  {
+   "id": 275,
+   "timestamp": "2026-01-15T10:04:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422032112037535,
+    "longitude": 9.958082891312378,
+    "distance": 343.57471201875234,
+    "speed": 1.13144436274082
+   }
+  },
+  {
+   "id": 276,
+   "timestamp": "2026-01-15T10:04:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42204222308138,
+    "longitude": 9.958082891312378,
+    "distance": 344.700273419256,
+    "speed": 1.120115741359674
+   }
+  },
+  {
+   "id": 277,
+   "timestamp": "2026-01-15T10:04:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422052300538134,
+    "longitude": 9.958082891312378,
+    "distance": 345.82209590563576,
+    "speed": 1.1349738032531658
+   }
+  },
+  {
+   "id": 278,
+   "timestamp": "2026-01-15T10:04:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422062319540885,
+    "longitude": 9.958082891312378,
+    "distance": 346.93741129144064,
+    "speed": 1.1053321009812112
+   }
+  },
+  {
+   "id": 279,
+   "timestamp": "2026-01-15T10:04:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422072321425304,
+    "longitude": 9.958082891312378,
+    "distance": 348.05082106494785,
+    "speed": 1.1105233182591607
+   }
+  },
+  {
+   "id": 280,
+   "timestamp": "2026-01-15T10:04:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4220822673444,
+    "longitude": 9.958082891312378,
+    "distance": 349.1580007788002,
+    "speed": 1.1029336467380166
+   }
+  },
+  {
+   "id": 281,
+   "timestamp": "2026-01-15T10:04:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422092245924034,
+    "longitude": 9.958082891312378,
+    "distance": 350.26881626386506,
+    "speed": 1.1204853833502815
+   }
+  },
+  {
+   "id": 282,
+   "timestamp": "2026-01-15T10:04:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42210219894955,
+    "longitude": 9.958082891312378,
+    "distance": 351.3767870647551,
+    "speed": 1.109636318917869
+   }
+  },
+  {
+   "id": 283,
+   "timestamp": "2026-01-15T10:04:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4221121590298,
+    "longitude": 9.958082891312378,
+    "distance": 352.4855431978364,
+    "speed": 1.1088411763250314
+   }
+  },
+  {
+   "id": 284,
+   "timestamp": "2026-01-15T10:04:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4221223265577,
+    "longitude": 9.958082891312378,
+    "distance": 353.617392403222,
+    "speed": 1.1409983074560026
+   }
+  },
+  {
+   "id": 285,
+   "timestamp": "2026-01-15T10:04:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42213256418093,
+    "longitude": 9.958082891312378,
+    "distance": 354.7570446210911,
+    "speed": 1.148562257476507
+   }
+  },
+  {
+   "id": 286,
+   "timestamp": "2026-01-15T10:04:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422142844124856,
+    "longitude": 9.958082891312378,
+    "distance": 355.90140797955974,
+    "speed": 1.1343227296433818
+   }
+  },
+  {
+   "id": 287,
+   "timestamp": "2026-01-15T10:04:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422152892767535,
+    "longitude": 9.958082891312378,
+    "distance": 357.02002288223565,
+    "speed": 1.1099607315248448
+   }
+  },
+  {
+   "id": 288,
+   "timestamp": "2026-01-15T10:04:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42216278323163,
+    "longitude": 9.958082891312378,
+    "distance": 358.1210293448348,
+    "speed": 1.0966646379770826
+   }
+  },
+  {
+   "id": 289,
+   "timestamp": "2026-01-15T10:04:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422172609122015,
+    "longitude": 9.958082891312378,
+    "distance": 359.21484746280714,
+    "speed": 1.0988232906904878
+   }
+  },
+  {
+   "id": 290,
+   "timestamp": "2026-01-15T10:04:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42218236194412,
+    "longitude": 9.958082891312378,
+    "distance": 360.3005316193035,
+    "speed": 1.0764009698495831
+   }
+  },
+  {
+   "id": 291,
+   "timestamp": "2026-01-15T10:04:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42219198127795,
+    "longitude": 9.958082891312378,
+    "distance": 361.37135586133525,
+    "speed": 1.0762992590394003
+   }
+  },
+  {
+   "id": 292,
+   "timestamp": "2026-01-15T10:04:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422201683097164,
+    "longitude": 9.958082891312378,
+    "distance": 362.45136237664695,
+    "speed": 1.0728528186483626
+   }
+  },
+  {
+   "id": 293,
+   "timestamp": "2026-01-15T10:04:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42221131848743,
+    "longitude": 9.958082891312378,
+    "distance": 363.52397402065054,
+    "speed": 1.0725247707856573
+   }
+  },
+  {
+   "id": 294,
+   "timestamp": "2026-01-15T10:04:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42222096273513,
+    "longitude": 9.958082891312378,
+    "distance": 364.5975716752048,
+    "speed": 1.0598143454629507
+   }
+  },
+  {
+   "id": 295,
+   "timestamp": "2026-01-15T10:04:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422230351379945,
+    "longitude": 9.958082891312378,
+    "distance": 365.6427156161294,
+    "speed": 1.047912354066654
+   }
+  },
+  {
+   "id": 296,
+   "timestamp": "2026-01-15T10:04:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42223976338837,
+    "longitude": 9.958082891312378,
+    "distance": 366.6904603937881,
+    "speed": 1.0484537708855928
+   }
+  },
+  {
+   "id": 297,
+   "timestamp": "2026-01-15T10:04:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42224924773612,
+    "longitude": 9.958082891312378,
+    "distance": 367.7462579854348,
+    "speed": 1.0649101764443807
+   }
+  },
+  {
+   "id": 298,
+   "timestamp": "2026-01-15T10:04:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42225884970458,
+    "longitude": 9.958082891312378,
+    "distance": 368.815149114633,
+    "speed": 1.0753654223904376
+   }
+  },
+  {
+   "id": 299,
+   "timestamp": "2026-01-15T10:04:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42226862918122,
+    "longitude": 9.958082891312378,
+    "distance": 369.9038004531933,
+    "speed": 1.0844003881997653
+   }
+  },
+  {
+   "id": 300,
+   "timestamp": "2026-01-15T10:04:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42227834345801,
+    "longitude": 9.958082891312378,
+    "distance": 370.98519374576045,
+    "speed": 1.0901595965695505
+   }
+  },
+  {
+   "id": 301,
+   "timestamp": "2026-01-15T10:05:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422288190513456,
+    "longitude": 9.958082891312378,
+    "distance": 372.0813679581142,
+    "speed": 1.094020316915462
+   }
+  },
+  {
+   "id": 302,
+   "timestamp": "2026-01-15T10:05:01.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42230127083914,
+    "longitude": 9.958082891312378,
+    "distance": 373.5374698138159,
+    "speed": 1.4516709335059392
+   }
+  },
+  {
+   "id": 303,
+   "timestamp": "2026-01-15T10:05:02.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42231445714568,
+    "longitude": 9.958082891312378,
+    "distance": 375.0053694578722,
+    "speed": 1.4681191016511927
+   }
+  },
+  {
+   "id": 304,
+   "timestamp": "2026-01-15T10:05:03.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4223276255668,
+    "longitude": 9.958082891312378,
+    "distance": 376.47127809654097,
+    "speed": 1.4468365475164533
+   }
+  },
+  {
+   "id": 305,
+   "timestamp": "2026-01-15T10:05:04.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.4223408305713,
+    "longitude": 9.958082891312378,
+    "distance": 377.941259197355,
+    "speed": 1.4834239302733696
+   }
+  },
+  {
+   "id": 306,
+   "timestamp": "2026-01-15T10:05:05.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42235411450102,
+    "longitude": 9.958082891312378,
+    "distance": 379.4200262537569,
+    "speed": 1.495775450911101
+   }
+  },
+  {
+   "id": 307,
+   "timestamp": "2026-01-15T10:05:06.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42236756142825,
+    "longitude": 9.958082891312378,
+    "distance": 380.91693819306727,
+    "speed": 1.4948723316120558
+   }
+  },
+  {
+   "id": 308,
+   "timestamp": "2026-01-15T10:05:07.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422381016830144,
+    "longitude": 9.958082891312378,
+    "distance": 382.4147935318759,
+    "speed": 1.5004240283771242
+   }
+  },
+  {
+   "id": 309,
+   "timestamp": "2026-01-15T10:05:08.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42239444217218,
+    "longitude": 9.958082891312378,
+    "distance": 383.90930260744466,
+    "speed": 1.5057615048391177
+   }
+  },
+  {
+   "id": 310,
+   "timestamp": "2026-01-15T10:05:09.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42240788084578,
+    "longitude": 9.958082891312378,
+    "distance": 385.405295752845,
+    "speed": 1.4834806644571765
+   }
+  },
+  {
+   "id": 311,
+   "timestamp": "2026-01-15T10:05:10.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42242109376841,
+    "longitude": 9.958082891312378,
+    "distance": 386.8761582997265,
+    "speed": 1.4640554134503678
+   }
+  },
+  {
+   "id": 312,
+   "timestamp": "2026-01-15T10:05:11.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422434238214265,
+    "longitude": 9.958082891312378,
+    "distance": 388.3393980122685,
+    "speed": 1.4090149533711813
+   }
+  },
+  {
+   "id": 313,
+   "timestamp": "2026-01-15T10:05:12.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.422445032450824,
+    "longitude": 9.958082891312378,
+    "distance": 389.54101242626484,
+    "speed": 1.0582140796829997
+   }
+  },
+  {
+   "id": 314,
+   "timestamp": "2026-01-15T10:05:13.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958075838725847,
+    "distance": 390.52101897585135,
+    "speed": 1.0371206245161952
+   }
+  },
+  {
+   "id": 315,
+   "timestamp": "2026-01-15T10:05:14.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958059561380207,
+    "distance": 391.7235289936145,
+    "speed": 1.3484173487486597
+   }
+  },
+  {
+   "id": 316,
+   "timestamp": "2026-01-15T10:05:15.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958040460121332,
+    "distance": 393.13465926359487,
+    "speed": 1.4152259924635437
+   }
+  },
+  {
+   "id": 317,
+   "timestamp": "2026-01-15T10:05:16.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95802125553293,
+    "distance": 394.5534231362997,
+    "speed": 1.4265898997963298
+   }
+  },
+  {
+   "id": 318,
+   "timestamp": "2026-01-15T10:05:17.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.958002216602654,
+    "distance": 395.9599488001983,
+    "speed": 1.4122152301825899
+   }
+  },
+  {
+   "id": 319,
+   "timestamp": "2026-01-15T10:05:18.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957982999533199,
+    "distance": 397.37963472704257,
+    "speed": 1.4152673007103855
+   }
+  },
+  {
+   "id": 320,
+   "timestamp": "2026-01-15T10:05:19.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957963743677427,
+    "distance": 398.8021860432197,
+    "speed": 1.4218944014439432
+   }
+  },
+  {
+   "id": 321,
+   "timestamp": "2026-01-15T10:05:20.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95794432319668,
+    "distance": 400.2368992430555,
+    "speed": 1.4334500686820522
+   }
+  },
+  {
+   "id": 322,
+   "timestamp": "2026-01-15T10:05:21.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957925063783064,
+    "distance": 401.65971339949385,
+    "speed": 1.4251420244327098
+   }
+  },
+  {
+   "id": 323,
+   "timestamp": "2026-01-15T10:05:22.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957905867003436,
+    "distance": 403.07790038896974,
+    "speed": 1.4300604910159465
+   }
+  },
+  {
+   "id": 324,
+   "timestamp": "2026-01-15T10:05:23.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95788663378256,
+    "distance": 404.49877952299175,
+    "speed": 1.4185419859740644
+   }
+  },
+  {
+   "id": 325,
+   "timestamp": "2026-01-15T10:05:24.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957867382303538,
+    "distance": 405.9210075011357,
+    "speed": 1.4124806197796738
+   }
+  },
+  {
+   "id": 326,
+   "timestamp": "2026-01-15T10:05:25.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957848040413015,
+    "distance": 407.3499147461091,
+    "speed": 1.4420502302773612
+   }
+  },
+  {
+   "id": 327,
+   "timestamp": "2026-01-15T10:05:26.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957828562699289,
+    "distance": 408.7888561064433,
+    "speed": 1.435363016879501
+   }
+  },
+  {
+   "id": 328,
+   "timestamp": "2026-01-15T10:05:27.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95780931141117,
+    "distance": 410.21106998134513,
+    "speed": 1.4105145185287613
+   }
+  },
+  {
+   "id": 329,
+   "timestamp": "2026-01-15T10:05:28.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95778999590763,
+    "distance": 411.6380278537833,
+    "speed": 1.4554731509356849
+   }
+  },
+  {
+   "id": 330,
+   "timestamp": "2026-01-15T10:05:29.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957770591512814,
+    "distance": 413.07155268456296,
+    "speed": 1.4311946163399065
+   }
+  },
+  {
+   "id": 331,
+   "timestamp": "2026-01-15T10:05:30.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957751215592438,
+    "distance": 414.5029739290905,
+    "speed": 1.4255740963950165
+   }
+  },
+  {
+   "id": 332,
+   "timestamp": "2026-01-15T10:05:31.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95773196039032,
+    "distance": 415.92547695583283,
+    "speed": 1.4154161782909962
+   }
+  },
+  {
+   "id": 333,
+   "timestamp": "2026-01-15T10:05:32.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957712392305568,
+    "distance": 417.37109459274063,
+    "speed": 1.4541413399435188
+   }
+  },
+  {
+   "id": 334,
+   "timestamp": "2026-01-15T10:05:33.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957692668573241,
+    "distance": 418.828210896302,
+    "speed": 1.4553082420511905
+   }
+  },
+  {
+   "id": 335,
+   "timestamp": "2026-01-15T10:05:34.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95767308633519,
+    "distance": 420.27487412670735,
+    "speed": 1.447731475163864
+   }
+  },
+  {
+   "id": 336,
+   "timestamp": "2026-01-15T10:05:35.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957653394074974,
+    "distance": 421.7296653871112,
+    "speed": 1.4613727488654993
+   }
+  },
+  {
+   "id": 337,
+   "timestamp": "2026-01-15T10:05:36.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95763338321333,
+    "distance": 423.2079937411907,
+    "speed": 1.4845854086075967
+   }
+  },
+  {
+   "id": 338,
+   "timestamp": "2026-01-15T10:05:37.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957613284547412,
+    "distance": 424.69280875001164,
+    "speed": 1.4816999533609558
+   }
+  },
+  {
+   "id": 339,
+   "timestamp": "2026-01-15T10:05:38.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957593266160469,
+    "distance": 426.17169304526277,
+    "speed": 1.4792214957507515
+   }
+  },
+  {
+   "id": 340,
+   "timestamp": "2026-01-15T10:05:39.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957573242855224,
+    "distance": 427.6509406865703,
+    "speed": 1.482945777883049
+   }
+  },
+  {
+   "id": 341,
+   "timestamp": "2026-01-15T10:05:40.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957553032585212,
+    "distance": 429.14400059250335,
+    "speed": 1.5155937105956778
+   }
+  },
+  {
+   "id": 342,
+   "timestamp": "2026-01-15T10:05:41.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957532469853248,
+    "distance": 430.66309908221126,
+    "speed": 1.5282266488131748
+   }
+  },
+  {
+   "id": 343,
+   "timestamp": "2026-01-15T10:05:42.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95751196417713,
+    "distance": 432.17798249733346,
+    "speed": 1.5095809596195082
+   }
+  },
+  {
+   "id": 344,
+   "timestamp": "2026-01-15T10:05:43.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95749162261066,
+    "distance": 433.6807420993076,
+    "speed": 1.4923357542319375
+   }
+  },
+  {
+   "id": 345,
+   "timestamp": "2026-01-15T10:05:44.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957471005595137,
+    "distance": 435.203850857225,
+    "speed": 1.5334661622506487
+   }
+  },
+  {
+   "id": 346,
+   "timestamp": "2026-01-15T10:05:45.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95745075979871,
+    "distance": 436.69953532304055,
+    "speed": 1.4846538207435607
+   }
+  },
+  {
+   "id": 347,
+   "timestamp": "2026-01-15T10:05:46.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957430754116682,
+    "distance": 438.1774810263908,
+    "speed": 1.4640905035537546
+   }
+  },
+  {
+   "id": 348,
+   "timestamp": "2026-01-15T10:05:47.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95741082935685,
+    "distance": 439.64944849760406,
+    "speed": 1.484095967736152
+   }
+  },
+  {
+   "id": 349,
+   "timestamp": "2026-01-15T10:05:48.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957390616133253,
+    "distance": 441.14272660332915,
+    "speed": 1.4874388513317216
+   }
+  },
+  {
+   "id": 350,
+   "timestamp": "2026-01-15T10:05:49.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957370271685933,
+    "distance": 442.64569903186464,
+    "speed": 1.4892021179210937
+   }
+  },
+  {
+   "id": 351,
+   "timestamp": "2026-01-15T10:05:50.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95735019475183,
+    "distance": 444.12890857456244,
+    "speed": 1.4620633353131076
+   }
+  },
+  {
+   "id": 352,
+   "timestamp": "2026-01-15T10:05:51.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957330257858231,
+    "distance": 445.60177244335455,
+    "speed": 1.470280525042476
+   }
+  },
+  {
+   "id": 353,
+   "timestamp": "2026-01-15T10:05:52.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957310467982072,
+    "distance": 447.06377520823884,
+    "speed": 1.4797705442909257
+   }
+  },
+  {
+   "id": 354,
+   "timestamp": "2026-01-15T10:05:53.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957290680772466,
+    "distance": 448.5255809780263,
+    "speed": 1.4558980500475458
+   }
+  },
+  {
+   "id": 355,
+   "timestamp": "2026-01-15T10:05:54.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957270949626832,
+    "distance": 449.98324494922804,
+    "speed": 1.4677390258038414
+   }
+  },
+  {
+   "id": 356,
+   "timestamp": "2026-01-15T10:05:55.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957251166079391,
+    "distance": 451.4447801717605,
+    "speed": 1.4544055785648442
+   }
+  },
+  {
+   "id": 357,
+   "timestamp": "2026-01-15T10:05:56.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957231466679742,
+    "distance": 452.900098867092,
+    "speed": 1.4468756450788565
+   }
+  },
+  {
+   "id": 358,
+   "timestamp": "2026-01-15T10:05:57.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957212032885415,
+    "distance": 454.3357956248811,
+    "speed": 1.4302990318254707
+   }
+  },
+  {
+   "id": 359,
+   "timestamp": "2026-01-15T10:05:58.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95719268543295,
+    "distance": 455.7651137655207,
+    "speed": 1.4259020133322378
+   }
+  },
+  {
+   "id": 360,
+   "timestamp": "2026-01-15T10:05:59.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.957173339936709,
+    "distance": 457.19428738766277,
+    "speed": 1.4378834401641312
+   }
+  },
+  {
+   "id": 361,
+   "timestamp": "2026-01-15T10:06:00.000000Z",
+   "sourceId": "synthetic_truth",
+   "type": "position",
+   "values": {
+    "latitude": 48.42244915558749,
+    "longitude": 9.95715386968828,
+    "distance": 458.63267723941885,
+    "speed": 1.4411495564237373
+   }
+  }
+ ],
+ "profile": {
+  "id": 1,
+  "name": "Synthetic truth",
+  "timestamp": "2026-01-15T09:50:00.000000Z",
+  "height": 175,
+  "age": 60
+ }
+}
