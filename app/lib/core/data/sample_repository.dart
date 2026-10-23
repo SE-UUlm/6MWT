@@ -2,9 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:drift/drift.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+
+final _log = appLogger('SampleRepository');
 
 class SampleRepository implements SampleSink {
   SampleRepository(this._db);
@@ -46,7 +49,17 @@ class SampleRepository implements SampleSink {
     final rows = List.of(_buffer);
     _buffer.clear();
 
-    await _db.batch((batch) => batch.insertAll(_db.sensorSamples, rows));
+    try {
+      await _db.batch((batch) => batch.insertAll(_db.sensorSamples, rows));
+    } catch (error, stackTrace) {
+      // The rows were already taken from the buffer, so this batch is lost.
+      _log.e(
+        'Cannot write ${rows.length} samples',
+        error: error,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
   }
 
   Future<List<SensorSampleRow>> _loadSession(String sessionId) {

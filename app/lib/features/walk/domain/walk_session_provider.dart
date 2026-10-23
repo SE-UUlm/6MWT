@@ -118,9 +118,11 @@ WalkSession walkSession(Ref ref) {
 
   final walkSessionRepository = ref.watch(walkSessionRepositoryProvider);
 
-  final subscription = deduplicatedSaves(
-    session,
-  ).listen(walkSessionRepository.saveSession);
+  final subscription = deduplicatedSaves(session).listen(
+    walkSessionRepository.saveSession,
+    onError: (Object error, StackTrace stack) =>
+        _log.e('Cannot save walk session', error: error, stackTrace: stack),
+  );
 
   ref.onDispose(() {
     subscription.cancel();

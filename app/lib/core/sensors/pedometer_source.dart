@@ -43,6 +43,7 @@ class PedometerSource implements SensorSource {
     final status = await permission.request();
 
     if (!status.isGranted) {
+      _log.w('Activity recognition permission not granted: ${status.name}');
       throw const SensorUnavailableException(
         'Activity recognition permission denied',
       );
@@ -65,6 +66,7 @@ class PedometerSource implements SensorSource {
             _controller.add(sample);
           },
           onError: (err) {
+            _log.w('Step count stream error', error: err);
             _controller.addError(err);
           },
         );
@@ -84,8 +86,12 @@ class PedometerSource implements SensorSource {
             _latestPedestrianStatusSample = sample;
             _controller.add(sample);
           },
-          onError: _controller.addError,
+          onError: (Object err) {
+            _log.w('Pedestrian status stream error', error: err);
+            _controller.addError(err);
+          },
         );
+        _log.i('Pedometer streams started');
       },
       (error, stack) {
         // Log errors escaping the plugin's internal listener. Unlike errors

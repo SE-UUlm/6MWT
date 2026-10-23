@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:geolocator/geolocator.dart';
 
+import '../../app/log.dart';
 import '../domain/sensor_sample.dart';
 import 'location_service.dart';
 import 'sensor_source.dart';
+
+final _log = appLogger('GpsSource');
 
 class GpsSource implements SensorSource {
   GpsSource({required this._locationService});
@@ -29,6 +32,7 @@ class GpsSource implements SensorSource {
     final hasPermission = await _locationService.requestLocationPermission();
 
     if (!hasPermission) {
+      _log.e('Location permission denied or GPS disabled');
       throw const SensorUnavailableException(
         'Location permission denied or GPS disabled',
       );
@@ -36,14 +40,19 @@ class GpsSource implements SensorSource {
 
     _subscription = _locationService.getPositionStream().listen(
       (position) => _controller.add(_toSample(position)),
-      onError: _controller.addError,
+      onError: (Object error, StackTrace stack) {
+        _log.e('GPS stream error', error: error, stackTrace: stack);
+        _controller.addError(error, stack);
+      },
     );
+    _log.i('GPS position stream started');
   }
 
   @override
   Future<void> stop() async {
     await _subscription?.cancel();
     _subscription = null;
+    _log.d('GPS position stream stopped');
   }
 
   @override

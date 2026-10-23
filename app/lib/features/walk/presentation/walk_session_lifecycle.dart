@@ -1,7 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../app/log.dart';
 import '../domain/walk_session_provider.dart';
+
+final _log = appLogger('WalkSessionLifecycle');
 
 /// Keeps the wall-clock deadline synchronized independently of the active route.
 class WalkSessionLifecycle extends ConsumerStatefulWidget {
@@ -21,6 +24,7 @@ class _WalkSessionLifecycleState extends ConsumerState<WalkSessionLifecycle> {
   void initState() {
     super.initState();
     _listener = AppLifecycleListener(
+      onStateChange: (state) => _log.i('App lifecycle state: ${state.name}'),
       onResume: () {
         // Resuming the app alone must not initialize a session or its database.
         if (ref.exists(walkSessionProvider)) {
