@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../domain/estimators/distance_confidence.dart';
 
 String formatConfidence(DistanceConfidence? confidence) {
-  if (confidence == null) return '-';
+  if (confidence == null) return '—';
   final label = switch (confidence.level) {
     ConfidenceLevel.high => 'High',
     ConfidenceLevel.medium => 'Medium',

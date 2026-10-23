@@ -157,7 +157,7 @@ void main() {
       matching: find.byType(Row),
     );
     expect(
-      find.descendant(of: confidenceRow, matching: find.text('-')),
+      find.descendant(of: confidenceRow, matching: find.text('—')),
       findsOneWidget,
     );
   });
@@ -199,6 +199,61 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('High (81 %)'), findsOneWidget);
   });
+
+  for (final (phase, percent, marker, explanation) in [
+    (
+      WalkPhase.finished,
+      findsNothing,
+      findsOneWidget,
+      'Your performance is based on your age, height and walking distance.',
+    ),
+    (
+      WalkPhase.aborted,
+      findsOneWidget,
+      findsNothing,
+      'No assessment is possible because the test was stopped early.',
+    ),
+    (
+      WalkPhase.running,
+      findsOneWidget,
+      findsNothing,
+      'No assessment is possible because the test was stopped early.',
+    ),
+  ]) {
+    testWidgets('performance card for a ${phase.name} test', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            sessionEstimatorComparisonsProvider(
+              'state-test-session',
+              heightCm: testSession.profile.height,
+              gender: testSession.profile.gender.name,
+            ).overrideWith((ref) async => const []),
+          ],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(
+              session: WalkSessionWithProfile(
+                session: testSession.session.copyWith(phase: phase),
+                profile: testSession.profile,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      // The percentage placeholder replaces the value, never shows 0 %.
+      final percentage = find.byWidgetPredicate(
+        (w) => w is Text && w.style?.fontSize == 46 && w.data == '—',
+      );
+      expect(percentage, percent);
+      expect(find.text('0%'), findsNothing);
+      expect(find.byKey(const ValueKey('performance-marker')), marker);
+      expect(find.text(explanation), findsOneWidget);
+    });
+  }
 
   testWidgets('shows error card on calculation failure', (tester) async {
     await tester.pumpWidget(
