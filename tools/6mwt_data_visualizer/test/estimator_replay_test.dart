@@ -82,6 +82,27 @@ void main() {
     expect(results[2].distance, closeTo(results[1].distance!, 1e-6));
   });
 
+  test('replay snapshots the confidence of the final distance', () {
+    final estimator = GpsDistanceEstimator();
+    final replay = EstimatorReplay(
+      session([for (var i = 0; i <= 10; i++) gps(i, i * 0.00001)]),
+    );
+    final result = replay.run(estimator);
+    expect(result.confidence, isNotNull);
+    expect(result.confidence!.score, estimator.confidence.score);
+    expect(result.confidence!.score, greaterThan(0));
+    // Later runs reset the estimator but must not change the earlier result.
+    final score = result.confidence!.score;
+    replay.run(estimator..reset());
+    expect(result.confidence!.score, score);
+    expect(
+      EstimatorReplay(
+        session([gps(0, 0), gps(1, double.nan)]),
+      ).run(_ThrowingEstimator()).confidence,
+      isNull,
+    );
+  });
+
   test('chart connects distance updates without unrelated sensor plateaus', () {
     final replay = EstimatorReplay(
       session([
@@ -337,4 +358,9 @@ void main() {
       }
     },
   );
+}
+
+class _ThrowingEstimator extends GpsDistanceEstimator {
+  @override
+  void addSample(app.SensorSample sample) => throw StateError('broken');
 }

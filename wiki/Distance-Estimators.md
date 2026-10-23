@@ -37,8 +37,8 @@ The app uses the selected profile; Visualizer replay uses the recording's profil
 ### Distance confidence
 
 Every estimator reports a heuristic confidence from 0 to 1 for its distance; it
-is not a calibrated error bound. The detailed walk and the result screen show it
-per estimator. The primary estimator's value is persisted with the distance
+is not a calibrated error bound. The detailed walk, the result screen and the
+Visualizer's Estimator Lab show it per estimator. The primary estimator's value is persisted with the distance
 (`walk_sessions.distance_confidence`, schema 3) and exported as
 `distanceConfidence`; the result screen's test details show this stored value.
 Sessions recorded before schema 3 store `NULL` and show no value there.
