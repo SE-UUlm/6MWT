@@ -12,6 +12,7 @@ import 'package:six_minute_walk_test/core/data/profile_repository.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
@@ -207,8 +208,14 @@ void main() {
                   additionalInfo: {'Step source': 'No step samples'},
                 ),
                 EstimatorComparison(
+                  name: 'Kalman GPS',
+                  distance: 400,
+                  confidence: const DistanceConfidence(0.8),
+                ),
+                EstimatorComparison(
                   name: 'Broken estimator',
                   distance: 123,
+                  confidence: const DistanceConfidence(0.9),
                   error: 'Sensor calculation failed',
                 ),
               ],
@@ -223,6 +230,9 @@ void main() {
       findsOneWidget,
     );
     expect(find.text('123.0 m'), findsNothing);
+    // Only estimators that assess their distance and did not fail show one.
+    expect(find.text('Confidence: High (80 %)'), findsOneWidget);
+    expect(find.textContaining('Confidence:'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

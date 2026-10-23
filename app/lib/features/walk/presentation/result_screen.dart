@@ -11,7 +11,9 @@ import 'package:six_minute_walk_test/core/presentation/session_export_service.da
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
+import 'distance_confidence_format.dart';
 import 'estimator_comparison_card.dart';
 
 final _log = appLogger('ResultScreen');
@@ -142,6 +144,7 @@ class ResultScreen extends ConsumerWidget {
     required IconData icon,
     required String label,
     required String value,
+    Color valueColor = Colors.black,
     bool showDivider = true,
   }) {
     return Column(
@@ -163,10 +166,10 @@ class ResultScreen extends ConsumerWidget {
 
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  color: valueColor,
                 ),
               ),
             ],
@@ -271,6 +274,12 @@ class ResultScreen extends ConsumerWidget {
     ).format(profile.weight);
 
     final durationText = _formatDuration(session.duration);
+
+    // Null for sessions recorded before confidence was stored.
+    final storedConfidence = session.distanceConfidence;
+    final confidence = storedConfidence == null
+        ? null
+        : DistanceConfidence(storedConfidence);
 
     var percentage = 0.0;
     String category = 'No assessment';
@@ -457,6 +466,13 @@ class ResultScreen extends ConsumerWidget {
                     icon: Icons.swap_horiz_rounded,
                     label: 'Distance walked',
                     value: '${session.distance.toStringAsFixed(1)} m',
+                  ),
+
+                  _buildDetailRow(
+                    icon: Icons.verified_outlined,
+                    label: 'Distance confidence',
+                    value: formatConfidence(confidence),
+                    valueColor: confidenceColor(confidence),
                   ),
 
                   _buildDetailRow(

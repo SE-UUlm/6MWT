@@ -7,6 +7,7 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
+import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
 import 'estimator_comparison.dart';
 
@@ -18,6 +19,7 @@ class WalkSessionState {
     required this.phase,
     required this.remainingTime,
     this.distance = 0, // In meters
+    this.confidence,
     this.comparisons = const [],
     this.lastSamples = const {},
     this.errorMessage,
@@ -28,6 +30,9 @@ class WalkSessionState {
   final WalkPhase phase;
   final Duration remainingTime;
   final double distance;
+
+  // Trust in [distance], as reported by the primary estimator.
+  final DistanceConfidence? confidence;
   final List<EstimatorComparison> comparisons;
 
   // Latest sample per sample type, for display purposes.
@@ -198,6 +203,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: walkDuration,
+        confidence: _distanceEstimator.confidence,
         sessionId: sessionId,
         startedAt: startedAt,
         comparisons: _snapshotComparisons(),
@@ -258,6 +264,7 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: remaining,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -312,6 +319,7 @@ class WalkSession {
         remainingTime: remaining,
         comparisons: _state.comparisons,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -348,6 +356,7 @@ class WalkSession {
         phase: WalkPhase.running,
         remainingTime: remaining,
         distance: _distanceEstimator.totalDistance,
+        confidence: _distanceEstimator.confidence,
         comparisons: _snapshotComparisons(),
         lastSamples: {..._state.lastSamples, sample.type: sample},
         sessionId: sessionId,
@@ -371,6 +380,7 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: remaining,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         errorMessage: 'Sensor error: $error',
         sessionId: _state.sessionId,
@@ -398,6 +408,7 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: Duration.zero,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -531,6 +542,7 @@ class WalkSession {
         name: entry.name,
         distance: distance,
         additionalInfo: entry.estimator.additionalInfo,
+        confidence: entry.estimator.confidence,
       );
     });
     return result ??

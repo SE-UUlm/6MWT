@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
@@ -111,6 +112,92 @@ void main() {
     await tester.pump();
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.text('Calculating distance comparisons...'), findsOneWidget);
+  });
+
+  testWidgets('shows no confidence for sessions without a stored value', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sessionEstimatorComparisonsProvider(
+            'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
+          ).overrideWith(
+            (ref) async => [
+              EstimatorComparison(
+                name: 'Main',
+                distance: 450,
+                confidence: const DistanceConfidence(0.62),
+              ),
+              EstimatorComparison(
+                name: 'Other',
+                distance: 400,
+                confidence: const DistanceConfidence(0.95),
+              ),
+            ],
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ResultScreen(session: testSession),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Distance confidence'), findsOneWidget);
+    // The replayed value appears only in the comparison card.
+    expect(find.text('Medium (62 %)'), findsNothing);
+    expect(find.text('Confidence: Medium (62 %)'), findsOneWidget);
+    final confidenceRow = find.ancestor(
+      of: find.text('Distance confidence'),
+      matching: find.byType(Row),
+    );
+    expect(
+      find.descendant(of: confidenceRow, matching: find.text('-')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows the stored confidence, not the replayed one', (
+    tester,
+  ) async {
+    final stored = WalkSessionWithProfile(
+      session: testSession.session.copyWith(
+        distanceConfidence: const Value(0.81),
+      ),
+      profile: testSession.profile,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sessionEstimatorComparisonsProvider(
+            'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
+          ).overrideWith(
+            (ref) async => [
+              EstimatorComparison(
+                name: 'Main',
+                distance: 450,
+                confidence: const DistanceConfidence(0.2),
+              ),
+            ],
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ResultScreen(session: stored),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('High (81 %)'), findsOneWidget);
   });
 
   testWidgets('shows error card on calculation failure', (tester) async {

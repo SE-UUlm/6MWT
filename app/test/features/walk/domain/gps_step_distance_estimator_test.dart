@@ -1,6 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 
 final _epoch = DateTime.utc(2026);
@@ -597,5 +600,105 @@ void main() {
     estimator.addSample(_steps(0, 5000));
     estimator.addSample(_steps(1, 5002));
     expect(estimator.totalDistance, closeTo(1.4, 1e-6));
+  });
+
+  group('confidence', () {
+    // Steps only, after an optional calibrated GPS walk.
+    void stepsOnly(int start, int seconds, int initialSteps) {
+      for (var i = 1; i <= seconds; i++) {
+        estimator.addSample(_steps(start + i, (initialSteps + i).toDouble()));
+      }
+    }
+
+    test('is zero without any distance', () {
+      expect(estimator.confidence.score, 0);
+      expect(estimator.confidence.level, ConfidenceLevel.low);
+    });
+
+    test('is high for accurate GPS covering the walk', () {
+      _walk(estimator, seconds: 60);
+      expect(estimator.confidence.score, closeTo(1, 1e-9));
+      expect(estimator.confidence.level, ConfidenceLevel.high);
+    });
+
+    test('is medium for GPS at the accuracy limit', () {
+      for (var i = 0; i <= 60; i++) {
+        estimator.addSample(_gps(i, i.toDouble(), accuracy: 10));
+      }
+      expect(estimator.confidence.score, closeTo(math.sqrt(0.3), 1e-9));
+      expect(estimator.confidence.level, ConfidenceLevel.medium);
+    });
+
+    test('remains high for moderately accurate GPS', () {
+      for (var i = 0; i <= 60; i++) {
+        estimator.addSample(_gps(i, i.toDouble(), accuracy: 4));
+      }
+      expect(estimator.confidence.score, closeTo(math.sqrt(0.75), 1e-9));
+      expect(estimator.confidence.level, ConfidenceLevel.high);
+    });
+
+    test('rejected GPS readings lower the GPS quality', () {
+      // Every fourth fix is unusable: two accepted intervals per rejection.
+      for (var i = 0; i < 24; i++) {
+        estimator.addSample(
+          _gps(i, i.toDouble(), accuracy: i % 4 == 3 ? 50 : 3),
+        );
+      }
+      expect(estimator.confidence.score, closeTo(0.5 + 0.5 * 2 / 3, 1e-9));
+    });
+
+    test('is low for steps with the uncalibrated default stride', () {
+      estimator.addSample(_steps(0, 1000));
+      stepsOnly(0, 60, 1000);
+      expect(
+        estimator.confidence.score,
+        closeTo(ConfidenceHeuristics.defaultStrideQuality, 1e-9),
+      );
+      expect(estimator.confidence.level, ConfidenceLevel.low);
+    });
+
+    test('inconsistent calibration lowers step-based confidence', () {
+      final consistent = GpsStepDistanceEstimator(stepSourceId: 'pedometer');
+      _walk(consistent, seconds: 15);
+      _walk(consistent, start: 15, initialMetres: 15, initialSteps: 1015);
+      _walk(consistent, start: 30, initialMetres: 30, initialSteps: 1030);
+
+      _walk(estimator, seconds: 15);
+      _walk(
+        estimator,
+        start: 15,
+        metresPerSecond: 1.4,
+        initialMetres: 15,
+        initialSteps: 1015,
+      );
+      _walk(
+        estimator,
+        start: 30,
+        metresPerSecond: 0.7,
+        initialMetres: 36,
+        initialSteps: 1030,
+      );
+
+      for (final e in [consistent, estimator]) {
+        for (var i = 1; i <= 60; i++) {
+          e.addSample(_steps(45 + i, (1045 + i).toDouble()));
+        }
+      }
+      expect(consistent.confidence.score, greaterThan(0.75));
+      expect(
+        estimator.confidence.score,
+        lessThan(consistent.confidence.score - 0.1),
+      );
+    });
+
+    test('reset clears confidence inputs', () {
+      for (var i = 0; i <= 20; i++) {
+        estimator.addSample(_gps(i, i.toDouble(), accuracy: 10));
+      }
+      estimator.reset();
+      expect(estimator.confidence.score, 0);
+      _walk(estimator, seconds: 20);
+      expect(estimator.confidence.score, closeTo(1, 1e-9));
+    });
   });
 }

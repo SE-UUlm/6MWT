@@ -39,6 +39,7 @@ WalkSessionRow? createWalkSessionRow(
     startedAt: startedAt,
     duration: session.walkDuration - state.remainingTime,
     distance: state.distance,
+    distanceConfidence: state.confidence?.score,
     phase: state.phase,
     profileId: profileId,
   );
@@ -183,6 +184,7 @@ List<EstimatorComparison> computeEstimatorComparisons(
           name: named.name,
           distance: distance,
           additionalInfo: named.estimator.additionalInfo,
+          confidence: named.estimator.confidence,
         ),
       );
     } catch (e) {

@@ -57,6 +57,9 @@ class StepCalibrationHistory {
   double? start, end;
   int rejectedGps = 0, resets = 0;
 
+  /// Sum of end-fix accuracies over [gps], for confidence heuristics.
+  double gpsAccuracySum = 0;
+
   static double time(SensorSample s) =>
       s.timestamp.microsecondsSinceEpoch / 1e6;
 
@@ -121,6 +124,7 @@ class StepCalibrationHistory {
           );
           if (dt <= config.maxGpsInterval && meters / dt <= config.maxSpeed) {
             gps.add(CalibrationSegment(time(previous), t, meters));
+            gpsAccuracySum += acc;
           } else {
             rejectedGps++;
           }

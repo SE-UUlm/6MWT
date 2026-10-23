@@ -34,6 +34,42 @@ Once enough good GPS and step data are available, the learned step length
 replaces this estimate and corrects earlier step-based distance.
 The app uses the selected profile; Visualizer replay uses the recording's profile.
 
+### Distance confidence
+
+Every estimator reports a heuristic confidence from 0 to 1 for its distance; it
+is not a calibrated error bound. The detailed walk and the result screen show it
+per estimator. The primary estimator's value is persisted with the distance
+(`walk_sessions.distance_confidence`, schema 3) and exported as
+`distanceConfidence`; the result screen's test details show this stored value.
+Sessions recorded before schema 3 store `NULL` and show no value there.
+
+All estimators share `ConfidenceHeuristics` in `distance_confidence.dart`, so
+values are comparable:
+
+`score = gpsShare × gpsQuality + (1 − gpsShare) × otherQuality`
+
+- `gpsQuality` is `sqrt(3 m / max(mean accuracy, 3 m))` (1 at ≤3 m, 0.71 at
+  6 m, 0.55 at 10 m, 0.32 at 30 m, without a floor; the same scale for every
+  estimator, whatever its acceptance limit), multiplied by `0.5 + 0.5 × acceptance` of accepted against
+  rejected GPS data. Missing accuracy counts as 10 m.
+- `strideQuality` is 0.3 with a default or fixed stride and otherwise
+  `0.4 + 0.6 × consistency × min(1, windows / 5)`, where consistency falls to
+  0 at a 20 % coefficient of variation of the window strides (a single window
+  has none). It is multiplied by the share of accepted calibration windows.
+
+| Estimator | `gpsShare` | `gpsQuality` input | `otherQuality` |
+| --- | --- | --- | --- |
+| `GpsStepDistanceEstimator` | Accepted GPS distance | Accepted segments; coordinate, accuracy and speed rejections (gaps are not penalised) | Stride of calibration updates; rejected strides count against it |
+| `GpsDistanceEstimator` | 1 | All segments; segments faster than 4 m/s count as rejected but are still summed | – |
+| `FilteredGpsEstimator` | 1 | Accepted segments and rejected fixes | – |
+| `KalmanGpsDistanceEstimator` | Distance without gap bridges | Accepted and rejected fixes (excluding stale timestamps) | 0.3 for straight-line gap bridges |
+| `KalmanGpsStepDistanceEstimator` | GPS fallback distance | Shared history segments and rejections | Accepted Kalman observations; innovation-gate failures count against it, turns do not |
+| `AdaptiveGpsStepDistanceEstimator` | GPS distance | Shared history segments and rejections | Strides of all calibration windows |
+| `CalibratedStepDistanceEstimator` | 0 | – | Strides of all (overlapping) calibration windows |
+| `StepDistanceEstimator` | 0 | – | 0.3 (fixed stride) |
+
+Levels: high ≥0.75, medium ≥0.5, low otherwise.
+
 ### Algorithm parameters
 
 Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, then hot restart. The GUI displays the configured variants; it does not edit parameters. GPS/step variants compare 5, 10 and 15-second maximum GPS intervals, all with a 5-second fallback delay. Consult constructor/config defaults in the shared implementation when changing a parameter.

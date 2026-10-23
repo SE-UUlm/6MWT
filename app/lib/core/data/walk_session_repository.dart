@@ -56,6 +56,7 @@ class WalkSessionRepository {
     'startedAt': row.startedAt.toUtc().toIso8601String(),
     'duration': row.duration.inSeconds,
     'distance': row.distance,
+    'distanceConfidence': row.distanceConfidence,
     'phase': row.phase.name,
     'profileId': row.profileId,
   };

@@ -1,3 +1,4 @@
+import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
 
 /// A separately owned estimator instance and its display name.
@@ -14,11 +15,13 @@ class EstimatorComparison {
     required this.name,
     required this.distance,
     Map<String, String> additionalInfo = const {},
+    this.confidence,
     this.error,
   }) : additionalInfo = Map.unmodifiable(additionalInfo);
 
   final String name;
   final double distance;
   final Map<String, String> additionalInfo;
+  final DistanceConfidence? confidence;
   final String? error;
 }
