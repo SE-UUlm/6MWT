@@ -46,6 +46,85 @@ SensorSample _position(double lat, double lng) => SensorSample(
 // ---------------------------------------------------------------------------
 
 void main() {
+  test(
+    'profile default follows test profile changes but not an active walk',
+    () {
+      fakeAsync((async) {
+        final source = FakeSensorSource();
+        final estimator = GpsStepDistanceEstimator(stepSourceId: 'fake');
+        final session = WalkSession(
+          sources: [source],
+          distanceEstimator: estimator,
+        );
+        final firstProfile = Profile(
+          id: 1,
+          timestamp: DateTime.utc(2026),
+          height: 180,
+          age: 30,
+          weight: 70,
+          gender: Gender.other,
+        );
+        final secondProfile = Profile(
+          id: 2,
+          timestamp: DateTime.utc(2026),
+          height: 160,
+          age: 60,
+          weight: 90,
+          gender: Gender.female,
+        );
+        void steps(int second, double count) {
+          source.controller.add(
+            SensorSample(
+              timestamp: DateTime.utc(2026).add(Duration(seconds: second)),
+              sourceId: 'fake',
+              type: SampleType.steps,
+              values: {StepKeys.cumulativeSteps: count},
+            ),
+          );
+          async.flushMicrotasks();
+        }
+
+        session.setProfile(
+          id: firstProfile.id,
+          heightCm: firstProfile.height,
+          gender: firstProfile.gender.name,
+        );
+        session.start();
+        async.flushMicrotasks();
+        steps(0, 1000);
+        steps(10, 1010);
+        expect(session.state.distance, closeTo(7.452, 1e-6));
+        expect(estimator.hasLearnedStepLength, isFalse);
+
+        session.setProfile(
+          id: secondProfile.id,
+          heightCm: secondProfile.height,
+          gender: secondProfile.gender.name,
+        );
+        expect(session.profileId, 1);
+        expect(estimator.stepLength, closeTo(0.7452, 1e-9));
+
+        session.abort();
+        async.flushMicrotasks();
+        session.setProfile(
+          id: secondProfile.id,
+          heightCm: secondProfile.height,
+          gender: secondProfile.gender.name,
+        );
+        session.start();
+        async.flushMicrotasks();
+        steps(20, 2000);
+        steps(30, 2002);
+        expect(session.profileId, 2);
+        expect(session.state.distance, closeTo(1.3216, 1e-6));
+        session.dispose();
+        async.flushMicrotasks();
+        source.controller.close();
+        async.flushMicrotasks();
+      });
+    },
+  );
+
   group('deduplicatedSaves', () {
     test('persists optional phone steps and a downward stride correction', () {
       fakeAsync((async) {

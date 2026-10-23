@@ -25,7 +25,7 @@ class Profile {
       id: json['id'] as int,
       name: json['name'] as String?,
       timestamp: DateTime.parse(json['timestamp'] as String),
-      height: json['height'] as int,
+      height: (json['height'] as num?)?.toInt() ?? 0,
       age: json['age'] as int,
       weight: (json['weight'] as num?)?.toDouble(),
       gender: json['gender'] as String?,

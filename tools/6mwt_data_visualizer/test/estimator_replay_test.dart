@@ -7,6 +7,7 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
+import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
@@ -14,6 +15,51 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/experimenta
 import 'support/replay_fixtures.dart';
 
 void main() {
+  test(
+    'replay uses optional exported gender and clears previous profile data',
+    () {
+      final estimator = GpsStepDistanceEstimator(stepSourceId: 'pedometer');
+      for (final (gender, expected) in <(String?, double)>[
+        ('male', 7.47),
+        ('female', 7.434),
+        ('other', 7.452),
+        (null, 7.452),
+      ]) {
+        final profile = Profile.fromJson({
+          'id': 1,
+          'name': null,
+          'timestamp': start.toIso8601String(),
+          'height': 180,
+          'age': 30,
+          'gender': ?gender,
+        });
+        final result = EstimatorReplay(
+          session([steps(0, 1000), steps(10, 1010)], profile: profile),
+        ).run(estimator);
+        expect(result.error, isNull);
+        expect(result.distance, closeTo(expected, 1e-6));
+        expect(result.additionalInfo['Calibration'], 'Default');
+      }
+
+      final withoutProfile = EstimatorReplay(
+        session([steps(0, 1000), steps(10, 1010)]),
+      ).run(estimator);
+      expect(withoutProfile.distance, closeTo(7, 1e-6));
+
+      final missingHeight = Profile.fromJson({
+        'id': 1,
+        'name': null,
+        'timestamp': start.toIso8601String(),
+        'age': 30,
+        'gender': 'female',
+      });
+      final missingHeightResult = EstimatorReplay(
+        session([steps(0, 1000), steps(10, 1010)], profile: missingHeight),
+      ).run(estimator);
+      expect(missingHeightResult.distance, closeTo(7, 1e-6));
+    },
+  );
+
   test('lab compares 5, 10 and 15 s GPS intervals with distinct labels', () {
     final variants = createEstimators()
         .whereType<GpsStepDistanceEstimator>()

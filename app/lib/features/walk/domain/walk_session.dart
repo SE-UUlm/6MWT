@@ -103,6 +103,16 @@ class WalkSession {
 
   int? profileId;
 
+  /// Configure the next test without changing a walk that is already running.
+  void setProfile({required int id, required num heightCm, String? gender}) {
+    if (_state.isRunning) return;
+    profileId = id;
+    _distanceEstimator.configureProfile(heightCm: heightCm, gender: gender);
+    for (final entry in _comparisonEstimators) {
+      entry.estimator.configureProfile(heightCm: heightCm, gender: gender);
+    }
+  }
+
   WalkSessionState get state => _state;
 
   // Emits the current state immediately, then every subsequent change.

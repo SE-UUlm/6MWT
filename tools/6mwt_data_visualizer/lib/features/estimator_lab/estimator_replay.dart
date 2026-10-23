@@ -49,6 +49,7 @@ class ReplayResult {
 /// Reference samples are used for comparison only and never enter that stream.
 class EstimatorReplay {
   EstimatorReplay(Session session) {
+    _profile = session.profile;
     // Stable tie-breaking preserves file order for simultaneous events.
     final indexed = session.samples.indexed.toList();
     indexed.sort((a, b) {
@@ -83,6 +84,7 @@ class EstimatorReplay {
   }
 
   late final List<app.SensorSample> samples;
+  late final Profile? _profile;
   late final DateTime start;
   late final double duration;
 
@@ -98,6 +100,10 @@ class EstimatorReplay {
         : estimator.runtimeType.toString();
     final points = <DistancePoint>[];
     try {
+      estimator.configureProfile(
+        heightCm: _profile?.height,
+        gender: _profile?.gender,
+      );
       estimator.reset();
       for (final sample in samples) {
         estimator.addSample(sample);
