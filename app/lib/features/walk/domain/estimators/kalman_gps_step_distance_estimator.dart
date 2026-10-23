@@ -12,10 +12,13 @@ import 'distance_estimator.dart';
 /// own their distance (including zero-step pauses); GPS fills only missing ones.
 /// Results are provisional: learning the session's step length revises history.
 class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
-  KalmanGpsStepDistanceEstimator({StepCalibrationConfig? config})
+  KalmanGpsStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Kalman GPS + steps';
 
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;

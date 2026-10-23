@@ -8,10 +8,14 @@ import 'distance_estimator.dart';
 /// GPS on covered intervals, locally calibrated steps on their complement.
 /// Retains the short session history so later calibration can revise GPS gaps.
 class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
-  AdaptiveGpsStepDistanceEstimator({StepCalibrationConfig? config})
+  AdaptiveGpsStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Adaptive GPS + steps';
+
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;
   bool _dirty = true;

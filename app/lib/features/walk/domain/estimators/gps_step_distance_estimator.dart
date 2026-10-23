@@ -13,6 +13,7 @@ import 'default_step_length.dart';
 /// portion, so recovery and delayed callbacks cannot count the same time twice.
 class GpsStepDistanceEstimator extends DistanceEstimator {
   GpsStepDistanceEstimator({
+    super.name,
     required this.stepSourceId,
     this.gpsFallbackTimeout = maxGpsGap,
     this.maxGpsInterval = maxGpsGap,
@@ -22,6 +23,9 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
       throw ArgumentError('GPS time limits must be positive.');
     }
   }
+
+  @override
+  String get defaultName => 'GPS + steps';
 
   final String stepSourceId;
 

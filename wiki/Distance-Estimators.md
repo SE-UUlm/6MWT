@@ -17,9 +17,9 @@ The app and Visualizer share implementations in `app/lib/features/walk/domain/es
 
 ## App integration
 
-`app/lib/features/walk/domain/walk_session_provider.dart` configures a separate primary `GpsStepDistanceEstimator` and named comparison instances. They receive the same initial/live samples, excluding warm-up. Comparison errors disable that comparison for the run.
+`app/lib/features/walk/domain/walk_session_provider.dart` configures a separate primary `GpsStepDistanceEstimator` and the comparison instances. Each estimator has a display `name`, its class's default unless a constructor `name` overrides it; the primary is shown as `Main (<name>)`. They receive the same initial/live samples, excluding warm-up. Comparison errors disable that comparison for the run.
 
-Only primary distance drives assessment and persistence. Comparison diagnostics appear in the detailed walk and current result, including release builds, but do not persist in history or JSON. No comparison is automatically promoted to primary.
+Only primary distance drives assessment and persistence. Diagnostics appear in the detailed walk and current result, including release builds, but do not persist in history or JSON. Both list the primary estimator first, followed by the comparisons. No comparison is automatically promoted to primary.
 
 ## Configuration and assumptions
 
@@ -72,7 +72,7 @@ Levels: high ≥0.75, medium ≥0.5, low otherwise.
 
 ### Algorithm parameters
 
-Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, then hot restart. The GUI displays the configured variants; it does not edit parameters. GPS/step variants compare 5, 10 and 15-second maximum GPS intervals, all with a 5-second fallback delay. Consult constructor/config defaults in the shared implementation when changing a parameter.
+Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, then hot restart. Give variants of the same class distinct `name`s. The GUI displays the configured variants; it does not edit parameters. GPS/step variants compare 5, 10 and 15-second maximum GPS intervals, all with a 5-second fallback delay. Consult constructor/config defaults in the shared implementation when changing a parameter.
 
 - Calibrated steps requires full GPS/step coverage, at least 6 steps and 5 m per window; accepted GPS has positive accuracy ≤10 m, speed ≤4 m/s and spacing ≤10 s. Stride ratios outside 0.25–2 m are rejected; median stride is clamped to 0.35–1.35 m, default 0.75 m.
 - Adaptive fusion uses calibration windows wholly within adjacent good GPS runs and within 60 seconds of a gap boundary. With one side, hold that stride; with neither, use 0.75 m. No coverage from either sensor means no invented distance.

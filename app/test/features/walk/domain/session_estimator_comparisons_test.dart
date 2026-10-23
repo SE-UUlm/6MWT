@@ -40,7 +40,7 @@ void main() {
         addTearDown(source.controller.close);
         final live = WalkSession(
           sources: [source],
-          distanceEstimator: createPrimaryDistanceEstimator().estimator,
+          distanceEstimator: createPrimaryDistanceEstimator(),
           now: () => start,
         );
         addTearDown(live.dispose);

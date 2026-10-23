@@ -5,10 +5,14 @@ import 'step_calibration_history.dart';
 
 /// All observed steps use the current session median, including earlier steps.
 class CalibratedStepDistanceEstimator extends DistanceEstimator {
-  CalibratedStepDistanceEstimator({StepCalibrationConfig? config})
+  CalibratedStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Calibrated steps';
+
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;
   bool _dirty = true;

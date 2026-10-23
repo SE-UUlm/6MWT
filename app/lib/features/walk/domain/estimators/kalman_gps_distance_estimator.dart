@@ -53,8 +53,11 @@ class KalmanGpsConfig {
 /// Causal, GPS-only comparison estimator. No wall clock, step data, or reference
 /// trajectory is used. Predictions never add distance without an accepted fix.
 class KalmanGpsDistanceEstimator extends DistanceEstimator {
-  KalmanGpsDistanceEstimator({KalmanGpsConfig? config})
+  KalmanGpsDistanceEstimator({super.name, KalmanGpsConfig? config})
     : config = config ?? KalmanGpsConfig();
+
+  @override
+  String get defaultName => 'Kalman GPS';
 
   final KalmanGpsConfig config;
   String? _source;

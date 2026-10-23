@@ -72,12 +72,7 @@ void main() {
       final session = WalkSession(
         sources: [source],
         distanceEstimator: GpsDistanceEstimator(),
-        comparisonEstimators: [
-          NamedDistanceEstimator(
-            'Steps',
-            StepDistanceEstimator(stepLength: 0.75),
-          ),
-        ],
+        comparisonEstimators: [StepDistanceEstimator(stepLength: 0.75)],
         sampleSink: SampleRepository(db),
         walkDuration: const Duration(seconds: 5),
         now: () => tester.binding.clock.now(),
@@ -113,6 +108,11 @@ void main() {
       await tester.pump();
       await tester.pump();
       expect(find.text('1.5 m'), findsOneWidget);
+      // The primary estimator is listed first, above the comparisons.
+      expect(
+        tester.getTopLeft(find.text('Main (Plain GPS)')).dy,
+        lessThan(tester.getTopLeft(find.text('Steps')).dy),
+      );
       expect(
         tester.getTopLeft(find.text('Distance comparison')).dy,
         greaterThan(tester.getTopLeft(find.text('Duration')).dy),
