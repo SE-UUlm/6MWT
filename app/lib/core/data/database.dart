@@ -54,6 +54,8 @@ class WalkSessions extends Table {
   DateTimeColumn get startedAt => dateTime()();
   Column<int> get duration => integer().map(const DurationConverter())();
   RealColumn get distance => real()(); // In meters
+  // Heuristic 0..1 score of the primary estimator; null for older sessions.
+  RealColumn get distanceConfidence => real().nullable()();
 
   TextColumn get phase => textEnum<WalkPhase>()();
 
@@ -68,7 +70,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -107,6 +109,14 @@ class AppDatabase extends _$AppDatabase {
               schema.profiles.weight: const Constant(0.0),
             },
           ),
+        );
+      },
+      from2To3: (m, schema) async {
+        _log.i('Migrating database from schema 2 to 3');
+        // Existing sessions keep no stored confidence; it is recomputed on display.
+        await m.addColumn(
+          schema.walkSessions,
+          schema.walkSessions.distanceConfidence,
         );
       },
     ),

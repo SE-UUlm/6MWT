@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/distance_confidence_format.dart';
 
 import '../../core/domain/session.dart';
 import '../../core/theme/reference_colors.dart';
@@ -353,6 +354,14 @@ class _EstimatorLabState extends State<EstimatorLab> {
                 ),
               ),
               if (result.error != null) Text('Error: ${result.error}'),
+              if (result.error == null && result.confidence != null)
+                Text(
+                  'Confidence: ${formatConfidence(result.confidence)}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: confidenceColor(result.confidence),
+                  ),
+                ),
               Text(
                 'Δ stored: ${_number(distance == null ? null : distance - widget.session.recordings[recording].distance)} m',
               ),

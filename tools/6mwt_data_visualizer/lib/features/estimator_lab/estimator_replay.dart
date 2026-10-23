@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 
@@ -22,11 +23,15 @@ class ReplayResult {
     this.points, {
     this.error,
     this.additionalInfo = const {},
+    this.confidence,
   });
   final String name;
   final List<DistancePoint> points;
   final String? error;
   final Map<String, String> additionalInfo;
+
+  /// The estimator's own assessment of its final distance, if it reports one.
+  final DistanceConfidence? confidence;
   double? get distance =>
       error == null && points.isNotEmpty ? points.last.meters : null;
 
@@ -122,6 +127,7 @@ class EstimatorReplay {
         name,
         List.unmodifiable(points),
         additionalInfo: Map.unmodifiable(estimator.additionalInfo),
+        confidence: estimator.confidence,
       );
     } catch (error) {
       // A broken experimental variant must not prevent other variants from running.

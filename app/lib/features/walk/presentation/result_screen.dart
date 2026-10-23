@@ -11,7 +11,9 @@ import 'package:six_minute_walk_test/core/presentation/session_export_service.da
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
+import 'distance_confidence_format.dart';
 import 'estimator_comparison_card.dart';
 
 final _log = appLogger('ResultScreen');
@@ -37,15 +39,15 @@ class ResultScreen extends ConsumerWidget {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
-  Widget _buildPerformanceBar(double percentage) {
+  /// Without a [percentage], only the scale is shown, without a marker.
+  Widget _buildPerformanceBar(double? percentage) {
     return Column(
       children: [
         SizedBox(
           height: 24,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final progress = percentage.clamp(0, maxValue);
-              final position = constraints.maxWidth * progress / maxValue;
+              final progress = percentage?.clamp(0, maxValue);
 
               return Stack(
                 clipBehavior: Clip.none,
@@ -74,18 +76,20 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  Positioned(
-                    left: position - 2,
-                    top: -6,
-                    child: Container(
-                      width: 4,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(2),
+                  if (progress != null)
+                    Positioned(
+                      key: const ValueKey('performance-marker'),
+                      left: constraints.maxWidth * progress / maxValue - 2,
+                      top: -6,
+                      child: Container(
+                        width: 4,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.black87,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
                       ),
                     ),
-                  ),
                 ],
               );
             },
@@ -142,6 +146,7 @@ class ResultScreen extends ConsumerWidget {
     required IconData icon,
     required String label,
     required String value,
+    Color valueColor = Colors.black,
     bool showDivider = true,
   }) {
     return Column(
@@ -163,10 +168,10 @@ class ResultScreen extends ConsumerWidget {
 
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  color: valueColor,
                 ),
               ),
             ],
@@ -272,8 +277,18 @@ class ResultScreen extends ConsumerWidget {
 
     final durationText = _formatDuration(session.duration);
 
-    var percentage = 0.0;
+    // Null for sessions recorded before confidence was stored.
+    final storedConfidence = session.distanceConfidence;
+    final confidence = storedConfidence == null
+        ? null
+        : DistanceConfidence(storedConfidence);
+
+    double? percentage;
     String category = 'No assessment';
+    // A session still marked as running after the app restarted was
+    // interrupted as well, e.g. by a crash.
+    var explanation =
+        'No assessment is possible because the test was stopped early.';
 
     if (session.phase == WalkPhase.finished) {
       final assessment = assessFitness(
@@ -287,6 +302,9 @@ class ResultScreen extends ConsumerWidget {
 
       percentage = assessment.percentOfExpected;
       category = assessment.category.name;
+      explanation =
+          'Your performance is based on your '
+          'age, height and walking distance.';
     }
 
     return Scaffold(
@@ -387,7 +405,7 @@ class ResultScreen extends ConsumerWidget {
                     const SizedBox(height: 14),
 
                     Text(
-                      '${percentage.round()}%',
+                      percentage == null ? '—' : '${percentage.round()}%',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 46,
@@ -431,11 +449,10 @@ class ResultScreen extends ConsumerWidget {
 
                           const SizedBox(height: 6),
 
-                          const Text(
-                            'Your performance is based on your '
-                            'age, height and walking distance.',
+                          Text(
+                            explanation,
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13,
                               height: 1.3,
                               color: Colors.black54,
@@ -457,6 +474,13 @@ class ResultScreen extends ConsumerWidget {
                     icon: Icons.swap_horiz_rounded,
                     label: 'Distance walked',
                     value: '${session.distance.toStringAsFixed(1)} m',
+                  ),
+
+                  _buildDetailRow(
+                    icon: Icons.verified_outlined,
+                    label: 'Distance confidence',
+                    value: formatConfidence(confidence),
+                    valueColor: confidenceColor(confidence),
                   ),
 
                   _buildDetailRow(
@@ -483,7 +507,7 @@ class ResultScreen extends ConsumerWidget {
                   _buildDetailRow(
                     icon: Icons.person_outline_rounded,
                     label: 'Name',
-                    value: profile.name ?? '-',
+                    value: profile.name ?? '—',
                   ),
 
                   _buildDetailRow(

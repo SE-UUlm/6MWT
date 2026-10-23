@@ -8,6 +8,7 @@ import 'generated/schema.dart';
 
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -139,12 +140,65 @@ void main() {
     );
   });
 
+  test('migration from v2 to v3 keeps sessions without confidence', () async {
+    final oldProfilesData = <v2.ProfilesData>[
+      const v2.ProfilesData(
+        id: 7,
+        timestamp: '2026-10-15T10:30:00.000Z',
+        height: 175,
+        age: 42,
+        gender: 'male',
+        weight: 75,
+      ),
+    ];
+    final oldWalkSessionsData = <v2.WalkSessionsData>[
+      const v2.WalkSessionsData(
+        id: 'session-1',
+        startedAt: '2026-10-15T10:35:00.000Z',
+        duration: 360,
+        distance: 512.5,
+        phase: 'finished',
+        profileId: 7,
+      ),
+    ];
+    final expectedNewWalkSessionsData = [
+      for (final row in oldWalkSessionsData)
+        v3.WalkSessionsData.fromJson({
+          ...row.toJson(),
+          'distanceConfidence': null,
+        }),
+    ];
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: AppDatabase.new,
+      createItems: (batch, oldDb) {
+        batch.insertAll(oldDb.profiles, oldProfilesData);
+        batch.insertAll(oldDb.walkSessions, oldWalkSessionsData);
+      },
+      validateItems: (newDb) async {
+        expect(
+          expectedNewWalkSessionsData,
+          await newDb.select(newDb.walkSessions).get(),
+        );
+        await (newDb.update(newDb.walkSessions)).write(
+          const v3.WalkSessionsCompanion(distanceConfidence: Value(0.8)),
+        );
+        final updated = await newDb.select(newDb.walkSessions).getSingle();
+        expect(updated.distanceConfidence, 0.8);
+      },
+    );
+  });
+
   test(
-    'fresh installation creates schema 2 and stores supplied values',
+    'fresh installation creates schema 3 and stores supplied values',
     () async {
       final db = AppDatabase(NativeDatabase.memory());
       addTearDown(db.close);
-      await verifier.migrateAndValidate(db, 2);
+      await verifier.migrateAndValidate(db, 3);
       await db
           .into(db.profiles)
           .insert(

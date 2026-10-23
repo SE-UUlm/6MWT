@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../domain/estimator_comparison.dart';
+import 'distance_confidence_format.dart';
 
 class EstimatorComparisonCard extends StatelessWidget {
   const EstimatorComparisonCard({super.key, required this.comparisons});
@@ -35,6 +36,15 @@ class EstimatorComparisonCard extends StatelessWidget {
                   ? '${result.distance.toStringAsFixed(1)} m'
                   : 'Estimator unavailable: ${result.error}',
             ),
+            if (result.error == null && result.confidence != null)
+              Text(
+                'Confidence: ${formatConfidence(result.confidence)}',
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: confidenceColor(result.confidence),
+                ),
+              ),
             if (result.error == null)
               for (final info in result.additionalInfo.entries)
                 Text(

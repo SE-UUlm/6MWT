@@ -8,6 +8,7 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
@@ -159,6 +160,11 @@ void main() {
         steps(10, 1010);
         expect(session.state.distance, closeTo(7, 1e-6));
         expect(rows.last.distance, closeTo(7, 1e-6));
+        // Steps with the uncalibrated default stride only.
+        expect(
+          rows.last.distanceConfidence,
+          ConfidenceHeuristics.defaultStrideQuality,
+        );
 
         for (var i = 0; i <= 17; i++) {
           gps.controller.add(
@@ -182,6 +188,13 @@ void main() {
         expect(estimator.stepLength, closeTo(0.6, 1e-6));
         expect(session.state.distance, closeTo(16.2, 1e-6));
         expect(rows.last.distance, closeTo(16.2, 1e-6));
+        final confidence = estimator.confidence.score;
+        expect(
+          confidence,
+          greaterThan(ConfidenceHeuristics.defaultStrideQuality),
+        );
+        expect(session.state.confidence?.score, confidence);
+        expect(rows.last.distanceConfidence, confidence);
         expect(rows[rows.length - 2].distance, closeTo(17.2, 1e-6));
         expect(session.state.lastSamples[SampleType.steps], isNotNull);
 
@@ -189,6 +202,7 @@ void main() {
         async.flushMicrotasks();
         expect(rows.last.phase, WalkPhase.aborted);
         expect(rows.last.distance, closeTo(16.2, 1e-6));
+        expect(rows.last.distanceConfidence, confidence);
         session.start();
         async.flushMicrotasks();
         expect(estimator.hasLearnedStepLength, isFalse);

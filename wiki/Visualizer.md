@@ -65,7 +65,7 @@ appear immediately and load again the next time the recording is opened.
 ## Using the Estimator Lab
 
 1. Select a recorded session and open **Estimator Lab** above the map.
-2. All estimators configured in `estimators.dart` run automatically. Use the graph legend to toggle curves and the table to compare distances and additional diagnostics.
+2. All estimators configured in `estimators.dart` run automatically. Use the graph legend to toggle curves and the table to compare distances, each estimator's [confidence](Distance-Estimators#distance-confidence) for its final distance and additional diagnostics.
 3. To test another algorithm or parameter variant, edit the list in `createEstimators()` and hot restart the tool. Multiple instances of the same class with different parameters are allowed.
 
 The replay feeds **all recorded app sensor samples** to each estimator, from the earliest to the latest recorded timestamp. It uses subsecond timing, preserves file order for timestamp ties, and does not run in real time. It does not use the reference recording or a whole-session step-length estimate to calibrate algorithms. The original estimator runs unchanged; replay totals can differ from the stored distance if historical app versions, sample arrival order, or incomplete recordings differ.

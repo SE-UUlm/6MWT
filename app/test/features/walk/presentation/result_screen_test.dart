@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
@@ -112,6 +113,147 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.text('Calculating distance comparisons...'), findsOneWidget);
   });
+
+  testWidgets('shows no confidence for sessions without a stored value', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sessionEstimatorComparisonsProvider(
+            'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
+          ).overrideWith(
+            (ref) async => [
+              EstimatorComparison(
+                name: 'Main',
+                distance: 450,
+                confidence: const DistanceConfidence(0.62),
+              ),
+              EstimatorComparison(
+                name: 'Other',
+                distance: 400,
+                confidence: const DistanceConfidence(0.95),
+              ),
+            ],
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ResultScreen(session: testSession),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Distance confidence'), findsOneWidget);
+    // The replayed value appears only in the comparison card.
+    expect(find.text('Medium (62 %)'), findsNothing);
+    expect(find.text('Confidence: Medium (62 %)'), findsOneWidget);
+    final confidenceRow = find.ancestor(
+      of: find.text('Distance confidence'),
+      matching: find.byType(Row),
+    );
+    expect(
+      find.descendant(of: confidenceRow, matching: find.text('—')),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows the stored confidence, not the replayed one', (
+    tester,
+  ) async {
+    final stored = WalkSessionWithProfile(
+      session: testSession.session.copyWith(
+        distanceConfidence: const Value(0.81),
+      ),
+      profile: testSession.profile,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          sessionEstimatorComparisonsProvider(
+            'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
+          ).overrideWith(
+            (ref) async => [
+              EstimatorComparison(
+                name: 'Main',
+                distance: 450,
+                confidence: const DistanceConfidence(0.2),
+              ),
+            ],
+          ),
+        ],
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: ResultScreen(session: stored),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('High (81 %)'), findsOneWidget);
+  });
+
+  for (final (phase, percent, marker, explanation) in [
+    (
+      WalkPhase.finished,
+      findsNothing,
+      findsOneWidget,
+      'Your performance is based on your age, height and walking distance.',
+    ),
+    (
+      WalkPhase.aborted,
+      findsOneWidget,
+      findsNothing,
+      'No assessment is possible because the test was stopped early.',
+    ),
+    (
+      WalkPhase.running,
+      findsOneWidget,
+      findsNothing,
+      'No assessment is possible because the test was stopped early.',
+    ),
+  ]) {
+    testWidgets('performance card for a ${phase.name} test', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            sessionEstimatorComparisonsProvider(
+              'state-test-session',
+              heightCm: testSession.profile.height,
+              gender: testSession.profile.gender.name,
+            ).overrideWith((ref) async => const []),
+          ],
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: ResultScreen(
+              session: WalkSessionWithProfile(
+                session: testSession.session.copyWith(phase: phase),
+                profile: testSession.profile,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      // The percentage placeholder replaces the value, never shows 0 %.
+      final percentage = find.byWidgetPredicate(
+        (w) => w is Text && w.style?.fontSize == 46 && w.data == '—',
+      );
+      expect(percentage, percent);
+      expect(find.text('0%'), findsNothing);
+      expect(find.byKey(const ValueKey('performance-marker')), marker);
+      expect(find.text(explanation), findsOneWidget);
+    });
+  }
 
   testWidgets('shows error card on calculation failure', (tester) async {
     await tester.pumpWidget(
