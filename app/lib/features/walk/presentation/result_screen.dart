@@ -184,7 +184,9 @@ class ResultScreen extends ConsumerWidget {
 
   Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
     try {
-      await ref.read(sessionExportServiceProvider).shareSession(session.id);
+      await ref
+          .read(sessionExportServiceProvider)
+          .shareSession(session.id, context: context);
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(
@@ -336,11 +338,13 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  IconButton(
-                    onPressed: () {
-                      _exportSession(context, ref);
-                    },
-                    icon: const Icon(Icons.share),
+                  Builder(
+                    builder: (shareContext) => IconButton(
+                      onPressed: () {
+                        _exportSession(shareContext, ref);
+                      },
+                      icon: const Icon(Icons.share),
+                    ),
                   ),
                 ],
               ),
