@@ -72,13 +72,7 @@ void main() {
       final session = WalkSession(
         sources: [source],
         distanceEstimator: GpsDistanceEstimator(),
-        distanceEstimatorName: 'Live main',
-        comparisonEstimators: [
-          NamedDistanceEstimator(
-            'Steps',
-            StepDistanceEstimator(stepLength: 0.75),
-          ),
-        ],
+        comparisonEstimators: [StepDistanceEstimator(stepLength: 0.75)],
         sampleSink: SampleRepository(db),
         walkDuration: const Duration(seconds: 5),
         now: () => tester.binding.clock.now(),
@@ -116,7 +110,7 @@ void main() {
       expect(find.text('1.5 m'), findsOneWidget);
       // The primary estimator is listed first, above the comparisons.
       expect(
-        tester.getTopLeft(find.text('Live main')).dy,
+        tester.getTopLeft(find.text('Main (Plain GPS)')).dy,
         lessThan(tester.getTopLeft(find.text('Steps')).dy),
       );
       expect(

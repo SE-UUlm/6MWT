@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 
 import '../../core/domain/haversine.dart';
 import '../../core/domain/sensor_sample.dart';
@@ -99,10 +98,7 @@ class EstimatorReplay {
 
   /// Runs synchronously using recorded timestamps, without wall-clock delays.
   ReplayResult run(DistanceEstimator estimator) {
-    final name = estimator is GpsStepDistanceEstimator
-        ? '${estimator.runtimeType} (GPS <= '
-              '${estimator.maxGpsInterval.inMicroseconds / 1e6} s)'
-        : estimator.runtimeType.toString();
+    final name = estimator.name;
     final points = <DistancePoint>[];
     try {
       estimator.configureProfile(

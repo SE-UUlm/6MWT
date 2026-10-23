@@ -65,10 +65,9 @@ class WalkSession {
   WalkSession({
     required this._sources,
     required this._distanceEstimator,
-    this.distanceEstimatorName,
     this._sampleSink,
     this._optionalSources = const [],
-    List<NamedDistanceEstimator> comparisonEstimators = const [],
+    List<DistanceEstimator> comparisonEstimators = const [],
     this.walkDuration = const Duration(minutes: 6),
     DateTime Function()? now,
   }) : _now = now ?? DateTime.now,
@@ -89,10 +88,7 @@ class WalkSession {
   final List<SensorSource> _optionalSources;
 
   final DistanceEstimator _distanceEstimator;
-
-  /// When set, the primary estimator leads the live comparisons under this name.
-  final String? distanceEstimatorName;
-  final List<NamedDistanceEstimator> _comparisonEstimators;
+  final List<DistanceEstimator> _comparisonEstimators;
   final Map<int, String> _comparisonErrors = {};
   final SampleSink? _sampleSink;
 
@@ -117,8 +113,8 @@ class WalkSession {
     if (_state.isRunning) return;
     profileId = id;
     _distanceEstimator.configureProfile(heightCm: heightCm, gender: gender);
-    for (final entry in _comparisonEstimators) {
-      entry.estimator.configureProfile(heightCm: heightCm, gender: gender);
+    for (final estimator in _comparisonEstimators) {
+      estimator.configureProfile(heightCm: heightCm, gender: gender);
     }
   }
 
@@ -349,10 +345,7 @@ class WalkSession {
     _sampleSink?.addSample(sessionId, sample);
     _distanceEstimator.addSample(sample);
     for (var i = 0; i < _comparisonEstimators.length; i++) {
-      _runComparison(
-        i,
-        () => _comparisonEstimators[i].estimator.addSample(sample),
-      );
+      _runComparison(i, () => _comparisonEstimators[i].addSample(sample));
     }
 
     _emit(
@@ -523,47 +516,40 @@ class WalkSession {
   void _resetComparisons() {
     _comparisonErrors.clear();
     for (var i = 0; i < _comparisonEstimators.length; i++) {
-      _runComparison(i, _comparisonEstimators[i].estimator.reset);
+      _runComparison(i, _comparisonEstimators[i].reset);
     }
   }
 
+  /// The primary estimator leads, as on the result screen.
   List<EstimatorComparison> _snapshotComparisons() {
-    final primaryName = distanceEstimatorName;
     return List.unmodifiable([
-      // Primary failures surface through the session itself, not as a comparison.
-      if (primaryName != null)
-        EstimatorComparison(
-          name: primaryName,
-          distance: _distanceEstimator.totalDistance,
-          additionalInfo: _distanceEstimator.additionalInfo,
-          confidence: _distanceEstimator.confidence,
-        ),
+      _snapshotPrimary(),
       for (var i = 0; i < _comparisonEstimators.length; i++)
         _snapshotComparison(i),
     ]);
   }
 
+  // Primary failures surface through the session itself; this only reports.
+  EstimatorComparison _snapshotPrimary() {
+    try {
+      return EstimatorComparison.of(_distanceEstimator, primary: true);
+    } catch (error) {
+      return EstimatorComparison.failed(
+        _distanceEstimator,
+        error,
+        primary: true,
+      );
+    }
+  }
+
   EstimatorComparison _snapshotComparison(int index) {
-    final entry = _comparisonEstimators[index];
+    final estimator = _comparisonEstimators[index];
     EstimatorComparison? result;
     _runComparison(index, () {
-      final distance = entry.estimator.totalDistance;
-      if (!distance.isFinite || distance < 0) {
-        throw StateError('Invalid comparison distance');
-      }
-      result = EstimatorComparison(
-        name: entry.name,
-        distance: distance,
-        additionalInfo: entry.estimator.additionalInfo,
-        confidence: entry.estimator.confidence,
-      );
+      result = EstimatorComparison.of(estimator);
     });
     return result ??
-        EstimatorComparison(
-          name: entry.name,
-          distance: 0,
-          error: _comparisonErrors[index],
-        );
+        EstimatorComparison.failed(estimator, _comparisonErrors[index]!);
   }
 
   // Calculates the remaining time until the walk test deadline based on the

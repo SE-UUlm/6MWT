@@ -5,7 +5,14 @@ import 'distance_estimator.dart';
 
 /// Experimental, causal GPS filter. Rejected fixes never become the anchor.
 class FilteredGpsEstimator extends DistanceEstimator {
-  FilteredGpsEstimator({required this.maxAccuracy, required this.maxSpeed});
+  FilteredGpsEstimator({
+    super.name,
+    required this.maxAccuracy,
+    required this.maxSpeed,
+  });
+
+  @override
+  String get defaultName => 'Filtered GPS';
 
   /// Largest accepted reported GPS accuracy radius, in meters.
   final double maxAccuracy;
@@ -94,7 +101,10 @@ class FilteredGpsEstimator extends DistanceEstimator {
 
 /// Uses the first cumulative-step source; counter resets establish a new baseline.
 class StepDistanceEstimator extends DistanceEstimator {
-  StepDistanceEstimator({required this.stepLength});
+  StepDistanceEstimator({super.name, required this.stepLength});
+
+  @override
+  String get defaultName => 'Steps';
 
   /// Fixed distance per step in meters; no reference-based calibration is used.
   final double stepLength;

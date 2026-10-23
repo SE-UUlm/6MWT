@@ -19,6 +19,7 @@ List<DistanceEstimator> createEstimators() => [
   StepDistanceEstimator(stepLength: 0.75),
   for (final seconds in [5, 10, 15])
     GpsStepDistanceEstimator(
+      name: 'GPS + steps (GPS ≤ $seconds s)',
       stepSourceId: PedometerSource.id,
       maxGpsInterval: Duration(seconds: seconds),
     ),

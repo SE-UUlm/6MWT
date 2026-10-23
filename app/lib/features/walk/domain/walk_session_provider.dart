@@ -70,50 +70,30 @@ Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
 }
 
 /// Creates the primary distance estimator used to calculate the session distance.
-NamedDistanceEstimator createPrimaryDistanceEstimator() =>
-    NamedDistanceEstimator(
-      'Main (GPS + steps)',
-      GpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
-    );
+DistanceEstimator createPrimaryDistanceEstimator() =>
+    GpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
 
 /// Creates the secondary distance estimators used for comparisons during the walk.
-List<NamedDistanceEstimator> createComparisonEstimators() => [
-  NamedDistanceEstimator('Plain GPS', GpsDistanceEstimator()),
-  NamedDistanceEstimator(
-    'Kalman GPS + steps',
-    KalmanGpsStepDistanceEstimator(),
-  ),
-  NamedDistanceEstimator(
-    'Adaptive GPS + steps',
-    AdaptiveGpsStepDistanceEstimator(),
-  ),
-  NamedDistanceEstimator('Calibrated steps', CalibratedStepDistanceEstimator()),
-  NamedDistanceEstimator('Kalman GPS', KalmanGpsDistanceEstimator()),
-  NamedDistanceEstimator(
-    'Filtered GPS',
-    FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
-  ),
-  NamedDistanceEstimator('Steps', StepDistanceEstimator(stepLength: 0.75)),
-];
-
-/// Creates all distance estimators, including the primary estimator first.
-List<NamedDistanceEstimator> createAllDistanceEstimators() => [
-  createPrimaryDistanceEstimator(),
-  ...createComparisonEstimators(),
+List<DistanceEstimator> createComparisonEstimators() => [
+  GpsDistanceEstimator(),
+  KalmanGpsStepDistanceEstimator(),
+  AdaptiveGpsStepDistanceEstimator(),
+  CalibratedStepDistanceEstimator(),
+  KalmanGpsDistanceEstimator(),
+  FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
+  StepDistanceEstimator(stepLength: 0.75),
 ];
 
 // Kept alive for the whole app lifetime, so a running walk test survives
 // navigating between screens.
 @Riverpod(keepAlive: true)
 WalkSession walkSession(Ref ref) {
-  final primaryEstimator = createPrimaryDistanceEstimator();
   final session = WalkSession(
     sources: [GpsSource(locationService: ref.watch(locationServiceProvider))],
     // Phone steps support distance fallback when available; permission denial
     // or unsupported hardware does not prevent a GPS-only walk.
     optionalSources: [PedometerSource()],
-    distanceEstimator: primaryEstimator.estimator,
-    distanceEstimatorName: primaryEstimator.name,
+    distanceEstimator: createPrimaryDistanceEstimator(),
     comparisonEstimators: createComparisonEstimators(),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
@@ -159,38 +139,30 @@ List<EstimatorComparison> computeEstimatorComparisons(
     return const [];
   }
 
-  final estimators = createAllDistanceEstimators();
+  // The primary estimator comes first and reproduces the stored distance.
+  final estimators = [
+    (createPrimaryDistanceEstimator(), true),
+    for (final estimator in createComparisonEstimators()) (estimator, false),
+  ];
 
   final comparisons = <EstimatorComparison>[];
 
-  for (final named in estimators) {
+  for (final (estimator, primary) in estimators) {
     try {
-      named.estimator.configureProfile(
+      estimator.configureProfile(
         heightCm: input.heightCm,
         gender: input.gender,
       );
-      named.estimator.reset();
+      estimator.reset();
 
       for (final sample in samples) {
-        named.estimator.addSample(sample);
+        estimator.addSample(sample);
       }
 
-      final distance = named.estimator.totalDistance;
-      if (!distance.isFinite || distance < 0) {
-        throw StateError('Invalid calculated distance: $distance');
-      }
-
-      comparisons.add(
-        EstimatorComparison(
-          name: named.name,
-          distance: distance,
-          additionalInfo: named.estimator.additionalInfo,
-          confidence: named.estimator.confidence,
-        ),
-      );
+      comparisons.add(EstimatorComparison.of(estimator, primary: primary));
     } catch (e) {
       comparisons.add(
-        EstimatorComparison(name: named.name, distance: 0, error: e.toString()),
+        EstimatorComparison.failed(estimator, e, primary: primary),
       );
     }
   }

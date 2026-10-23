@@ -5,7 +5,23 @@ import 'distance_confidence.dart';
 
 // Turns a stream of positions into a walked distance. Implementations can use
 // different strategies (GPS, step-based, sensor fusion) interchangeably.
+//
+// Implementations override [defaultName] and forward `super.name` from their
+// constructor, so that callers can name individual configurations.
 abstract class DistanceEstimator {
+  DistanceEstimator({this._name});
+
+  final String? _name;
+
+  /// Display name: the name passed to the constructor, else [defaultName].
+  /// Do not override; override [defaultName] instead. Roles such as
+  /// "main estimator" belong to the caller, not the name.
+  String get name => _name ?? defaultName;
+
+  /// Describes the algorithm, e.g. "Plain GPS". Every implementation should
+  /// override it; the class name is only a fallback for test doubles.
+  String get defaultName => runtimeType.toString();
+
   double get totalDistance;
 
   /// Human-readable diagnostics for development tools, read after a calculation.
@@ -25,6 +41,11 @@ abstract class DistanceEstimator {
 }
 
 class GpsDistanceEstimator extends DistanceEstimator {
+  GpsDistanceEstimator({super.name});
+
+  @override
+  String get defaultName => 'Plain GPS';
+
   /// Only rates jitter for confidence; implausible segments still count.
   static const plausibleSpeed = 4.0;
 
