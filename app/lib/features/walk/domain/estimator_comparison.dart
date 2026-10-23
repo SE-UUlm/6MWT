@@ -2,6 +2,7 @@ import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
 
 /// A separately owned estimator instance and its display name.
+/// TODO: probably sensable to move the estimator name to the estimator class itself
 class NamedDistanceEstimator {
   const NamedDistanceEstimator(this.name, this.estimator);
 

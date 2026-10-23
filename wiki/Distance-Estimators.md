@@ -19,7 +19,7 @@ The app and Visualizer share implementations in `app/lib/features/walk/domain/es
 
 `app/lib/features/walk/domain/walk_session_provider.dart` configures a separate primary `GpsStepDistanceEstimator` and named comparison instances. They receive the same initial/live samples, excluding warm-up. Comparison errors disable that comparison for the run.
 
-Only primary distance drives assessment and persistence. Comparison diagnostics appear in the detailed walk and current result, including release builds, but do not persist in history or JSON. No comparison is automatically promoted to primary.
+Only primary distance drives assessment and persistence. Diagnostics appear in the detailed walk and current result, including release builds, but do not persist in history or JSON. Both list the primary estimator first, followed by the comparisons. No comparison is automatically promoted to primary.
 
 ## Configuration and assumptions
 

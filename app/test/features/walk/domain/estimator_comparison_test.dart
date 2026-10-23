@@ -272,6 +272,55 @@ void main() {
     });
   }
 
+  test('a named primary estimator leads the live comparisons', () {
+    fakeAsync((async) {
+      final source = InitialSampleFakeSensorSource([]);
+      final primary = RecordingEstimator(2);
+      final session = WalkSession(
+        sources: [source],
+        distanceEstimator: primary,
+        distanceEstimatorName: 'Main',
+        comparisonEstimators: [
+          NamedDistanceEstimator('steps', RecordingEstimator(3)),
+        ],
+      );
+      session.start();
+      async.flushMicrotasks();
+      expect(session.state.comparisons.map((c) => c.name), ['Main', 'steps']);
+      source.controller.add(steps(100));
+      async.flushMicrotasks();
+      final main = session.state.comparisons.first;
+      expect(main.distance, session.state.distance);
+      expect(main.distance, 2);
+      expect(main.additionalInfo, {'Samples': '1'});
+      expect(session.state.comparisons.last.distance, 3);
+      // Snapshots stay frozen while the primary estimator keeps running.
+      source.controller.add(steps(101));
+      async.flushMicrotasks();
+      expect(main.additionalInfo, {'Samples': '1'});
+      expect(session.state.comparisons.first.additionalInfo, {'Samples': '2'});
+      session.dispose();
+      async.flushMicrotasks();
+    });
+  });
+
+  test('an unnamed primary estimator stays out of the comparisons', () {
+    fakeAsync((async) {
+      final session = WalkSession(
+        sources: [InitialSampleFakeSensorSource([])],
+        distanceEstimator: RecordingEstimator(2),
+        comparisonEstimators: [
+          NamedDistanceEstimator('steps', RecordingEstimator(3)),
+        ],
+      );
+      session.start();
+      async.flushMicrotasks();
+      expect(session.state.comparisons.map((c) => c.name), ['steps']);
+      session.dispose();
+      async.flushMicrotasks();
+    });
+  });
+
   test('comparison-only changes do not trigger persisted saves', () {
     fakeAsync((async) {
       final source = InitialSampleFakeSensorSource([]);

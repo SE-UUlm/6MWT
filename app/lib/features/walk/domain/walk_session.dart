@@ -65,6 +65,7 @@ class WalkSession {
   WalkSession({
     required this._sources,
     required this._distanceEstimator,
+    this.distanceEstimatorName,
     this._sampleSink,
     this._optionalSources = const [],
     List<NamedDistanceEstimator> comparisonEstimators = const [],
@@ -88,6 +89,9 @@ class WalkSession {
   final List<SensorSource> _optionalSources;
 
   final DistanceEstimator _distanceEstimator;
+
+  /// When set, the primary estimator leads the live comparisons under this name.
+  final String? distanceEstimatorName;
   final List<NamedDistanceEstimator> _comparisonEstimators;
   final Map<int, String> _comparisonErrors = {};
   final SampleSink? _sampleSink;
@@ -524,7 +528,16 @@ class WalkSession {
   }
 
   List<EstimatorComparison> _snapshotComparisons() {
+    final primaryName = distanceEstimatorName;
     return List.unmodifiable([
+      // Primary failures surface through the session itself, not as a comparison.
+      if (primaryName != null)
+        EstimatorComparison(
+          name: primaryName,
+          distance: _distanceEstimator.totalDistance,
+          additionalInfo: _distanceEstimator.additionalInfo,
+          confidence: _distanceEstimator.confidence,
+        ),
       for (var i = 0; i < _comparisonEstimators.length; i++)
         _snapshotComparison(i),
     ]);

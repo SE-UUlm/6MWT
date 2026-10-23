@@ -113,6 +113,7 @@ WalkSession walkSession(Ref ref) {
     // or unsupported hardware does not prevent a GPS-only walk.
     optionalSources: [PedometerSource()],
     distanceEstimator: primaryEstimator.estimator,
+    distanceEstimatorName: primaryEstimator.name,
     comparisonEstimators: createComparisonEstimators(),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
