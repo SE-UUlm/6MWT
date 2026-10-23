@@ -253,7 +253,11 @@ class ResultScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final comparisonsAsync = ref.watch(
-      sessionEstimatorComparisonsProvider(session.id),
+      sessionEstimatorComparisonsProvider(
+        session.id,
+        heightCm: profile.height,
+        gender: profile.gender.name,
+      ),
     );
 
     final l10n = AppLocalizations.of(context)!;

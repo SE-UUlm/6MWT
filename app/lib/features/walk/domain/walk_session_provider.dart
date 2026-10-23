@@ -134,9 +134,23 @@ WalkSession walkSession(Ref ref) {
 Stream<WalkSessionState> walkSessionState(Ref ref) =>
     ref.watch(walkSessionProvider).states;
 
+/// Samples and profile values passed to the background calculation.
+class EstimatorComparisonInput {
+  const EstimatorComparisonInput({
+    required this.samples,
+    this.heightCm,
+    this.gender,
+  });
+
+  final List<SensorSample> samples;
+  final num? heightCm;
+  final String? gender;
+}
+
 List<EstimatorComparison> computeEstimatorComparisons(
-  List<SensorSample> samples,
+  EstimatorComparisonInput input,
 ) {
+  final samples = input.samples;
   if (samples.isEmpty) {
     return const [];
   }
@@ -147,6 +161,10 @@ List<EstimatorComparison> computeEstimatorComparisons(
 
   for (final named in estimators) {
     try {
+      named.estimator.configureProfile(
+        heightCm: input.heightCm,
+        gender: input.gender,
+      );
       named.estimator.reset();
 
       for (final sample in samples) {
@@ -178,8 +196,10 @@ List<EstimatorComparison> computeEstimatorComparisons(
 @riverpod
 Future<List<EstimatorComparison>> sessionEstimatorComparisons(
   Ref ref,
-  String sessionId,
-) async {
+  String sessionId, {
+  num? heightCm,
+  String? gender,
+}) async {
   try {
     final sampleRepository = ref.watch(sampleRepositoryProvider);
     final samples = await sampleRepository.loadSessionSamples(sessionId);
@@ -190,7 +210,11 @@ Future<List<EstimatorComparison>> sessionEstimatorComparisons(
 
     final result = await compute(
       computeEstimatorComparisons,
-      samples,
+      EstimatorComparisonInput(
+        samples: samples,
+        heightCm: heightCm,
+        gender: gender,
+      ),
     ); // Run in background
 
     stopwatch.stop();

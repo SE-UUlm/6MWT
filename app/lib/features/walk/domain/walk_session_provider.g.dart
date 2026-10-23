@@ -48,7 +48,7 @@ final class WalkSessionProvider
   }
 }
 
-String _$walkSessionHash() => r'efe89fc38c8b329fd26503b5f544a1b19c358096';
+String _$walkSessionHash() => r'c56fe2ed2348527c87645407f1fe1823f45b0610';
 
 @ProviderFor(walkSessionState)
 final walkSessionStateProvider = WalkSessionStateProvider._();
@@ -105,7 +105,7 @@ final class SessionEstimatorComparisonsProvider
         $FutureProvider<List<EstimatorComparison>> {
   SessionEstimatorComparisonsProvider._({
     required SessionEstimatorComparisonsFamily super.from,
-    required String super.argument,
+    required (String, {num? heightCm, String? gender}) super.argument,
   }) : super(
          retry: null,
          name: r'sessionEstimatorComparisonsProvider',
@@ -121,7 +121,7 @@ final class SessionEstimatorComparisonsProvider
   String toString() {
     return r'sessionEstimatorComparisonsProvider'
         ''
-        '($argument)';
+        '$argument';
   }
 
   @$internal
@@ -132,8 +132,13 @@ final class SessionEstimatorComparisonsProvider
 
   @override
   FutureOr<List<EstimatorComparison>> create(Ref ref) {
-    final argument = this.argument as String;
-    return sessionEstimatorComparisons(ref, argument);
+    final argument = this.argument as (String, {num? heightCm, String? gender});
+    return sessionEstimatorComparisons(
+      ref,
+      argument.$1,
+      heightCm: argument.heightCm,
+      gender: argument.gender,
+    );
   }
 
   @override
@@ -149,11 +154,14 @@ final class SessionEstimatorComparisonsProvider
 }
 
 String _$sessionEstimatorComparisonsHash() =>
-    r'43a0d2224ff6a721ce25250bfa18bf5ab8cdf196';
+    r'6130d2b773493fa8311f21f210b37e47c0b2df86';
 
 final class SessionEstimatorComparisonsFamily extends $Family
     with
-        $FunctionalFamilyOverride<FutureOr<List<EstimatorComparison>>, String> {
+        $FunctionalFamilyOverride<
+          FutureOr<List<EstimatorComparison>>,
+          (String, {num? heightCm, String? gender})
+        > {
   SessionEstimatorComparisonsFamily._()
     : super(
         retry: null,
@@ -163,8 +171,14 @@ final class SessionEstimatorComparisonsFamily extends $Family
         isAutoDispose: true,
       );
 
-  SessionEstimatorComparisonsProvider call(String sessionId) =>
-      SessionEstimatorComparisonsProvider._(argument: sessionId, from: this);
+  SessionEstimatorComparisonsProvider call(
+    String sessionId, {
+    num? heightCm,
+    String? gender,
+  }) => SessionEstimatorComparisonsProvider._(
+    argument: (sessionId, heightCm: heightCm, gender: gender),
+    from: this,
+  );
 
   @override
   String toString() => r'sessionEstimatorComparisonsProvider';

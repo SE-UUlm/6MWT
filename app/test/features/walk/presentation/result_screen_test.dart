@@ -94,6 +94,8 @@ void main() {
         overrides: [
           sessionEstimatorComparisonsProvider(
             'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
           ).overrideWith(
             (ref) => Completer<List<EstimatorComparison>>().future,
           ),
@@ -117,6 +119,8 @@ void main() {
         overrides: [
           sessionEstimatorComparisonsProvider(
             'state-test-session',
+            heightCm: testSession.profile.height,
+            gender: testSession.profile.gender.name,
           ).overrideWith((ref) {
             throw StateError('Simulated calculation error');
           }),
