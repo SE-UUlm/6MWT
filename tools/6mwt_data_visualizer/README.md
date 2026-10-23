@@ -9,10 +9,6 @@ Available for Linux, macOS and Windows. Open app JSON exports or folders of reco
 - **Estimator Lab:** replay the app's actual algorithms, compare distance curves and inspect diagnostics. Algorithm selection and parameter variants are configured in code.
 - **Multiple devices:** compare recordings from the same walk without combining their sensor streams.
 
-The GPS/step estimator uses the recording's profile for its initial step length
-before sensor calibration. See [Distance Estimators](../../wiki/Distance-Estimators.md#initial-step-length-from-profile-data)
-for the formula and compatibility with older exports.
-
 The [example data](../../data/README.md) is a useful starting point. Release archives contain the application but no recordings; satellite imagery requires internet access. Keep the entire extracted application bundle together.
 
 ![Full Recording view of the Uni 1 example recording](../../wiki/assets/visualizer-recording.png)
