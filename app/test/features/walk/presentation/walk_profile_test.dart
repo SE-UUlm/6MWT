@@ -11,6 +11,8 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_di
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
 
@@ -48,7 +50,17 @@ void main() {
               PendingProfileRepository(db, pending.future),
             ),
           ],
-          child: const MaterialApp(home: WalkScreen(profileId: 3)),
+          child: MaterialApp(
+            locale: const Locale('en'),
+            supportedLocales: const [Locale('de'), Locale('en')],
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            home: const WalkScreen(profileId: 3),
+          ),
         ),
       );
       final startButton = find.widgetWithText(ElevatedButton, 'Start Test');

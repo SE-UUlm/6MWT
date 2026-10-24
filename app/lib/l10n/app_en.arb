@@ -18,7 +18,7 @@
   "home_instruction": "About the 6-minute test",
   "home_instructionsb": "Detailed instructions",
 
-  "startTest": "Start Test",
+  "startTest": "Start test",
   "settings": "Settings",
   "continueButton": "Continue",
   "instructions": "Instructions",
@@ -157,7 +157,7 @@
   "resultPerformance": "Performance",
   "resultExpectedDistance": "of expected distance",
   "resultNoAssessment": "No assessment possible",
-  "resultEarlyStopExplanation": "An assessment is not possible because the test was stopped early.",
+  "resultEarlyStopExplanation": "No assessment is possible because the test was stopped early.",
   "resultPerformanceExplanation": "Your performance is based on your age, height and walking distance.",
   "resultTestDetails": "Test Details",
   "resultDistanceWalked": "Distance walked",
@@ -208,15 +208,6 @@
       }
     }
   },
-  "resultDeleteFailed": "Error deleting test: {error}",
-  "@resultDeleteFailed": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  
   "resultDeleteFailed": "Error deleting test: {error}",
   "@resultDeleteFailed": {
     "placeholders": {

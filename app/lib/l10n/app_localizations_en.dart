@@ -55,7 +55,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_instructionsb => 'Detailed instructions';
 
   @override
-  String get startTest => 'Start Test';
+  String get startTest => 'Start test';
 
   @override
   String get settings => 'Settings';
@@ -374,7 +374,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resultEarlyStopExplanation =>
-      'An assessment is not possible because the test was stopped early.';
+      'No assessment is possible because the test was stopped early.';
 
   @override
   String get resultPerformanceExplanation =>

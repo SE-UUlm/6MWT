@@ -7,17 +7,21 @@ import 'router.dart';
 import '../features/walk/presentation/walk_session_lifecycle.dart';
 
 class SixMinuteWalkApp extends StatelessWidget {
-  const SixMinuteWalkApp({super.key});
+  const SixMinuteWalkApp({super.key, this.locale});
+
+  final Locale? locale;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: kDebugMode ? '6MWT Debug' : '6MWT',
+      locale: locale,
 
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
 
       supportedLocales: const [Locale('de'), Locale('en')],
 
+      // Rest deiner bisherigen Konfiguration bleibt unverändert
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
