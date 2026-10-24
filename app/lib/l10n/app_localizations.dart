@@ -913,6 +913,42 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Fehler beim Löschen des Tests: {error}'**
   String resultDeleteFailed(String error);
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Verlauf'**
+  String get historyTitle;
+
+  /// No description provided for @historyNoEntries.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Einträge vorhanden'**
+  String get historyNoEntries;
+
+  /// No description provided for @historyFit.
+  ///
+  /// In de, this message translates to:
+  /// **'fit'**
+  String get historyFit;
+
+  /// No description provided for @historyToday.
+  ///
+  /// In de, this message translates to:
+  /// **'Heute'**
+  String get historyToday;
+
+  /// No description provided for @historyYesterday.
+  ///
+  /// In de, this message translates to:
+  /// **'Gestern'**
+  String get historyYesterday;
+
+  /// No description provided for @historyExportFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Export fehlgeschlagen: {error}'**
+  String historyExportFailed(String error);
 }
 
 class _AppLocalizationsDelegate

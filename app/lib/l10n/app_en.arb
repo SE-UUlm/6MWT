@@ -215,5 +215,28 @@
         "type": "String"
       }
     }
+  },
+  
+  "resultDeleteFailed": "Error deleting test: {error}",
+  "@resultDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "historyTitle": "History",
+  "historyNoEntries": "No entries available",
+  "historyFit": "fit",
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyExportFailed": "Export failed: {error}",
+  "@historyExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

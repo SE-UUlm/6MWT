@@ -461,4 +461,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String resultDeleteFailed(String error) {
     return 'Fehler beim Löschen des Tests: $error';
   }
+
+  @override
+  String get historyTitle => 'Verlauf';
+
+  @override
+  String get historyNoEntries => 'Keine Einträge vorhanden';
+
+  @override
+  String get historyFit => 'fit';
+
+  @override
+  String get historyToday => 'Heute';
+
+  @override
+  String get historyYesterday => 'Gestern';
+
+  @override
+  String historyExportFailed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
 }
