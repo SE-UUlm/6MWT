@@ -6,12 +6,14 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 class HistoryScreen extends ConsumerWidget {
   const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final walkSessions = ref.watch(walkSessionsWithProfilesProvider);
 
     return Scaffold(
@@ -33,7 +35,7 @@ class HistoryScreen extends ConsumerWidget {
                 color: Colors.black87,
               ),
             ),
-            const Text('History'),
+            Text(l10n.historyTitle),
           ],
         ),
         actions: [
@@ -50,7 +52,7 @@ class HistoryScreen extends ConsumerWidget {
       body: walkSessions.when(
         data: (sessions) {
           if (sessions.isEmpty) {
-            return const Center(child: Text('Keine Einträge vorhanden'));
+            return Center(child: Text(l10n.historyNoEntries));
           }
 
           return ListView.builder(
@@ -80,7 +82,7 @@ class HistoryScreen extends ConsumerWidget {
                     Expanded(child: Text(profile.name.toString())),
                     if (assessment != null)
                       Text(
-                        "${assessment.percentOfExpected.toStringAsFixed(0)} % fit",
+                        "${assessment.percentOfExpected.toStringAsFixed(0)} % ${l10n.historyFit}",
                       ),
                   ],
                 ),
@@ -127,10 +129,12 @@ extension RelativeDateTimeExtension on DateTime {
     ); // z.B. 14:50 (de) oder 2:50 PM (en)
     final timeString = timeFormat.format(local);
 
+    final l10n = AppLocalizations.of(context)!;
+
     if (dateToCompare == today) {
-      return 'Heute, $timeString';
+      return '${l10n.historyToday}, $timeString';
     } else if (dateToCompare == yesterday) {
-      return 'Gestern, $timeString';
+      return '${l10n.historyYesterday}, $timeString';
     } else if (dateToCompare.year == now.year) {
       // z. B. "12. Mai, 14:50"
       return DateFormat('d. MMM, ', locale).format(local) + timeString;

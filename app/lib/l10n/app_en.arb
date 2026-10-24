@@ -3,9 +3,21 @@
 
   "appTitle": "6-Minute Walk Test",
   "appSubTitle": "Standardized assessment of functional exercise capacity",
-  "appProfile": "Patient profile setup",
+  "appProfile": "Set up patient profile",
   "appCountdown": "6-minute countdown",
-  "appResult": "Results and values",
+  "appResult": "Results and measurements",
+
+  "home_walk": "Walk",
+  "home_walksb": "Walk as far as possible in 6 minutes",
+  "home_performance": "Performance",
+  "home_performancesb": "Measure your endurance objectively",
+  "home_progress": "Progress",
+  "home_progresssb": "Compare results",
+  "home_result": "My Results",
+  "home_resultsb": "View previous tests",
+  "home_instruction": "About the 6-minute test",
+  "home_instructionsb": "Detailed instructions",
+
   "startTest": "Start test",
   "settings": "Settings",
   "continueButton": "Continue",
@@ -15,34 +27,113 @@
   "instructions_1_text": "This app guides you step by step through the 6-Minute Walk Test (6MWT). The test helps assess your physical performance based on the distance covered in six minutes.",
 
   "instructions_2_welc": "Test procedure",
-  "bulletPoint_1": "Enter personal data",
+  "bulletPoint_1": "Enter personal information",
   "bulletPoint_2": "Start the test",
   "bulletPoint_3": "Walk for 6 minutes",
   "bulletPoint_4": "Results",
-  "instructions_2_text": "The test only takes six minutes. During this time, the app measures the distance covered and the remaining time.",
+  "instructions_2_text": "The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.",
 
-  "instructions_3_welc": "Personal data",
-  "instructions_3_text": "For the most accurate analysis possible, we need some information such as age, height, weight, and sex. This data helps us better interpret your results.",
+  "instructions_3_welc": "Personal information",
+  "instructions_3_text": "For the most accurate analysis possible, we need some information such as your age, height, weight and gender. This data helps us interpret your results.",
 
   "instructions_4_welc": "During the test",
-  "instructions_4_text": "Walk for six minutes at your normal, brisk pace. The app displays the remaining time and the distance you have already covered.",
-  "instructions_4_text_2": "Stop the test if you experience chest pain, dizziness, or severe shortness of breath.",
+  "instructions_4_text": "Walk at your normal, brisk pace for six minutes. The app displays the remaining time and the distance you have already covered.",
+  "instructions_4_text_2": "Stop the test if you experience chest pain, dizziness or severe shortness of breath.",
 
   "instructions_5_welc": "Stopping the test",
-  "instructions_5_text": "If necessary, you can stop the test at any time and then decide how you would like to proceed:",
-  "instructions_5_c1": "Interim results will be saved",
-  "instructions_5_c2": "The results will be displayed",
-  "instructions_5_c3": "The informational value may be limited",
-  "instructions_5_f1": "All previous data will be discarded",
-  "instructions_5_f2": "You can start the test again",
+  "instructions_5_text": "You can stop the test at any time if needed and then decide how you would like to proceed:",
+  "instructions_5_c1": "Intermediate results are saved",
+  "instructions_5_c2": "The results are displayed",
+  "instructions_5_c3": "The results may be less conclusive",
+  "instructions_5_f1": "All previous data is discarded",
+  "instructions_5_f2": "You can restart the test",
 
-  "instructions_6_welc": "Overview of results",
-  "instructions_6_text": "Your walking distance is classified based on reference values, and you get an overview of your performance and the values achieved.",
+  "instructions_6_welc": "Results overview",
+  "instructions_6_text": "Your walking distance is assessed using reference values. You receive an overview of your performance and measured results.",
 
-  "instructions_7_welc": "You are ready!",
-  "instructions_7_text": "Now that you know how it works, you can start and complete a test at any time!",
+  "instructions_7_welc": "You're ready!",
+  "instructions_7_text": "Now that you know how it works, you can start and complete a test whenever you're ready!",
+
+  "profile_title": "Pre-calibration",
+  "profile_text": "To obtain the most accurate test results, please enter all information correctly.",
+  "profile_sub1": "Patient information",
+  "profile_sub2": "Anthropometry",
+  "profile_info": "Please enter your age, gender, height and weight.",
+  "profileAgeOutOfRange": "Please enter an age between 1 and 120 years.",
+  "profileHeightOutOfRange": "Please enter a height between 50 and 250 cm.",
+  "profileWeightOutOfRange": "Please enter a weight between 1 and 400 kg.",
+  "field1": "Name",
+  "field2": "Age in years",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderOther": "Other/Prefer not to say",
+  "field4": "Height",
+  "field5": "Weight",
+  "profile_footer": "Your privacy is important to us. This information will not be used for any other purpose.",
+
+  "video_title": "Test preparation",
+  "video_text": "Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.",
+
+  "walk_info": "Please go as far as possible in 6 minutes.",
+  "walk_idstance": "Distance",
+  "walk_status": "Status",
+  "walk_assessment": "Assessment",
+  "walk_start": "Not started",
+  "walk_position": "Current Position",
+  "walk_duration": "Duration",
+  "walk_profile": "Profile",
+  "walk_test_start": "Start Test",
+  "walk_reset": "Reset",
+
+  "walkPleaseGoFar": "Please go as far as possible in 6 minutes.",
+  "walkNotStarted": "Not started",
+  "walkWaitingForGps": "Waiting for GPS...",
+  "walkWalking": "Walking",
+  "walkFinished": "Finished",
+  "walkStopped": "Stopped",
+  "walkNotStartedYet": "Not started yet",
+  "walkLoading": "Loading...",
+  "walkSlideToStop": "Slide to stop",
+  "walkResultCouldNotBeLoaded": "Result could not be loaded.",
+  "walkNoPositionYet": "No position yet",
+  "walkAccuracy": "Accuracy: {accuracy} m",
+  "@walkAccuracy": {
+    "placeholders": {
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "walkOfSixMinutes": "of 6:00 min",
+  "walkYears": "{age} years",
+  "@walkYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "walkHeightCm": "{height} cm",
+  "@walkHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "walkOfExpectedDistance": "of expected distance",
+  "walkStartTestButton": "Start Test",
+  "walkDistanceUnit": "{distance} m",
+  "@walkDistanceUnit": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+
   "aboutTitle": "About the app",
-  "aboutProject": "This 6mwt app was developed as part of a Software Engineering project during the summer semester of 2026 at Ulm University.",
+  "aboutProject": "This 6MWT app was developed as part of a software engineering project during the summer semester of 2026 at Ulm University.",
   "aboutVersion": "App version",
   "aboutBuild": "Build number",
   "aboutCommit": "Commit hash",
@@ -52,11 +143,91 @@
   "aboutProjectLicense": "Project license",
   "aboutLicenses": "Open-source licenses",
   "aboutLinkError": "The link could not be opened.",
+
   "deleteSession": "Delete walk test",
   "deleteSessionDialogTitle": "Delete walk test?",
-  "deleteSessionDialogMessage": "Are you sure you want to delete this recorded walk test? This cannot be undone.",
+  "deleteSessionDialogMessage": "Are you sure you want to delete this recorded walk test? This action cannot be undone.",
   "cancel": "Cancel",
   "delete": "Delete",
   "sessionDeleted": "Walk test deleted",
-  "cannotDeleteActiveSession": "An active walk test cannot be deleted."
+  "cannotDeleteActiveSession": "An active walk test cannot be deleted.",
+
+  "resultTitle": "Test Results",
+  "resultIntro": "Here are your results from the 6-minute walk test.",
+  "resultPerformance": "Performance",
+  "resultExpectedDistance": "of expected distance",
+  "resultNoAssessment": "No assessment possible",
+  "resultEarlyStopExplanation": "No assessment is possible because the test was stopped early.",
+  "resultPerformanceExplanation": "Your performance is based on your age, height and walking distance.",
+  "resultTestDetails": "Test Details",
+  "resultDistanceWalked": "Distance walked",
+  "resultDistanceConfidence": "Distance confidence",
+  "resultTestDuration": "Test duration",
+  "resultTestStatus": "Test status",
+  "resultStoppedEarly": "Stopped early",
+  "resultCompleted": "Completed",
+  "resultYourProfile": "Your Profile",
+  "resultName": "Name",
+  "resultAge": "Age",
+  "resultAgeYears": "{age} years",
+  "@resultAgeYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "resultHeight": "Height",
+  "resultHeightCm": "{height} cm",
+  "@resultHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "resultWeight": "Weight",
+  "resultWeightKg": "{weight} kg",
+  "@resultWeightKg": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "resultGender": "Gender",
+  "resultDistanceComparison": "Distance comparison",
+  "resultCalculatingDistanceComparisons": "Calculating distance comparisons...",
+  "resultDistanceComparisonFailed": "Could not calculate distance comparisons.",
+  "resultDisclaimer": "The result provides guidance based on your recorded walking distance and personal data.",
+  "resultExportFailed": "Export failed: {error}",
+  "@resultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "resultDeleteFailed": "Error deleting test: {error}",
+  "@resultDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "historyTitle": "History",
+  "historyNoEntries": "No entries available",
+  "historyFit": "fit",
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyExportFailed": "Export failed: {error}",
+  "@historyExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

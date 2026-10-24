@@ -284,11 +284,10 @@ class ResultScreen extends ConsumerWidget {
         : DistanceConfidence(storedConfidence);
 
     double? percentage;
-    String category = 'No assessment';
+    String category = l10n.resultNoAssessment;
     // A session still marked as running after the app restarted was
     // interrupted as well, e.g. by a crash.
-    var explanation =
-        'No assessment is possible because the test was stopped early.';
+    var explanation = l10n.resultEarlyStopExplanation;
 
     if (session.phase == WalkPhase.finished) {
       final assessment = assessFitness(
@@ -302,9 +301,7 @@ class ResultScreen extends ConsumerWidget {
 
       percentage = assessment.percentOfExpected;
       category = assessment.category.name;
-      explanation =
-          'Your performance is based on your '
-          'age, height and walking distance.';
+      explanation = l10n.resultPerformanceExplanation;
     }
 
     return Scaffold(
@@ -349,10 +346,10 @@ class ResultScreen extends ConsumerWidget {
 
                   const SizedBox(width: 18),
 
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Test Results',
-                      style: TextStyle(
+                      l10n.resultTitle,
+                      style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
@@ -373,10 +370,9 @@ class ResultScreen extends ConsumerWidget {
 
               const SizedBox(height: 18),
 
-              const Text(
-                'Here are your results from the\n'
-                '6-minute walk test.',
-                style: TextStyle(
+              Text(
+                l10n.resultIntro,
+                style: const TextStyle(
                   fontSize: 15,
                   height: 1.3,
                   color: Colors.black87,
@@ -394,9 +390,9 @@ class ResultScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'Performance',
-                      style: TextStyle(
+                    Text(
+                      l10n.resultPerformance,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
@@ -414,10 +410,13 @@ class ResultScreen extends ConsumerWidget {
                       ),
                     ),
 
-                    const Text(
-                      'of expected distance',
+                    Text(
+                      l10n.resultExpectedDistance,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15, color: Colors.black54),
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black54,
+                      ),
                     ),
 
                     const SizedBox(height: 22),
@@ -468,33 +467,33 @@ class ResultScreen extends ConsumerWidget {
               const SizedBox(height: 14),
 
               _buildDetailsCard(
-                title: 'Test Details',
+                title: l10n.resultTestDetails,
                 children: [
                   _buildDetailRow(
                     icon: Icons.swap_horiz_rounded,
-                    label: 'Distance walked',
+                    label: l10n.resultDistanceWalked,
                     value: '${session.distance.toStringAsFixed(1)} m',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.verified_outlined,
-                    label: 'Distance confidence',
+                    label: l10n.resultDistanceConfidence,
                     value: formatConfidence(confidence),
                     valueColor: confidenceColor(confidence),
                   ),
 
                   _buildDetailRow(
                     icon: Icons.access_time_rounded,
-                    label: 'Test duration',
+                    label: l10n.resultTestDuration,
                     value: durationText,
                   ),
 
                   _buildDetailRow(
                     icon: Icons.flag_rounded,
-                    label: 'Test status',
+                    label: l10n.resultTestStatus,
                     value: session.phase == WalkPhase.aborted
-                        ? 'Stopped early'
-                        : 'Completed',
+                        ? l10n.resultStoppedEarly
+                        : l10n.resultCompleted,
                     showDivider: false,
                   ),
                 ],
@@ -502,35 +501,35 @@ class ResultScreen extends ConsumerWidget {
 
               const SizedBox(height: 14),
               _buildDetailsCard(
-                title: 'Your Profile',
+                title: l10n.resultYourProfile,
                 children: [
                   _buildDetailRow(
                     icon: Icons.person_outline_rounded,
-                    label: 'Name',
+                    label: l10n.resultName,
                     value: profile.name ?? '—',
                   ),
 
                   _buildDetailRow(
                     icon: Icons.cake_outlined,
-                    label: 'Age',
-                    value: '${profile.age} years',
+                    label: l10n.resultAge,
+                    value: l10n.resultAgeYears(profile.age),
                   ),
 
                   _buildDetailRow(
                     icon: Icons.height_rounded,
-                    label: 'Height',
-                    value: '${profile.height} cm',
+                    label: l10n.resultHeight,
+                    value: l10n.resultHeightCm(profile.height),
                   ),
 
                   _buildDetailRow(
                     icon: Icons.monitor_weight_outlined,
-                    label: 'Weight',
-                    value: '$weightText kg',
+                    label: l10n.resultWeight,
+                    value: l10n.resultWeightKg(weightText),
                   ),
 
                   _buildDetailRow(
                     icon: Icons.person_outline_rounded,
-                    label: 'Gender',
+                    label: l10n.resultGender,
                     value: genderLabel,
                     showDivider: false,
                   ),
@@ -555,21 +554,21 @@ class ResultScreen extends ConsumerWidget {
                       border: Border.all(color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Distance comparison',
-                          style: TextStyle(
+                          l10n.resultDistanceComparison,
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                               height: 20,
                               child: CircularProgressIndicator(
@@ -577,10 +576,10 @@ class ResultScreen extends ConsumerWidget {
                                 color: primaryBlue,
                               ),
                             ),
-                            SizedBox(width: 14),
+                            const SizedBox(width: 14),
                             Text(
-                              'Calculating distance comparisons...',
-                              style: TextStyle(
+                              l10n.resultCalculatingDistanceComparisons,
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
                               ),
@@ -611,9 +610,9 @@ class ResultScreen extends ConsumerWidget {
                               size: 22,
                             ),
                             const SizedBox(width: 8),
-                            const Text(
-                              'Distance comparison',
-                              style: TextStyle(
+                            Text(
+                              l10n.resultDistanceComparison,
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -622,7 +621,7 @@ class ResultScreen extends ConsumerWidget {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Could not calculate distance comparisons.',
+                          l10n.resultDistanceComparisonFailed,
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.red.shade900,
@@ -634,11 +633,10 @@ class ResultScreen extends ConsumerWidget {
                 ),
               ),
 
-              const Text(
-                'The result provides an orientation based on '
-                'your recorded walking distance and personal data.',
+              Text(
+                l10n.resultDisclaimer,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   height: 1.35,
                   color: Colors.black54,

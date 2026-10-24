@@ -16,6 +16,15 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standardisierte Beurteilung der funktionellen Belastbarkeit';
 
   @override
+  String get appProfile => 'Patientenprofil einrichten';
+
+  @override
+  String get appCountdown => '6-Minuten-Countdown';
+
+  @override
+  String get appResult => 'Ergebnisse und Messwerte';
+
+  @override
   String get home_walk => 'Gehen';
 
   @override
@@ -40,7 +49,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get home_resultsb => 'Frühere Tests ansehen';
 
   @override
-  String get home_instruction => 'Über den 6 Minuten Test';
+  String get home_instruction => 'Über den 6-Minuten-Test';
 
   @override
   String get home_instructionsb => 'Ausführliche Anleitung';
@@ -74,7 +83,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bulletPoint_2 => 'Test starten';
 
   @override
-  String get bulletPoint_3 => 'Gehen Sie 6 Minuten lang';
+  String get bulletPoint_3 => '6 Minuten lang gehen';
 
   @override
   String get bulletPoint_4 => 'Ergebnisse';
@@ -115,7 +124,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get instructions_5_c2 => 'Die Ergebnisse werden angezeigt';
 
   @override
-  String get instructions_5_c3 => 'Der Informationswert mag begrenzt sein';
+  String get instructions_5_c3 => 'Der Aussagewert kann begrenzt sein';
 
   @override
   String get instructions_5_f1 => 'Alle bisherigen Daten werden verworfen';
@@ -128,7 +137,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get instructions_6_text =>
-      'Your walking distance is classified based on reference values and you get an overview of your performance and values reached.';
+      'Ihre Gehstrecke wird anhand von Referenzwerten eingeordnet. Sie erhalten eine Übersicht über Ihre Leistung und die erreichten Messwerte.';
 
   @override
   String get instructions_7_welc => 'Sie sind bereit!';
@@ -142,7 +151,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get profile_text =>
-      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein';
+      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein.';
 
   @override
   String get profile_sub1 => 'Patienteninformationen';
@@ -182,7 +191,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get genderOther => 'Divers/Keine Angabe';
 
   @override
-  String get field4 => 'Höhe';
+  String get field4 => 'Körpergröße';
 
   @override
   String get field5 => 'Gewicht';
@@ -200,7 +209,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walk_info =>
-      'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.';
+      'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.';
 
   @override
   String get walk_idstance => 'Distanz';
@@ -224,17 +233,81 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_profile => 'Profil';
 
   @override
-  String get walk_test_start => 'Starte Test';
+  String get walk_test_start => 'Test starten';
 
   @override
   String get walk_reset => 'Zurücksetzen';
+
+  @override
+  String get walkPleaseGoFar =>
+      'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.';
+
+  @override
+  String get walkNotStarted => 'Noch nicht gestartet';
+
+  @override
+  String get walkWaitingForGps => 'Warte auf GPS …';
+
+  @override
+  String get walkWalking => 'Gehen';
+
+  @override
+  String get walkFinished => 'Abgeschlossen';
+
+  @override
+  String get walkStopped => 'Abgebrochen';
+
+  @override
+  String get walkNotStartedYet => 'Noch nicht gestartet';
+
+  @override
+  String get walkLoading => 'Wird geladen …';
+
+  @override
+  String get walkSlideToStop => 'Zum Beenden schieben';
+
+  @override
+  String get walkResultCouldNotBeLoaded =>
+      'Das Ergebnis konnte nicht geladen werden.';
+
+  @override
+  String get walkNoPositionYet => 'Noch keine Position verfügbar';
+
+  @override
+  String walkAccuracy(String accuracy) {
+    return 'Genauigkeit: $accuracy m';
+  }
+
+  @override
+  String get walkOfSixMinutes => 'von 6:00 min';
+
+  @override
+  String walkYears(int age) {
+    return '$age Jahre';
+  }
+
+  @override
+  String walkHeightCm(int height) {
+    return '$height cm';
+  }
+
+  @override
+  String get walkOfExpectedDistance => 'der erwarteten Gehstrecke';
+
+  @override
+  String get walkStartTestButton => 'Test starten';
+
+  @override
+  String walkDistanceUnit(String distance) {
+    return '$distance m';
+  }
 
   @override
   String get aboutTitle => 'Über die App';
 
   @override
   String get aboutProject =>
-      'Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.';
+      'Diese 6MWT-App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.';
 
   @override
   String get aboutVersion => 'App-Version';
@@ -285,4 +358,127 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get cannotDeleteActiveSession =>
       'Ein aktiver Gehtest kann nicht gelöscht werden.';
+
+  @override
+  String get resultTitle => 'Testergebnisse';
+
+  @override
+  String get resultIntro =>
+      'Hier sind Ihre Ergebnisse aus dem 6-Minuten-Gehtest.';
+
+  @override
+  String get resultPerformance => 'Leistung';
+
+  @override
+  String get resultExpectedDistance => 'der erwarteten Gehstrecke';
+
+  @override
+  String get resultNoAssessment => 'Keine Bewertung möglich';
+
+  @override
+  String get resultEarlyStopExplanation =>
+      'Eine Bewertung ist nicht möglich, da der Test vorzeitig abgebrochen wurde.';
+
+  @override
+  String get resultPerformanceExplanation =>
+      'Ihre Leistung wird anhand Ihres Alters, Ihrer Körpergröße und Ihrer Gehstrecke beurteilt.';
+
+  @override
+  String get resultTestDetails => 'Testdetails';
+
+  @override
+  String get resultDistanceWalked => 'Zurückgelegte Strecke';
+
+  @override
+  String get resultDistanceConfidence => 'Zuverlässigkeit der Distanzmessung';
+
+  @override
+  String get resultTestDuration => 'Testdauer';
+
+  @override
+  String get resultTestStatus => 'Teststatus';
+
+  @override
+  String get resultStoppedEarly => 'Vorzeitig abgebrochen';
+
+  @override
+  String get resultCompleted => 'Abgeschlossen';
+
+  @override
+  String get resultYourProfile => 'Ihr Profil';
+
+  @override
+  String get resultName => 'Name';
+
+  @override
+  String get resultAge => 'Alter';
+
+  @override
+  String resultAgeYears(int age) {
+    return '$age Jahre';
+  }
+
+  @override
+  String get resultHeight => 'Körpergröße';
+
+  @override
+  String resultHeightCm(int height) {
+    return '$height cm';
+  }
+
+  @override
+  String get resultWeight => 'Gewicht';
+
+  @override
+  String resultWeightKg(String weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String get resultGender => 'Geschlecht';
+
+  @override
+  String get resultDistanceComparison => 'Streckenvergleich';
+
+  @override
+  String get resultCalculatingDistanceComparisons =>
+      'Streckenvergleiche werden berechnet …';
+
+  @override
+  String get resultDistanceComparisonFailed =>
+      'Die Streckenvergleiche konnten nicht berechnet werden.';
+
+  @override
+  String get resultDisclaimer =>
+      'Das Ergebnis dient zur Orientierung und basiert auf Ihrer aufgezeichneten Gehstrecke und Ihren persönlichen Daten.';
+
+  @override
+  String resultExportFailed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
+
+  @override
+  String resultDeleteFailed(String error) {
+    return 'Fehler beim Löschen des Tests: $error';
+  }
+
+  @override
+  String get historyTitle => 'Verlauf';
+
+  @override
+  String get historyNoEntries => 'Keine Einträge vorhanden';
+
+  @override
+  String get historyFit => 'fit';
+
+  @override
+  String get historyToday => 'Heute';
+
+  @override
+  String get historyYesterday => 'Gestern';
+
+  @override
+  String historyExportFailed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
 }
