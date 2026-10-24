@@ -10,6 +10,7 @@ import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
@@ -87,7 +88,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  String _statusMessage(WalkSessionState state) {
+  String _statusMessage(WalkSessionState state, AppLocalizations l10n) {
     final errorMessage = state.errorMessage;
 
     if (errorMessage != null) {
@@ -96,30 +97,34 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     switch (state.phase) {
       case WalkPhase.idle:
-        return 'Not started';
+        return l10n.walkNotStarted;
 
       case WalkPhase.running:
         return state.lastSamples[SampleType.position] == null
-            ? 'Waiting for GPS...'
-            : 'Walking';
+            ? l10n.walkWaitingForGps
+            : l10n.walkWalking;
 
       case WalkPhase.finished:
-        return 'Finished';
+        return l10n.walkFinished;
 
       case WalkPhase.aborted:
-        return 'Stopped';
+        return l10n.walkStopped;
     }
   }
 
-  String _assessmentPercentage(WalkSessionState state, WalkSession session) {
+  String _assessmentPercentage(
+    WalkSessionState state,
+    WalkSession session,
+    AppLocalizations l10n,
+  ) {
     final duration = session.walkDuration - state.remainingTime;
 
     if (duration <= Duration.zero) {
-      return 'Not started yet';
+      return l10n.walkNotStartedYet;
     }
 
     if (_profile == null) {
-      return 'Loading...';
+      return l10n.walkLoading;
     }
 
     final assessment = assessFitness(
@@ -191,7 +196,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               children: [
                 Center(
                   child: Text(
-                    'Slide to stop',
+                    AppLocalizations.of(context)!.walkSlideToStop,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -268,7 +273,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         _stopSliderValue = 0.0;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Result could not be loaded')),
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.walkResultCouldNotBeLoaded,
+          ),
+        ),
       );
       return;
     }
@@ -285,6 +294,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
+    final l10n = AppLocalizations.of(context)!;
+
     final lastPosition = state.lastSamples[SampleType.position];
 
     final latitude = lastPosition?.values[PositionKeys.latitude];
@@ -340,10 +351,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               const SizedBox(height: 4),
 
-              const Text(
-                'Please go as far as possible in 6 minutes.',
+              Text(
+                l10n.walkPleaseGoFar,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15, color: Colors.black54),
+                style: const TextStyle(fontSize: 15, color: Colors.black54),
               ),
 
               const SizedBox(height: 24),
@@ -353,7 +364,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   Expanded(
                     child: _InfoCard(
                       icon: Icons.swap_horiz_rounded,
-                      title: 'Distance',
+                      title: l10n.walk_idstance,
                       value: '${state.distance.toStringAsFixed(1)} m',
                     ),
                   ),
@@ -363,8 +374,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   Expanded(
                     child: _InfoCard(
                       icon: Icons.directions_walk_rounded,
-                      title: 'Status',
-                      value: _statusMessage(state),
+                      title: l10n.walk_status,
+                      value: _statusMessage(state, l10n),
                       showStatusDot: state.isRunning,
                     ),
                   ),
@@ -375,11 +386,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               _LargeInfoCard(
                 icon: Icons.bar_chart_rounded,
-                title: 'Assessment',
-                value: _assessmentPercentage(state, session),
+                title: l10n.walk_assessment,
+                value: _assessmentPercentage(state, session, l10n),
                 subtitle: _assessmentCategory(state, session).isEmpty
-                    ? 'Not started yet'
-                    : 'of expected distance',
+                    ? l10n.walkNotStartedYet
+                    : l10n.walkOfExpectedDistance,
                 trailing: _assessmentCategory(state, session).isEmpty
                     ? null
                     : _assessmentCategory(state, session),
@@ -389,14 +400,14 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
               _LargeInfoCard(
                 icon: Icons.location_on_rounded,
-                title: 'Current Position',
+                title: l10n.walk_position,
                 value: lastPosition == null
-                    ? 'No position yet'
+                    ? l10n.walkNoPositionYet
                     : '${latitude?.toStringAsFixed(6) ?? '-'}, '
                           '${longitude?.toStringAsFixed(6) ?? '-'}',
                 subtitle: lastPosition == null
-                    ? 'Waiting for GPS...'
-                    : 'Accuracy: ${accuracy?.toStringAsFixed(1) ?? '-'} m',
+                    ? l10n.walkWaitingForGps
+                    : l10n.walkAccuracy(accuracy?.toStringAsFixed(1) ?? '-'),
                 showArrow: true,
               ),
 
@@ -407,9 +418,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   Expanded(
                     child: _InfoCard(
                       icon: Icons.access_time_rounded,
-                      title: 'Duration',
+                      title: l10n.walk_duration,
                       value: durationText,
-                      subtitle: 'of 6:00 min',
+                      subtitle: l10n.walkOfSixMinutes,
                     ),
                   ),
 
@@ -418,13 +429,13 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   Expanded(
                     child: _InfoCard(
                       icon: Icons.person_outline_rounded,
-                      title: 'Profile',
+                      title: l10n.walk_profile,
                       value: _profile == null
-                          ? 'Loading...'
-                          : '${_profile!.age} years',
+                          ? l10n.walkLoading
+                          : l10n.walkYears(_profile!.age),
                       subtitle: _profile == null
                           ? ''
-                          : '${_profile!.height} cm',
+                          : l10n.walkHeightCm(_profile!.height),
                     ),
                   ),
                 ],
@@ -443,6 +454,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   }
 
   Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -496,9 +508,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                             borderRadius: BorderRadius.circular(14),
                           ),
                         ),
-                        child: const Text(
-                          'Start Test',
-                          style: TextStyle(
+                        child: Text(
+                          l10n.walkStartTestButton,
+                          style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),

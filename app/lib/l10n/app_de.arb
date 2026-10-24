@@ -3,6 +3,10 @@
 
   "appTitle": "6-Minuten-Gehtest",
   "appSubTitle": "Standardisierte Beurteilung der funktionellen Belastbarkeit",
+  "appProfile": "Patientenprofil einrichten",
+  "appCountdown": "6-Minuten-Countdown",
+  "appResult": "Ergebnisse und Messwerte",
+
   "home_walk": "Gehen",
   "home_walksb": "So weit wie möglich in 6 Minuten gehen",
   "home_performance": "Leistung",
@@ -11,38 +15,47 @@
   "home_progresssb": "Ergebnisse vergleichen",
   "home_result": "Meine Ergebnisse",
   "home_resultsb": "Frühere Tests ansehen",
-  "home_instruction": "Über den 6 Minuten Test", 
+  "home_instruction": "Über den 6-Minuten-Test",
   "home_instructionsb": "Ausführliche Anleitung",
+
   "startTest": "Test starten",
   "settings": "Einstellungen",
   "continueButton": "Weiter",
   "instructions": "Anleitung",
+
   "instructions_1_welc": "Willkommen",
   "instructions_1_text": "Diese App führt Sie Schritt für Schritt durch den 6-Minuten-Gehtest (6MWT). Der Test hilft dabei, Ihre körperliche Leistungsfähigkeit anhand der in sechs Minuten zurückgelegten Strecke zu beurteilen.",
+
   "instructions_2_welc": "Testverfahren",
   "bulletPoint_1": "Persönliche Daten eingeben",
   "bulletPoint_2": "Test starten",
-  "bulletPoint_3": "Gehen Sie 6 Minuten lang",
+  "bulletPoint_3": "6 Minuten lang gehen",
   "bulletPoint_4": "Ergebnisse",
   "instructions_2_text": "Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.",
+
   "instructions_3_welc": "Personenbezogene Daten",
   "instructions_3_text": "Für eine möglichst präzise Analyse benötigen wir einige Angaben wie Alter, Körpergröße, Gewicht und Geschlecht. Diese Daten dienen dazu, Ihre Ergebnisse besser einordnen zu können.",
+
   "instructions_4_welc": "Während des Tests",
   "instructions_4_text": "Gehen Sie sechs Minuten lang in Ihrem normalen, zügigen Tempo. Die App zeigt die verbleibende Zeit und die bereits zurückgelegte Strecke an.",
   "instructions_4_text_2": "Brechen Sie den Test ab, wenn bei Ihnen Brustschmerzen, Schwindel oder starke Atemnot auftreten.",
+
   "instructions_5_welc": "Den Test abbrechen",
   "instructions_5_text": "Bei Bedarf können Sie den Test jederzeit abbrechen und anschließend entscheiden, wie Sie fortfahren möchten:",
   "instructions_5_c1": "Zwischenergebnisse werden gespeichert",
   "instructions_5_c2": "Die Ergebnisse werden angezeigt",
-  "instructions_5_c3": "Der Informationswert mag begrenzt sein",
+  "instructions_5_c3": "Der Aussagewert kann begrenzt sein",
   "instructions_5_f1": "Alle bisherigen Daten werden verworfen",
   "instructions_5_f2": "Sie können den Test erneut starten",
+
   "instructions_6_welc": "Übersicht der Ergebnisse",
-  "instructions_6_text": "Your walking distance is classified based on reference values and you get an overview of your performance and values reached.",
+  "instructions_6_text": "Ihre Gehstrecke wird anhand von Referenzwerten eingeordnet. Sie erhalten eine Übersicht über Ihre Leistung und die erreichten Messwerte.",
+
   "instructions_7_welc": "Sie sind bereit!",
   "instructions_7_text": "Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!",
+
   "profile_title": "Vorkalibrierung",
-  "profile_text": "Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein",
+  "profile_text": "Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein.",
   "profile_sub1": "Patienteninformationen",
   "profile_sub2": "Anthropometrie",
   "profile_info": "Bitte füllen Sie Alter, Geschlecht, Körpergröße und Gewicht aus.",
@@ -50,27 +63,77 @@
   "profileHeightOutOfRange": "Bitte geben Sie eine Körpergröße zwischen 50 und 250 cm ein.",
   "profileWeightOutOfRange": "Bitte geben Sie ein Gewicht zwischen 1 und 400 kg ein.",
   "field1": "Name",
-  "field2": "Alter in Jahren", 
+  "field2": "Alter in Jahren",
   "genderMale": "Männlich",
   "genderFemale": "Weiblich",
   "genderOther": "Divers/Keine Angabe",
-  "field4": "Höhe", 
-  "field5": "Gewicht", 
+  "field4": "Körpergröße",
+  "field5": "Gewicht",
   "profile_footer": "Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.",
+
   "video_title": "Testvorbereitung",
   "video_text": "Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.",
-  "walk_info": "Bitte lege in 6 Minuten eine möglichst große Strecke zurück.",
+
+  "walk_info": "Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.",
   "walk_idstance": "Distanz",
-  "walk_status": "Status", 
+  "walk_status": "Status",
   "walk_assessment": "Bewertung",
   "walk_start": "Noch nicht gestartet",
-  "walk_position": "Aktuelle Position", 
-  "walk_duration": "Dauer", 
-  "walk_profile": "Profil", 
-  "walk_test_start": "Starte Test", 
+  "walk_position": "Aktuelle Position",
+  "walk_duration": "Dauer",
+  "walk_profile": "Profil",
+  "walk_test_start": "Test starten",
   "walk_reset": "Zurücksetzen",
+
+  "walkPleaseGoFar": "Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.",
+  "walkNotStarted": "Noch nicht gestartet",
+  "walkWaitingForGps": "Warte auf GPS …",
+  "walkWalking": "Gehen",
+  "walkFinished": "Abgeschlossen",
+  "walkStopped": "Abgebrochen",
+  "walkNotStartedYet": "Noch nicht gestartet",
+  "walkLoading": "Wird geladen …",
+  "walkSlideToStop": "Zum Beenden schieben",
+  "walkResultCouldNotBeLoaded": "Das Ergebnis konnte nicht geladen werden.",
+  "walkNoPositionYet": "Noch keine Position verfügbar",
+  "walkAccuracy": "Genauigkeit: {accuracy} m",
+  "@walkAccuracy": {
+    "placeholders": {
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "walkOfSixMinutes": "von 6:00 min",
+  "walkYears": "{age} Jahre",
+  "@walkYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "walkHeightCm": "{height} cm",
+  "@walkHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "walkOfExpectedDistance": "der erwarteten Gehstrecke",
+  "walkStartTestButton": "Test starten",
+  "walkDistanceUnit": "{distance} m",
+  "@walkDistanceUnit": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+
   "aboutTitle": "Über die App",
-  "aboutProject": "Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.",
+  "aboutProject": "Diese 6MWT-App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.",
   "aboutVersion": "App-Version",
   "aboutBuild": "Buildnummer",
   "aboutCommit": "Commit-Hash",
@@ -80,11 +143,77 @@
   "aboutProjectLicense": "Projektlizenz",
   "aboutLicenses": "Open-Source-Lizenzen",
   "aboutLinkError": "Der Link konnte nicht geöffnet werden.",
+
   "deleteSession": "Gehtest löschen",
   "deleteSessionDialogTitle": "Gehtest löschen?",
   "deleteSessionDialogMessage": "Möchten Sie diesen aufgezeichneten Gehtest wirklich löschen? Dies kann nicht rückgängig gemacht werden.",
   "cancel": "Abbrechen",
   "delete": "Löschen",
   "sessionDeleted": "Gehtest gelöscht",
-  "cannotDeleteActiveSession": "Ein aktiver Gehtest kann nicht gelöscht werden."
+  "cannotDeleteActiveSession": "Ein aktiver Gehtest kann nicht gelöscht werden.",
+
+  "resultTitle": "Testergebnisse",
+  "resultIntro": "Hier sind Ihre Ergebnisse aus dem 6-Minuten-Gehtest.",
+  "resultPerformance": "Leistung",
+  "resultExpectedDistance": "der erwarteten Gehstrecke",
+  "resultNoAssessment": "Keine Bewertung möglich",
+  "resultEarlyStopExplanation": "Eine Bewertung ist nicht möglich, da der Test vorzeitig abgebrochen wurde.",
+  "resultPerformanceExplanation": "Ihre Leistung wird anhand Ihres Alters, Ihrer Körpergröße und Ihrer Gehstrecke beurteilt.",
+  "resultTestDetails": "Testdetails",
+  "resultDistanceWalked": "Zurückgelegte Strecke",
+  "resultDistanceConfidence": "Zuverlässigkeit der Distanzmessung",
+  "resultTestDuration": "Testdauer",
+  "resultTestStatus": "Teststatus",
+  "resultStoppedEarly": "Vorzeitig abgebrochen",
+  "resultCompleted": "Abgeschlossen",
+  "resultYourProfile": "Ihr Profil",
+  "resultName": "Name",
+  "resultAge": "Alter",
+  "resultAgeYears": "{age} Jahre",
+  "@resultAgeYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "resultHeight": "Körpergröße",
+  "resultHeightCm": "{height} cm",
+  "@resultHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "resultWeight": "Gewicht",
+  "resultWeightKg": "{weight} kg",
+  "@resultWeightKg": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "resultGender": "Geschlecht",
+  "resultDistanceComparison": "Streckenvergleich",
+  "resultCalculatingDistanceComparisons": "Streckenvergleiche werden berechnet …",
+  "resultDistanceComparisonFailed": "Die Streckenvergleiche konnten nicht berechnet werden.",
+  "resultDisclaimer": "Das Ergebnis dient zur Orientierung und basiert auf Ihrer aufgezeichneten Gehstrecke und Ihren persönlichen Daten.",
+  "resultExportFailed": "Export fehlgeschlagen: {error}",
+  "@resultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "resultDeleteFailed": "Fehler beim Löschen des Tests: {error}",
+  "@resultDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }
