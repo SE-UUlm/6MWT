@@ -22,6 +22,13 @@ const _authenticatedArcGisTileUrl =
     'https://ibasemaps-api.arcgis.com/arcgis/rest/services/'
     'World_Imagery/MapServer/tile/{z}/{y}/{x}?token={accessToken}';
 
+// Esri World Imagery has tiles up to level 19. Without an upper bound, fitting
+// a track whose positions are all identical (zero-size bounds) yields an
+// infinite zoom, which turns the camera into NaN and crashes the map layers.
+const _maxZoom = 24.0;
+const _maxNativeZoom = 19;
+const _maxFitZoom = 19.0;
+
 class SessionMap extends StatefulWidget {
   const SessionMap({
     super.key,
@@ -214,19 +221,45 @@ class _SessionMapState extends State<SessionMap> {
     final points = _allPoints();
     if (points.isEmpty) return;
 
+    final size = _mapController.camera.nonRotatedSize;
+    if (!size.width.isFinite ||
+        !size.height.isFinite ||
+        size.width <= 96 ||
+        size.height <= 96) {
+      return;
+    }
+
     final bounds = LatLngBounds.fromPoints(points);
     _mapController.fitCamera(
-      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(48)),
+      CameraFit.bounds(
+        bounds: bounds,
+        padding: const EdgeInsets.all(48),
+        maxZoom: _maxFitZoom,
+      ),
     );
   }
 
   List<LatLng> _gpsPoints(Session session) {
-    return session.positionSamples.map((s) {
-      final lat = s.values[PositionKeys.latitude]!;
-      final lon = s.values[PositionKeys.longitude]!;
-      return LatLng(lat, lon);
-    }).toList();
+    return [
+      for (final s in session.positionSamples)
+        if (_isValidPosition(
+          s.values[PositionKeys.latitude],
+          s.values[PositionKeys.longitude],
+        ))
+          LatLng(
+            s.values[PositionKeys.latitude]!,
+            s.values[PositionKeys.longitude]!,
+          ),
+    ];
   }
+
+  static bool _isValidPosition(double? lat, double? lon) =>
+      lat != null &&
+      lon != null &&
+      lat.isFinite &&
+      lon.isFinite &&
+      lat.abs() <= 90 &&
+      lon.abs() <= 180;
 
   @override
   Widget build(BuildContext context) {
@@ -252,11 +285,14 @@ class _SessionMapState extends State<SessionMap> {
             ),
             initialCenter: const LatLng(48.4, 10),
             initialZoom: 5,
+            minZoom: 2,
+            maxZoom: _maxZoom,
             initialCameraFit: bounds == null
                 ? null
                 : CameraFit.bounds(
                     bounds: bounds,
                     padding: const EdgeInsets.all(60),
+                    maxZoom: _maxFitZoom,
                   ),
           ),
           children: [
@@ -273,6 +309,7 @@ class _SessionMapState extends State<SessionMap> {
               tileProvider: _tileProvider,
               userAgentPackageName: 'de.uni_ulm.six_mwt_visualizer',
               panBuffer: 0,
+              maxNativeZoom: _maxNativeZoom,
               errorTileCallback: (tile, error, stackTrace) {
                 debugPrint('Failed to load an ArcGIS tile: $error');
               },
