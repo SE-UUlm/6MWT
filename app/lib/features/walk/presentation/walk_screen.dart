@@ -305,7 +305,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     if (!mounted) return;
 
-    context.pushReplacement('/result', extra: sessionWithProfile);
+    context.go('/result', extra: sessionWithProfile);
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
