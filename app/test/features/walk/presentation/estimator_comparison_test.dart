@@ -21,7 +21,7 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.
 import 'package:six_minute_walk_test/features/walk/presentation/estimator_comparison_card.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
 
-import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
+import '../../../helpers/fake_sensors.dart';
 import '../../../helpers/localized_app.dart';
 
 final profile = Profile(

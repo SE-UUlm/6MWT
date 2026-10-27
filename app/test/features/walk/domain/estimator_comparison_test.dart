@@ -12,8 +12,7 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
-import 'walk_session_test.dart'
-    show InitialSampleFakeSensorSource, RecordingSink;
+import '../../../helpers/fake_sensors.dart';
 import 'kalman_gps_distance_estimator_test.dart' as kalman;
 import 'calibrated_step_distance_estimator_test.dart' as calibration;
 

@@ -12,7 +12,7 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
 
-import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
+import '../../../helpers/fake_sensors.dart';
 import '../../../helpers/localized_app.dart';
 
 class PendingProfileRepository extends ProfileRepository {

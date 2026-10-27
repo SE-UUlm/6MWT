@@ -5,7 +5,7 @@ import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
-import 'walk_session_test.dart' show InitialSampleFakeSensorSource;
+import '../../../helpers/fake_sensors.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
