@@ -9,9 +9,9 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_di
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
+import '../../../helpers/localized_app.dart';
 
 class _FixedProfileRepository extends ProfileRepository {
   _FixedProfileRepository(super.db, this.profile);
@@ -56,10 +56,8 @@ void main() {
               ),
             ),
           ],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('de'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: const WalkScreen(profileId: 3),
           ),
         ),

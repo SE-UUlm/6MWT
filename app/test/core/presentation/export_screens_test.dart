@@ -15,7 +15,8 @@ import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/export_metadata.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../helpers/localized_app.dart';
 
 void main() {
   for (final history in [false, true]) {
@@ -101,9 +102,7 @@ void main() {
                 ),
               ),
             ],
-            child: MaterialApp(
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
+            child: localizedApp(
               home: history
                   ? const HistoryScreen()
                   : ResultScreen(session: entry),
