@@ -3,9 +3,6 @@
 
   "appTitle": "6-Minute Walk Test",
   "appSubTitle": "Standardized assessment of functional exercise capacity",
-  "appProfile": "Set up patient profile",
-  "appCountdown": "6-minute countdown",
-  "appResult": "Results and measurements",
 
   "home_walk": "Walk",
   "home_walksb": "Walk as far as possible in 6 minutes",
@@ -33,7 +30,6 @@
   "bulletPoint_4": "Results",
   "instructions_2_text": "The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.",
 
-  "instructions_3_welc": "Personal information",
   "instructions_3_text": "For the most accurate analysis possible, we need some information such as your age, height, weight and gender. This data helps us interpret your results.",
 
   "instructions_4_welc": "During the test",
@@ -74,15 +70,12 @@
   "video_title": "Test preparation",
   "video_text": "Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.",
 
-  "walk_info": "Please go as far as possible in 6 minutes.",
   "walk_idstance": "Distance",
   "walk_status": "Status",
   "walk_assessment": "Assessment",
-  "walk_start": "Not started",
   "walk_position": "Current Position",
   "walk_duration": "Duration",
   "walk_profile": "Profile",
-  "walk_reset": "Reset",
 
   "walkPleaseGoFar": "Please go as far as possible in 6 minutes.",
   "walkNotStarted": "Not started",
@@ -121,14 +114,6 @@
     }
   },
   "walkOfExpectedDistance": "of expected distance",
-  "walkDistanceUnit": "{distance} m",
-  "@walkDistanceUnit": {
-    "placeholders": {
-      "distance": {
-        "type": "String"
-      }
-    }
-  },
 
   "aboutTitle": "About the app",
   "aboutProject": "This 6MWT app was developed as part of a software engineering project during the summer semester of 2026 at Ulm University.",

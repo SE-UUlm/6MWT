@@ -16,15 +16,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Standardized assessment of functional exercise capacity';
 
   @override
-  String get appProfile => 'Set up patient profile';
-
-  @override
-  String get appCountdown => '6-minute countdown';
-
-  @override
-  String get appResult => 'Results and measurements';
-
-  @override
   String get home_walk => 'Walk';
 
   @override
@@ -91,9 +82,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get instructions_2_text =>
       'The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.';
-
-  @override
-  String get instructions_3_welc => 'Personal information';
 
   @override
   String get instructions_3_text =>
@@ -208,9 +196,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.';
 
   @override
-  String get walk_info => 'Please go as far as possible in 6 minutes.';
-
-  @override
   String get walk_idstance => 'Distance';
 
   @override
@@ -220,9 +205,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walk_assessment => 'Assessment';
 
   @override
-  String get walk_start => 'Not started';
-
-  @override
   String get walk_position => 'Current Position';
 
   @override
@@ -230,9 +212,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walk_profile => 'Profile';
-
-  @override
-  String get walk_reset => 'Reset';
 
   @override
   String get walkPleaseGoFar => 'Please go as far as possible in 6 minutes.';
@@ -287,11 +266,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walkOfExpectedDistance => 'of expected distance';
-
-  @override
-  String walkDistanceUnit(String distance) {
-    return '$distance m';
-  }
 
   @override
   String get aboutTitle => 'About the app';

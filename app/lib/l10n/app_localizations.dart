@@ -110,24 +110,6 @@ abstract class AppLocalizations {
   /// **'Standardisierte Beurteilung der funktionellen Belastbarkeit'**
   String get appSubTitle;
 
-  /// No description provided for @appProfile.
-  ///
-  /// In de, this message translates to:
-  /// **'Patientenprofil einrichten'**
-  String get appProfile;
-
-  /// No description provided for @appCountdown.
-  ///
-  /// In de, this message translates to:
-  /// **'6-Minuten-Countdown'**
-  String get appCountdown;
-
-  /// No description provided for @appResult.
-  ///
-  /// In de, this message translates to:
-  /// **'Ergebnisse und Messwerte'**
-  String get appResult;
-
   /// No description provided for @home_walk.
   ///
   /// In de, this message translates to:
@@ -259,12 +241,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.'**
   String get instructions_2_text;
-
-  /// No description provided for @instructions_3_welc.
-  ///
-  /// In de, this message translates to:
-  /// **'Personenbezogene Daten'**
-  String get instructions_3_welc;
 
   /// No description provided for @instructions_3_text.
   ///
@@ -464,12 +440,6 @@ abstract class AppLocalizations {
   /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
   String get video_text;
 
-  /// No description provided for @walk_info.
-  ///
-  /// In de, this message translates to:
-  /// **'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.'**
-  String get walk_info;
-
   /// No description provided for @walk_idstance.
   ///
   /// In de, this message translates to:
@@ -488,12 +458,6 @@ abstract class AppLocalizations {
   /// **'Bewertung'**
   String get walk_assessment;
 
-  /// No description provided for @walk_start.
-  ///
-  /// In de, this message translates to:
-  /// **'Noch nicht gestartet'**
-  String get walk_start;
-
   /// No description provided for @walk_position.
   ///
   /// In de, this message translates to:
@@ -511,12 +475,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Profil'**
   String get walk_profile;
-
-  /// No description provided for @walk_reset.
-  ///
-  /// In de, this message translates to:
-  /// **'Zurücksetzen'**
-  String get walk_reset;
 
   /// No description provided for @walkPleaseGoFar.
   ///
@@ -613,12 +571,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'der erwarteten Gehstrecke'**
   String get walkOfExpectedDistance;
-
-  /// No description provided for @walkDistanceUnit.
-  ///
-  /// In de, this message translates to:
-  /// **'{distance} m'**
-  String walkDistanceUnit(String distance);
 
   /// No description provided for @aboutTitle.
   ///

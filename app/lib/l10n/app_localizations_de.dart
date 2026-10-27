@@ -16,15 +16,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standardisierte Beurteilung der funktionellen Belastbarkeit';
 
   @override
-  String get appProfile => 'Patientenprofil einrichten';
-
-  @override
-  String get appCountdown => '6-Minuten-Countdown';
-
-  @override
-  String get appResult => 'Ergebnisse und Messwerte';
-
-  @override
   String get home_walk => 'Gehen';
 
   @override
@@ -91,9 +82,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get instructions_2_text =>
       'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.';
-
-  @override
-  String get instructions_3_welc => 'Personenbezogene Daten';
 
   @override
   String get instructions_3_text =>
@@ -208,10 +196,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
 
   @override
-  String get walk_info =>
-      'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.';
-
-  @override
   String get walk_idstance => 'Distanz';
 
   @override
@@ -221,9 +205,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_assessment => 'Bewertung';
 
   @override
-  String get walk_start => 'Noch nicht gestartet';
-
-  @override
   String get walk_position => 'Aktuelle Position';
 
   @override
@@ -231,9 +212,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walk_profile => 'Profil';
-
-  @override
-  String get walk_reset => 'Zurücksetzen';
 
   @override
   String get walkPleaseGoFar =>
@@ -290,11 +268,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walkOfExpectedDistance => 'der erwarteten Gehstrecke';
-
-  @override
-  String walkDistanceUnit(String distance) {
-    return '$distance m';
-  }
 
   @override
   String get aboutTitle => 'Über die App';
