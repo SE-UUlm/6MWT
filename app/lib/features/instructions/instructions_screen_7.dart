@@ -110,7 +110,7 @@ class InstructionsScreen7 extends StatelessWidget {
                 height: 54,
                 child: ElevatedButton(
                   onPressed: () {
-                    context.push('/');
+                    context.go('/');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF347FE5),
