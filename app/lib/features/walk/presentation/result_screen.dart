@@ -15,6 +15,7 @@ import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
 import 'distance_confidence_format.dart';
 import 'estimator_comparison_card.dart';
+import 'fitness_category_label.dart';
 
 final _log = appLogger('ResultScreen');
 
@@ -194,9 +195,13 @@ class ResultScreen extends ConsumerWidget {
           .shareSession(session.id, context: context);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.resultExportFailed(e.toString()),
+            ),
+          ),
+        );
       }
     }
   }
@@ -249,9 +254,13 @@ class ResultScreen extends ConsumerWidget {
       }
     } catch (e) {
       if (!context.mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error deleting session: $e')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.resultDeleteFailed(e.toString()),
+          ),
+        ),
+      );
     }
   }
 
@@ -300,7 +309,7 @@ class ResultScreen extends ConsumerWidget {
       _log.t('Calculated fitness: $assessment');
 
       percentage = assessment.percentOfExpected;
-      category = assessment.category.name;
+      category = fitnessCategoryLabel(l10n, assessment.category);
       explanation = l10n.resultPerformanceExplanation;
     }
 
@@ -478,7 +487,7 @@ class ResultScreen extends ConsumerWidget {
                   _buildDetailRow(
                     icon: Icons.verified_outlined,
                     label: l10n.resultDistanceConfidence,
-                    value: formatConfidence(confidence),
+                    value: formatConfidence(l10n, confidence),
                     valueColor: confidenceColor(confidence),
                   ),
 

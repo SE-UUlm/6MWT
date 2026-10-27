@@ -478,4 +478,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String historyExportFailed(String error) {
     return 'Export failed: $error';
   }
+
+  @override
+  String historyLoadFailed(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get instructions_3_heading => 'Personal data';
+
+  @override
+  String get confidenceHigh => 'High';
+
+  @override
+  String get confidenceMedium => 'Medium';
+
+  @override
+  String get confidenceLow => 'Low';
+
+  @override
+  String comparisonConfidence(String value) {
+    return 'Confidence: $value';
+  }
+
+  @override
+  String comparisonUnavailable(String error) {
+    return 'Estimator unavailable: $error';
+  }
+
+  @override
+  String estimatorMain(String name) {
+    return 'Main ($name)';
+  }
+
+  @override
+  String get fitnessReducedPhysicalPerformance =>
+      'Reduced physical performance';
+
+  @override
+  String get fitnessLowNormal => 'Low normal';
+
+  @override
+  String get fitnessNormalPopulationMean => 'Population mean';
+
+  @override
+  String get fitnessHighNormal => 'High normal';
+
+  @override
+  String get fitnessTopPerformance => 'Top performance';
+
+  @override
+  String get walkErrorLocation => 'Location permission denied or GPS disabled';
+
+  @override
+  String get walkErrorActivityRecognition =>
+      'Activity recognition permission denied';
+
+  @override
+  String walkErrorSensor(String error) {
+    return 'Sensor error: $error';
+  }
 }

@@ -481,4 +481,65 @@ class AppLocalizationsDe extends AppLocalizations {
   String historyExportFailed(String error) {
     return 'Export fehlgeschlagen: $error';
   }
+
+  @override
+  String historyLoadFailed(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get instructions_3_heading => 'Persönliche Daten';
+
+  @override
+  String get confidenceHigh => 'Hoch';
+
+  @override
+  String get confidenceMedium => 'Mittel';
+
+  @override
+  String get confidenceLow => 'Niedrig';
+
+  @override
+  String comparisonConfidence(String value) {
+    return 'Zuverlässigkeit: $value';
+  }
+
+  @override
+  String comparisonUnavailable(String error) {
+    return 'Streckenschätzer nicht verfügbar: $error';
+  }
+
+  @override
+  String estimatorMain(String name) {
+    return 'Haupt ($name)';
+  }
+
+  @override
+  String get fitnessReducedPhysicalPerformance =>
+      'Verminderte körperliche Leistungs­fähigkeit';
+
+  @override
+  String get fitnessLowNormal => 'Niedrig-normal';
+
+  @override
+  String get fitnessNormalPopulationMean => 'Bevölkerungs­durchschnitt';
+
+  @override
+  String get fitnessHighNormal => 'Hoch-normal';
+
+  @override
+  String get fitnessTopPerformance => 'Spitzenleistung';
+
+  @override
+  String get walkErrorLocation =>
+      'Standortberechtigung verweigert oder GPS deaktiviert';
+
+  @override
+  String get walkErrorActivityRecognition =>
+      'Berechtigung zur Aktivitätserkennung verweigert';
+
+  @override
+  String walkErrorSensor(String error) {
+    return 'Sensorfehler: $error';
+  }
 }

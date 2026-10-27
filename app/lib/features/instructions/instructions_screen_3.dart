@@ -67,8 +67,8 @@ class InstructionsScreen3 extends StatelessWidget {
               const SizedBox(height: 55),
 
               // Page - Content
-              const Text(
-                'Personal Data',
+              Text(
+                AppLocalizations.of(context)!.instructions_3_heading,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.w700,

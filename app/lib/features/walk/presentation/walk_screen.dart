@@ -15,6 +15,7 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
+import 'fitness_category_label.dart';
 
 final _log = appLogger('WalkScreen');
 
@@ -92,7 +93,15 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     final errorMessage = state.errorMessage;
 
     if (errorMessage != null) {
-      return errorMessage;
+      return switch (state.errorIssue) {
+        WalkErrorIssue.locationUnavailable => l10n.walkErrorLocation,
+        WalkErrorIssue.activityRecognitionDenied =>
+          l10n.walkErrorActivityRecognition,
+        WalkErrorIssue.sensorError => l10n.walkErrorSensor(
+          errorMessage.replaceFirst('Sensor error: ', ''),
+        ),
+        null => errorMessage,
+      };
     }
 
     switch (state.phase) {
@@ -137,7 +146,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     return '${assessment.percentOfExpected.round()} %';
   }
 
-  String _assessmentCategory(WalkSessionState state, WalkSession session) {
+  String _assessmentCategory(
+    WalkSessionState state,
+    WalkSession session,
+    AppLocalizations l10n,
+  ) {
     final duration = session.walkDuration - state.remainingTime;
 
     if (duration <= Duration.zero) {
@@ -155,7 +168,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       heightInCm: _profile!.height.toDouble(),
     );
 
-    return assessment.category.name;
+    return fitnessCategoryLabel(l10n, assessment.category);
   }
 
   Widget _buildStopSlider() {
@@ -388,12 +401,12 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 icon: Icons.bar_chart_rounded,
                 title: l10n.walk_assessment,
                 value: _assessmentPercentage(state, session, l10n),
-                subtitle: _assessmentCategory(state, session).isEmpty
+                subtitle: _assessmentCategory(state, session, l10n).isEmpty
                     ? l10n.walkNotStartedYet
                     : l10n.walkOfExpectedDistance,
-                trailing: _assessmentCategory(state, session).isEmpty
+                trailing: _assessmentCategory(state, session, l10n).isEmpty
                     ? null
-                    : _assessmentCategory(state, session),
+                    : _assessmentCategory(state, session, l10n),
               ),
 
               const SizedBox(height: 12),
@@ -682,22 +695,34 @@ class _LargeInfoCard extends StatelessWidget {
             ),
           ),
 
-          if (trailing != null)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-              decoration: BoxDecoration(
-                color: const Color(0xFFDDF7EA),
-                borderRadius: BorderRadius.circular(20),
+          if (trailing != null) ...[
+            const SizedBox(width: 10),
+            // Long labels wrap instead of squeezing the text column.
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.sizeOf(context).width * 0.4,
               ),
-              child: Text(
-                trailing!,
-                style: const TextStyle(
-                  color: Color(0xFF1BA765),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 7,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDDF7EA),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  trailing!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(0xFF1BA765),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
+          ],
 
           if (showArrow)
             const Icon(

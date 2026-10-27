@@ -229,5 +229,56 @@
         "type": "String"
       }
     }
+  },
+  "historyLoadFailed": "Error: {error}",
+  "@historyLoadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instructions_3_heading": "Personal data",
+  "confidenceHigh": "High",
+  "confidenceMedium": "Medium",
+  "confidenceLow": "Low",
+  "comparisonConfidence": "Confidence: {value}",
+  "@comparisonConfidence": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "comparisonUnavailable": "Estimator unavailable: {error}",
+  "@comparisonUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatorMain": "Main ({name})",
+  "@estimatorMain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fitnessReducedPhysicalPerformance": "Reduced physical performance",
+  "fitnessLowNormal": "Low normal",
+  "fitnessNormalPopulationMean": "Population mean",
+  "fitnessHighNormal": "High normal",
+  "fitnessTopPerformance": "Top performance",
+  "walkErrorLocation": "Location permission denied or GPS disabled",
+  "walkErrorActivityRecognition": "Activity recognition permission denied",
+  "walkErrorSensor": "Sensor error: {error}",
+  "@walkErrorSensor": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

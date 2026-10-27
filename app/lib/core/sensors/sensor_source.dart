@@ -20,10 +20,15 @@ abstract class SensorSource {
   Future<List<SensorSample>> getInitialSamples() async => const [];
 }
 
+enum SensorIssue { locationUnavailable, activityRecognitionDenied }
+
 class SensorUnavailableException implements Exception {
-  const SensorUnavailableException(this.message);
+  const SensorUnavailableException(this.message, {this.issue});
 
   final String message;
+
+  // Lets the UI show a translated message instead of [message].
+  final SensorIssue? issue;
 
   @override
   String toString() => message;

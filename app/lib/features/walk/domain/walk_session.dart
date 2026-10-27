@@ -13,6 +13,12 @@ import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');
 
+enum WalkErrorIssue {
+  locationUnavailable,
+  activityRecognitionDenied,
+  sensorError,
+}
+
 // Immutable snapshot of a walk test at one point in time.
 class WalkSessionState {
   const WalkSessionState({
@@ -23,6 +29,7 @@ class WalkSessionState {
     this.comparisons = const [],
     this.lastSamples = const {},
     this.errorMessage,
+    this.errorIssue,
     this.sessionId,
     this.startedAt,
   });
@@ -39,6 +46,9 @@ class WalkSessionState {
   final Map<SampleType, SensorSample> lastSamples;
 
   final String? errorMessage;
+
+  // Set when [errorMessage] has a translated equivalent in the UI.
+  final WalkErrorIssue? errorIssue;
 
   // Set while a test is running or after it ended; links the recorded raw
   // samples and the stored result to this run.
@@ -157,6 +167,7 @@ class WalkSession {
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
           errorMessage: exception.toString(),
+          errorIssue: _issueOf(exception),
         ),
       );
     }
@@ -221,6 +232,7 @@ class WalkSession {
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
           errorMessage: exception.toString(),
+          errorIssue: _issueOf(exception),
         ),
       );
       return;
@@ -362,6 +374,14 @@ class WalkSession {
     );
   }
 
+  static WalkErrorIssue? _issueOf(Exception exception) => switch (exception) {
+    SensorUnavailableException(issue: SensorIssue.locationUnavailable) =>
+      WalkErrorIssue.locationUnavailable,
+    SensorUnavailableException(issue: SensorIssue.activityRecognitionDenied) =>
+      WalkErrorIssue.activityRecognitionDenied,
+    _ => null,
+  };
+
   void _onSampleError(Object error) {
     _log.w('Sample error', error: error);
 
@@ -380,6 +400,7 @@ class WalkSession {
         confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         errorMessage: 'Sensor error: $error',
+        errorIssue: WalkErrorIssue.sensorError,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),

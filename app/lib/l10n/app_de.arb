@@ -229,5 +229,56 @@
         "type": "String"
       }
     }
+  },
+  "historyLoadFailed": "Fehler: {error}",
+  "@historyLoadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instructions_3_heading": "Persönliche Daten",
+  "confidenceHigh": "Hoch",
+  "confidenceMedium": "Mittel",
+  "confidenceLow": "Niedrig",
+  "comparisonConfidence": "Zuverlässigkeit: {value}",
+  "@comparisonConfidence": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "comparisonUnavailable": "Streckenschätzer nicht verfügbar: {error}",
+  "@comparisonUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatorMain": "Haupt ({name})",
+  "@estimatorMain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fitnessReducedPhysicalPerformance": "Verminderte körperliche Leistungs\u00adfähigkeit",
+  "fitnessLowNormal": "Niedrig-normal",
+  "fitnessNormalPopulationMean": "Bevölkerungs\u00addurchschnitt",
+  "fitnessHighNormal": "Hoch-normal",
+  "fitnessTopPerformance": "Spitzenleistung",
+  "walkErrorLocation": "Standortberechtigung verweigert oder GPS deaktiviert",
+  "walkErrorActivityRecognition": "Berechtigung zur Aktivitätserkennung verweigert",
+  "walkErrorSensor": "Sensorfehler: {error}",
+  "@walkErrorSensor": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

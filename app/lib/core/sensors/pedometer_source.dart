@@ -46,6 +46,7 @@ class PedometerSource implements SensorSource {
       _log.w('Activity recognition permission not granted: ${status.name}');
       throw const SensorUnavailableException(
         'Activity recognition permission denied',
+        issue: SensorIssue.activityRecognitionDenied,
       );
     }
 
