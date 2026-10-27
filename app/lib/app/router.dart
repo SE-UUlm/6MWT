@@ -1,6 +1,4 @@
 import '../features/about/about_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
@@ -8,205 +6,62 @@ import 'package:six_minute_walk_test/features/walk/presentation/result_screen.da
 import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
 
 import '../features/home/home_screen.dart';
-import '../features/instructions/instructions_screen_2.dart';
-import '../features/instructions/instructions_screen_3.dart';
-import '../features/instructions/instructions_screen_4.dart';
-import '../features/instructions/instructions_screen_5.dart';
-import '../features/instructions/instructions_screen_6.dart';
-import '../features/instructions/instructions_screen_7.dart';
+import '../features/instructions/instructions_screen.dart';
 import '../features/walk/presentation/walk_screen.dart';
-import '../features/instructions/instructions_screen_1.dart';
 import '../features/walk/presentation/information_screen.dart';
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-    GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
     GoRoute(
-      path: '/walk',
-      builder: (context, state) {
-        final profileId = state.extra as int;
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+      // Every screen is nested under home so that `go(...)` always builds a stack
+      // with home at the bottom. `push(...)` only adds the leaf page.
+      routes: [
+        GoRoute(
+          path: 'about',
+          builder: (context, state) => const AboutScreen(),
+        ),
+        GoRoute(
+          path: 'walk',
+          builder: (context, state) {
+            final profileId = state.extra as int;
 
-        return WalkScreen(profileId: profileId);
-      },
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
-    GoRoute(
-      path: '/video',
-      builder: (context, state) {
-        final profileId = state.extra as int;
+            return WalkScreen(profileId: profileId);
+          },
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: 'video',
+          builder: (context, state) {
+            final profileId = state.extra as int;
 
-        return VideoScreen(profileId: profileId);
-      },
-    ),
-    GoRoute(
-      path: '/result',
-      builder: (context, state) {
-        final session = state.extra as WalkSessionWithProfile;
+            return VideoScreen(profileId: profileId);
+          },
+        ),
 
-        return ResultScreen(session: session);
-      },
-    ),
+        GoRoute(
+          path: 'history',
+          builder: (context, state) => const HistoryScreen(),
+        ),
 
-    GoRoute(
-      path: '/history',
-      builder: (context, state) => const HistoryScreen(),
-    ),
+        GoRoute(
+          path: 'instructions',
+          builder: (context, state) => const InstructionsScreen(),
+        ),
 
-    // Route +  Animation - Instructions-1 Page
-    GoRoute(
-      path: '/instructions-1',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen1(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
+        GoRoute(
+          path: 'result',
+          builder: (context, state) {
+            final session = state.extra as WalkSessionWithProfile;
 
-    // Route + Animation - Instructions-2 Page
-    GoRoute(
-      path: '/instructions-2',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen2(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
+            return ResultScreen(session: session);
           },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-3 Page
-    GoRoute(
-      path: '/instructions-3',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen3(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    ),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-4 Page
-    GoRoute(
-      path: '/instructions-4',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen4(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-5 Page
-    GoRoute(
-      path: '/instructions-5',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen5(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-6 Page
-    GoRoute(
-      path: '/instructions-6',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen6(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-7 Page
-    GoRoute(
-      path: '/instructions-7',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen7(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+        ),
+      ],
     ),
   ],
 );

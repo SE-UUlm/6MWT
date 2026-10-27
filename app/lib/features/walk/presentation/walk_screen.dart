@@ -176,6 +176,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   Widget _buildStopSlider() {
     return Container(
       height: 54,
+      // Same inset left and right as the knob has above and below.
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(14),
@@ -305,7 +307,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     if (!mounted) return;
 
-    context.pushReplacement('/result', extra: sessionWithProfile);
+    context.go('/result', extra: sessionWithProfile);
   }
 
   Widget _buildDetailedView(WalkSessionState state, WalkSession session) {
@@ -475,20 +477,22 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Transform.translate(
-              offset: const Offset(0, 40),
-              child: Image.asset(
-                'assets/images/walking_image.png',
-                fit: BoxFit.cover,
-              ),
+      // Only the content is inside the SafeArea, so the background image fills
+      // the whole screen.
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Transform.translate(
+            offset: const Offset(0, 40),
+            child: Image.asset(
+              'assets/images/walking_image.png',
+              fit: BoxFit.cover,
             ),
-            Container(color: Colors.white.withValues(alpha: 0.25)),
+          ),
+          Container(color: Colors.white.withValues(alpha: 0.25)),
 
-            Padding(
+          SafeArea(
+            child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
@@ -539,8 +543,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
