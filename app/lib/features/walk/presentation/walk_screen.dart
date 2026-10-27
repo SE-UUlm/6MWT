@@ -176,6 +176,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   Widget _buildStopSlider() {
     return Container(
       height: 54,
+      // Same inset left and right as the knob has above and below.
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: BorderRadius.circular(14),
