@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
@@ -14,7 +15,6 @@ class VideoScreen extends StatefulWidget {
 
 class _VideoScreenState extends State<VideoScreen> {
   static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
 
   late YoutubePlayerController _controller;
 
@@ -44,60 +44,13 @@ class _VideoScreenState extends State<VideoScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppTitleBar(title: l10n.video_title),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Transform.translate(
-                offset: const Offset(-15, -1),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 20,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: circleBlue,
-                    ),
-                    child: const Icon(
-                      Icons.directions_walk_rounded,
-                      size: 50,
-                      color: Colors.black87,
-                    ),
-                  ),
-
-                  const SizedBox(width: 14),
-
-                  Text(
-                    l10n.video_title,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 35),
-
               Text(
                 l10n.video_text,
                 style: TextStyle(

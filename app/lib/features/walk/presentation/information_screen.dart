@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _weightController = TextEditingController();
 
   static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
 
   Gender? _selectedGender;
 
@@ -88,6 +88,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppTitleBar(title: l10n.profile_title),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
@@ -95,54 +96,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Zurück-Button
-              Transform.translate(
-                offset: const Offset(-15, -1),
-                child: IconButton(
-                  onPressed: () => context.pop(),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new,
-                    size: 20,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              // Icon + Titel
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: circleBlue,
-                    ),
-                    child: const Icon(
-                      Icons.directions_walk_rounded,
-                      size: 26,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Text(
-                    l10n.profile_title,
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xFF111111),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 45),
-
               Text(
                 l10n.profile_text,
                 style: const TextStyle(

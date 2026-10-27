@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -17,27 +18,9 @@ class HistoryScreen extends ConsumerWidget {
     final walkSessions = ref.watch(walkSessionsWithProfilesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Row(
-          spacing: 8,
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF9BB8F0),
-              ),
-              child: const Icon(
-                Icons.directions_walk_rounded,
-                size: 40,
-                color: Colors.black87,
-              ),
-            ),
-            Text(l10n.historyTitle),
-          ],
-        ),
+      backgroundColor: Colors.white,
+      appBar: AppTitleBar(
+        title: l10n.historyTitle,
         actions: [
           Builder(
             builder: (shareContext) => IconButton(

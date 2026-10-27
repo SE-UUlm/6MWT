@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/presentation/app_title_bar.dart';
 import '../../l10n/app_localizations.dart';
 
 const Color _primaryBlue = Color(0xFF347FE5);
-const Color _circleBlue = Color(0xFF9BB8F0);
 const Color _textGrey = Color(0xFF2B2B2B);
 const Color _infoBlue = Color(0xFFB9D0F5);
 const Color _titleBlack = Color(0xFF111111);
@@ -73,58 +73,14 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppTitleBar(title: l10n.instructions),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
-
-                // Back - Arrow
-                GestureDetector(
-                  onTap: () => Navigator.of(context).maybePop(),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 20,
-                      color: _titleBlack,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 12),
-
-                // Icon + Titel
-                Row(
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: _circleBlue,
-                      ),
-                      child: const Icon(
-                        Icons.directions_walk_rounded,
-                        size: 26,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Text(
-                      l10n.instructions,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400,
-                        color: _titleBlack,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 55),
+                const SizedBox(height: 24),
 
                 // Page - Content
                 Expanded(

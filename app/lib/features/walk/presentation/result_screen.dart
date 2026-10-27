@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
@@ -316,6 +317,19 @@ class ResultScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppTitleBar(
+        title: l10n.resultTitle,
+        actions: [
+          Builder(
+            builder: (shareContext) => IconButton(
+              onPressed: () {
+                _exportSession(shareContext, ref);
+              },
+              icon: const Icon(Icons.share),
+            ),
+          ),
+        ],
+      ),
 
       body: SafeArea(
         child: SingleChildScrollView(
@@ -323,63 +337,6 @@ class ResultScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              IconButton(
-                onPressed: () => context.pop(),
-                padding: EdgeInsets.zero,
-                alignment: Alignment.centerLeft,
-                constraints: const BoxConstraints(),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 20,
-                  color: Colors.black,
-                ),
-              ),
-
-              const SizedBox(height: 18),
-
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 70,
-                    height: 70,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: circleBlue,
-                    ),
-                    child: const Icon(
-                      Icons.directions_walk_rounded,
-                      size: 50,
-                      color: Colors.black87,
-                    ),
-                  ),
-
-                  const SizedBox(width: 18),
-
-                  Expanded(
-                    child: Text(
-                      l10n.resultTitle,
-                      style: const TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-
-                  Builder(
-                    builder: (shareContext) => IconButton(
-                      onPressed: () {
-                        _exportSession(shareContext, ref);
-                      },
-                      icon: const Icon(Icons.share),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
               Text(
                 l10n.resultIntro,
                 style: const TextStyle(

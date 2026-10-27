@@ -67,7 +67,7 @@ void main() {
   }
 
   Future<void> tapBackArrow(WidgetTester tester) async {
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_new));
+    await tester.pageBack();
     await tester.pumpAndSettle();
   }
 
