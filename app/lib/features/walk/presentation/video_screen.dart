@@ -45,76 +45,78 @@ class _VideoScreenState extends State<VideoScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppTitleBar(title: l10n.video_title),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.video_text,
-                style: TextStyle(
-                  fontSize: 16,
-                  height: 1.25,
-                  color: Colors.black,
+      // The bottom inset is part of the scroll padding instead of a SafeArea,
+      // so content scrolls behind the system navigation. The top inset is
+      // already handled by the app bar.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          28,
+          24,
+          28,
+          30 + MediaQuery.paddingOf(context).bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.video_text,
+              style: TextStyle(fontSize: 16, height: 1.25, color: Colors.black),
+            ),
+
+            const SizedBox(height: 60),
+
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.12),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: YoutubePlayerThumbnail(
+                  controller: _controller,
+                  aspectRatio: 16 / 9,
+                  thumbnailQuality: ThumbnailQuality.high,
+                  thumbnailFormat: ThumbnailFormat.webp,
                 ),
               ),
+            ),
 
-              const SizedBox(height: 60),
+            const SizedBox(height: 190),
 
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.12),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.push('/walk', extra: widget.profileId);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryBlue,
+                  foregroundColor: Colors.white,
+                  elevation: 3,
+                  shadowColor: Colors.black.withValues(alpha: 0.25),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: YoutubePlayerThumbnail(
-                    controller: _controller,
-                    aspectRatio: 16 / 9,
-                    thumbnailQuality: ThumbnailQuality.high,
-                    thumbnailFormat: ThumbnailFormat.webp,
+                child: Text(
+                  AppLocalizations.of(context)!.continueButton,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-
-              const SizedBox(height: 190),
-
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.push('/walk', extra: widget.profileId);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    foregroundColor: Colors.white,
-                    elevation: 3,
-                    shadowColor: Colors.black.withValues(alpha: 0.25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.continueButton,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

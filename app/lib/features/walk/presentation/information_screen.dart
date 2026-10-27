@@ -89,179 +89,179 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppTitleBar(title: l10n.profile_title),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
+      // The bottom inset is part of the scroll padding instead of a SafeArea,
+      // so content scrolls behind the system navigation. The top inset is
+      // already handled by the app bar.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          28,
+          24,
+          28,
+          30 + MediaQuery.paddingOf(context).bottom,
+        ),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.profile_text,
-                style: const TextStyle(
-                  fontSize: 16,
-                  height: 1.15,
-                  color: Colors.black,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.profile_text,
+              style: const TextStyle(
+                fontSize: 16,
+                height: 1.15,
+                color: Colors.black,
               ),
+            ),
 
-              const SizedBox(height: 22),
+            const SizedBox(height: 22),
 
-              Text(
-                l10n.profile_sub1,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            Text(
+              l10n.profile_sub1,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
 
-              const SizedBox(height: 8),
+            const SizedBox(height: 8),
 
-              _InputField(controller: _nameController, hintText: l10n.field1),
+            _InputField(controller: _nameController, hintText: l10n.field1),
 
-              const SizedBox(height: 8),
+            const SizedBox(height: 8),
 
-              _InputField(
-                controller: _ageController,
-                hintText: l10n.field2,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              ),
+            _InputField(
+              controller: _ageController,
+              hintText: l10n.field2,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
 
-              const SizedBox(height: 10),
+            const SizedBox(height: 10),
 
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final halfWidth = (constraints.maxWidth - 10) / 2;
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final halfWidth = (constraints.maxWidth - 10) / 2;
 
-                  return Wrap(
-                    spacing: 10,
-                    runSpacing: 10,
-                    children: [
-                      SizedBox(
-                        width: halfWidth,
-                        child: _GenderButton(
-                          icon: Icons.male,
-                          label: l10n.genderMale,
-                          selected: _selectedGender == Gender.male,
-                          onTap: () {
-                            setState(() {
-                              _selectedGender = Gender.male;
-                            });
-                          },
-                        ),
+                return Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    SizedBox(
+                      width: halfWidth,
+                      child: _GenderButton(
+                        icon: Icons.male,
+                        label: l10n.genderMale,
+                        selected: _selectedGender == Gender.male,
+                        onTap: () {
+                          setState(() {
+                            _selectedGender = Gender.male;
+                          });
+                        },
                       ),
-                      SizedBox(
-                        width: halfWidth,
-                        child: _GenderButton(
-                          icon: Icons.female,
-                          label: l10n.genderFemale,
-                          selected: _selectedGender == Gender.female,
-                          onTap: () {
-                            setState(() {
-                              _selectedGender = Gender.female;
-                            });
-                          },
-                        ),
+                    ),
+                    SizedBox(
+                      width: halfWidth,
+                      child: _GenderButton(
+                        icon: Icons.female,
+                        label: l10n.genderFemale,
+                        selected: _selectedGender == Gender.female,
+                        onTap: () {
+                          setState(() {
+                            _selectedGender = Gender.female;
+                          });
+                        },
                       ),
-                      SizedBox(
-                        width: constraints.maxWidth,
-                        child: _GenderButton(
-                          icon: Icons.circle_outlined,
-                          label: l10n.genderOther,
-                          selected: _selectedGender == Gender.other,
-                          onTap: () {
-                            setState(() {
-                              _selectedGender = Gender.other;
-                            });
-                          },
-                        ),
+                    ),
+                    SizedBox(
+                      width: constraints.maxWidth,
+                      child: _GenderButton(
+                        icon: Icons.circle_outlined,
+                        label: l10n.genderOther,
+                        selected: _selectedGender == Gender.other,
+                        onTap: () {
+                          setState(() {
+                            _selectedGender = Gender.other;
+                          });
+                        },
                       ),
-                    ],
-                  );
-                },
+                    ),
+                  ],
+                );
+              },
+            ),
+
+            const SizedBox(height: 30),
+
+            Text(
+              l10n.profile_sub2,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 8),
+
+            _InputField(
+              controller: _heightController,
+              hintText: l10n.field4,
+              suffixText: 'cm',
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
+
+            const SizedBox(height: 8),
+
+            _InputField(
+              controller: _weightController,
+              hintText: l10n.field5,
+              suffixText: 'kg',
+              inputFormatters: [
+                TextInputFormatter.withFunction((oldValue, newValue) {
+                  return RegExp(r'^\d*([.,]\d*)?$').hasMatch(newValue.text)
+                      ? newValue
+                      : oldValue;
+                }),
+              ],
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
               ),
+            ),
 
-              const SizedBox(height: 30),
+            const SizedBox(height: 30),
 
-              Text(
-                l10n.profile_sub2,
+            Center(
+              child: Text(
+                l10n.profile_footer,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  height: 1.3,
                 ),
               ),
+            ),
 
-              const SizedBox(height: 8),
+            const SizedBox(height: 65),
 
-              _InputField(
-                controller: _heightController,
-                hintText: l10n.field4,
-                suffixText: 'cm',
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              ),
-
-              const SizedBox(height: 8),
-
-              _InputField(
-                controller: _weightController,
-                hintText: l10n.field5,
-                suffixText: 'kg',
-                inputFormatters: [
-                  TextInputFormatter.withFunction((oldValue, newValue) {
-                    return RegExp(r'^\d*([.,]\d*)?$').hasMatch(newValue.text)
-                        ? newValue
-                        : oldValue;
-                  }),
-                ],
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
+            // Continue - Button
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                onPressed: _continue,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryBlue,
+                  foregroundColor: Colors.white,
+                  elevation: 3,
+                  shadowColor: Colors.black.withValues(alpha: 0.25),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
-              ),
-
-              const SizedBox(height: 30),
-
-              Center(
                 child: Text(
-                  l10n.profile_footer,
-                  textAlign: TextAlign.center,
+                  AppLocalizations.of(context)!.continueButton,
                   style: const TextStyle(
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
-                    height: 1.3,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-
-              const SizedBox(height: 65),
-
-              // Continue - Button
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: _continue,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    foregroundColor: Colors.white,
-                    elevation: 3,
-                    shadowColor: Colors.black.withValues(alpha: 0.25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.continueButton,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

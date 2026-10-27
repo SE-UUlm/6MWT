@@ -331,309 +331,312 @@ class ResultScreen extends ConsumerWidget {
         ],
       ),
 
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                l10n.resultIntro,
-                style: const TextStyle(
-                  fontSize: 15,
-                  height: 1.3,
-                  color: Colors.black87,
-                ),
+      // The bottom inset is part of the scroll padding instead of a SafeArea,
+      // so content scrolls behind the system navigation. The top inset is
+      // already handled by the app bar.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          28,
+          24,
+          28,
+          30 + MediaQuery.paddingOf(context).bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              l10n.resultIntro,
+              style: const TextStyle(
+                fontSize: 15,
+                height: 1.3,
+                color: Colors.black87,
               ),
+            ),
 
-              const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(16),
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    l10n.resultPerformance,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+
+                  const SizedBox(height: 14),
+
+                  Text(
+                    percentage == null ? '—' : '${percentage.round()}%',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 46,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  Text(
+                    l10n.resultExpectedDistance,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.black54),
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  _buildPerformanceBar(percentage),
+
+                  const SizedBox(height: 20),
+
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: circleBlue.withValues(alpha: 0.25),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          category,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: primaryBlue,
+                          ),
+                        ),
+
+                        const SizedBox(height: 6),
+
+                        Text(
+                          explanation,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            height: 1.3,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
+            _buildDetailsCard(
+              title: l10n.resultTestDetails,
+              children: [
+                _buildDetailRow(
+                  icon: Icons.swap_horiz_rounded,
+                  label: l10n.resultDistanceWalked,
+                  value: '${formatDecimal(l10n, session.distance, 1)} m',
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Text(
-                      l10n.resultPerformance,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
+
+                _buildDetailRow(
+                  icon: Icons.verified_outlined,
+                  label: l10n.resultDistanceConfidence,
+                  value: formatConfidence(l10n, confidence),
+                  valueColor: confidenceColor(confidence),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.access_time_rounded,
+                  label: l10n.resultTestDuration,
+                  value: durationText,
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.flag_rounded,
+                  label: l10n.resultTestStatus,
+                  value: session.phase == WalkPhase.aborted
+                      ? l10n.resultStoppedEarly
+                      : l10n.resultCompleted,
+                  showDivider: false,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 14),
+            _buildDetailsCard(
+              title: l10n.resultYourProfile,
+              children: [
+                _buildDetailRow(
+                  icon: Icons.person_outline_rounded,
+                  label: l10n.resultName,
+                  value: profile.name ?? '—',
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.cake_outlined,
+                  label: l10n.resultAge,
+                  value: l10n.resultAgeYears(profile.age),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.height_rounded,
+                  label: l10n.resultHeight,
+                  value: l10n.resultHeightCm(profile.height),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.monitor_weight_outlined,
+                  label: l10n.resultWeight,
+                  value: l10n.resultWeightKg(weightText),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.person_outline_rounded,
+                  label: l10n.resultGender,
+                  value: genderLabel,
+                  showDivider: false,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 14),
+
+            comparisonsAsync.when(
+              data: (comparisons) {
+                if (comparisons.isEmpty) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: EstimatorComparisonCard(comparisons: comparisons),
+                );
+              },
+              loading: () => Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l10n.resultDistanceComparison,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    Text(
-                      percentage == null ? '—' : '${percentage.round()}%',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 46,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    Text(
-                      l10n.resultExpectedDistance,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.black54,
-                      ),
-                    ),
-
-                    const SizedBox(height: 22),
-
-                    _buildPerformanceBar(percentage),
-
-                    const SizedBox(height: 20),
-
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      decoration: BoxDecoration(
-                        color: circleBlue.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Column(
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            category,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
+                          const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
                               color: primaryBlue,
                             ),
                           ),
-
-                          const SizedBox(height: 6),
-
+                          const SizedBox(width: 14),
                           Text(
-                            explanation,
-                            textAlign: TextAlign.center,
+                            l10n.resultCalculatingDistanceComparisons,
                             style: const TextStyle(
-                              fontSize: 13,
-                              height: 1.3,
+                              fontSize: 14,
                               color: Colors.black54,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-
-              const SizedBox(height: 14),
-
-              _buildDetailsCard(
-                title: l10n.resultTestDetails,
-                children: [
-                  _buildDetailRow(
-                    icon: Icons.swap_horiz_rounded,
-                    label: l10n.resultDistanceWalked,
-                    value: '${formatDecimal(l10n, session.distance, 1)} m',
+              error: (error, st) => Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red.shade200),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.red.shade50.withValues(alpha: 0.5),
                   ),
-
-                  _buildDetailRow(
-                    icon: Icons.verified_outlined,
-                    label: l10n.resultDistanceConfidence,
-                    value: formatConfidence(l10n, confidence),
-                    valueColor: confidenceColor(confidence),
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.access_time_rounded,
-                    label: l10n.resultTestDuration,
-                    value: durationText,
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.flag_rounded,
-                    label: l10n.resultTestStatus,
-                    value: session.phase == WalkPhase.aborted
-                        ? l10n.resultStoppedEarly
-                        : l10n.resultCompleted,
-                    showDivider: false,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-              _buildDetailsCard(
-                title: l10n.resultYourProfile,
-                children: [
-                  _buildDetailRow(
-                    icon: Icons.person_outline_rounded,
-                    label: l10n.resultName,
-                    value: profile.name ?? '—',
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.cake_outlined,
-                    label: l10n.resultAge,
-                    value: l10n.resultAgeYears(profile.age),
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.height_rounded,
-                    label: l10n.resultHeight,
-                    value: l10n.resultHeightCm(profile.height),
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.monitor_weight_outlined,
-                    label: l10n.resultWeight,
-                    value: l10n.resultWeightKg(weightText),
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.person_outline_rounded,
-                    label: l10n.resultGender,
-                    value: genderLabel,
-                    showDivider: false,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 14),
-
-              comparisonsAsync.when(
-                data: (comparisons) {
-                  if (comparisons.isEmpty) return const SizedBox.shrink();
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 14),
-                    child: EstimatorComparisonCard(comparisons: comparisons),
-                  );
-                },
-                loading: () => Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          l10n.resultDistanceComparison,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.error_outline_rounded,
+                            color: Colors.red.shade700,
+                            size: 22,
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                color: primaryBlue,
-                              ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.resultDistanceComparison,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
                             ),
-                            const SizedBox(width: 14),
-                            Text(
-                              l10n.resultCalculatingDistanceComparisons,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                error: (error, st) => Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.red.shade200),
-                      borderRadius: BorderRadius.circular(16),
-                      color: Colors.red.shade50.withValues(alpha: 0.5),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.error_outline_rounded,
-                              color: Colors.red.shade700,
-                              size: 22,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              l10n.resultDistanceComparison,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          l10n.resultDistanceComparisonFailed,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.red.shade900,
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        l10n.resultDistanceComparisonFailed,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.red.shade900,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+            ),
 
-              Text(
-                l10n.resultDisclaimer,
-                textAlign: TextAlign.center,
+            Text(
+              l10n.resultDisclaimer,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.35,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            OutlinedButton.icon(
+              onPressed: () => _confirmDelete(context, ref),
+              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              label: Text(
+                l10n.deleteSession,
                 style: const TextStyle(
-                  fontSize: 12,
-                  height: 1.35,
-                  color: Colors.black54,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.red,
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              OutlinedButton.icon(
-                onPressed: () => _confirmDelete(context, ref),
-                icon: const Icon(Icons.delete_outline, color: Colors.red),
-                label: Text(
-                  l10n.deleteSession,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.red,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.red,
-                  side: const BorderSide(color: Colors.red),
-                  minimumSize: const Size.fromHeight(54),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.red,
+                side: const BorderSide(color: Colors.red),
+                minimumSize: const Size.fromHeight(54),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -475,20 +475,22 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Transform.translate(
-              offset: const Offset(0, 40),
-              child: Image.asset(
-                'assets/images/walking_image.png',
-                fit: BoxFit.cover,
-              ),
+      // Only the content is inside the SafeArea, so the background image fills
+      // the whole screen.
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Transform.translate(
+            offset: const Offset(0, 40),
+            child: Image.asset(
+              'assets/images/walking_image.png',
+              fit: BoxFit.cover,
             ),
-            Container(color: Colors.white.withValues(alpha: 0.25)),
+          ),
+          Container(color: Colors.white.withValues(alpha: 0.25)),
 
-            Padding(
+          SafeArea(
+            child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
@@ -539,8 +541,8 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
