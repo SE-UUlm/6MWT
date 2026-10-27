@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../l10n/app_localizations.dart';
 import '../domain/estimator_comparison.dart';
 import 'distance_confidence_format.dart';
+import 'number_format.dart';
 
 class EstimatorComparisonCard extends StatelessWidget {
   const EstimatorComparisonCard({super.key, required this.comparisons});
@@ -35,7 +36,7 @@ class EstimatorComparisonCard extends StatelessWidget {
             ),
             Text(
               result.error == null
-                  ? '${result.distance.toStringAsFixed(1)} m'
+                  ? '${formatDecimal(l10n, result.distance, 1)} m'
                   : l10n.comparisonUnavailable(result.error!),
             ),
             if (result.error == null && result.confidence != null)

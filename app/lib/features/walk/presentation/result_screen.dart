@@ -14,6 +14,7 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
 import 'distance_confidence_format.dart';
+import 'number_format.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 
@@ -481,7 +482,7 @@ class ResultScreen extends ConsumerWidget {
                   _buildDetailRow(
                     icon: Icons.swap_horiz_rounded,
                     label: l10n.resultDistanceWalked,
-                    value: '${session.distance.toStringAsFixed(1)} m',
+                    value: '${formatDecimal(l10n, session.distance, 1)} m',
                   ),
 
                   _buildDetailRow(

@@ -17,6 +17,7 @@ import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
+import 'number_format.dart';
 
 final _log = appLogger('WalkScreen');
 
@@ -379,7 +380,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     child: _InfoCard(
                       icon: Icons.swap_horiz_rounded,
                       title: l10n.walk_idstance,
-                      value: '${state.distance.toStringAsFixed(1)} m',
+                      value: '${formatDecimal(l10n, state.distance, 1)} m',
                     ),
                   ),
 
@@ -421,7 +422,11 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                           '${longitude?.toStringAsFixed(6) ?? '-'}',
                 subtitle: lastPosition == null
                     ? l10n.walkWaitingForGps
-                    : l10n.walkAccuracy(accuracy?.toStringAsFixed(1) ?? '-'),
+                    : l10n.walkAccuracy(
+                        accuracy == null
+                            ? '-'
+                            : formatDecimal(l10n, accuracy, 1),
+                      ),
                 showArrow: true,
               ),
 
