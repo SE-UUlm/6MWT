@@ -10,8 +10,8 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_es
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../../helpers/localized_app.dart';
 
 class DelayedStopSession extends WalkSession {
   DelayedStopSession()
@@ -47,15 +47,8 @@ void main() {
               databaseProvider.overrideWithValue(db),
               walkSessionProvider.overrideWithValue(session),
             ],
-            child: MaterialApp(
+            child: localizedApp(
               locale: const Locale('en'),
-              supportedLocales: const [Locale('de'), Locale('en')],
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
               home: const WalkScreen(profileId: 1),
             ),
           ),

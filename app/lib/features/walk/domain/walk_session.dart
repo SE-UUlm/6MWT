@@ -13,6 +13,15 @@ import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');
 
+class WalkError {
+  const WalkError(this.issue, this.detail);
+
+  final SensorIssue issue;
+
+  // Technical description, e.g. the exception text; not translated.
+  final String detail;
+}
+
 // Immutable snapshot of a walk test at one point in time.
 class WalkSessionState {
   const WalkSessionState({
@@ -22,7 +31,7 @@ class WalkSessionState {
     this.confidence,
     this.comparisons = const [],
     this.lastSamples = const {},
-    this.errorMessage,
+    this.error,
     this.sessionId,
     this.startedAt,
   });
@@ -38,7 +47,7 @@ class WalkSessionState {
   // Latest sample per sample type, for display purposes.
   final Map<SampleType, SensorSample> lastSamples;
 
-  final String? errorMessage;
+  final WalkError? error;
 
   // Set while a test is running or after it ended; links the recorded raw
   // samples and the stored result to this run.
@@ -156,7 +165,7 @@ class WalkSession {
         WalkSessionState(
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
-          errorMessage: exception.toString(),
+          error: _errorOf(exception),
         ),
       );
     }
@@ -220,7 +229,7 @@ class WalkSession {
         WalkSessionState(
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
-          errorMessage: exception.toString(),
+          error: _errorOf(exception),
         ),
       );
       return;
@@ -362,6 +371,13 @@ class WalkSession {
     );
   }
 
+  static WalkError _errorOf(Exception exception) => WalkError(
+    exception is SensorUnavailableException
+        ? exception.issue
+        : SensorIssue.unavailable,
+    exception.toString(),
+  );
+
   void _onSampleError(Object error) {
     _log.w('Sample error', error: error);
 
@@ -379,7 +395,7 @@ class WalkSession {
         distance: _state.distance,
         confidence: _state.confidence,
         lastSamples: _state.lastSamples,
-        errorMessage: 'Sensor error: $error',
+        error: WalkError(SensorIssue.streamError, error.toString()),
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),

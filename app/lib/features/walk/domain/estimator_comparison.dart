@@ -6,6 +6,7 @@ class EstimatorComparison {
   EstimatorComparison({
     required this.name,
     required this.distance,
+    this.isPrimary = false,
     Map<String, String> additionalInfo = const {},
     this.confidence,
     this.error,
@@ -22,8 +23,9 @@ class EstimatorComparison {
       throw StateError('Invalid calculated distance: $distance');
     }
     return EstimatorComparison(
-      name: displayName(estimator, primary: primary),
+      name: estimator.name,
       distance: distance,
+      isPrimary: primary,
       additionalInfo: estimator.additionalInfo,
       confidence: estimator.confidence,
     );
@@ -35,18 +37,17 @@ class EstimatorComparison {
     Object error, {
     bool primary = false,
   }) : this(
-         name: displayName(estimator, primary: primary),
+         name: estimator.name,
          distance: 0,
+         isPrimary: primary,
          error: error.toString(),
        );
 
-  static String displayName(
-    DistanceEstimator estimator, {
-    bool primary = false,
-  }) => primary ? 'Main (${estimator.name})' : estimator.name;
-
   final String name;
   final double distance;
+
+  /// Whether this is the estimator that drives the session distance.
+  final bool isPrimary;
   final Map<String, String> additionalInfo;
   final DistanceConfidence? confidence;
   final String? error;

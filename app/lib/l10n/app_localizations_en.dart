@@ -16,15 +16,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Standardized assessment of functional exercise capacity';
 
   @override
-  String get appProfile => 'Set up patient profile';
-
-  @override
-  String get appCountdown => '6-minute countdown';
-
-  @override
-  String get appResult => 'Results and measurements';
-
-  @override
   String get home_walk => 'Walk';
 
   @override
@@ -91,9 +82,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get instructions_2_text =>
       'The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.';
-
-  @override
-  String get instructions_3_welc => 'Personal information';
 
   @override
   String get instructions_3_text =>
@@ -208,9 +196,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.';
 
   @override
-  String get walk_info => 'Please go as far as possible in 6 minutes.';
-
-  @override
   String get walk_idstance => 'Distance';
 
   @override
@@ -220,9 +205,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walk_assessment => 'Assessment';
 
   @override
-  String get walk_start => 'Not started';
-
-  @override
   String get walk_position => 'Current Position';
 
   @override
@@ -230,12 +212,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walk_profile => 'Profile';
-
-  @override
-  String get walk_test_start => 'Start Test';
-
-  @override
-  String get walk_reset => 'Reset';
 
   @override
   String get walkPleaseGoFar => 'Please go as far as possible in 6 minutes.';
@@ -290,14 +266,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get walkOfExpectedDistance => 'of expected distance';
-
-  @override
-  String get walkStartTestButton => 'Start Test';
-
-  @override
-  String walkDistanceUnit(String distance) {
-    return '$distance m';
-  }
 
   @override
   String get aboutTitle => 'About the app';
@@ -477,5 +445,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String historyExportFailed(String error) {
     return 'Export failed: $error';
+  }
+
+  @override
+  String historyLoadFailed(String error) {
+    return 'Error: $error';
+  }
+
+  @override
+  String get instructions_3_heading => 'Personal data';
+
+  @override
+  String get confidenceHigh => 'High';
+
+  @override
+  String get confidenceMedium => 'Medium';
+
+  @override
+  String get confidenceLow => 'Low';
+
+  @override
+  String comparisonConfidence(String value) {
+    return 'Confidence: $value';
+  }
+
+  @override
+  String comparisonUnavailable(String error) {
+    return 'Estimator unavailable: $error';
+  }
+
+  @override
+  String estimatorMain(String name) {
+    return 'Main ($name)';
+  }
+
+  @override
+  String get fitnessReducedPhysicalPerformance =>
+      'Reduced physical performance';
+
+  @override
+  String get fitnessLowNormal => 'Low normal';
+
+  @override
+  String get fitnessNormalPopulationMean => 'Population mean';
+
+  @override
+  String get fitnessHighNormal => 'High normal';
+
+  @override
+  String get fitnessTopPerformance => 'Top performance';
+
+  @override
+  String get walkErrorLocation => 'Location permission denied or GPS disabled';
+
+  @override
+  String get walkErrorActivityRecognition =>
+      'Activity recognition permission denied';
+
+  @override
+  String walkErrorSensorUnavailable(String error) {
+    return 'Could not start the sensors: $error';
+  }
+
+  @override
+  String walkErrorSensor(String error) {
+    return 'Sensor error: $error';
   }
 }

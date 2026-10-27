@@ -110,24 +110,6 @@ abstract class AppLocalizations {
   /// **'Standardisierte Beurteilung der funktionellen Belastbarkeit'**
   String get appSubTitle;
 
-  /// No description provided for @appProfile.
-  ///
-  /// In de, this message translates to:
-  /// **'Patientenprofil einrichten'**
-  String get appProfile;
-
-  /// No description provided for @appCountdown.
-  ///
-  /// In de, this message translates to:
-  /// **'6-Minuten-Countdown'**
-  String get appCountdown;
-
-  /// No description provided for @appResult.
-  ///
-  /// In de, this message translates to:
-  /// **'Ergebnisse und Messwerte'**
-  String get appResult;
-
   /// No description provided for @home_walk.
   ///
   /// In de, this message translates to:
@@ -259,12 +241,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.'**
   String get instructions_2_text;
-
-  /// No description provided for @instructions_3_welc.
-  ///
-  /// In de, this message translates to:
-  /// **'Personenbezogene Daten'**
-  String get instructions_3_welc;
 
   /// No description provided for @instructions_3_text.
   ///
@@ -464,12 +440,6 @@ abstract class AppLocalizations {
   /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
   String get video_text;
 
-  /// No description provided for @walk_info.
-  ///
-  /// In de, this message translates to:
-  /// **'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.'**
-  String get walk_info;
-
   /// No description provided for @walk_idstance.
   ///
   /// In de, this message translates to:
@@ -488,12 +458,6 @@ abstract class AppLocalizations {
   /// **'Bewertung'**
   String get walk_assessment;
 
-  /// No description provided for @walk_start.
-  ///
-  /// In de, this message translates to:
-  /// **'Noch nicht gestartet'**
-  String get walk_start;
-
   /// No description provided for @walk_position.
   ///
   /// In de, this message translates to:
@@ -511,18 +475,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Profil'**
   String get walk_profile;
-
-  /// No description provided for @walk_test_start.
-  ///
-  /// In de, this message translates to:
-  /// **'Test starten'**
-  String get walk_test_start;
-
-  /// No description provided for @walk_reset.
-  ///
-  /// In de, this message translates to:
-  /// **'Zurücksetzen'**
-  String get walk_reset;
 
   /// No description provided for @walkPleaseGoFar.
   ///
@@ -619,18 +571,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'der erwarteten Gehstrecke'**
   String get walkOfExpectedDistance;
-
-  /// No description provided for @walkStartTestButton.
-  ///
-  /// In de, this message translates to:
-  /// **'Test starten'**
-  String get walkStartTestButton;
-
-  /// No description provided for @walkDistanceUnit.
-  ///
-  /// In de, this message translates to:
-  /// **'{distance} m'**
-  String walkDistanceUnit(String distance);
 
   /// No description provided for @aboutTitle.
   ///
@@ -949,6 +889,108 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Export fehlgeschlagen: {error}'**
   String historyExportFailed(String error);
+
+  /// No description provided for @historyLoadFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Fehler: {error}'**
+  String historyLoadFailed(String error);
+
+  /// No description provided for @instructions_3_heading.
+  ///
+  /// In de, this message translates to:
+  /// **'Persönliche Daten'**
+  String get instructions_3_heading;
+
+  /// No description provided for @confidenceHigh.
+  ///
+  /// In de, this message translates to:
+  /// **'Hoch'**
+  String get confidenceHigh;
+
+  /// No description provided for @confidenceMedium.
+  ///
+  /// In de, this message translates to:
+  /// **'Mittel'**
+  String get confidenceMedium;
+
+  /// No description provided for @confidenceLow.
+  ///
+  /// In de, this message translates to:
+  /// **'Niedrig'**
+  String get confidenceLow;
+
+  /// No description provided for @comparisonConfidence.
+  ///
+  /// In de, this message translates to:
+  /// **'Zuverlässigkeit: {value}'**
+  String comparisonConfidence(String value);
+
+  /// No description provided for @comparisonUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Streckenschätzer nicht verfügbar: {error}'**
+  String comparisonUnavailable(String error);
+
+  /// No description provided for @estimatorMain.
+  ///
+  /// In de, this message translates to:
+  /// **'Haupt ({name})'**
+  String estimatorMain(String name);
+
+  /// No description provided for @fitnessReducedPhysicalPerformance.
+  ///
+  /// In de, this message translates to:
+  /// **'Verminderte körperliche Leistungs­fähigkeit'**
+  String get fitnessReducedPhysicalPerformance;
+
+  /// No description provided for @fitnessLowNormal.
+  ///
+  /// In de, this message translates to:
+  /// **'Niedrig-normal'**
+  String get fitnessLowNormal;
+
+  /// No description provided for @fitnessNormalPopulationMean.
+  ///
+  /// In de, this message translates to:
+  /// **'Bevölkerungs­durchschnitt'**
+  String get fitnessNormalPopulationMean;
+
+  /// No description provided for @fitnessHighNormal.
+  ///
+  /// In de, this message translates to:
+  /// **'Hoch-normal'**
+  String get fitnessHighNormal;
+
+  /// No description provided for @fitnessTopPerformance.
+  ///
+  /// In de, this message translates to:
+  /// **'Spitzenleistung'**
+  String get fitnessTopPerformance;
+
+  /// No description provided for @walkErrorLocation.
+  ///
+  /// In de, this message translates to:
+  /// **'Standortberechtigung verweigert oder GPS deaktiviert'**
+  String get walkErrorLocation;
+
+  /// No description provided for @walkErrorActivityRecognition.
+  ///
+  /// In de, this message translates to:
+  /// **'Berechtigung zur Aktivitätserkennung verweigert'**
+  String get walkErrorActivityRecognition;
+
+  /// No description provided for @walkErrorSensorUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Sensoren konnten nicht gestartet werden: {error}'**
+  String walkErrorSensorUnavailable(String error);
+
+  /// No description provided for @walkErrorSensor.
+  ///
+  /// In de, this message translates to:
+  /// **'Sensorfehler: {error}'**
+  String walkErrorSensor(String error);
 }
 
 class _AppLocalizationsDelegate

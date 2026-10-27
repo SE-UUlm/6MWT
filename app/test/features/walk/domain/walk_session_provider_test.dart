@@ -1,35 +1,17 @@
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
-import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
-// ---------------------------------------------------------------------------
-// Test doubles (same as walk_session_test.dart)
-// ---------------------------------------------------------------------------
-
-class FakeSensorSource extends SensorSource {
-  final StreamController<SensorSample> controller =
-      StreamController<SensorSample>.broadcast();
-
-  @override
-  String get sourceId => 'fake';
-  @override
-  Stream<SensorSample> get samples => controller.stream;
-  @override
-  Future<void> start() async {}
-  @override
-  Future<void> stop() async {}
-}
+import '../../../helpers/fake_sensors.dart';
 
 SensorSample _position(double lat, double lng) => SensorSample(
   timestamp: DateTime.now(),

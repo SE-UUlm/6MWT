@@ -9,7 +9,8 @@ import 'package:six_minute_walk_test/app/router.dart';
 import 'package:six_minute_walk_test/core/domain/app_info.dart';
 import 'package:six_minute_walk_test/features/about/about_screen.dart';
 import 'package:six_minute_walk_test/features/home/home_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../helpers/localized_app.dart';
 
 const buildInfo = AppInfo(
   version: '2.1.0',
@@ -42,10 +43,8 @@ void main() {
             (ref) => load?.call() ?? Future.value(buildInfo),
           ),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: Locale(language),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(
               context,
@@ -67,12 +66,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [appInfoProvider.overrideWith((ref) async => buildInfo)],
-        child: MaterialApp.router(
-          routerConfig: router,
-          locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
+        child: localizedRouterApp(router: router, locale: const Locale('en')),
       ),
     );
     await tester.pumpAndSettle();

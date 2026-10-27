@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../domain/estimators/distance_confidence.dart';
 
-String formatConfidence(DistanceConfidence? confidence) {
+String formatConfidence(AppLocalizations l10n, DistanceConfidence? confidence) {
   if (confidence == null) return '—';
   final label = switch (confidence.level) {
-    ConfidenceLevel.high => 'High',
-    ConfidenceLevel.medium => 'Medium',
-    ConfidenceLevel.low => 'Low',
+    ConfidenceLevel.high => l10n.confidenceHigh,
+    ConfidenceLevel.medium => l10n.confidenceMedium,
+    ConfidenceLevel.low => l10n.confidenceLow,
   };
   return '$label (${confidence.percent} %)';
 }

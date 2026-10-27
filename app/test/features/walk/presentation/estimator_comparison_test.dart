@@ -20,9 +20,9 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/estimator_comparison_card.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
-import '../domain/walk_session_test.dart' show InitialSampleFakeSensorSource;
+import '../../../helpers/fake_sensors.dart';
+import '../../../helpers/localized_app.dart';
 
 final profile = Profile(
   id: 1,
@@ -91,11 +91,7 @@ void main() {
               TestProfileRepository(db),
             ),
           ],
-          child: MaterialApp.router(
-            routerConfig: router,
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-          ),
+          child: localizedRouterApp(router: router),
         ),
       );
       await tester.pumpAndSettle();
@@ -179,10 +175,8 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [databaseProvider.overrideWithValue(db)],
-        child: MaterialApp(
+        child: localizedApp(
           locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           home: ResultScreen(session: emptySession),
         ),
       ),
@@ -197,7 +191,8 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(
+      localizedApp(
+        locale: const Locale('en'),
         home: Scaffold(
           body: SingleChildScrollView(
             child: EstimatorComparisonCard(
@@ -340,10 +335,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [databaseProvider.overrideWithValue(db)],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(session: session),
           ),
         ),

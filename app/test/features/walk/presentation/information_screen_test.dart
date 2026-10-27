@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/information_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../../helpers/localized_app.dart';
 
 void main() {
   late AppDatabase db;
@@ -37,12 +38,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [databaseProvider.overrideWithValue(db)],
-        child: MaterialApp.router(
-          routerConfig: router,
-          locale: const Locale('de'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
+        child: localizedRouterApp(router: router, locale: const Locale('de')),
       ),
     );
     await tester.pumpAndSettle();

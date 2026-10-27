@@ -15,7 +15,8 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_es
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../../helpers/localized_app.dart';
 
 void main() {
   for (final (gender, label, weight, weightLabel) in [
@@ -31,10 +32,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [databaseProvider.overrideWithValue(db)],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('de'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(
               session: WalkSessionWithProfile(
                 session: WalkSessionRow(
@@ -101,10 +100,8 @@ void main() {
             (ref) => Completer<List<EstimatorComparison>>().future,
           ),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           home: ResultScreen(session: testSession),
         ),
       ),
@@ -139,10 +136,8 @@ void main() {
             ],
           ),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           home: ResultScreen(session: testSession),
         ),
       ),
@@ -188,10 +183,8 @@ void main() {
             ],
           ),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           home: ResultScreen(session: stored),
         ),
       ),
@@ -230,10 +223,8 @@ void main() {
               gender: testSession.profile.gender.name,
             ).overrideWith((ref) async => const []),
           ],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(
               session: WalkSessionWithProfile(
                 session: testSession.session.copyWith(phase: phase),
@@ -267,10 +258,8 @@ void main() {
             throw StateError('Simulated calculation error');
           }),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           home: ResultScreen(session: testSession),
         ),
       ),
@@ -291,10 +280,8 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [databaseProvider.overrideWithValue(db)],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(session: testSession),
           ),
         ),
@@ -333,10 +320,8 @@ void main() {
             databaseProvider.overrideWithValue(db),
             walkSessionRepositoryProvider.overrideWithValue(repo),
           ],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(session: testSession),
           ),
         ),
@@ -391,10 +376,8 @@ void main() {
               databaseProvider.overrideWithValue(db),
               walkSessionRepositoryProvider.overrideWithValue(repo),
             ],
-            child: MaterialApp(
+            child: localizedApp(
               locale: const Locale('en'),
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
               home: ResultScreen(session: testSession),
             ),
           ),
@@ -443,10 +426,8 @@ void main() {
             walkSessionRepositoryProvider.overrideWithValue(repo),
             walkSessionProvider.overrideWithValue(runningSession),
           ],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(session: testSession),
           ),
         ),
@@ -475,10 +456,8 @@ void main() {
             walkSessionRepositoryProvider.overrideWithValue(repo),
             walkSessionProvider.overrideWithValue(runningSession),
           ],
-          child: MaterialApp(
+          child: localizedApp(
             locale: const Locale('en'),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
             home: ResultScreen(session: activeResultSession),
           ),
         ),

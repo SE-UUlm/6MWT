@@ -16,15 +16,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standardisierte Beurteilung der funktionellen Belastbarkeit';
 
   @override
-  String get appProfile => 'Patientenprofil einrichten';
-
-  @override
-  String get appCountdown => '6-Minuten-Countdown';
-
-  @override
-  String get appResult => 'Ergebnisse und Messwerte';
-
-  @override
   String get home_walk => 'Gehen';
 
   @override
@@ -91,9 +82,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get instructions_2_text =>
       'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.';
-
-  @override
-  String get instructions_3_welc => 'Personenbezogene Daten';
 
   @override
   String get instructions_3_text =>
@@ -208,10 +196,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
 
   @override
-  String get walk_info =>
-      'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.';
-
-  @override
   String get walk_idstance => 'Distanz';
 
   @override
@@ -221,9 +205,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_assessment => 'Bewertung';
 
   @override
-  String get walk_start => 'Noch nicht gestartet';
-
-  @override
   String get walk_position => 'Aktuelle Position';
 
   @override
@@ -231,12 +212,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walk_profile => 'Profil';
-
-  @override
-  String get walk_test_start => 'Test starten';
-
-  @override
-  String get walk_reset => 'Zurücksetzen';
 
   @override
   String get walkPleaseGoFar =>
@@ -293,14 +268,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walkOfExpectedDistance => 'der erwarteten Gehstrecke';
-
-  @override
-  String get walkStartTestButton => 'Test starten';
-
-  @override
-  String walkDistanceUnit(String distance) {
-    return '$distance m';
-  }
 
   @override
   String get aboutTitle => 'Über die App';
@@ -480,5 +447,71 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String historyExportFailed(String error) {
     return 'Export fehlgeschlagen: $error';
+  }
+
+  @override
+  String historyLoadFailed(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get instructions_3_heading => 'Persönliche Daten';
+
+  @override
+  String get confidenceHigh => 'Hoch';
+
+  @override
+  String get confidenceMedium => 'Mittel';
+
+  @override
+  String get confidenceLow => 'Niedrig';
+
+  @override
+  String comparisonConfidence(String value) {
+    return 'Zuverlässigkeit: $value';
+  }
+
+  @override
+  String comparisonUnavailable(String error) {
+    return 'Streckenschätzer nicht verfügbar: $error';
+  }
+
+  @override
+  String estimatorMain(String name) {
+    return 'Haupt ($name)';
+  }
+
+  @override
+  String get fitnessReducedPhysicalPerformance =>
+      'Verminderte körperliche Leistungs­fähigkeit';
+
+  @override
+  String get fitnessLowNormal => 'Niedrig-normal';
+
+  @override
+  String get fitnessNormalPopulationMean => 'Bevölkerungs­durchschnitt';
+
+  @override
+  String get fitnessHighNormal => 'Hoch-normal';
+
+  @override
+  String get fitnessTopPerformance => 'Spitzenleistung';
+
+  @override
+  String get walkErrorLocation =>
+      'Standortberechtigung verweigert oder GPS deaktiviert';
+
+  @override
+  String get walkErrorActivityRecognition =>
+      'Berechtigung zur Aktivitätserkennung verweigert';
+
+  @override
+  String walkErrorSensorUnavailable(String error) {
+    return 'Sensoren konnten nicht gestartet werden: $error';
+  }
+
+  @override
+  String walkErrorSensor(String error) {
+    return 'Sensorfehler: $error';
   }
 }

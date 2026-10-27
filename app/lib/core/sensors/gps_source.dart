@@ -35,6 +35,7 @@ class GpsSource implements SensorSource {
       _log.e('Location permission denied or GPS disabled');
       throw const SensorUnavailableException(
         'Location permission denied or GPS disabled',
+        issue: SensorIssue.locationUnavailable,
       );
     }
 

@@ -94,7 +94,8 @@ class HistoryScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Fehler: $err')),
+        error: (err, stack) =>
+            Center(child: Text(l10n.historyLoadFailed(err.toString()))),
       ),
     );
   }
@@ -106,9 +107,13 @@ class HistoryScreen extends ConsumerWidget {
           .shareAllSessions(context: context);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.historyExportFailed(e.toString()),
+            ),
+          ),
+        );
       }
     }
   }
@@ -137,10 +142,10 @@ extension RelativeDateTimeExtension on DateTime {
       return '${l10n.historyYesterday}, $timeString';
     } else if (dateToCompare.year == now.year) {
       // z. B. "12. Mai, 14:50"
-      return DateFormat('d. MMM, ', locale).format(local) + timeString;
+      return '${DateFormat.MMMd(locale).format(local)}, $timeString';
     } else {
       // z. B. "12.05.2023, 14:50"
-      return DateFormat('dd.MM.yyyy, ', locale).format(local) + timeString;
+      return '${DateFormat.yMd(locale).format(local)}, $timeString';
     }
   }
 }

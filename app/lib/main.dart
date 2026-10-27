@@ -19,11 +19,15 @@ Future<void> main() async {
     );
     FlutterError.presentError(details);
   };
+
   PlatformDispatcher.instance.onError = (error, stack) {
     _log.e('Uncaught error', error: error, stackTrace: stack);
     return false;
   };
+
   _log.i('App starting');
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   runApp(const ProviderScope(child: SixMinuteWalkApp()));
 }

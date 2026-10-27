@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../domain/estimator_comparison.dart';
 import 'distance_confidence_format.dart';
+import 'number_format.dart';
 
 class EstimatorComparisonCard extends StatelessWidget {
   const EstimatorComparisonCard({super.key, required this.comparisons});
@@ -10,6 +12,7 @@ class EstimatorComparisonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     if (comparisons.isEmpty) return const SizedBox.shrink();
 
     return Container(
@@ -21,24 +24,26 @@ class EstimatorComparisonCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Distance comparison',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+          Text(
+            l10n.resultDistanceComparison,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           ),
           for (final result in comparisons) ...[
             const SizedBox(height: 12),
             Text(
-              result.name,
+              _estimatorLabel(l10n, result),
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),
             Text(
               result.error == null
-                  ? '${result.distance.toStringAsFixed(1)} m'
-                  : 'Estimator unavailable: ${result.error}',
+                  ? '${formatDecimal(l10n, result.distance, 1)} m'
+                  : l10n.comparisonUnavailable(result.error!),
             ),
             if (result.error == null && result.confidence != null)
               Text(
-                'Confidence: ${formatConfidence(result.confidence)}',
+                l10n.comparisonConfidence(
+                  formatConfidence(l10n, result.confidence),
+                ),
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -57,3 +62,7 @@ class EstimatorComparisonCard extends StatelessWidget {
     );
   }
 }
+
+// Estimator names are technical terms and stay untranslated.
+String _estimatorLabel(AppLocalizations l10n, EstimatorComparison result) =>
+    result.isPrimary ? l10n.estimatorMain(result.name) : result.name;

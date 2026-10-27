@@ -8,13 +8,11 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/adaptive_gps_step_distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimator_comparison.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
-import 'walk_session_test.dart'
-    show InitialSampleFakeSensorSource, RecordingSink;
+import '../../../helpers/fake_sensors.dart';
 import 'kalman_gps_distance_estimator_test.dart' as kalman;
 import 'calibrated_step_distance_estimator_test.dart' as calibration;
 
@@ -271,9 +269,10 @@ void main() {
       session.start();
       async.flushMicrotasks();
       expect(session.state.comparisons.map((c) => c.name), [
-        'Main (GPS + steps)',
+        'GPS + steps',
         'Steps',
       ]);
+      expect(session.state.comparisons.map((c) => c.isPrimary), [true, false]);
       source.controller.add(steps(100));
       async.flushMicrotasks();
       final main = session.state.comparisons.first;
@@ -295,10 +294,6 @@ void main() {
     expect(RecordingEstimator(1).name, 'RecordingEstimator');
     expect(RecordingEstimator(1, name: 'Custom').name, 'Custom');
     expect(GpsDistanceEstimator().name, 'Plain GPS');
-    expect(
-      EstimatorComparison.displayName(GpsDistanceEstimator(), primary: true),
-      'Main (Plain GPS)',
-    );
   });
 
   test('comparison-only changes do not trigger persisted saves', () {

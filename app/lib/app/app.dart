@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import 'router.dart';
 import '../features/walk/presentation/walk_session_lifecycle.dart';
+
+/// Used when the device language is not supported by the app.
+const fallbackLocale = Locale('en');
 
 class SixMinuteWalkApp extends StatelessWidget {
   const SixMinuteWalkApp({super.key, this.locale});
@@ -19,25 +21,12 @@ class SixMinuteWalkApp extends StatelessWidget {
 
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
 
-      supportedLocales: const [Locale('de'), Locale('en')],
-
-      // Rest deiner bisherigen Konfiguration bleibt unverändert
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+      // Flutter falls back to the first supported locale.
+      supportedLocales: [
+        fallbackLocale,
+        ...AppLocalizations.supportedLocales.where((l) => l != fallbackLocale),
       ],
-
-      localeResolutionCallback: (locale, supportedLocales) {
-        for (final supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale?.languageCode) {
-            return supportedLocale;
-          }
-        }
-
-        return const Locale('de');
-      },
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
 
       routerConfig: router,
       builder: (context, child) =>

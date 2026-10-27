@@ -3,9 +3,6 @@
 
   "appTitle": "6-Minuten-Gehtest",
   "appSubTitle": "Standardisierte Beurteilung der funktionellen Belastbarkeit",
-  "appProfile": "Patientenprofil einrichten",
-  "appCountdown": "6-Minuten-Countdown",
-  "appResult": "Ergebnisse und Messwerte",
 
   "home_walk": "Gehen",
   "home_walksb": "So weit wie möglich in 6 Minuten gehen",
@@ -33,7 +30,6 @@
   "bulletPoint_4": "Ergebnisse",
   "instructions_2_text": "Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.",
 
-  "instructions_3_welc": "Personenbezogene Daten",
   "instructions_3_text": "Für eine möglichst präzise Analyse benötigen wir einige Angaben wie Alter, Körpergröße, Gewicht und Geschlecht. Diese Daten dienen dazu, Ihre Ergebnisse besser einordnen zu können.",
 
   "instructions_4_welc": "Während des Tests",
@@ -74,16 +70,12 @@
   "video_title": "Testvorbereitung",
   "video_text": "Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.",
 
-  "walk_info": "Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.",
   "walk_idstance": "Distanz",
   "walk_status": "Status",
   "walk_assessment": "Bewertung",
-  "walk_start": "Noch nicht gestartet",
   "walk_position": "Aktuelle Position",
   "walk_duration": "Dauer",
   "walk_profile": "Profil",
-  "walk_test_start": "Test starten",
-  "walk_reset": "Zurücksetzen",
 
   "walkPleaseGoFar": "Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.",
   "walkNotStarted": "Noch nicht gestartet",
@@ -122,15 +114,6 @@
     }
   },
   "walkOfExpectedDistance": "der erwarteten Gehstrecke",
-  "walkStartTestButton": "Test starten",
-  "walkDistanceUnit": "{distance} m",
-  "@walkDistanceUnit": {
-    "placeholders": {
-      "distance": {
-        "type": "String"
-      }
-    }
-  },
 
   "aboutTitle": "Über die App",
   "aboutProject": "Diese 6MWT-App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.",
@@ -224,6 +207,65 @@
   "historyYesterday": "Gestern",
   "historyExportFailed": "Export fehlgeschlagen: {error}",
   "@historyExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "historyLoadFailed": "Fehler: {error}",
+  "@historyLoadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instructions_3_heading": "Persönliche Daten",
+  "confidenceHigh": "Hoch",
+  "confidenceMedium": "Mittel",
+  "confidenceLow": "Niedrig",
+  "comparisonConfidence": "Zuverlässigkeit: {value}",
+  "@comparisonConfidence": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "comparisonUnavailable": "Streckenschätzer nicht verfügbar: {error}",
+  "@comparisonUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatorMain": "Haupt ({name})",
+  "@estimatorMain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fitnessReducedPhysicalPerformance": "Verminderte körperliche Leistungs\u00adfähigkeit",
+  "fitnessLowNormal": "Niedrig-normal",
+  "fitnessNormalPopulationMean": "Bevölkerungs\u00addurchschnitt",
+  "fitnessHighNormal": "Hoch-normal",
+  "fitnessTopPerformance": "Spitzenleistung",
+  "walkErrorLocation": "Standortberechtigung verweigert oder GPS deaktiviert",
+  "walkErrorActivityRecognition": "Berechtigung zur Aktivitätserkennung verweigert",
+  "walkErrorSensorUnavailable": "Sensoren konnten nicht gestartet werden: {error}",
+  "@walkErrorSensorUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "walkErrorSensor": "Sensorfehler: {error}",
+  "@walkErrorSensor": {
     "placeholders": {
       "error": {
         "type": "String"
