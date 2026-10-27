@@ -271,6 +271,14 @@
   "fitnessTopPerformance": "Spitzenleistung",
   "walkErrorLocation": "Standortberechtigung verweigert oder GPS deaktiviert",
   "walkErrorActivityRecognition": "Berechtigung zur Aktivitätserkennung verweigert",
+  "walkErrorSensorUnavailable": "Sensoren konnten nicht gestartet werden: {error}",
+  "@walkErrorSensorUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "walkErrorSensor": "Sensorfehler: {error}",
   "@walkErrorSensor": {
     "placeholders": {

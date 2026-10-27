@@ -271,6 +271,14 @@
   "fitnessTopPerformance": "Top performance",
   "walkErrorLocation": "Location permission denied or GPS disabled",
   "walkErrorActivityRecognition": "Activity recognition permission denied",
+  "walkErrorSensorUnavailable": "Could not start the sensors: {error}",
+  "@walkErrorSensorUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
   "walkErrorSensor": "Sensor error: {error}",
   "@walkErrorSensor": {
     "placeholders": {

@@ -3,6 +3,7 @@ import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
@@ -61,7 +62,8 @@ void main() {
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.idle);
-      expect(session.state.errorMessage, 'sensor unavailable');
+      expect(session.state.error?.issue, SensorIssue.unavailable);
+      expect(session.state.error?.detail, 'sensor unavailable');
     });
   });
 
@@ -352,7 +354,7 @@ void main() {
       async.flushMicrotasks();
 
       expect(session.state.phase, WalkPhase.running);
-      expect(session.state.errorMessage, isNull);
+      expect(session.state.error, isNull);
     });
   });
 

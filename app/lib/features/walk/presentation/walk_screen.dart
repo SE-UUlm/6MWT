@@ -9,6 +9,7 @@ import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
@@ -90,17 +91,17 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   static const Color circleBlue = Color(0xFF9BB8F0);
 
   String _statusMessage(WalkSessionState state, AppLocalizations l10n) {
-    final errorMessage = state.errorMessage;
+    final error = state.error;
 
-    if (errorMessage != null) {
-      return switch (state.errorIssue) {
-        WalkErrorIssue.locationUnavailable => l10n.walkErrorLocation,
-        WalkErrorIssue.activityRecognitionDenied =>
+    if (error != null) {
+      return switch (error.issue) {
+        SensorIssue.locationUnavailable => l10n.walkErrorLocation,
+        SensorIssue.activityRecognitionDenied =>
           l10n.walkErrorActivityRecognition,
-        WalkErrorIssue.sensorError => l10n.walkErrorSensor(
-          errorMessage.replaceFirst('Sensor error: ', ''),
+        SensorIssue.unavailable => l10n.walkErrorSensorUnavailable(
+          error.detail,
         ),
-        null => errorMessage,
+        SensorIssue.streamError => l10n.walkErrorSensor(error.detail),
       };
     }
 

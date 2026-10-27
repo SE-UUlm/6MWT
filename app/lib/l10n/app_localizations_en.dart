@@ -529,6 +529,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Activity recognition permission denied';
 
   @override
+  String walkErrorSensorUnavailable(String error) {
+    return 'Could not start the sensors: $error';
+  }
+
+  @override
   String walkErrorSensor(String error) {
     return 'Sensor error: $error';
   }

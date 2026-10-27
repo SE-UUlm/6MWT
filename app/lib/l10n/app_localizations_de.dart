@@ -533,6 +533,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Berechtigung zur Aktivitätserkennung verweigert';
 
   @override
+  String walkErrorSensorUnavailable(String error) {
+    return 'Sensoren konnten nicht gestartet werden: $error';
+  }
+
+  @override
   String walkErrorSensor(String error) {
     return 'Sensorfehler: $error';
   }

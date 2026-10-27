@@ -1028,6 +1028,12 @@ abstract class AppLocalizations {
   /// **'Berechtigung zur Aktivitätserkennung verweigert'**
   String get walkErrorActivityRecognition;
 
+  /// No description provided for @walkErrorSensorUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Sensoren konnten nicht gestartet werden: {error}'**
+  String walkErrorSensorUnavailable(String error);
+
   /// No description provided for @walkErrorSensor.
   ///
   /// In de, this message translates to:
