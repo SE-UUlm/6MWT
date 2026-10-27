@@ -206,7 +206,7 @@ class HomeScreen extends ConsumerWidget {
                         icon: Icons.info_outline_rounded,
                         title: l10n.home_instruction,
                         subtitle: l10n.home_instructionsb,
-                        onTap: () => context.push('/instructions-1'),
+                        onTap: () => context.push('/instructions'),
                       ),
                     ),
 
