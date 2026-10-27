@@ -522,7 +522,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                           ),
                         ),
                         child: Text(
-                          l10n.walkStartTestButton,
+                          l10n.startTest,
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,

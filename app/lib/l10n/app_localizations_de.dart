@@ -233,9 +233,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_profile => 'Profil';
 
   @override
-  String get walk_test_start => 'Test starten';
-
-  @override
   String get walk_reset => 'Zurücksetzen';
 
   @override
@@ -293,9 +290,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get walkOfExpectedDistance => 'der erwarteten Gehstrecke';
-
-  @override
-  String get walkStartTestButton => 'Test starten';
 
   @override
   String walkDistanceUnit(String distance) {

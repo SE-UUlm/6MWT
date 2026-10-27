@@ -512,12 +512,6 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get walk_profile;
 
-  /// No description provided for @walk_test_start.
-  ///
-  /// In de, this message translates to:
-  /// **'Test starten'**
-  String get walk_test_start;
-
   /// No description provided for @walk_reset.
   ///
   /// In de, this message translates to:
@@ -619,12 +613,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'der erwarteten Gehstrecke'**
   String get walkOfExpectedDistance;
-
-  /// No description provided for @walkStartTestButton.
-  ///
-  /// In de, this message translates to:
-  /// **'Test starten'**
-  String get walkStartTestButton;
 
   /// No description provided for @walkDistanceUnit.
   ///
