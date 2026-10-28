@@ -400,8 +400,10 @@ class _StepsPage extends StatelessWidget {
           _BadgeRow(
             badge: Text(
               '${index + 1}',
+              // Large bold text (WCAG: at least 18.66 px), which needs less
+              // contrast on the light blue badge.
               style: const TextStyle(
-                fontSize: 17,
+                fontSize: 19,
                 fontWeight: FontWeight.w700,
                 color: AppColors.primaryBlue,
               ),
