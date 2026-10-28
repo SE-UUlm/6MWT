@@ -438,7 +438,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                             ? '-'
                             : formatDecimal(l10n, accuracy, 1),
                       ),
-                showArrow: true,
               ),
 
               const SizedBox(height: 12),
@@ -727,7 +726,6 @@ class _LargeInfoCard extends StatelessWidget {
     required this.value,
     required this.subtitle,
     this.trailing,
-    this.showArrow = false,
   });
 
   final IconData icon;
@@ -735,7 +733,6 @@ class _LargeInfoCard extends StatelessWidget {
   final String value;
   final String subtitle;
   final String? trailing;
-  final bool showArrow;
 
   @override
   Widget build(BuildContext context) {
@@ -812,13 +809,6 @@ class _LargeInfoCard extends StatelessWidget {
               ),
             ),
           ],
-
-          if (showArrow)
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 28,
-              color: Colors.black45,
-            ),
         ],
       ),
     );
