@@ -189,14 +189,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your privacy is important to us. This information is used solely to assess your fitness and for no other purpose.';
 
   @override
-  String get video_title => 'Test preparation';
+  String get quickGuide_title => 'How it works';
 
   @override
-  String get video_text =>
-      'Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.';
+  String get quickGuide_step_outdoor => 'Go outside to a flat path.';
 
   @override
-  String get video_disclaimer =>
+  String get quickGuide_step_pocket =>
+      'Start the test and put your phone in your pocket for the most accurate measurement.';
+
+  @override
+  String get quickGuide_step_walk =>
+      'Walk as far as you can in 6 minutes – walk, don\'t run. You may take breaks.';
+
+  @override
+  String get quickGuide_step_end =>
+      'A sound and vibration signal the end of the test.';
+
+  @override
+  String get quickGuide_more_info => 'More information about the test';
+
+  @override
+  String get quickGuide_disclaimer =>
       'You perform the test at your own risk. If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand. Stop the test immediately if you experience chest pain, dizziness or severe shortness of breath.';
 
   @override

@@ -38,8 +38,8 @@ void main() {
       routes: [
         GoRoute(path: '/', builder: (_, _) => const ProfileScreen()),
         GoRoute(
-          path: '/video',
-          builder: (_, _) => const Scaffold(body: Text('Video')),
+          path: '/quick-guide',
+          builder: (_, _) => const Scaffold(body: Text('Quick guide')),
         ),
       ],
     );
@@ -132,7 +132,7 @@ void main() {
       expect(profile.height, height);
       expect(profile.weight, weight);
       await tester.pumpAndSettle();
-      expect(find.text('Video'), findsOneWidget);
+      expect(find.text('Quick guide'), findsOneWidget);
     });
   }
 
@@ -153,7 +153,7 @@ void main() {
       // The walk screen reads the profile from the session.
       expect(session.profileId, profile.id);
       await tester.pumpAndSettle();
-      expect(find.text('Video'), findsOneWidget);
+      expect(find.text('Quick guide'), findsOneWidget);
     });
   }
 }

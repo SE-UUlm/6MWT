@@ -428,23 +428,47 @@ abstract class AppLocalizations {
   /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden ausschließlich zur Bewertung Ihrer Fitness verwendet und nicht für andere Zwecke.'**
   String get profile_footer;
 
-  /// No description provided for @video_title.
+  /// No description provided for @quickGuide_title.
   ///
   /// In de, this message translates to:
-  /// **'Testvorbereitung'**
-  String get video_title;
+  /// **'So funktioniert’s'**
+  String get quickGuide_title;
 
-  /// No description provided for @video_text.
+  /// No description provided for @quickGuide_step_outdoor.
   ///
   /// In de, this message translates to:
-  /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
-  String get video_text;
+  /// **'Gehen Sie nach draußen auf einen ebenen Weg.'**
+  String get quickGuide_step_outdoor;
 
-  /// No description provided for @video_disclaimer.
+  /// No description provided for @quickGuide_step_pocket.
+  ///
+  /// In de, this message translates to:
+  /// **'Starten Sie den Test und stecken Sie das Handy in die Tasche – so wird am genauesten gemessen.'**
+  String get quickGuide_step_pocket;
+
+  /// No description provided for @quickGuide_step_walk.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen. Pausen sind erlaubt.'**
+  String get quickGuide_step_walk;
+
+  /// No description provided for @quickGuide_step_end.
+  ///
+  /// In de, this message translates to:
+  /// **'Ein Ton und eine Vibration signalisieren das Ende des Tests.'**
+  String get quickGuide_step_end;
+
+  /// No description provided for @quickGuide_more_info.
+  ///
+  /// In de, this message translates to:
+  /// **'Mehr Informationen zum Test'**
+  String get quickGuide_more_info;
+
+  /// No description provided for @quickGuide_disclaimer.
   ///
   /// In de, this message translates to:
   /// **'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.'**
-  String get video_disclaimer;
+  String get quickGuide_disclaimer;
 
   /// No description provided for @walk_idstance.
   ///

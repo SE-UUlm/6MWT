@@ -85,7 +85,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     ref
         .read(walkSessionProvider)
         .setProfile(id: profileId, heightCm: height, gender: gender.name);
-    context.push('/video');
+    context.push('/quick-guide');
   }
 
   @override

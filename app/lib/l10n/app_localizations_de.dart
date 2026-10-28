@@ -189,14 +189,29 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden ausschließlich zur Bewertung Ihrer Fitness verwendet und nicht für andere Zwecke.';
 
   @override
-  String get video_title => 'Testvorbereitung';
+  String get quickGuide_title => 'So funktioniert’s';
 
   @override
-  String get video_text =>
-      'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
+  String get quickGuide_step_outdoor =>
+      'Gehen Sie nach draußen auf einen ebenen Weg.';
 
   @override
-  String get video_disclaimer =>
+  String get quickGuide_step_pocket =>
+      'Starten Sie den Test und stecken Sie das Handy in die Tasche – so wird am genauesten gemessen.';
+
+  @override
+  String get quickGuide_step_walk =>
+      'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen. Pausen sind erlaubt.';
+
+  @override
+  String get quickGuide_step_end =>
+      'Ein Ton und eine Vibration signalisieren das Ende des Tests.';
+
+  @override
+  String get quickGuide_more_info => 'Mehr Informationen zum Test';
+
+  @override
+  String get quickGuide_disclaimer =>
       'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.';
 
   @override

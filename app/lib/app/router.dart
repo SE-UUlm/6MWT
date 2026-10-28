@@ -6,7 +6,7 @@ import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/quick_guide_screen.dart';
 
 import '../features/home/home_screen.dart';
 import '../features/instructions/instructions_screen.dart';
@@ -47,8 +47,8 @@ final router = GoRouter(
           builder: (context, state) => const ProfileScreen(),
         ),
         GoRoute(
-          path: 'video',
-          builder: (context, state) => const VideoScreen(),
+          path: 'quick-guide',
+          builder: (context, state) => const QuickGuideScreen(),
         ),
 
         GoRoute(
