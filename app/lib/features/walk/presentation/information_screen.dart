@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,8 +21,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _ageController = TextEditingController();
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
-
-  static const Color primaryBlue = Color(0xFF347FE5);
 
   Gender? _selectedGender;
 
@@ -249,7 +248,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: ElevatedButton(
                 onPressed: _continue,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryBlue,
+                  backgroundColor: AppColors.primaryBlue,
                   foregroundColor: Colors.white,
                   elevation: 3,
                   shadowColor: Colors.black.withValues(alpha: 0.25),
@@ -315,7 +314,10 @@ class _InputField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2),
-            borderSide: const BorderSide(color: Color(0xFF367FEA), width: 1.5),
+            borderSide: const BorderSide(
+              color: AppColors.primaryBlue,
+              width: 1.5,
+            ),
           ),
         ),
       ),
@@ -346,7 +348,7 @@ class _GenderButton extends StatelessWidget {
         label: Text(label, style: const TextStyle(fontSize: 16)),
         style: ElevatedButton.styleFrom(
           backgroundColor: selected
-              ? _ProfileScreenState.primaryBlue
+              ? AppColors.primaryBlue
               : Colors.grey.shade300,
           foregroundColor: selected ? Colors.white : Colors.black,
           elevation: 0,

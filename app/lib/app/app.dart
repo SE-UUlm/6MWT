@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
+import 'app_colors.dart';
 import 'router.dart';
 import '../features/walk/presentation/walk_session_lifecycle.dart';
 
@@ -19,7 +20,15 @@ class SixMinuteWalkApp extends StatelessWidget {
       title: kDebugMode ? '6MWT Debug' : '6MWT',
       locale: locale,
 
-      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.blue),
+      // Widgets without an explicit color (dialog buttons, text selection,
+      // progress indicators) use the app's blue instead of a generated one.
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primaryBlue,
+          primary: AppColors.primaryBlue,
+        ),
+      ),
 
       // Flutter falls back to the first supported locale.
       supportedLocales: [

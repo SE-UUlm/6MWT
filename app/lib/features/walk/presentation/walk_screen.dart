@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'dart:async';
 
 import 'package:six_minute_walk_test/app/log.dart';
@@ -81,9 +82,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       _profile = profile;
     });
   }
-
-  static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
 
   String _statusMessage(WalkSessionState state, AppLocalizations l10n) {
     final error = state.error;
@@ -221,7 +219,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     width: knobSize,
                     height: knobSize,
                     decoration: const BoxDecoration(
-                      color: primaryBlue,
+                      color: AppColors.primaryBlue,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -354,7 +352,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   height: 76,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: circleBlue,
+                    color: AppColors.circleBlue,
                   ),
                   child: const Icon(
                     Icons.directions_walk_rounded,
@@ -549,7 +547,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                                 await session.start();
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryBlue,
+                          backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,
                           elevation: 3,
                           shadowColor: Colors.black.withValues(alpha: 0.25),
@@ -658,7 +656,7 @@ class _InfoCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, size: 26, color: const Color(0xFF347FE5)),
+          Icon(icon, size: 26, color: AppColors.primaryBlue),
 
           const SizedBox(width: 10),
 
@@ -749,7 +747,7 @@ class _LargeInfoCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 30, color: const Color(0xFF347FE5)),
+          Icon(icon, size: 30, color: AppColors.primaryBlue),
 
           const SizedBox(width: 14),
 

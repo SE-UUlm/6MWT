@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -7,7 +8,6 @@ import '../walk/domain/fitness_assessment.dart';
 import '../walk/presentation/fitness_category_label.dart';
 import '../walk/presentation/performance_bar.dart';
 
-const Color _primaryBlue = Color(0xFF347FE5);
 const Color _warningRed = Color(0xFFE53935);
 const Color _textGrey = Color(0xFF2B2B2B);
 const Color _titleBlack = Color(0xFF111111);
@@ -126,7 +126,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
                         child: TextButton(
                           onPressed: () => context.pop(),
                           style: TextButton.styleFrom(
-                            foregroundColor: _primaryBlue,
+                            foregroundColor: AppColors.primaryBlue,
                           ),
                           child: Text(l10n.instructions_7_home),
                         ),
@@ -142,7 +142,7 @@ class _InstructionsScreenState extends State<InstructionsScreen> {
                       child: ElevatedButton(
                         onPressed: _nextPage,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: _primaryBlue,
+                          backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
@@ -201,8 +201,8 @@ class _PageIndicator extends StatelessWidget {
             height: 6,
             decoration: BoxDecoration(
               color: i == currentPage
-                  ? _primaryBlue
-                  : _primaryBlue.withValues(alpha: 0.25),
+                  ? AppColors.primaryBlue
+                  : AppColors.primaryBlue.withValues(alpha: 0.25),
               borderRadius: BorderRadius.circular(3),
             ),
           ),
@@ -265,12 +265,12 @@ class _InfoBox extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: _primaryBlue.withValues(alpha: 0.1),
+        color: AppColors.primaryBlue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
         children: [
-          Icon(icon, color: _primaryBlue, size: iconSize),
+          Icon(icon, color: AppColors.primaryBlue, size: iconSize),
 
           const SizedBox(width: 14),
 
@@ -296,7 +296,7 @@ class _BadgeRow extends StatelessWidget {
     required this.badge,
     required this.text,
     this.bold = false,
-    this.color = _primaryBlue,
+    this.color = AppColors.primaryBlue,
   });
 
   final Widget badge;
@@ -403,7 +403,7 @@ class _StepsPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
-                color: _primaryBlue,
+                color: AppColors.primaryBlue,
               ),
             ),
             text: step,
@@ -499,7 +499,7 @@ class _WalkPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: _BadgeRow(
-                    badge: Icon(icon, size: 22, color: _primaryBlue),
+                    badge: Icon(icon, size: 22, color: AppColors.primaryBlue),
                     text: hint,
                   ),
                 ),

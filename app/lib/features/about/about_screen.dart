@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -95,7 +96,7 @@ class AboutScreen extends ConsumerWidget {
                   child: Icon(
                     Icons.directions_walk_rounded,
                     size: 100,
-                    color: Color(0xFF347FE5),
+                    color: AppColors.primaryBlue,
                   ),
                 ),
               ),
@@ -322,7 +323,7 @@ class _AboutAction extends StatelessWidget {
   Widget build(BuildContext context) => TextButton(
     style: TextButton.styleFrom(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      foregroundColor: const Color(0xFF347FE5),
+      foregroundColor: AppColors.primaryBlue,
       minimumSize: const Size(double.infinity, 48),
       alignment: Alignment.centerLeft,
     ),

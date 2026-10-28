@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -5,8 +6,6 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 class QuickGuideScreen extends StatelessWidget {
   const QuickGuideScreen({super.key});
-
-  static const Color primaryBlue = Color(0xFF347FE5);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +65,9 @@ class QuickGuideScreen extends StatelessWidget {
                           context.push('/instructions?from=quick-guide'),
                       icon: const Icon(Icons.info_outline_rounded),
                       label: Text(l10n.quickGuide_more_info),
-                      style: TextButton.styleFrom(foregroundColor: primaryBlue),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.primaryBlue,
+                      ),
                     ),
                   ),
 
@@ -113,7 +114,7 @@ class QuickGuideScreen extends StatelessWidget {
                         context.push('/walk');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryBlue,
+                        backgroundColor: AppColors.primaryBlue,
                         foregroundColor: Colors.white,
                         elevation: 3,
                         shadowColor: Colors.black.withValues(alpha: 0.25),
@@ -156,10 +157,10 @@ class _Step extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: QuickGuideScreen.primaryBlue.withValues(alpha: 0.12),
+              color: AppColors.primaryBlue.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 32, color: QuickGuideScreen.primaryBlue),
+            child: Icon(icon, size: 32, color: AppColors.primaryBlue),
           ),
           const SizedBox(width: 18),
           Expanded(

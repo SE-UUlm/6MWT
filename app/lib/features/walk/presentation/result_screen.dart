@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
@@ -30,8 +31,6 @@ class ResultScreen extends ConsumerWidget {
   final WalkSessionRow session;
   final Profile profile;
 
-  static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
   // Colors.red.shade700, as plain red is too light for text on white.
   static const Color deleteRed = Color(0xFFD32F2F);
 
@@ -358,7 +357,7 @@ class ResultScreen extends ConsumerWidget {
                       vertical: 14,
                     ),
                     decoration: BoxDecoration(
-                      color: circleBlue.withValues(alpha: 0.25),
+                      color: AppColors.circleBlue.withValues(alpha: 0.25),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Column(
@@ -369,7 +368,7 @@ class ResultScreen extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
-                            color: primaryBlue,
+                            color: AppColors.primaryBlue,
                           ),
                         ),
 
@@ -553,7 +552,7 @@ class ResultScreen extends ConsumerWidget {
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              color: primaryBlue,
+                              color: AppColors.primaryBlue,
                             ),
                           ),
                           const SizedBox(width: 14),
