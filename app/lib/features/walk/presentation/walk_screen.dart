@@ -271,13 +271,30 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     final state = ref.watch(walkSessionStateProvider).value ?? session.state;
 
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      controller: _pageController,
-      children: [
-        _buildSimpleView(state, session),
-        _buildDetailedView(state, session),
-      ],
+    // A running test can only be ended with the stop slider, so that it is
+    // never left behind unnoticed.
+    final running = state.phase == WalkPhase.running;
+
+    return PopScope(
+      canPop: !running,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.walkBackBlocked),
+            ),
+          );
+      },
+      child: PageView(
+        scrollDirection: Axis.horizontal,
+        controller: _pageController,
+        children: [
+          _buildSimpleView(state, session),
+          _buildDetailedView(state, session),
+        ],
+      ),
     );
   }
 

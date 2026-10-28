@@ -245,6 +245,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walkSlideToStop => 'Slide to stop';
 
   @override
+  String get walkBackBlocked =>
+      'The test is still running. Use the slider to stop it.';
+
+  @override
   String get walkResultCouldNotBeLoaded => 'Result could not be loaded.';
 
   @override

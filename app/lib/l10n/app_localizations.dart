@@ -536,6 +536,12 @@ abstract class AppLocalizations {
   /// **'Zum Beenden schieben'**
   String get walkSlideToStop;
 
+  /// No description provided for @walkBackBlocked.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Test läuft noch. Zum Beenden den Schieberegler nutzen.'**
+  String get walkBackBlocked;
+
   /// No description provided for @walkResultCouldNotBeLoaded.
   ///
   /// In de, this message translates to:

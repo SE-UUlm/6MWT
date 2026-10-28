@@ -246,6 +246,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walkSlideToStop => 'Zum Beenden schieben';
 
   @override
+  String get walkBackBlocked =>
+      'Der Test läuft noch. Zum Beenden den Schieberegler nutzen.';
+
+  @override
   String get walkResultCouldNotBeLoaded =>
       'Das Ergebnis konnte nicht geladen werden.';
 
