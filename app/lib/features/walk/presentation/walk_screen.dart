@@ -339,9 +339,17 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
 
+      // The bottom inset is part of the scroll padding instead of the SafeArea,
+      // so content scrolls behind the system navigation.
       body: SafeArea(
+        bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 16, 28, 30),
+          padding: EdgeInsets.fromLTRB(
+            28,
+            16,
+            28,
+            30 + MediaQuery.paddingOf(context).bottom,
+          ),
 
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
