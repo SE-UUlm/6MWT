@@ -13,10 +13,11 @@ String formatConfidence(AppLocalizations l10n, DistanceConfidence? confidence) {
   return '$label (${l10n.percentValue(confidence.percent)})';
 }
 
+// Dark enough to be readable as text on white (WCAG AA).
 Color confidenceColor(DistanceConfidence? confidence) =>
     switch (confidence?.level) {
-      ConfidenceLevel.high => const Color(0xFF43aa8b),
-      ConfidenceLevel.medium => const Color(0xFFf8961e),
-      ConfidenceLevel.low => const Color(0xFFf94144),
+      ConfidenceLevel.high => const Color(0xFF008566),
+      ConfidenceLevel.medium => const Color(0xFFBF5900),
+      ConfidenceLevel.low => const Color(0xFFDD0000),
       null => Colors.black,
     };

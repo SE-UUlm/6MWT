@@ -673,7 +673,7 @@ class _InfoCard extends StatelessWidget {
                         title,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.black54,
+                          color: Color(0x99000000),
                         ),
                       ),
                     ),
@@ -684,7 +684,7 @@ class _InfoCard extends StatelessWidget {
                         height: 9,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFF22B573),
+                          color: Color(0xFF199B5E),
                         ),
                       ),
                   ],
@@ -708,7 +708,10 @@ class _InfoCard extends StatelessWidget {
                     subtitle!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 11, color: Colors.black45),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0x99000000),
+                    ),
                   ),
               ],
             ),
@@ -774,7 +777,10 @@ class _LargeInfoCard extends StatelessWidget {
 
                 Text(
                   subtitle,
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0x99000000),
+                  ),
                 ),
               ],
             ),
@@ -800,7 +806,7 @@ class _LargeInfoCard extends StatelessWidget {
                   trailing!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Color(0xFF1BA765),
+                    color: Color(0xFF13774A),
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),

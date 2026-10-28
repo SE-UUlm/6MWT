@@ -32,6 +32,8 @@ class ResultScreen extends ConsumerWidget {
 
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
+  // Colors.red.shade700, as plain red is too light for text on white.
+  static const Color deleteRed = Color(0xFFD32F2F);
 
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
@@ -175,7 +177,7 @@ class ResultScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: deleteRed),
             child: Text(l10n.delete),
           ),
         ],
@@ -615,18 +617,18 @@ class ResultScreen extends ConsumerWidget {
 
             OutlinedButton.icon(
               onPressed: () => _confirmDelete(context, ref),
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              icon: const Icon(Icons.delete_outline, color: deleteRed),
               label: Text(
                 l10n.deleteSession,
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: Colors.red,
+                  color: deleteRed,
                 ),
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: deleteRed,
+                side: const BorderSide(color: deleteRed),
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),

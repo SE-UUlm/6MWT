@@ -298,9 +298,9 @@ class _InputField extends StatelessWidget {
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xFFB5B5B5), fontSize: 15),
+          hintStyle: const TextStyle(color: Color(0xFF757575), fontSize: 15),
           suffixText: suffixText,
-          suffixStyle: const TextStyle(color: Color(0xFFB5B5B5), fontSize: 15),
+          suffixStyle: const TextStyle(color: Color(0xFF757575), fontSize: 15),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 9,
             vertical: 8,
@@ -346,7 +346,7 @@ class _GenderButton extends StatelessWidget {
         label: Text(label, style: const TextStyle(fontSize: 16)),
         style: ElevatedButton.styleFrom(
           backgroundColor: selected
-              ? const Color(0xFF1198F5)
+              ? _ProfileScreenState.primaryBlue
               : Colors.grey.shade300,
           foregroundColor: selected ? Colors.white : Colors.black,
           elevation: 0,

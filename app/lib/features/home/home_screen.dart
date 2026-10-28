@@ -12,7 +12,7 @@ class HomeScreen extends ConsumerWidget {
   static const Color textBlue = Color(0xFF15356D);
   static const Color panelBlue = Color(0xFFF1F6FF);
   static const Color iconBackground = Color(0xFFE0EEFF);
-  static const Color secondaryText = Color(0xFF71809B);
+  static const Color secondaryText = Color(0xFF5E6B85);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFF71809B),
+                      color: Color(0xFF5E6B85),
                       height: 1.45,
                     ),
                   ),
