@@ -131,7 +131,10 @@ Future<void> main() async {
     case 'result':
       router.go(
         '/result',
-        extra: WalkSessionWithProfile(session: sessions.first, profile: profile),
+        extra: WalkSessionWithProfile(
+          session: sessions.first,
+          profile: profile,
+        ),
       );
     case 'walk':
       final session = container.read(walkSessionProvider);
