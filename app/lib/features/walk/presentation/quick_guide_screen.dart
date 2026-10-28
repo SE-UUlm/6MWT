@@ -62,7 +62,8 @@ class QuickGuideScreen extends StatelessWidget {
 
                   Center(
                     child: TextButton.icon(
-                      onPressed: () => context.push('/instructions'),
+                      onPressed: () =>
+                          context.push('/instructions?from=quick-guide'),
                       icon: const Icon(Icons.info_outline_rounded),
                       label: Text(l10n.quickGuide_more_info),
                       style: TextButton.styleFrom(foregroundColor: primaryBlue),

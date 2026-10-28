@@ -68,16 +68,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get instructions_2_welc => 'Test procedure';
 
   @override
-  String get bulletPoint_1 => 'Enter personal information';
+  String get bulletPoint_1 => 'Enter personal data';
 
   @override
-  String get bulletPoint_2 => 'Start the test';
+  String get bulletPoint_2 => 'Read the quick guide';
 
   @override
-  String get bulletPoint_3 => 'Walk for 6 minutes';
+  String get bulletPoint_3 => 'Start the test';
 
   @override
-  String get bulletPoint_4 => 'Results';
+  String get bulletPoint_4 => 'Walk for 6 minutes';
+
+  @override
+  String get bulletPoint_5 => 'View your result';
 
   @override
   String get instructions_2_text =>
@@ -85,54 +88,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get instructions_3_text =>
-      'For the most accurate analysis possible, we need some information such as your age, height, weight and gender. This data helps us interpret your results.';
+      'To assess your fitness, we need some information such as your age, gender, height and weight. Your walking distance is then compared with reference values of people with a similar profile.';
+
+  @override
+  String get instructions_3_range =>
+      'The reference values apply to adults aged 40 to 100 with a height of 150 to 210 cm. Outside these ranges, the assessment is less meaningful.';
 
   @override
   String get instructions_4_welc => 'During the test';
 
   @override
-  String get instructions_4_text =>
-      'Walk at your normal, brisk pace for six minutes. The app displays the remaining time and the distance you have already covered.';
+  String get instructions_4_outdoor =>
+      'Go outside to a flat route without slopes or obstacles such as traffic lights or stairs.';
 
   @override
-  String get instructions_4_text_2 =>
-      'Stop the test if you experience chest pain, dizziness or severe shortness of breath.';
+  String get instructions_4_pocket =>
+      'After starting, put your phone in your pocket for the most accurate measurement.';
 
   @override
-  String get instructions_5_welc => 'Stopping the test';
+  String get instructions_4_walk =>
+      'Walk as far as you can in 6 minutes – walk, don\'t run.';
+
+  @override
+  String get instructions_4_timer => 'The screen shows how much time is left.';
+
+  @override
+  String get instructions_4_pause =>
+      'You may slow down or stop if you need a break.';
+
+  @override
+  String get instructions_5_welc => 'Your safety';
 
   @override
   String get instructions_5_text =>
-      'You can stop the test at any time if needed and then decide how you would like to proceed:';
+      'Your health comes first. Stop the test immediately if you notice any of these signs:';
 
   @override
-  String get instructions_5_c1 => 'Intermediate results are saved';
+  String get instructions_5_chest => 'Chest pain';
 
   @override
-  String get instructions_5_c2 => 'The results are displayed';
+  String get instructions_5_dizzy => 'Dizziness';
 
   @override
-  String get instructions_5_c3 => 'The results may be less conclusive';
+  String get instructions_5_breath => 'Severe shortness of breath';
 
   @override
-  String get instructions_5_f1 => 'All previous data is discarded';
-
-  @override
-  String get instructions_5_f2 => 'You can restart the test';
+  String get instructions_5_doctor =>
+      'If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand.';
 
   @override
   String get instructions_6_welc => 'Results overview';
 
   @override
   String get instructions_6_text =>
-      'Your walking distance is assessed using reference values. You receive an overview of your performance and measured results.';
+      'Your walking distance is compared with reference values of people of the same age and height. You see what percentage of the expected distance you reached and which category you fall into:';
 
   @override
   String get instructions_7_welc => 'You\'re ready!';
 
   @override
   String get instructions_7_text =>
-      'Now that you know how it works, you can start and complete a test whenever you\'re ready!';
+      'You now know everything you need for the test. Find a flat route outdoors and get started!';
+
+  @override
+  String get instructions_7_back => 'Back to the quick guide';
+
+  @override
+  String get instructions_7_home => 'Back to the home screen';
 
   @override
   String get profile_title => 'Personal data';

@@ -221,20 +221,26 @@ abstract class AppLocalizations {
   /// No description provided for @bulletPoint_2.
   ///
   /// In de, this message translates to:
-  /// **'Test starten'**
+  /// **'Kurzanleitung lesen'**
   String get bulletPoint_2;
 
   /// No description provided for @bulletPoint_3.
   ///
   /// In de, this message translates to:
-  /// **'6 Minuten lang gehen'**
+  /// **'Test starten'**
   String get bulletPoint_3;
 
   /// No description provided for @bulletPoint_4.
   ///
   /// In de, this message translates to:
-  /// **'Ergebnisse'**
+  /// **'6 Minuten gehen'**
   String get bulletPoint_4;
+
+  /// No description provided for @bulletPoint_5.
+  ///
+  /// In de, this message translates to:
+  /// **'Ergebnis ansehen'**
+  String get bulletPoint_5;
 
   /// No description provided for @instructions_2_text.
   ///
@@ -245,8 +251,14 @@ abstract class AppLocalizations {
   /// No description provided for @instructions_3_text.
   ///
   /// In de, this message translates to:
-  /// **'Für eine möglichst präzise Analyse benötigen wir einige Angaben wie Alter, Körpergröße, Gewicht und Geschlecht. Diese Daten dienen dazu, Ihre Ergebnisse besser einordnen zu können.'**
+  /// **'Um Ihre Fitness bewerten zu können, benötigen wir einige Angaben wie Alter, Geschlecht, Körpergröße und Gewicht. Ihre Gehstrecke wird dann mit Referenzwerten von Menschen mit ähnlichem Profil verglichen.'**
   String get instructions_3_text;
+
+  /// No description provided for @instructions_3_range.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Referenzwerte gelten für Erwachsene zwischen 40 und 100 Jahren mit einer Körpergröße von 150 bis 210 cm. Außerhalb dieser Bereiche ist die Bewertung weniger aussagekräftig.'**
+  String get instructions_3_range;
 
   /// No description provided for @instructions_4_welc.
   ///
@@ -254,59 +266,71 @@ abstract class AppLocalizations {
   /// **'Während des Tests'**
   String get instructions_4_welc;
 
-  /// No description provided for @instructions_4_text.
+  /// No description provided for @instructions_4_outdoor.
   ///
   /// In de, this message translates to:
-  /// **'Gehen Sie sechs Minuten lang in Ihrem normalen, zügigen Tempo. Die App zeigt die verbleibende Zeit und die bereits zurückgelegte Strecke an.'**
-  String get instructions_4_text;
+  /// **'Gehen Sie nach draußen auf eine ebene Strecke ohne Gefälle und ohne Hindernisse wie Ampeln oder Treppen.'**
+  String get instructions_4_outdoor;
 
-  /// No description provided for @instructions_4_text_2.
+  /// No description provided for @instructions_4_pocket.
   ///
   /// In de, this message translates to:
-  /// **'Brechen Sie den Test ab, wenn bei Ihnen Brustschmerzen, Schwindel oder starke Atemnot auftreten.'**
-  String get instructions_4_text_2;
+  /// **'Stecken Sie das Handy nach dem Start in die Tasche – so wird am genauesten gemessen.'**
+  String get instructions_4_pocket;
+
+  /// No description provided for @instructions_4_walk.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen.'**
+  String get instructions_4_walk;
+
+  /// No description provided for @instructions_4_timer.
+  ///
+  /// In de, this message translates to:
+  /// **'Auf dem Bildschirm sehen Sie, wie viel Zeit noch übrig ist.'**
+  String get instructions_4_timer;
+
+  /// No description provided for @instructions_4_pause.
+  ///
+  /// In de, this message translates to:
+  /// **'Sie dürfen langsamer werden oder stehen bleiben, wenn Sie eine Pause brauchen.'**
+  String get instructions_4_pause;
 
   /// No description provided for @instructions_5_welc.
   ///
   /// In de, this message translates to:
-  /// **'Den Test abbrechen'**
+  /// **'Ihre Sicherheit'**
   String get instructions_5_welc;
 
   /// No description provided for @instructions_5_text.
   ///
   /// In de, this message translates to:
-  /// **'Bei Bedarf können Sie den Test jederzeit abbrechen und anschließend entscheiden, wie Sie fortfahren möchten:'**
+  /// **'Ihre Gesundheit geht vor. Brechen Sie den Test sofort ab, wenn eines dieser Anzeichen auftritt:'**
   String get instructions_5_text;
 
-  /// No description provided for @instructions_5_c1.
+  /// No description provided for @instructions_5_chest.
   ///
   /// In de, this message translates to:
-  /// **'Zwischenergebnisse werden gespeichert'**
-  String get instructions_5_c1;
+  /// **'Brustschmerzen'**
+  String get instructions_5_chest;
 
-  /// No description provided for @instructions_5_c2.
+  /// No description provided for @instructions_5_dizzy.
   ///
   /// In de, this message translates to:
-  /// **'Die Ergebnisse werden angezeigt'**
-  String get instructions_5_c2;
+  /// **'Schwindel'**
+  String get instructions_5_dizzy;
 
-  /// No description provided for @instructions_5_c3.
+  /// No description provided for @instructions_5_breath.
   ///
   /// In de, this message translates to:
-  /// **'Der Aussagewert kann begrenzt sein'**
-  String get instructions_5_c3;
+  /// **'Starke Atemnot'**
+  String get instructions_5_breath;
 
-  /// No description provided for @instructions_5_f1.
+  /// No description provided for @instructions_5_doctor.
   ///
   /// In de, this message translates to:
-  /// **'Alle bisherigen Daten werden verworfen'**
-  String get instructions_5_f1;
-
-  /// No description provided for @instructions_5_f2.
-  ///
-  /// In de, this message translates to:
-  /// **'Sie können den Test erneut starten'**
-  String get instructions_5_f2;
+  /// **'Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt.'**
+  String get instructions_5_doctor;
 
   /// No description provided for @instructions_6_welc.
   ///
@@ -317,7 +341,7 @@ abstract class AppLocalizations {
   /// No description provided for @instructions_6_text.
   ///
   /// In de, this message translates to:
-  /// **'Ihre Gehstrecke wird anhand von Referenzwerten eingeordnet. Sie erhalten eine Übersicht über Ihre Leistung und die erreichten Messwerte.'**
+  /// **'Ihre Gehstrecke wird mit Referenzwerten von Menschen gleichen Alters und gleicher Körpergröße verglichen. Sie sehen, wie viel Prozent der erwarteten Strecke Sie erreicht haben und in welche Kategorie Sie fallen:'**
   String get instructions_6_text;
 
   /// No description provided for @instructions_7_welc.
@@ -329,8 +353,20 @@ abstract class AppLocalizations {
   /// No description provided for @instructions_7_text.
   ///
   /// In de, this message translates to:
-  /// **'Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!'**
+  /// **'Sie wissen jetzt alles, was Sie für den Test brauchen. Suchen Sie sich eine ebene Strecke im Freien und legen Sie los!'**
   String get instructions_7_text;
+
+  /// No description provided for @instructions_7_back.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück zur Kurzanleitung'**
+  String get instructions_7_back;
+
+  /// No description provided for @instructions_7_home.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück zum Startbildschirm'**
+  String get instructions_7_home;
 
   /// No description provided for @profile_title.
   ///

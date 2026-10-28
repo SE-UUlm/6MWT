@@ -18,7 +18,10 @@ void main() {
     l10n.instructions_7_welc,
   ];
 
-  Future<void> showInstructions(WidgetTester tester) async {
+  Future<void> showInstructions(
+    WidgetTester tester, {
+    String location = '/instructions',
+  }) async {
     tester.view.physicalSize = const Size(1000, 1800);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);
@@ -31,7 +34,14 @@ void main() {
           routes: [
             GoRoute(
               path: 'instructions',
-              builder: (_, _) => const InstructionsScreen(),
+              builder: (_, state) => InstructionsScreen(
+                offerTestStart:
+                    state.uri.queryParameters['from'] != 'quick-guide',
+              ),
+            ),
+            GoRoute(
+              path: 'profile',
+              builder: (_, _) => const Scaffold(body: Text('Profile')),
             ),
           ],
         ),
@@ -39,7 +49,7 @@ void main() {
     );
     addTearDown(router.dispose);
     await tester.pumpWidget(localizedRouterApp(router: router));
-    router.push('/instructions');
+    router.push(location);
     await tester.pumpAndSettle();
   }
 
@@ -71,15 +81,47 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('continue walks through all pages and returns home', (
-    tester,
-  ) async {
-    await showInstructions(tester);
-
-    for (var page = 0; page < headings.length; page++) {
+  Future<void> continueToLastPage(WidgetTester tester) async {
+    for (var page = 0; page < headings.length - 1; page++) {
       expectPage(tester, page);
       await tapContinue(tester);
     }
+    expectPage(tester, headings.length - 1);
+  }
+
+  testWidgets('last page starts a test when opened from home', (tester) async {
+    await showInstructions(tester);
+    await continueToLastPage(tester);
+
+    await tester.tap(find.text(l10n.startTest));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InstructionsScreen), findsNothing);
+    expect(find.text('Profile'), findsOneWidget);
+  });
+
+  testWidgets('last page can return home when opened from home', (
+    tester,
+  ) async {
+    await showInstructions(tester);
+    await continueToLastPage(tester);
+
+    await tester.tap(find.text(l10n.instructions_7_home));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InstructionsScreen), findsNothing);
+    expect(find.text('Home'), findsOneWidget);
+  });
+
+  testWidgets('last page returns when opened from the quick guide', (
+    tester,
+  ) async {
+    await showInstructions(tester, location: '/instructions?from=quick-guide');
+    await continueToLastPage(tester);
+
+    expect(find.text(l10n.instructions_7_home), findsNothing);
+    await tester.tap(find.text(l10n.instructions_7_back));
+    await tester.pumpAndSettle();
 
     expect(find.byType(InstructionsScreen), findsNothing);
     expect(find.text('Home'), findsOneWidget);

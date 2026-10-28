@@ -16,6 +16,7 @@ import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
 import 'distance_confidence_format.dart';
 import 'number_format.dart';
+import 'performance_bar.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 
@@ -32,89 +33,11 @@ class ResultScreen extends ConsumerWidget {
   static const Color primaryBlue = Color(0xFF347FE5);
   static const Color circleBlue = Color(0xFF9BB8F0);
 
-  static const maxValue = 140;
-  static const labelCount = 7;
-
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
     final seconds = duration.inSeconds % 60;
 
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
-  }
-
-  /// Without a [percentage], only the scale is shown, without a marker.
-  Widget _buildPerformanceBar(double? percentage) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 24,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final progress = percentage?.clamp(0, maxValue);
-
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFf94144),
-                            Color(0xFFf8961e),
-                            Color(0xFF90be6d),
-                            Color(0xFF43aa8b),
-                            Color(0xFF577590),
-                          ],
-                          stops: [
-                            0.0 / maxValue,
-                            80 / maxValue,
-                            90 / maxValue,
-                            110 / maxValue,
-                            120 / maxValue,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  if (progress != null)
-                    Positioned(
-                      key: const ValueKey('performance-marker'),
-                      left: constraints.maxWidth * progress / maxValue - 2,
-                      top: -6,
-                      child: Container(
-                        width: 4,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            for (int i = 0; i < labelCount; i++)
-              Expanded(
-                child: Text(
-                  '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
-                  style: TextStyle(fontSize: 11, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
-        ),
-      ],
-    );
   }
 
   Widget _buildDetailsCard({
@@ -392,7 +315,7 @@ class ResultScreen extends ConsumerWidget {
 
                   const SizedBox(height: 22),
 
-                  _buildPerformanceBar(percentage),
+                  PerformanceBar(percentage: percentage),
 
                   const SizedBox(height: 20),
 

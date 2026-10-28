@@ -58,7 +58,9 @@ final router = GoRouter(
 
         GoRoute(
           path: 'instructions',
-          builder: (context, state) => const InstructionsScreen(),
+          builder: (context, state) => InstructionsScreen(
+            offerTestStart: state.uri.queryParameters['from'] != 'quick-guide',
+          ),
         ),
 
         GoRoute(
