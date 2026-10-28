@@ -1,6 +1,6 @@
 # Project tools
 
-Tools for exploring recordings, preparing reference data and maintaining releases. The Visualizer is a Flutter desktop application; the converters and release helpers are Python scripts.
+Tools for exploring recordings, preparing reference data and maintaining releases. The Visualizer is a Flutter desktop application; the converters and release helpers are Python scripts. The screenshot and branding scripts live in the Flutter projects they build on.
 
 | Tool | Purpose | Notes | Documentation |
 | --- | --- | --- | --- |
@@ -9,3 +9,5 @@ Tools for exploring recordings, preparing reference data and maintaining release
 | [Synthetic Data](synthetic_data/README.md) | Generate simulated walks with exact ground truth. | Covers GPS, route, step counter and stride scenarios for testing estimators; output goes to `data/synthetic/`. | [Data and Tools](../wiki/Data-and-Tools.md#synthetic-data) |
 | [Timestamp Converter](session_timestamps_to_utc/README.md) | Normalize timestamps in older recordings to UTC. | Repairs exports with mixed time bases; it is not part of the routine workflow for new recordings. Only needed for recordings created by old versions of the app and fit_converter. | [Data and Tools](../wiki/Data-and-Tools.md#timestamp-converter) |
 | [Release helpers](release/README.md) | Validate versions, configure signing and publish release downloads. | Primarily used by CI. The applicable validation checks can also be run locally before preparing a release. | [Builds and Releases](../wiki/Builds-and-Releases.md) |
+| [App screenshots](../app/tool/screenshots/README.md) | Regenerate the app screenshots in the README with synthetic data. | Requires a running Android emulator and ImageMagick 7; overwrites `wiki/assets/app-*.png`. | [Data and Tools](../wiki/Data-and-Tools.md#app-screenshots) |
+| Branding ([app](../app/tool/generate_branding.py), [Visualizer](6mwt_data_visualizer/tool/generate_branding.py)) | Export native icon sizes from the checked-in icon masters. | Only needed after editing a master; requires ImageMagick 7. All generated icons are checked in. | [Development](../wiki/Development.md#branding) |
