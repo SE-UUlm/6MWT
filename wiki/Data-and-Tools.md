@@ -61,7 +61,7 @@ About screen. Models and metadata interfaces live in `core/domain`; provider com
 
 ## Privacy and contributions
 
-Record on public routes; avoid exposing homes or private start/end locations. GPS tracks and profile data remain sensitive even after health telemetry is removed. Review JSON before sharing. Raw FIT files are ignored by Git and must not be committed. Use synthetic profiles for screenshots; keep images centrally in `wiki/assets/`.
+Record on public routes; avoid exposing homes or private start/end locations. GPS tracks and profile data remain sensitive even after health telemetry is removed. Review JSON before sharing. Raw FIT files are ignored by Git and must not be committed. Use synthetic profiles for screenshots; keep images centrally in `wiki/assets/`. To regenerate the app screenshots, see [App screenshots](#app-screenshots).
 
 ## FIT converter
 
@@ -126,3 +126,16 @@ python3 tools/session_timestamps_to_utc/convert.py
 ```
 
 **Overwrites changed `data/**/session.json` files without backups or options.** Back up files and inspect the diff afterward. It infers a local-time offset from `startedAt` and the first UTC GPS sample, rounded to 15 minutes, assuming they refer to approximately the same moment. Existing UTC timestamps and references are unchanged. Insufficient information causes a skip with an error. This repairs older local step timestamps; it is not a general timezone conversion tool and does not process every `session_*.json` automatically.
+
+## App screenshots
+
+Regenerate the six app screenshots in the repository README (`wiki/assets/app-*.png`). Requires Python 3.10+, ImageMagick 7, Flutter and exactly one running Android emulator. From `app/`:
+
+```sh
+python3 tool/screenshots/take_screenshots.py            # all screens
+python3 tool/screenshots/take_screenshots.py walk home  # selected screens
+```
+
+**Overwrites the screenshots in `wiki/assets/`.** For each screen, the script builds `tool/screenshots/main.dart` as a release APK, installs it and captures the emulator screen. The entry point runs the real app in English with an in-memory database, a synthetic profile (Demo, 30 years, 170 cm, 65 kg), five history entries and a simulated walk on the Uni Ulm campus instead of real sensors. The script fills in the profile form, swipes the walk screen to its detail view, rounds the corners and adds a thin outline.
+
+Android's demo mode gives the status bar a fixed time, full battery and Wi-Fi and no notifications. The emulator does not draw the mobile signal icon in demo mode, so it is hidden. Afterward, the script leaves demo mode and uninstalls the release app. It stops if a release build (`de.uniulm.in.se.sixmwt`) is already installed, so that build is not replaced; the debug build is not affected. Window size and corner radius are tuned for a Pixel 9 Pro XL emulator.
