@@ -135,17 +135,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Now that you know how it works, you can start and complete a test whenever you\'re ready!';
 
   @override
-  String get profile_title => 'Pre-calibration';
+  String get profile_title => 'Personal data';
 
   @override
   String get profile_text =>
       'To obtain the most accurate test results, please enter all information correctly.';
 
   @override
-  String get profile_sub1 => 'Patient information';
+  String get profile_sub1 => 'General information';
 
   @override
-  String get profile_sub2 => 'Anthropometry';
+  String get profile_sub2 => 'Body measurements';
 
   @override
   String get profile_info =>
@@ -186,7 +186,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_footer =>
-      'Your privacy is important to us. This information will not be used for any other purpose.';
+      'Your privacy is important to us. This information is used solely to assess your fitness and for no other purpose.';
 
   @override
   String get video_title => 'Test preparation';

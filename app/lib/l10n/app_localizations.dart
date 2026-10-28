@@ -335,7 +335,7 @@ abstract class AppLocalizations {
   /// No description provided for @profile_title.
   ///
   /// In de, this message translates to:
-  /// **'Vorkalibrierung'**
+  /// **'Persönliche Daten'**
   String get profile_title;
 
   /// No description provided for @profile_text.
@@ -347,13 +347,13 @@ abstract class AppLocalizations {
   /// No description provided for @profile_sub1.
   ///
   /// In de, this message translates to:
-  /// **'Patienteninformationen'**
+  /// **'Allgemeine Angaben'**
   String get profile_sub1;
 
   /// No description provided for @profile_sub2.
   ///
   /// In de, this message translates to:
-  /// **'Anthropometrie'**
+  /// **'Körpermaße'**
   String get profile_sub2;
 
   /// No description provided for @profile_info.
@@ -425,7 +425,7 @@ abstract class AppLocalizations {
   /// No description provided for @profile_footer.
   ///
   /// In de, this message translates to:
-  /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.'**
+  /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden ausschließlich zur Bewertung Ihrer Fitness verwendet und nicht für andere Zwecke.'**
   String get profile_footer;
 
   /// No description provided for @video_title.
