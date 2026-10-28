@@ -217,6 +217,10 @@ class ResultScreen extends ConsumerWidget {
         ? null
         : DistanceConfidence(storedConfidence);
 
+    final expectedDistance = expectedSixMinuteDistance(
+      ageInYears: profile.age,
+      heightInCm: profile.height.toDouble(),
+    );
     double? percentage;
     String category = l10n.resultNoAssessment;
     // A session still marked as running after the app restarted was
@@ -315,7 +319,10 @@ class ResultScreen extends ConsumerWidget {
 
                   const SizedBox(height: 22),
 
-                  PerformanceBar(percentage: percentage),
+                  PerformanceBar(
+                    expectedDistance: expectedDistance,
+                    percentage: percentage,
+                  ),
 
                   const SizedBox(height: 20),
 

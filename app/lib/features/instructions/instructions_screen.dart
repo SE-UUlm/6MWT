@@ -571,7 +571,13 @@ class _PerformancePage extends StatelessWidget {
 
         const SizedBox(height: 30),
 
-        const PerformanceBar(),
+        // Example scale for a typical user, as there is no profile here.
+        PerformanceBar(
+          expectedDistance: expectedSixMinuteDistance(
+            ageInYears: 70,
+            heightInCm: 170,
+          ),
+        ),
 
         const SizedBox(height: 24),
 

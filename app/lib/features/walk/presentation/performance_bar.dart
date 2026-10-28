@@ -13,79 +13,122 @@ const performanceScaleColors = <FitnessCategory, Color>{
 
 /// Colored scale of the percentage of the expected walking distance.
 ///
-/// Without a [percentage], only the scale is shown, without a marker.
+/// The category boundaries depend on the [expectedDistance], because they are
+/// a fixed distance in metres away from it. Without a [percentage], only the
+/// scale is shown, without a marker.
 class PerformanceBar extends StatelessWidget {
-  const PerformanceBar({super.key, this.percentage});
+  const PerformanceBar({
+    super.key,
+    required this.expectedDistance,
+    this.percentage,
+  });
 
+  final double expectedDistance;
   final double? percentage;
 
-  static const maxValue = 140;
-  static const labelCount = 7;
+  // All category boundaries lie within this range for the supported ages and
+  // heights, so the scale skips the irrelevant part below it.
+  static const minValue = 60.0;
+  static const maxValue = 140.0;
+  static const labels = [60, 80, 100, 120, 140];
+
+  // Half the width of the color transition around each category boundary, in
+  // percentage points. The narrowest category is still wider than a full
+  // transition, so every category keeps an area of constant color.
+  static const transitionHalfWidth = 1.5;
+
+  static double _position(double value) =>
+      ((value - minValue) / (maxValue - minValue)).clamp(0.0, 1.0);
 
   @override
   Widget build(BuildContext context) {
+    final colors = performanceScaleColors.values.toList();
+    final boundaries = categoryBoundariesInPercent(expectedDistance);
+
+    // Each category color is constant up to shortly before the next boundary
+    // and then blends into the next color.
+    final gradientColors = [colors.first];
+    final stops = [0.0];
+    for (final (index, boundary) in boundaries.indexed) {
+      gradientColors
+        ..add(colors[index])
+        ..add(colors[index + 1]);
+      stops
+        ..add(_position(boundary - transitionHalfWidth))
+        ..add(_position(boundary + transitionHalfWidth));
+    }
+    gradientColors.add(colors.last);
+    stops.add(1.0);
+
+    final progress = percentage?.clamp(minValue, maxValue);
+
+    // The layout builders sit inside fixed heights, as a LayoutBuilder cannot
+    // report an intrinsic height (needed e.g. in a SliverFillRemaining).
     return Column(
       children: [
         SizedBox(
           height: 24,
           child: LayoutBuilder(
-            builder: (context, constraints) {
-              final progress = percentage?.clamp(0, maxValue);
-
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          colors: performanceScaleColors.values.toList(),
-                          stops: const [
-                            0.0 / maxValue,
-                            80 / maxValue,
-                            90 / maxValue,
-                            110 / maxValue,
-                            120 / maxValue,
-                          ],
-                        ),
+            builder: (context, constraints) => Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned.fill(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient: LinearGradient(
+                        colors: gradientColors,
+                        stops: stops,
                       ),
                     ),
                   ),
+                ),
 
-                  if (progress != null)
-                    Positioned(
-                      key: const ValueKey('performance-marker'),
-                      left: constraints.maxWidth * progress / maxValue - 2,
-                      top: -6,
-                      child: Container(
-                        width: 4,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
+                if (progress != null)
+                  Positioned(
+                    key: const ValueKey('performance-marker'),
+                    left: constraints.maxWidth * _position(progress) - 2,
+                    top: -6,
+                    child: Container(
+                      width: 4,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
-                ],
-              );
-            },
+                  ),
+              ],
+            ),
           ),
         ),
 
         const SizedBox(height: 8),
 
-        Row(
-          children: [
-            for (int i = 0; i < labelCount; i++)
-              Expanded(
-                child: Text(
-                  '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
-                  style: const TextStyle(fontSize: 11, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
+        // Each label is centered below its value on the scale.
+        SizedBox(
+          height: 16,
+          child: LayoutBuilder(
+            builder: (context, constraints) => Stack(
+              clipBehavior: Clip.none,
+              children: [
+                for (final label in labels)
+                  Positioned(
+                    left: constraints.maxWidth * _position(label.toDouble()),
+                    child: FractionalTranslation(
+                      translation: const Offset(-0.5, 0),
+                      child: Text(
+                        '$label %',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ],
     );
