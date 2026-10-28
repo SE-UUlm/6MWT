@@ -34,6 +34,7 @@ void main() {
       now: () => tester.binding.clock.now(),
     );
     addTearDown(session.dispose);
+    session.setProfile(id: 3, heightCm: 180, gender: Gender.female.name);
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
@@ -57,9 +58,7 @@ void main() {
           home: Builder(
             builder: (context) => TextButton(
               onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => const WalkScreen(profileId: 3),
-                ),
+                MaterialPageRoute<void>(builder: (_) => const WalkScreen()),
               ),
               child: const Text('home'),
             ),

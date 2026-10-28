@@ -4,9 +4,11 @@ import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:six_minute_walk_test/app/router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/profile_repository.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/features/home/home_screen.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
@@ -41,6 +43,7 @@ void main() {
         now: () => tester.binding.clock.now(),
       );
       addTearDown(session.dispose);
+      session.setProfile(id: 3, heightCm: 180, gender: Gender.female.name);
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -51,7 +54,7 @@ void main() {
           ],
           child: localizedApp(
             locale: const Locale('en'),
-            home: const WalkScreen(profileId: 3),
+            home: const WalkScreen(),
           ),
         ),
       );
@@ -81,4 +84,28 @@ void main() {
       await tester.pump();
     },
   );
+
+  testWidgets('returns home when no profile is set on the session', (
+    tester,
+  ) async {
+    final source = InitialSampleFakeSensorSource([]);
+    final session = WalkSession(
+      sources: [source],
+      distanceEstimator: GpsStepDistanceEstimator(stepSourceId: 'steps'),
+      now: () => tester.binding.clock.now(),
+    );
+    addTearDown(session.dispose);
+    router.go('/walk');
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [walkSessionProvider.overrideWithValue(session)],
+        child: localizedRouterApp(router: router),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(WalkScreen), findsNothing);
+    expect(find.byType(HomeScreen), findsOneWidget);
+    // The walk screen is never built, so the sensors are not warmed up.
+    expect(source.startCalls, 0);
+  });
 }

@@ -5,9 +5,7 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoScreen extends StatefulWidget {
-  const VideoScreen({super.key, required this.profileId});
-
-  final int profileId;
+  const VideoScreen({super.key});
 
   @override
   State<VideoScreen> createState() => _VideoScreenState();
@@ -129,7 +127,7 @@ class _VideoScreenState extends State<VideoScreen> {
               height: 54,
               child: ElevatedButton(
                 onPressed: () {
-                  context.push('/walk', extra: widget.profileId);
+                  context.push('/walk');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryBlue,

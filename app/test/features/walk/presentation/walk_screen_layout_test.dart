@@ -38,6 +38,7 @@ void main() {
         now: () => tester.binding.clock.now(),
       );
       addTearDown(session.dispose);
+      session.setProfile(id: 3, heightCm: 180, gender: Gender.female.name);
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -58,7 +59,7 @@ void main() {
           ],
           child: localizedApp(
             locale: const Locale('de'),
-            home: const WalkScreen(profileId: 3),
+            home: const WalkScreen(),
           ),
         ),
       );

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -80,7 +81,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     if (!mounted) return;
 
-    context.push('/video', extra: profileId);
+    // The walk screen takes the profile from the session.
+    ref
+        .read(walkSessionProvider)
+        .setProfile(id: profileId, heightCm: height, gender: gender.name);
+    context.push('/video');
   }
 
   @override

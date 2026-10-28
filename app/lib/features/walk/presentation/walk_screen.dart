@@ -22,9 +22,7 @@ import 'number_format.dart';
 final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
-  const WalkScreen({super.key, required this.profileId});
-
-  final int profileId;
+  const WalkScreen({super.key});
 
   @override
   ConsumerState<WalkScreen> createState() => _WalkScreenState();
@@ -67,21 +65,17 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     }
   }
 
+  // The router only opens this screen once the information screen has set the
+  // profile on the session.
   Future<void> _loadProfile() async {
+    final profileId = _session.profileId;
+    if (profileId == null) return;
+
     final repository = ref.read(profileRepositoryProvider);
 
-    final profile = await repository.loadProfile(widget.profileId);
+    final profile = await repository.loadProfile(profileId);
 
     if (!mounted) return;
-
-    final session = ref.read(walkSessionProvider);
-    if (profile != null) {
-      session.setProfile(
-        id: profile.id,
-        heightCm: profile.height,
-        gender: profile.gender.name,
-      );
-    }
 
     setState(() {
       _profile = profile;

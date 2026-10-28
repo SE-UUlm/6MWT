@@ -81,7 +81,8 @@ void main() {
         session,
       ).listen(WalkSessionRepository(db).saveSession);
       addTearDown(sessionSub.cancel);
-      router.go('/walk', extra: 1);
+      session.setProfile(id: 1, heightCm: 170, gender: Gender.other.name);
+      router.go('/walk');
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
