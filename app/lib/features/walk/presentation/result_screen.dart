@@ -40,6 +40,26 @@ class ResultScreen extends ConsumerWidget {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
+  // The localized percentage with a smaller percent sign.
+  TextSpan _percentSpan(AppLocalizations l10n, int value) {
+    final number = NumberFormat.decimalPattern(l10n.localeName).format(value);
+    final formatted = l10n.percentValue(value);
+    final numberStart = formatted.indexOf(number);
+
+    TextSpan sign(String text) => TextSpan(
+      text: text,
+      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+    );
+
+    return TextSpan(
+      children: [
+        sign(formatted.substring(0, numberStart)),
+        TextSpan(text: number),
+        sign(formatted.substring(numberStart + number.length)),
+      ],
+    );
+  }
+
   Widget _buildDetailsCard({
     required String title,
     required List<Widget> children,
@@ -299,13 +319,17 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 4),
 
-                  Text(
-                    percentage == null ? '—' : '${percentage.round()}%',
+                  // The percent sign is smaller than the number, so it does
+                  // not compete with the value itself.
+                  Text.rich(
+                    percentage == null
+                        ? const TextSpan(text: '—')
+                        : _percentSpan(l10n, percentage.round()),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 46,
+                      fontSize: 56,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),

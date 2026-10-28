@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../domain/fitness_assessment.dart';
 
 /// Colors of the performance scale, from low to high performance.
@@ -42,6 +43,7 @@ class PerformanceBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final colors = performanceScaleColors.values.toList();
     final boundaries = categoryBoundariesInPercent(expectedDistance);
 
@@ -118,7 +120,7 @@ class PerformanceBar extends StatelessWidget {
                     child: FractionalTranslation(
                       translation: const Offset(-0.5, 0),
                       child: Text(
-                        '$label %',
+                        l10n.percentValue(label),
                         style: const TextStyle(
                           fontSize: 11,
                           color: Colors.black54,

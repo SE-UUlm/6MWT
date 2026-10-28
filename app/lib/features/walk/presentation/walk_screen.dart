@@ -139,7 +139,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       heightInCm: _profile!.height.toDouble(),
     );
 
-    return '${assessment.percentOfExpected.round()} %';
+    return l10n.percentValue(assessment.percentOfExpected.round());
   }
 
   String _assessmentCategory(

@@ -65,7 +65,7 @@ class HistoryScreen extends ConsumerWidget {
                     Expanded(child: Text(profile.name.toString())),
                     if (assessment != null)
                       Text(
-                        "${assessment.percentOfExpected.toStringAsFixed(0)} % ${l10n.historyFit}",
+                        "${l10n.percentValue(assessment.percentOfExpected.round())} ${l10n.historyFit}",
                       ),
                   ],
                 ),

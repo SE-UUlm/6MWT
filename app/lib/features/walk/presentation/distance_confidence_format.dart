@@ -10,7 +10,7 @@ String formatConfidence(AppLocalizations l10n, DistanceConfidence? confidence) {
     ConfidenceLevel.medium => l10n.confidenceMedium,
     ConfidenceLevel.low => l10n.confidenceLow,
   };
-  return '$label (${confidence.percent} %)';
+  return '$label (${l10n.percentValue(confidence.percent)})';
 }
 
 Color confidenceColor(DistanceConfidence? confidence) =>

@@ -216,6 +216,16 @@
   "historyTitle": "History",
   "historyNoEntries": "No entries available",
   "historyFit": "fit",
+  "percentValue": "{value}%",
+  "@percentValue": {
+    "description": "A whole-number percentage. German puts a narrow no-break space before the sign, English none.",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
   "historyToday": "Today",
   "historyYesterday": "Yesterday",
   "historyExportFailed": "Export failed: {error}",

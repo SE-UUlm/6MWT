@@ -950,6 +950,12 @@ abstract class AppLocalizations {
   /// **'fit'**
   String get historyFit;
 
+  /// A whole-number percentage. German puts a narrow no-break space before the sign, English none.
+  ///
+  /// In de, this message translates to:
+  /// **'{value} %'**
+  String percentValue(int value);
+
   /// No description provided for @historyToday.
   ///
   /// In de, this message translates to:

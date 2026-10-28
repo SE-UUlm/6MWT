@@ -227,7 +227,7 @@ void main() {
     );
     expect(find.text('123.0 m'), findsNothing);
     // Only estimators that assess their distance and did not fail show one.
-    expect(find.text('Confidence: High (80 %)'), findsOneWidget);
+    expect(find.text('Confidence: High (80%)'), findsOneWidget);
     expect(find.textContaining('Confidence:'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

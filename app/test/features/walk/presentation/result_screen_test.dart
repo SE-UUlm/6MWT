@@ -145,8 +145,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Distance confidence'), findsOneWidget);
     // The replayed value appears only in the comparison card.
-    expect(find.text('Medium (62 %)'), findsNothing);
-    expect(find.text('Confidence: Medium (62 %)'), findsOneWidget);
+    expect(find.text('Medium (62%)'), findsNothing);
+    expect(find.text('Confidence: Medium (62%)'), findsOneWidget);
     final confidenceRow = find.ancestor(
       of: find.text('Distance confidence'),
       matching: find.byType(Row),
@@ -190,7 +190,7 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('High (81 %)'), findsOneWidget);
+    expect(find.text('High (81%)'), findsOneWidget);
   });
 
   for (final (phase, percent, marker, explanation) in [
@@ -237,7 +237,10 @@ void main() {
       await tester.pumpAndSettle();
       // The percentage placeholder replaces the value, never shows 0 %.
       final percentage = find.byWidgetPredicate(
-        (w) => w is Text && w.style?.fontSize == 46 && w.data == '—',
+        (w) =>
+            w is Text &&
+            w.style?.fontSize == 56 &&
+            w.textSpan?.toPlainText() == '—',
       );
       expect(percentage, percent);
       expect(find.text('0%'), findsNothing);

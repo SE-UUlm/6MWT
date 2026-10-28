@@ -485,6 +485,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get historyFit => 'fit';
 
   @override
+  String percentValue(int value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString%';
+  }
+
+  @override
   String get historyToday => 'Today';
 
   @override
