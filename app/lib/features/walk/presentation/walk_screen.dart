@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'dart:async';
 
 import 'package:six_minute_walk_test/app/log.dart';
@@ -22,9 +23,7 @@ import 'number_format.dart';
 final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
-  const WalkScreen({super.key, required this.profileId});
-
-  final int profileId;
+  const WalkScreen({super.key});
 
   @override
   ConsumerState<WalkScreen> createState() => _WalkScreenState();
@@ -67,29 +66,22 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     }
   }
 
+  // The router only opens this screen once the information screen has set the
+  // profile on the session.
   Future<void> _loadProfile() async {
+    final profileId = _session.profileId;
+    if (profileId == null) return;
+
     final repository = ref.read(profileRepositoryProvider);
 
-    final profile = await repository.loadProfile(widget.profileId);
+    final profile = await repository.loadProfile(profileId);
 
     if (!mounted) return;
-
-    final session = ref.read(walkSessionProvider);
-    if (profile != null) {
-      session.setProfile(
-        id: profile.id,
-        heightCm: profile.height,
-        gender: profile.gender.name,
-      );
-    }
 
     setState(() {
       _profile = profile;
     });
   }
-
-  static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
 
   String _statusMessage(WalkSessionState state, AppLocalizations l10n) {
     final error = state.error;
@@ -145,7 +137,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
       heightInCm: _profile!.height.toDouble(),
     );
 
-    return '${assessment.percentOfExpected.round()} %';
+    return l10n.percentValue(assessment.percentOfExpected.round());
   }
 
   String _assessmentCategory(
@@ -227,7 +219,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                     width: knobSize,
                     height: knobSize,
                     decoration: const BoxDecoration(
-                      color: primaryBlue,
+                      color: AppColors.primaryBlue,
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
@@ -271,13 +263,30 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     final state = ref.watch(walkSessionStateProvider).value ?? session.state;
 
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      controller: _pageController,
-      children: [
-        _buildSimpleView(state, session),
-        _buildDetailedView(state, session),
-      ],
+    // A running test can only be ended with the stop slider, so that it is
+    // never left behind unnoticed.
+    final running = state.phase == WalkPhase.running;
+
+    return PopScope(
+      canPop: !running,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.walkBackBlocked),
+            ),
+          );
+      },
+      child: PageView(
+        scrollDirection: Axis.horizontal,
+        controller: _pageController,
+        children: [
+          _buildSimpleView(state, session),
+          _buildDetailedView(state, session),
+        ],
+      ),
     );
   }
 
@@ -343,7 +352,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   height: 76,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: circleBlue,
+                    color: AppColors.circleBlue,
                   ),
                   child: const Icon(
                     Icons.directions_walk_rounded,
@@ -429,7 +438,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                             ? '-'
                             : formatDecimal(l10n, accuracy, 1),
                       ),
-                showArrow: true,
               ),
 
               const SizedBox(height: 12),
@@ -467,6 +475,16 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 EstimatorComparisonCard(comparisons: state.comparisons),
               ],
               const SizedBox(height: 24),
+
+              Text(
+                l10n.resultDisclaimer,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
+                  height: 1.35,
+                  color: Colors.black54,
+                ),
+              ),
             ],
           ),
         ),
@@ -476,6 +494,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
   Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
     final l10n = AppLocalizations.of(context)!;
+    // The test measures the distance by GPS, so it cannot run without it.
+    final locationUnavailable =
+        state.error?.issue == SensorIssue.locationUnavailable;
     return Scaffold(
       // Only the content is inside the SafeArea, so the background image fills
       // the whole screen.
@@ -497,17 +518,19 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: Center(
-                      child: Text(
-                        state.formattedRemainingTime,
-                        style: const TextStyle(
-                          fontSize: 100,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ),
+                    child: locationUnavailable
+                        ? _buildLocationError(l10n)
+                        : Center(
+                            child: Text(
+                              state.formattedRemainingTime,
+                              style: const TextStyle(
+                                fontSize: 100,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ),
                   ),
 
                   if (state.isRunning)
@@ -523,7 +546,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                                 await session.start();
                               },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: primaryBlue,
+                          backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,
                           elevation: 3,
                           shadowColor: Colors.black.withValues(alpha: 0.25),
@@ -545,6 +568,55 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLocationError(AppLocalizations l10n) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          key: const ValueKey('location-error'),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.red.shade50,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size: 64,
+                color: Colors.red.shade700,
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                l10n.walkLocationRequiredTitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.red.shade900,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                l10n.walkLocationRequiredText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.35,
+                  color: Colors.red.shade900,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -583,7 +655,7 @@ class _InfoCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(icon, size: 26, color: const Color(0xFF347FE5)),
+          Icon(icon, size: 26, color: AppColors.primaryBlue),
 
           const SizedBox(width: 10),
 
@@ -598,7 +670,7 @@ class _InfoCard extends StatelessWidget {
                         title,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Colors.black54,
+                          color: Color(0x99000000),
                         ),
                       ),
                     ),
@@ -609,7 +681,7 @@ class _InfoCard extends StatelessWidget {
                         height: 9,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFF22B573),
+                          color: Color(0xFF199B5E),
                         ),
                       ),
                   ],
@@ -633,7 +705,10 @@ class _InfoCard extends StatelessWidget {
                     subtitle!,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 11, color: Colors.black45),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0x99000000),
+                    ),
                   ),
               ],
             ),
@@ -651,7 +726,6 @@ class _LargeInfoCard extends StatelessWidget {
     required this.value,
     required this.subtitle,
     this.trailing,
-    this.showArrow = false,
   });
 
   final IconData icon;
@@ -659,7 +733,6 @@ class _LargeInfoCard extends StatelessWidget {
   final String value;
   final String subtitle;
   final String? trailing;
-  final bool showArrow;
 
   @override
   Widget build(BuildContext context) {
@@ -671,7 +744,7 @@ class _LargeInfoCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 30, color: const Color(0xFF347FE5)),
+          Icon(icon, size: 30, color: AppColors.primaryBlue),
 
           const SizedBox(width: 14),
 
@@ -699,7 +772,10 @@ class _LargeInfoCard extends StatelessWidget {
 
                 Text(
                   subtitle,
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0x99000000),
+                  ),
                 ),
               ],
             ),
@@ -725,7 +801,7 @@ class _LargeInfoCard extends StatelessWidget {
                   trailing!,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Color(0xFF1BA765),
+                    color: Color(0xFF13774A),
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -733,13 +809,6 @@ class _LargeInfoCard extends StatelessWidget {
               ),
             ),
           ],
-
-          if (showArrow)
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 28,
-              color: Colors.black45,
-            ),
         ],
       ),
     );

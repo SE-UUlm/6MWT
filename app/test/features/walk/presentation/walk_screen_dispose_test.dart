@@ -36,7 +36,7 @@ void main() {
       'screen disposes before warm-up stop completes (fails=$fails)',
       (tester) async {
         final db = AppDatabase(NativeDatabase.memory());
-        final session = DelayedStopSession();
+        final session = DelayedStopSession()..setProfile(id: 1, heightCm: 170);
         addTearDown(() async {
           await session.dispose();
           await db.close();
@@ -49,7 +49,7 @@ void main() {
             ],
             child: localizedApp(
               locale: const Locale('en'),
-              home: const WalkScreen(profileId: 1),
+              home: const WalkScreen(),
             ),
           ),
         );

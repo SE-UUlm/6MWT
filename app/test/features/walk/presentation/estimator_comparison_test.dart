@@ -81,7 +81,8 @@ void main() {
         session,
       ).listen(WalkSessionRepository(db).saveSession);
       addTearDown(sessionSub.cancel);
-      router.go('/walk', extra: 1);
+      session.setProfile(id: 1, heightCm: 170, gender: Gender.other.name);
+      router.go('/walk');
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -226,7 +227,7 @@ void main() {
     );
     expect(find.text('123.0 m'), findsNothing);
     // Only estimators that assess their distance and did not fail show one.
-    expect(find.text('Confidence: High (80 %)'), findsOneWidget);
+    expect(find.text('Confidence: High (80%)'), findsOneWidget);
     expect(find.textContaining('Confidence:'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

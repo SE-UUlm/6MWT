@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -19,8 +21,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   final _ageController = TextEditingController();
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
-
-  static const Color primaryBlue = Color(0xFF347FE5);
 
   Gender? _selectedGender;
 
@@ -80,7 +80,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
     if (!mounted) return;
 
-    context.push('/video', extra: profileId);
+    // The walk screen takes the profile from the session.
+    ref
+        .read(walkSessionProvider)
+        .setProfile(id: profileId, heightCm: height, gender: gender.name);
+    context.push('/quick-guide');
   }
 
   @override
@@ -244,7 +248,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               child: ElevatedButton(
                 onPressed: _continue,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryBlue,
+                  backgroundColor: AppColors.primaryBlue,
                   foregroundColor: Colors.white,
                   elevation: 3,
                   shadowColor: Colors.black.withValues(alpha: 0.25),
@@ -293,9 +297,9 @@ class _InputField extends StatelessWidget {
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Color(0xFFB5B5B5), fontSize: 15),
+          hintStyle: const TextStyle(color: Color(0xFF757575), fontSize: 15),
           suffixText: suffixText,
-          suffixStyle: const TextStyle(color: Color(0xFFB5B5B5), fontSize: 15),
+          suffixStyle: const TextStyle(color: Color(0xFF757575), fontSize: 15),
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 9,
             vertical: 8,
@@ -310,7 +314,10 @@ class _InputField extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(2),
-            borderSide: const BorderSide(color: Color(0xFF367FEA), width: 1.5),
+            borderSide: const BorderSide(
+              color: AppColors.primaryBlue,
+              width: 1.5,
+            ),
           ),
         ),
       ),
@@ -341,7 +348,7 @@ class _GenderButton extends StatelessWidget {
         label: Text(label, style: const TextStyle(fontSize: 16)),
         style: ElevatedButton.styleFrom(
           backgroundColor: selected
-              ? const Color(0xFF1198F5)
+              ? AppColors.primaryBlue
               : Colors.grey.shade300,
           foregroundColor: selected ? Colors.white : Colors.black,
           elevation: 0,

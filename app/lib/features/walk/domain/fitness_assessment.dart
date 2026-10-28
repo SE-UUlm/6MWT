@@ -89,7 +89,7 @@ FitnessAssessment assessFitness({
       distance *
       (_referenceTestDuration.inMilliseconds / duration.inMilliseconds);
 
-  final expectedDistance = _expectedDistance(
+  final expectedDistance = expectedSixMinuteDistance(
     ageInYears: ageInYears,
     heightInCm: heightInCm,
   );
@@ -106,7 +106,7 @@ FitnessAssessment assessFitness({
 
 // The expected (50th percentile) six-minute walking distance for a healthy
 // subject of the given age and height.
-double _expectedDistance({
+double expectedSixMinuteDistance({
   required int ageInYears,
   required double heightInCm,
 }) {
@@ -117,6 +117,13 @@ double _expectedDistance({
 
   return expectedAtMinHeight + _metresPerCm * (height - _minHeightCm);
 }
+
+// The boundaries between the categories (P10, P25, P75 and P90) as a
+// percentage of [expectedDistance], from low to high.
+List<double> categoryBoundariesInPercent(double expectedDistance) => [
+  for (final offset in [_p10Offset, _p25Offset, _p75Offset, _p90Offset])
+    (expectedDistance + offset) / expectedDistance * 100,
+];
 
 FitnessCategory _categorize(double distance, double expectedDistance) {
   if (distance < expectedDistance + _p10Offset) {

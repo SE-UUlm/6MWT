@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,12 +8,11 @@ import '../../l10n/app_localizations.dart';
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  static const Color primaryBlue = Color(0xFF347FE5);
   static const Color darkBlue = Color(0xFF0C2B68);
   static const Color textBlue = Color(0xFF15356D);
   static const Color panelBlue = Color(0xFFF1F6FF);
   static const Color iconBackground = Color(0xFFE0EEFF);
-  static const Color secondaryText = Color(0xFF71809B);
+  static const Color secondaryText = Color(0xFF5E6B85);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
                           child: Icon(
                             Icons.directions_walk_rounded,
                             size: 150,
-                            color: primaryBlue,
+                            color: AppColors.primaryBlue,
                           ),
                         );
                       },
@@ -57,7 +57,7 @@ class HomeScreen extends ConsumerWidget {
                   child: IconButton(
                     tooltip: l10n.aboutTitle,
                     icon: const Icon(Icons.info_outline_rounded),
-                    color: primaryBlue,
+                    color: AppColors.primaryBlue,
                     onPressed: () => context.push('/about'),
                   ),
                 ),
@@ -90,7 +90,7 @@ class HomeScreen extends ConsumerWidget {
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFF71809B),
+                      color: Color(0xFF5E6B85),
                       height: 1.45,
                     ),
                   ),
@@ -156,7 +156,7 @@ class HomeScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () => context.push('/profile'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
+                    backgroundColor: AppColors.primaryBlue,
                     foregroundColor: Colors.white,
                     elevation: 2,
                     shadowColor: Colors.black.withValues(alpha: 0.18),
@@ -239,7 +239,7 @@ class _FeatureCard extends StatelessWidget {
             color: HomeScreen.iconBackground,
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, size: 26, color: HomeScreen.primaryBlue),
+          child: Icon(icon, size: 26, color: AppColors.primaryBlue),
         ),
 
         const SizedBox(height: 9),
@@ -322,7 +322,7 @@ class _HomeActionCard extends StatelessWidget {
                   color: HomeScreen.iconBackground,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: HomeScreen.primaryBlue, size: 25),
+                child: Icon(icon, color: AppColors.primaryBlue, size: 25),
               ),
 
               const SizedBox(width: 14),

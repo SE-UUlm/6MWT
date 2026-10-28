@@ -1,14 +1,19 @@
 import '../features/about/about_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/quick_guide_screen.dart';
 
 import '../features/home/home_screen.dart';
 import '../features/instructions/instructions_screen.dart';
 import '../features/walk/presentation/walk_screen.dart';
 import '../features/walk/presentation/information_screen.dart';
+
+final _log = appLogger('Router');
 
 final router = GoRouter(
   routes: [
@@ -24,23 +29,26 @@ final router = GoRouter(
         ),
         GoRoute(
           path: 'walk',
-          builder: (context, state) {
-            final profileId = state.extra as int;
-
-            return WalkScreen(profileId: profileId);
+          // The information screen sets the profile on the session before a
+          // test. Without one, for example after the app was restored, no
+          // result could be saved.
+          redirect: (context, state) {
+            final session = ProviderScope.containerOf(
+              context,
+            ).read(walkSessionProvider);
+            if (session.profileId != null) return null;
+            _log.w('No profile set on the walk session, returning home');
+            return '/';
           },
+          builder: (context, state) => const WalkScreen(),
         ),
         GoRoute(
           path: 'profile',
           builder: (context, state) => const ProfileScreen(),
         ),
         GoRoute(
-          path: 'video',
-          builder: (context, state) {
-            final profileId = state.extra as int;
-
-            return VideoScreen(profileId: profileId);
-          },
+          path: 'quick-guide',
+          builder: (context, state) => const QuickGuideScreen(),
         ),
 
         GoRoute(
@@ -50,7 +58,9 @@ final router = GoRouter(
 
         GoRoute(
           path: 'instructions',
-          builder: (context, state) => const InstructionsScreen(),
+          builder: (context, state) => InstructionsScreen(
+            offerTestStart: state.uri.queryParameters['from'] != 'quick-guide',
+          ),
         ),
 
         GoRoute(

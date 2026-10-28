@@ -221,4 +221,28 @@ void main() {
       });
     }
   });
+
+  // The performance bar draws its color areas from these boundaries, so they
+  // must match where the category actually changes.
+  for (final (age, height) in [(40, 210), (70, 170), (100, 150)]) {
+    test('category boundaries for $age years and $height cm', () {
+      final expected = expectedSixMinuteDistance(
+        ageInYears: age,
+        heightInCm: height.toDouble(),
+      );
+      final boundaries = categoryBoundariesInPercent(expected);
+
+      FitnessCategory categoryAt(double percent) => assessFitness(
+        duration: const Duration(minutes: 6),
+        distance: expected * percent / 100,
+        ageInYears: age,
+        heightInCm: height.toDouble(),
+      ).category;
+
+      for (final (index, boundary) in boundaries.indexed) {
+        expect(categoryAt(boundary - 0.01), FitnessCategory.values[index]);
+        expect(categoryAt(boundary + 0.01), FitnessCategory.values[index + 1]);
+      }
+    });
+  }
 }

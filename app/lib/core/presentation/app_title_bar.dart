@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:flutter/material.dart';
 
 /// The app's [AppBar]: walking icon and [title], with the platform back button
@@ -28,7 +29,7 @@ class AppTitleBar extends StatelessWidget implements PreferredSizeWidget {
             height: 50,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF9BB8F0),
+              color: AppColors.circleBlue,
             ),
             child: const Icon(
               Icons.directions_walk_rounded,

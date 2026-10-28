@@ -28,8 +28,8 @@ void main() {
     await tester.tap(find.text('Test starten'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Vorkalibrierung'), findsOneWidget);
-    expect(find.text('Patienteninformationen'), findsOneWidget);
+    expect(find.text('Persönliche Daten'), findsOneWidget);
+    expect(find.text('Allgemeine Angaben'), findsOneWidget);
   });
 
   testWidgets('unsupported device languages fall back to English', (

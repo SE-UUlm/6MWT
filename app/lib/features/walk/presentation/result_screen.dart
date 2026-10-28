@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
@@ -16,6 +17,7 @@ import '../domain/estimators/distance_confidence.dart';
 import '../domain/walk_session_provider.dart';
 import 'distance_confidence_format.dart';
 import 'number_format.dart';
+import 'performance_bar.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 
@@ -29,11 +31,8 @@ class ResultScreen extends ConsumerWidget {
   final WalkSessionRow session;
   final Profile profile;
 
-  static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
-
-  static const maxValue = 140;
-  static const labelCount = 7;
+  // Colors.red.shade700, as plain red is too light for text on white.
+  static const Color deleteRed = Color(0xFFD32F2F);
 
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
@@ -42,77 +41,22 @@ class ResultScreen extends ConsumerWidget {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
-  /// Without a [percentage], only the scale is shown, without a marker.
-  Widget _buildPerformanceBar(double? percentage) {
-    return Column(
+  // The localized percentage with a smaller percent sign.
+  TextSpan _percentSpan(AppLocalizations l10n, int value) {
+    final number = NumberFormat.decimalPattern(l10n.localeName).format(value);
+    final formatted = l10n.percentValue(value);
+    final numberStart = formatted.indexOf(number);
+
+    TextSpan sign(String text) => TextSpan(
+      text: text,
+      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+    );
+
+    return TextSpan(
       children: [
-        SizedBox(
-          height: 24,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final progress = percentage?.clamp(0, maxValue);
-
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFf94144),
-                            Color(0xFFf8961e),
-                            Color(0xFF90be6d),
-                            Color(0xFF43aa8b),
-                            Color(0xFF577590),
-                          ],
-                          stops: [
-                            0.0 / maxValue,
-                            80 / maxValue,
-                            90 / maxValue,
-                            110 / maxValue,
-                            120 / maxValue,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  if (progress != null)
-                    Positioned(
-                      key: const ValueKey('performance-marker'),
-                      left: constraints.maxWidth * progress / maxValue - 2,
-                      top: -6,
-                      child: Container(
-                        width: 4,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.black87,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                    ),
-                ],
-              );
-            },
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            for (int i = 0; i < labelCount; i++)
-              Expanded(
-                child: Text(
-                  '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
-                  style: TextStyle(fontSize: 11, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
-        ),
+        sign(formatted.substring(0, numberStart)),
+        TextSpan(text: number),
+        sign(formatted.substring(numberStart + number.length)),
       ],
     );
   }
@@ -232,7 +176,7 @@ class ResultScreen extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: deleteRed),
             child: Text(l10n.delete),
           ),
         ],
@@ -294,6 +238,10 @@ class ResultScreen extends ConsumerWidget {
         ? null
         : DistanceConfidence(storedConfidence);
 
+    final expectedDistance = expectedSixMinuteDistance(
+      ageInYears: profile.age,
+      heightInCm: profile.height.toDouble(),
+    );
     double? percentage;
     String category = l10n.resultNoAssessment;
     // A session still marked as running after the app restarted was
@@ -372,13 +320,17 @@ class ResultScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 4),
 
-                  Text(
-                    percentage == null ? '—' : '${percentage.round()}%',
+                  // The percent sign is smaller than the number, so it does
+                  // not compete with the value itself.
+                  Text.rich(
+                    percentage == null
+                        ? const TextSpan(text: '—')
+                        : _percentSpan(l10n, percentage.round()),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 46,
+                      fontSize: 56,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),
@@ -392,7 +344,10 @@ class ResultScreen extends ConsumerWidget {
 
                   const SizedBox(height: 22),
 
-                  _buildPerformanceBar(percentage),
+                  PerformanceBar(
+                    expectedDistance: expectedDistance,
+                    percentage: percentage,
+                  ),
 
                   const SizedBox(height: 20),
 
@@ -402,7 +357,7 @@ class ResultScreen extends ConsumerWidget {
                       vertical: 14,
                     ),
                     decoration: BoxDecoration(
-                      color: circleBlue.withValues(alpha: 0.25),
+                      color: AppColors.circleBlue.withValues(alpha: 0.25),
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Column(
@@ -413,7 +368,7 @@ class ResultScreen extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
-                            color: primaryBlue,
+                            color: AppColors.primaryBlue,
                           ),
                         ),
 
@@ -431,11 +386,64 @@ class ResultScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+
+                  // Without an assessment there is nothing the warning could
+                  // qualify.
+                  if (percentage != null &&
+                      confidence?.level == ConfidenceLevel.low) ...[
+                    const SizedBox(height: 12),
+
+                    Container(
+                      key: const ValueKey('low-confidence-warning'),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            size: 30,
+                            color: Colors.red.shade700,
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          Expanded(
+                            child: Text(
+                              l10n.resultLowConfidenceWarning,
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.3,
+                                color: Colors.red.shade900,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
 
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
+
+            Text(
+              l10n.resultDisclaimer,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.35,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 20),
 
             _buildDetailsCard(
               title: l10n.resultTestDetails,
@@ -544,7 +552,7 @@ class ResultScreen extends ConsumerWidget {
                             height: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              color: primaryBlue,
+                              color: AppColors.primaryBlue,
                             ),
                           ),
                           const SizedBox(width: 14),
@@ -604,32 +612,22 @@ class ResultScreen extends ConsumerWidget {
               ),
             ),
 
-            Text(
-              l10n.resultDisclaimer,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
-                height: 1.35,
-                color: Colors.black54,
-              ),
-            ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             OutlinedButton.icon(
               onPressed: () => _confirmDelete(context, ref),
-              icon: const Icon(Icons.delete_outline, color: Colors.red),
+              icon: const Icon(Icons.delete_outline, color: deleteRed),
               label: Text(
                 l10n.deleteSession,
                 style: const TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w600,
-                  color: Colors.red,
+                  color: deleteRed,
                 ),
               ),
               style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
+                foregroundColor: deleteRed,
+                side: const BorderSide(color: deleteRed),
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
