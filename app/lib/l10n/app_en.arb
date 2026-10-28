@@ -258,6 +258,8 @@
   "fitnessHighNormal": "High normal",
   "fitnessTopPerformance": "Top performance",
   "walkErrorLocation": "Location permission denied or GPS disabled",
+  "walkLocationRequiredTitle": "Location access required",
+  "walkLocationRequiredText": "The test measures the walking distance by GPS and does not work without location access. Please allow the app to access your location, turn on GPS and start the test again.",
   "walkErrorActivityRecognition": "Activity recognition permission denied",
   "walkErrorSensorUnavailable": "Could not start the sensors: {error}",
   "@walkErrorSensorUnavailable": {

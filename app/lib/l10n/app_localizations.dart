@@ -992,6 +992,18 @@ abstract class AppLocalizations {
   /// **'Standortberechtigung verweigert oder GPS deaktiviert'**
   String get walkErrorLocation;
 
+  /// No description provided for @walkLocationRequiredTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Standortzugriff erforderlich'**
+  String get walkLocationRequiredTitle;
+
+  /// No description provided for @walkLocationRequiredText.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Test misst die Gehstrecke per GPS und funktioniert ohne Standortzugriff nicht. Bitte erlauben Sie der App den Zugriff auf Ihren Standort, schalten Sie GPS ein und starten Sie den Test erneut.'**
+  String get walkLocationRequiredText;
+
   /// No description provided for @walkErrorActivityRecognition.
   ///
   /// In de, this message translates to:

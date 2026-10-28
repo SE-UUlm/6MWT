@@ -514,6 +514,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Standortberechtigung verweigert oder GPS deaktiviert';
 
   @override
+  String get walkLocationRequiredTitle => 'Standortzugriff erforderlich';
+
+  @override
+  String get walkLocationRequiredText =>
+      'Der Test misst die Gehstrecke per GPS und funktioniert ohne Standortzugriff nicht. Bitte erlauben Sie der App den Zugriff auf Ihren Standort, schalten Sie GPS ein und starten Sie den Test erneut.';
+
+  @override
   String get walkErrorActivityRecognition =>
       'Berechtigung zur Aktivitätserkennung verweigert';
 

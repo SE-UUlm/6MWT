@@ -258,6 +258,8 @@
   "fitnessHighNormal": "Hoch-normal",
   "fitnessTopPerformance": "Spitzenleistung",
   "walkErrorLocation": "Standortberechtigung verweigert oder GPS deaktiviert",
+  "walkLocationRequiredTitle": "Standortzugriff erforderlich",
+  "walkLocationRequiredText": "Der Test misst die Gehstrecke per GPS und funktioniert ohne Standortzugriff nicht. Bitte erlauben Sie der App den Zugriff auf Ihren Standort, schalten Sie GPS ein und starten Sie den Test erneut.",
   "walkErrorActivityRecognition": "Berechtigung zur Aktivitätserkennung verweigert",
   "walkErrorSensorUnavailable": "Sensoren konnten nicht gestartet werden: {error}",
   "@walkErrorSensorUnavailable": {

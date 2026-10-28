@@ -497,6 +497,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
   Widget _buildSimpleView(WalkSessionState state, WalkSession session) {
     final l10n = AppLocalizations.of(context)!;
+    // The test measures the distance by GPS, so it cannot run without it.
+    final locationUnavailable =
+        state.error?.issue == SensorIssue.locationUnavailable;
     return Scaffold(
       // Only the content is inside the SafeArea, so the background image fills
       // the whole screen.
@@ -518,17 +521,19 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               child: Column(
                 children: [
                   Expanded(
-                    child: Center(
-                      child: Text(
-                        state.formattedRemainingTime,
-                        style: const TextStyle(
-                          fontSize: 100,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                          letterSpacing: 2,
-                        ),
-                      ),
-                    ),
+                    child: locationUnavailable
+                        ? _buildLocationError(l10n)
+                        : Center(
+                            child: Text(
+                              state.formattedRemainingTime,
+                              style: const TextStyle(
+                                fontSize: 100,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                                letterSpacing: 2,
+                              ),
+                            ),
+                          ),
                   ),
 
                   if (state.isRunning)
@@ -566,6 +571,55 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLocationError(AppLocalizations l10n) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Container(
+          key: const ValueKey('location-error'),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.red.shade50,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.warning_amber_rounded,
+                size: 64,
+                color: Colors.red.shade700,
+              ),
+
+              const SizedBox(height: 16),
+
+              Text(
+                l10n.walkLocationRequiredTitle,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.red.shade900,
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                l10n.walkLocationRequiredText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.35,
+                  color: Colors.red.shade900,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

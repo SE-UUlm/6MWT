@@ -511,6 +511,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walkErrorLocation => 'Location permission denied or GPS disabled';
 
   @override
+  String get walkLocationRequiredTitle => 'Location access required';
+
+  @override
+  String get walkLocationRequiredText =>
+      'The test measures the walking distance by GPS and does not work without location access. Please allow the app to access your location, turn on GPS and start the test again.';
+
+  @override
   String get walkErrorActivityRecognition =>
       'Activity recognition permission denied';
 
