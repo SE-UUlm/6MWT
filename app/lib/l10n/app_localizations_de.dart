@@ -196,6 +196,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
 
   @override
+  String get video_disclaimer =>
+      'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.';
+
+  @override
   String get walk_idstance => 'Distanz';
 
   @override
@@ -416,8 +420,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Streckenvergleiche konnten nicht berechnet werden.';
 
   @override
+  String get resultLowConfidenceWarning =>
+      'Die Distanzmessung war bei diesem Test ungenau. Die Bewertung ist daher nur eingeschränkt aussagekräftig.';
+
+  @override
   String get resultDisclaimer =>
-      'Das Ergebnis dient zur Orientierung und basiert auf Ihrer aufgezeichneten Gehstrecke und Ihren persönlichen Daten.';
+      'Das Ergebnis dient nur zur Orientierung und ersetzt keine ärztliche Beratung. Die Gehstrecke wird geschätzt und kann auch bei hoher Zuverlässigkeit abweichen. Für Folgen oder Entscheidungen auf Grundlage der Ergebnisse übernehmen wir keine Haftung.';
 
   @override
   String resultExportFailed(String error) {

@@ -246,6 +246,46 @@ void main() {
     });
   }
 
+  for (final (phase, confidence, warning) in [
+    (WalkPhase.finished, 0.3, findsOneWidget),
+    (WalkPhase.finished, 0.6, findsNothing),
+    (WalkPhase.finished, null, findsNothing),
+    // Without an assessment there is nothing to warn about.
+    (WalkPhase.aborted, 0.3, findsNothing),
+  ]) {
+    testWidgets(
+      'low confidence warning for a ${phase.name} test with confidence '
+      '$confidence',
+      (tester) async {
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              sessionEstimatorComparisonsProvider(
+                'state-test-session',
+                heightCm: testSession.profile.height,
+                gender: testSession.profile.gender.name,
+              ).overrideWith((ref) async => const []),
+            ],
+            child: localizedApp(
+              locale: const Locale('en'),
+              home: ResultScreen(
+                session: WalkSessionWithProfile(
+                  session: testSession.session.copyWith(
+                    phase: phase,
+                    distanceConfidence: Value(confidence),
+                  ),
+                  profile: testSession.profile,
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.byKey(const ValueKey('low-confidence-warning')), warning);
+      },
+    );
+  }
+
   testWidgets('shows error card on calculation failure', (tester) async {
     await tester.pumpWidget(
       ProviderScope(

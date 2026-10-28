@@ -196,6 +196,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Walk back and forth along the marked course (e.g. 6 metres), starting in the middle. Walk at your own pace. If you are unsure how the test works, watch the video below for guidance.';
 
   @override
+  String get video_disclaimer =>
+      'You perform the test at your own risk. If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand. Stop the test immediately if you experience chest pain, dizziness or severe shortness of breath.';
+
+  @override
   String get walk_idstance => 'Distance';
 
   @override
@@ -414,8 +418,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not calculate distance comparisons.';
 
   @override
+  String get resultLowConfidenceWarning =>
+      'The distance measurement for this test was inaccurate. The assessment is therefore of limited significance.';
+
+  @override
   String get resultDisclaimer =>
-      'The result provides guidance based on your recorded walking distance and personal data.';
+      'The result is for guidance only and does not replace medical advice. The walking distance is estimated and may be inaccurate, even if a high reliability is shown. We accept no liability for consequences or decisions based on the results.';
 
   @override
   String resultExportFailed(String error) {

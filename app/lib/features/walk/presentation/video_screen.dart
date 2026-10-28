@@ -89,7 +89,40 @@ class _VideoScreenState extends State<VideoScreen> {
               ),
             ),
 
-            const SizedBox(height: 190),
+            const SizedBox(height: 40),
+
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.health_and_safety_outlined,
+                    size: 22,
+                    color: Colors.black87,
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  Expanded(
+                    child: Text(
+                      l10n.video_disclaimer,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        height: 1.35,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
 
             SizedBox(
               width: double.infinity,

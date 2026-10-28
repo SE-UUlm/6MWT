@@ -431,11 +431,64 @@ class ResultScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
+
+                  // Without an assessment there is nothing the warning could
+                  // qualify.
+                  if (percentage != null &&
+                      confidence?.level == ConfidenceLevel.low) ...[
+                    const SizedBox(height: 12),
+
+                    Container(
+                      key: const ValueKey('low-confidence-warning'),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.red.shade50,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            size: 30,
+                            color: Colors.red.shade700,
+                          ),
+
+                          const SizedBox(width: 12),
+
+                          Expanded(
+                            child: Text(
+                              l10n.resultLowConfidenceWarning,
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.3,
+                                color: Colors.red.shade900,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
 
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
+
+            Text(
+              l10n.resultDisclaimer,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.35,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 20),
 
             _buildDetailsCard(
               title: l10n.resultTestDetails,
@@ -604,17 +657,7 @@ class ResultScreen extends ConsumerWidget {
               ),
             ),
 
-            Text(
-              l10n.resultDisclaimer,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
-                height: 1.35,
-                color: Colors.black54,
-              ),
-            ),
-
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             OutlinedButton.icon(
               onPressed: () => _confirmDelete(context, ref),

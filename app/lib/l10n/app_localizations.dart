@@ -440,6 +440,12 @@ abstract class AppLocalizations {
   /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
   String get video_text;
 
+  /// No description provided for @video_disclaimer.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.'**
+  String get video_disclaimer;
+
   /// No description provided for @walk_idstance.
   ///
   /// In de, this message translates to:
@@ -836,10 +842,16 @@ abstract class AppLocalizations {
   /// **'Die Streckenvergleiche konnten nicht berechnet werden.'**
   String get resultDistanceComparisonFailed;
 
+  /// No description provided for @resultLowConfidenceWarning.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Distanzmessung war bei diesem Test ungenau. Die Bewertung ist daher nur eingeschränkt aussagekräftig.'**
+  String get resultLowConfidenceWarning;
+
   /// No description provided for @resultDisclaimer.
   ///
   /// In de, this message translates to:
-  /// **'Das Ergebnis dient zur Orientierung und basiert auf Ihrer aufgezeichneten Gehstrecke und Ihren persönlichen Daten.'**
+  /// **'Das Ergebnis dient nur zur Orientierung und ersetzt keine ärztliche Beratung. Die Gehstrecke wird geschätzt und kann auch bei hoher Zuverlässigkeit abweichen. Für Folgen oder Entscheidungen auf Grundlage der Ergebnisse übernehmen wir keine Haftung.'**
   String get resultDisclaimer;
 
   /// No description provided for @resultExportFailed.

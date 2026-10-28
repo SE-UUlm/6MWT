@@ -467,6 +467,16 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                 EstimatorComparisonCard(comparisons: state.comparisons),
               ],
               const SizedBox(height: 24),
+
+              Text(
+                l10n.resultDisclaimer,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
+                  height: 1.35,
+                  color: Colors.black54,
+                ),
+              ),
             ],
           ),
         ),
