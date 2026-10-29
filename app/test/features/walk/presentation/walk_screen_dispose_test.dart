@@ -11,6 +11,8 @@ import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
 
+import '../../../helpers/localized_app.dart';
+
 class DelayedStopSession extends WalkSession {
   DelayedStopSession()
     : super(sources: [], distanceEstimator: GpsDistanceEstimator());
@@ -34,7 +36,7 @@ void main() {
       'screen disposes before warm-up stop completes (fails=$fails)',
       (tester) async {
         final db = AppDatabase(NativeDatabase.memory());
-        final session = DelayedStopSession();
+        final session = DelayedStopSession()..setProfile(id: 1, heightCm: 170);
         addTearDown(() async {
           await session.dispose();
           await db.close();
@@ -45,7 +47,10 @@ void main() {
               databaseProvider.overrideWithValue(db),
               walkSessionProvider.overrideWithValue(session),
             ],
-            child: const MaterialApp(home: WalkScreen(profileId: 1)),
+            child: localizedApp(
+              locale: const Locale('en'),
+              home: const WalkScreen(),
+            ),
           ),
         );
         final view = tester.widget<PageView>(find.byType(PageView));

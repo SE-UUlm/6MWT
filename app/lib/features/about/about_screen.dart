@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,123 +74,118 @@ class AboutScreen extends ConsumerWidget {
         foregroundColor: const Color(0xFF15356D),
         scrolledUnderElevation: 0,
       ),
-      body: SafeArea(
-        child: Center(
-          child: SizedBox(
-            width: 640,
-            child: ListView(
-              padding: const EdgeInsets.all(24),
-              children: [
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 160,
-                  fit: BoxFit.contain,
-                  excludeFromSemantics: true,
-                  errorBuilder: (context, error, stackTrace) => const SizedBox(
-                    height: 160,
-                    child: Icon(
-                      Icons.directions_walk_rounded,
-                      size: 100,
-                      color: Color(0xFF347FE5),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  l10n.appTitle,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: const Color(0xFF0C2B68),
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n.aboutProject,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: const Color(0xFF586A85),
-                    height: 1.6,
-                  ),
-                ),
-                const SizedBox(height: 28),
-                _AboutPanel(
-                  child: info.when(
-                    data: metadata,
-                    loading: () =>
-                        const Center(child: CircularProgressIndicator()),
-                    error: (_, _) => metadata(const AppInfo()),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _AboutPanel(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l10n.aboutAuthors,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: const Color(0xFF586A85),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      _TwoColumns(
-                        fitLastColumn: true,
-                        children: [
-                          for (final name in [
-                            'Moritz Beck',
-                            'Lea-Marie Kindermann',
-                            'Serhat Kan',
-                            'Luca-Marie Jamrosy',
-                          ])
-                            Text(
-                              name,
-                              style: Theme.of(context).textTheme.bodyLarge
-                                  ?.copyWith(
-                                    color: const Color(0xFF15356D),
-                                    height: 1.5,
-                                  ),
-                            ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 16),
-                _AboutPanel(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _AboutAction(
-                        onPressed: () => _openRepository(context),
-                        icon: Icons.open_in_new,
-                        label: l10n.aboutRepository,
-                        subtitle: repositoryUri.toString(),
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Divider(height: 1, color: Color(0xFFE7EDF6)),
-                      ),
-                      _InfoField(
-                        label: l10n.aboutProjectLicense,
-                        value: 'GPL-3.0-or-later',
-                      ),
-                      const SizedBox(height: 8),
-                      _AboutAction(
-                        onPressed: () => showLicensePage(
-                          context: context,
-                          applicationName: l10n.appTitle,
-                          applicationVersion: info.asData?.value.version,
-                          applicationLegalese: 'GPL-3.0-or-later',
-                        ),
-                        icon: Icons.description_outlined,
-                        label: l10n.aboutLicenses,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      // The bottom inset is part of the scroll padding instead of a SafeArea,
+      // so content scrolls behind the system navigation. The top inset is
+      // already handled by the app bar.
+      body: Center(
+        child: SizedBox(
+          width: 640,
+          child: ListView(
+            padding: EdgeInsets.fromLTRB(
+              24,
+              24,
+              24,
+              24 + MediaQuery.paddingOf(context).bottom,
             ),
+            children: [
+              Image.asset(
+                'assets/images/logo.png',
+                height: 160,
+                fit: BoxFit.contain,
+                excludeFromSemantics: true,
+                errorBuilder: (context, error, stackTrace) => const SizedBox(
+                  height: 160,
+                  child: Icon(
+                    Icons.directions_walk_rounded,
+                    size: 100,
+                    color: AppColors.primaryBlue,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                l10n.appTitle,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: const Color(0xFF0C2B68),
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                l10n.aboutProject,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: const Color(0xFF586A85),
+                  height: 1.6,
+                ),
+              ),
+              const SizedBox(height: 28),
+              _AboutPanel(
+                child: info.when(
+                  data: metadata,
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (_, _) => metadata(const AppInfo()),
+                ),
+              ),
+              const SizedBox(height: 16),
+              _AboutPanel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.aboutAuthors,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: const Color(0xFF586A85),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const _AuthorColumns(
+                      names: [
+                        'Moritz Beck',
+                        'Lea-Marie Kindermann',
+                        'Serhat Kan',
+                        'Luca-Marie Jamrosy',
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              _AboutPanel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _AboutAction(
+                      onPressed: () => _openRepository(context),
+                      icon: Icons.open_in_new,
+                      label: l10n.aboutRepository,
+                      subtitle: repositoryUri.toString(),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: Divider(height: 1, color: Color(0xFFE7EDF6)),
+                    ),
+                    _InfoField(
+                      label: l10n.aboutProjectLicense,
+                      value: 'GPL-3.0-or-later',
+                    ),
+                    const SizedBox(height: 8),
+                    _AboutAction(
+                      onPressed: () => showLicensePage(
+                        context: context,
+                        applicationName: l10n.appTitle,
+                        applicationVersion: info.asData?.value.version,
+                        applicationLegalese: 'GPL-3.0-or-later',
+                      ),
+                      icon: Icons.description_outlined,
+                      label: l10n.aboutLicenses,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -248,10 +246,9 @@ class _InfoField extends StatelessWidget {
 }
 
 class _TwoColumns extends StatelessWidget {
-  const _TwoColumns({required this.children, this.fitLastColumn = false});
+  const _TwoColumns({required this.children});
 
   final List<Widget> children;
-  final bool fitLastColumn;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -259,29 +256,6 @@ class _TwoColumns extends StatelessWidget {
       final twoColumns =
           constraints.maxWidth >= 220 &&
           MediaQuery.textScalerOf(context).scale(16) <= 24;
-      if (twoColumns && fitLastColumn) {
-        return Table(
-          columnWidths: const {0: FlexColumnWidth(), 1: IntrinsicColumnWidth()},
-          defaultVerticalAlignment: TableCellVerticalAlignment.top,
-          children: [
-            for (var i = 0; i < children.length; i += 2)
-              TableRow(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 20, top: i == 0 ? 0 : 12),
-                    child: children[i],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: i == 0 ? 0 : 12),
-                    child: i + 1 < children.length
-                        ? children[i + 1]
-                        : const SizedBox.shrink(),
-                  ),
-                ],
-              ),
-          ],
-        );
-      }
       return Wrap(
         spacing: 20,
         runSpacing: 12,
@@ -297,6 +271,81 @@ class _TwoColumns extends StatelessWidget {
       );
     },
   );
+}
+
+/// Shows names in two columns, or in a single one as soon as any name would
+/// have to wrap.
+class _AuthorColumns extends StatelessWidget {
+  const _AuthorColumns({required this.names});
+
+  final List<String> names;
+
+  static const _gap = 20.0;
+  static const _rowSpacing = 12.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = DefaultTextStyle.of(context).style.merge(
+      Theme.of(context).textTheme.bodyLarge?.copyWith(
+        color: const Color(0xFF15356D),
+        height: 1.5,
+      ),
+    );
+    final textScaler = MediaQuery.textScalerOf(context);
+    final textDirection = Directionality.of(context);
+    double widestIn(int column) {
+      var widest = 0.0;
+      for (var i = column; i < names.length; i += 2) {
+        final painter = TextPainter(
+          text: TextSpan(text: names[i], style: style),
+          textDirection: textDirection,
+          textScaler: textScaler,
+          maxLines: 1,
+        )..layout();
+        widest = max(widest, painter.width);
+        painter.dispose();
+      }
+      return widest;
+    }
+
+    final requiredWidth = widestIn(0) + _gap + widestIn(1);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (requiredWidth > constraints.maxWidth) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: _rowSpacing,
+            children: [for (final name in names) Text(name, style: style)],
+          );
+        }
+        // The last column fits its content and the first one takes the rest.
+        return Table(
+          columnWidths: const {0: FlexColumnWidth(), 1: IntrinsicColumnWidth()},
+          defaultVerticalAlignment: TableCellVerticalAlignment.top,
+          children: [
+            for (var i = 0; i < names.length; i += 2)
+              TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: _gap,
+                      top: i == 0 ? 0 : _rowSpacing,
+                    ),
+                    child: Text(names[i], style: style),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: i == 0 ? 0 : _rowSpacing),
+                    child: i + 1 < names.length
+                        ? Text(names[i + 1], style: style)
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class _AboutAction extends StatelessWidget {
@@ -316,7 +365,7 @@ class _AboutAction extends StatelessWidget {
   Widget build(BuildContext context) => TextButton(
     style: TextButton.styleFrom(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      foregroundColor: const Color(0xFF347FE5),
+      foregroundColor: AppColors.primaryBlue,
       minimumSize: const Size(double.infinity, 48),
       alignment: Alignment.centerLeft,
     ),

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
 import 'package:six_minute_walk_test/core/sensors/providers.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
@@ -37,6 +39,7 @@ WalkSessionRow? createWalkSessionRow(
     startedAt: startedAt,
     duration: session.walkDuration - state.remainingTime,
     distance: state.distance,
+    distanceConfidence: state.confidence?.score,
     phase: state.phase,
     profileId: profileId,
   );
@@ -66,6 +69,21 @@ Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
   });
 }
 
+/// Creates the primary distance estimator used to calculate the session distance.
+DistanceEstimator createPrimaryDistanceEstimator() =>
+    GpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
+
+/// Creates the secondary distance estimators used for comparisons during the walk.
+List<DistanceEstimator> createComparisonEstimators() => [
+  GpsDistanceEstimator(),
+  KalmanGpsStepDistanceEstimator(),
+  AdaptiveGpsStepDistanceEstimator(),
+  CalibratedStepDistanceEstimator(),
+  KalmanGpsDistanceEstimator(),
+  FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
+  StepDistanceEstimator(stepLength: 0.75),
+];
+
 // Kept alive for the whole app lifetime, so a running walk test survives
 // navigating between screens.
 @Riverpod(keepAlive: true)
@@ -75,38 +93,18 @@ WalkSession walkSession(Ref ref) {
     // Phone steps support distance fallback when available; permission denial
     // or unsupported hardware does not prevent a GPS-only walk.
     optionalSources: [PedometerSource()],
-    distanceEstimator: GpsStepDistanceEstimator(
-      stepSourceId: PedometerSource.id,
-    ),
-    comparisonEstimators: [
-      NamedDistanceEstimator('Plain GPS', GpsDistanceEstimator()),
-      NamedDistanceEstimator(
-        'Kalman GPS + steps',
-        KalmanGpsStepDistanceEstimator(),
-      ),
-      NamedDistanceEstimator(
-        'Adaptive GPS + steps',
-        AdaptiveGpsStepDistanceEstimator(),
-      ),
-      NamedDistanceEstimator(
-        'Calibrated steps',
-        CalibratedStepDistanceEstimator(),
-      ),
-      NamedDistanceEstimator('Kalman GPS', KalmanGpsDistanceEstimator()),
-      NamedDistanceEstimator(
-        'Filtered GPS',
-        FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
-      ),
-      NamedDistanceEstimator('Steps', StepDistanceEstimator(stepLength: 0.75)),
-    ],
+    distanceEstimator: createPrimaryDistanceEstimator(),
+    comparisonEstimators: createComparisonEstimators(),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 
   final walkSessionRepository = ref.watch(walkSessionRepositoryProvider);
 
-  final subscription = deduplicatedSaves(
-    session,
-  ).listen(walkSessionRepository.saveSession);
+  final subscription = deduplicatedSaves(session).listen(
+    walkSessionRepository.saveSession,
+    onError: (Object error, StackTrace stack) =>
+        _log.e('Cannot save walk session', error: error, stackTrace: stack),
+  );
 
   ref.onDispose(() {
     subscription.cancel();
@@ -119,3 +117,95 @@ WalkSession walkSession(Ref ref) {
 @Riverpod(keepAlive: true)
 Stream<WalkSessionState> walkSessionState(Ref ref) =>
     ref.watch(walkSessionProvider).states;
+
+/// Samples and profile values passed to the background calculation.
+class EstimatorComparisonInput {
+  const EstimatorComparisonInput({
+    required this.samples,
+    this.heightCm,
+    this.gender,
+  });
+
+  final List<SensorSample> samples;
+  final num? heightCm;
+  final String? gender;
+}
+
+List<EstimatorComparison> computeEstimatorComparisons(
+  EstimatorComparisonInput input,
+) {
+  final samples = input.samples;
+  if (samples.isEmpty) {
+    return const [];
+  }
+
+  // The primary estimator comes first and reproduces the stored distance.
+  final estimators = [
+    (createPrimaryDistanceEstimator(), true),
+    for (final estimator in createComparisonEstimators()) (estimator, false),
+  ];
+
+  final comparisons = <EstimatorComparison>[];
+
+  for (final (estimator, primary) in estimators) {
+    try {
+      estimator.configureProfile(
+        heightCm: input.heightCm,
+        gender: input.gender,
+      );
+      estimator.reset();
+
+      for (final sample in samples) {
+        estimator.addSample(sample);
+      }
+
+      comparisons.add(EstimatorComparison.of(estimator, primary: primary));
+    } catch (e) {
+      comparisons.add(
+        EstimatorComparison.failed(estimator, e, primary: primary),
+      );
+    }
+  }
+
+  return comparisons;
+}
+
+@riverpod
+Future<List<EstimatorComparison>> sessionEstimatorComparisons(
+  Ref ref,
+  String sessionId, {
+  num? heightCm,
+  String? gender,
+}) async {
+  try {
+    final sampleRepository = ref.watch(sampleRepositoryProvider);
+    final samples = await sampleRepository.loadSessionSamples(sessionId);
+    if (samples.isEmpty) {
+      return const [];
+    }
+    final stopwatch = Stopwatch()..start();
+
+    final result = await compute(
+      computeEstimatorComparisons,
+      EstimatorComparisonInput(
+        samples: samples,
+        heightCm: heightCm,
+        gender: gender,
+      ),
+    ); // Run in background
+
+    stopwatch.stop();
+    _log.t(
+      'Calculated ${result.length} estimator comparisons for $sessionId '
+      'in ${stopwatch.elapsedMilliseconds} ms (${samples.length} samples)',
+    );
+    return result;
+  } catch (error, stackTrace) {
+    _log.w(
+      'Failed to compute estimator comparisons for $sessionId',
+      error: error,
+      stackTrace: stackTrace,
+    );
+    rethrow;
+  }
+}

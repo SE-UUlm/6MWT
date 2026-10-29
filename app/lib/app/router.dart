@@ -1,220 +1,77 @@
 import '../features/about/about_screen.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/history/history_screen.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
-import 'package:six_minute_walk_test/features/walk/presentation/walk_result_arguments.dart';
-import 'package:six_minute_walk_test/features/walk/presentation/video_screen.dart';
+import 'package:six_minute_walk_test/features/walk/presentation/quick_guide_screen.dart';
 
 import '../features/home/home_screen.dart';
-import '../features/instructions/instructions_screen_2.dart';
-import '../features/instructions/instructions_screen_3.dart';
-import '../features/instructions/instructions_screen_4.dart';
-import '../features/instructions/instructions_screen_5.dart';
-import '../features/instructions/instructions_screen_6.dart';
-import '../features/instructions/instructions_screen_7.dart';
+import '../features/instructions/instructions_screen.dart';
 import '../features/walk/presentation/walk_screen.dart';
-import '../features/instructions/instructions_screen_1.dart';
 import '../features/walk/presentation/information_screen.dart';
+
+final _log = appLogger('Router');
 
 final router = GoRouter(
   routes: [
-    GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
-    GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
     GoRoute(
-      path: '/walk',
-      builder: (context, state) {
-        final profileId = state.extra as int;
+      path: '/',
+      builder: (context, state) => const HomeScreen(),
+      // Every screen is nested under home so that `go(...)` always builds a stack
+      // with home at the bottom. `push(...)` only adds the leaf page.
+      routes: [
+        GoRoute(
+          path: 'about',
+          builder: (context, state) => const AboutScreen(),
+        ),
+        GoRoute(
+          path: 'walk',
+          // The information screen sets the profile on the session before a
+          // test. Without one, for example after the app was restored, no
+          // result could be saved.
+          redirect: (context, state) {
+            final session = ProviderScope.containerOf(
+              context,
+            ).read(walkSessionProvider);
+            if (session.profileId != null) return null;
+            _log.w('No profile set on the walk session, returning home');
+            return '/';
+          },
+          builder: (context, state) => const WalkScreen(),
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          path: 'quick-guide',
+          builder: (context, state) => const QuickGuideScreen(),
+        ),
 
-        return WalkScreen(profileId: profileId);
-      },
-    ),
-    GoRoute(
-      path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
-    ),
-    GoRoute(
-      path: '/video',
-      builder: (context, state) {
-        final profileId = state.extra as int;
+        GoRoute(
+          path: 'history',
+          builder: (context, state) => const HistoryScreen(),
+        ),
 
-        return VideoScreen(profileId: profileId);
-      },
-    ),
-    GoRoute(
-      path: '/result',
-      builder: (context, state) {
-        final extra = state.extra;
-        if (extra is WalkResultArguments) {
-          return ResultScreen(
-            session: extra.session,
-            comparisons: extra.comparisons,
-          );
-        }
-        final session = extra as WalkSessionWithProfile;
+        GoRoute(
+          path: 'instructions',
+          builder: (context, state) => InstructionsScreen(
+            offerTestStart: state.uri.queryParameters['from'] != 'quick-guide',
+          ),
+        ),
 
-        return ResultScreen(session: session);
-      },
-    ),
+        GoRoute(
+          path: 'result',
+          builder: (context, state) {
+            final session = state.extra as WalkSessionWithProfile;
 
-    GoRoute(
-      path: '/history',
-      builder: (context, state) => const HistoryScreen(),
-    ),
-
-    // Route +  Animation - Instructions-1 Page
-    GoRoute(
-      path: '/instructions-1',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen1(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
+            return ResultScreen(session: session);
           },
-        );
-      },
-    ),
-
-    // Route + Animation - Instructions-2 Page
-    GoRoute(
-      path: '/instructions-2',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen2(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-3 Page
-    GoRoute(
-      path: '/instructions-3',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen3(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position:
-                  Tween<Offset>(
-                    begin: const Offset(1.0, 0.0),
-                    end: Offset.zero,
-                  ).animate(
-                    CurvedAnimation(
-                      parent: animation,
-                      curve: Curves.easeOutCubic,
-                    ),
-                  ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-4 Page
-    GoRoute(
-      path: '/instructions-4',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen4(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-5 Page
-    GoRoute(
-      path: '/instructions-5',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen5(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-6 Page
-    GoRoute(
-      path: '/instructions-6',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen6(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
-    ),
-    // Route + Animation - Instructions-7 Page
-    GoRoute(
-      path: '/instructions-7',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const InstructionsScreen7(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
-              position: animation.drive(
-                Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).chain(CurveTween(curve: Curves.easeInOut)),
-              ),
-              child: child,
-            );
-          },
-        );
-      },
+        ),
+      ],
     ),
   ],
 );

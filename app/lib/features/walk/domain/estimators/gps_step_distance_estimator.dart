@@ -1,7 +1,9 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
+import 'default_step_length.dart';
 
 /// GPS distance with a phone-step fallback and a session-local stride estimate.
 ///
@@ -11,6 +13,7 @@ import 'distance_estimator.dart';
 /// portion, so recovery and delayed callbacks cannot count the same time twice.
 class GpsStepDistanceEstimator extends DistanceEstimator {
   GpsStepDistanceEstimator({
+    super.name,
     required this.stepSourceId,
     this.gpsFallbackTimeout = maxGpsGap,
     this.maxGpsInterval = maxGpsGap,
@@ -20,6 +23,9 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
       throw ArgumentError('GPS time limits must be positive.');
     }
   }
+
+  @override
+  String get defaultName => 'GPS + steps';
 
   final String stepSourceId;
 
@@ -52,6 +58,7 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
   double _gpsDistance = 0;
   double _totalDistance = 0;
   double? _learnedStepLength;
+  double _initialStepLength = defaultStepLength;
   int _acceptedGpsIntervals = 0;
   int _rejectedGpsGap = 0;
   int _rejectedGpsCoordinates = 0;
@@ -59,6 +66,8 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
   int _rejectedGpsSpeed = 0;
   int _calibrationUpdates = 0;
   int _rejectedCalibration = 0;
+  double _gpsAccuracySum = 0;
+  final _strideCandidates = <double>[];
 
   DateTime? _calibrationEnd;
   Duration _calibrationTime = Duration.zero;
@@ -70,7 +79,15 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
 
   bool get hasLearnedStepLength => _learnedStepLength != null;
 
-  double get stepLength => _learnedStepLength ?? defaultStepLength;
+  double get stepLength => _learnedStepLength ?? _initialStepLength;
+
+  @override
+  void configureProfile({num? heightCm, String? gender}) {
+    _initialStepLength = estimateDefaultStepLength(
+      heightCm: heightCm,
+      gender: gender,
+    );
+  }
 
   @override
   Map<String, String> get additionalInfo => {
@@ -89,6 +106,24 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
     'Calibration updates': '$_calibrationUpdates',
     'Rejected calibration': '$_rejectedCalibration',
   };
+
+  /// Weights GPS quality and stride consistency by their share of the distance.
+  /// GPS gaps are not penalised; they only shift weight to the steps.
+  @override
+  DistanceConfidence get confidence => ConfidenceHeuristics.combine(
+    total: _totalDistance,
+    gpsDistance: _gpsDistance,
+    gpsQuality: ConfidenceHeuristics.gpsQuality(
+      accuracySum: _gpsAccuracySum,
+      accepted: _acceptedGpsIntervals,
+      rejected:
+          _rejectedGpsCoordinates + _rejectedGpsAccuracy + _rejectedGpsSpeed,
+    ),
+    otherQuality: ConfidenceHeuristics.strideQuality(
+      _strideCandidates,
+      rejected: _rejectedCalibration,
+    ),
+  );
 
   @override
   void addSample(SensorSample sample) {
@@ -161,6 +196,7 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
         distance: distance,
       ));
       _gpsDistance += distance;
+      _gpsAccuracySum += accuracy;
       _acceptedGpsIntervals++;
     }
     // After an excessive gap or a rejected fix, start a new segment.
@@ -238,6 +274,7 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
     final candidate = _calibrationDistance / _calibrationSteps;
     if (candidate.isFinite && candidate > 0 && candidate <= maxStepLength) {
       _calibrationUpdates++;
+      _strideCandidates.add(candidate);
       final previous = _learnedStepLength;
       _learnedStepLength = previous == null
           ? candidate
@@ -323,6 +360,8 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
     _rejectedGpsSpeed = 0;
     _calibrationUpdates = 0;
     _rejectedCalibration = 0;
+    _gpsAccuracySum = 0;
+    _strideCandidates.clear();
     _calibrationEnd = null;
     _clearCalibrationWindow();
   }

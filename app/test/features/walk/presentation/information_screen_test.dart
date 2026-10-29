@@ -5,17 +5,27 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/information_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../../helpers/localized_app.dart';
 
 void main() {
   late AppDatabase db;
+  late WalkSession session;
 
   setUp(() {
     db = AppDatabase(NativeDatabase.memory());
+    session = WalkSession(
+      sources: [],
+      distanceEstimator: GpsDistanceEstimator(),
+    );
   });
 
   tearDown(() async {
+    await session.dispose();
     await db.close();
   });
 
@@ -28,21 +38,19 @@ void main() {
       routes: [
         GoRoute(path: '/', builder: (_, _) => const ProfileScreen()),
         GoRoute(
-          path: '/video',
-          builder: (_, _) => const Scaffold(body: Text('Video')),
+          path: '/quick-guide',
+          builder: (_, _) => const Scaffold(body: Text('Quick guide')),
         ),
       ],
     );
     addTearDown(router.dispose);
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [databaseProvider.overrideWithValue(db)],
-        child: MaterialApp.router(
-          routerConfig: router,
-          locale: const Locale('de'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
+        overrides: [
+          databaseProvider.overrideWithValue(db),
+          walkSessionProvider.overrideWithValue(session),
+        ],
+        child: localizedRouterApp(router: router, locale: const Locale('de')),
       ),
     );
     await tester.pumpAndSettle();
@@ -104,6 +112,7 @@ void main() {
       expect(find.text(message), findsOneWidget);
       expect(find.byType(ProfileScreen), findsOneWidget);
       expect(await db.select(db.profiles).get(), isEmpty);
+      expect(session.profileId, isNull);
     });
   }
 
@@ -123,7 +132,7 @@ void main() {
       expect(profile.height, height);
       expect(profile.weight, weight);
       await tester.pumpAndSettle();
-      expect(find.text('Video'), findsOneWidget);
+      expect(find.text('Quick guide'), findsOneWidget);
     });
   }
 
@@ -141,8 +150,10 @@ void main() {
       expect(profile.height, 175);
       expect(profile.weight, 72.5);
       expect(profile.gender, Gender.female);
+      // The walk screen reads the profile from the session.
+      expect(session.profileId, profile.id);
       await tester.pumpAndSettle();
-      expect(find.text('Video'), findsOneWidget);
+      expect(find.text('Quick guide'), findsOneWidget);
     });
   }
 }

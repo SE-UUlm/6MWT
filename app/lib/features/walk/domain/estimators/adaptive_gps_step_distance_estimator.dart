@@ -2,15 +2,20 @@ import 'step_calibration_history.dart';
 import 'dart:math' as math;
 
 import '../../../../core/domain/sensor_sample.dart';
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
 
 /// GPS on covered intervals, locally calibrated steps on their complement.
 /// Retains the short session history so later calibration can revise GPS gaps.
 class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
-  AdaptiveGpsStepDistanceEstimator({StepCalibrationConfig? config})
+  AdaptiveGpsStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Adaptive GPS + steps';
+
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;
   bool _dirty = true;
@@ -18,6 +23,7 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
   double _defaultMeters = 0, _uncovered = 0, _correction = 0;
   double _currentLength = 0;
   int _windowCount = 0, _gapCount = 0, _pending = 0;
+  List<double> _strides = const [];
 
   void _calculate() {
     if (!_dirty) return;
@@ -26,6 +32,7 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
     _gapCount = _pending = 0;
     final windows = _history.windows();
     _windowCount = windows.length;
+    _strides = [for (final w in windows) w.length];
     final start = _history.start, end = _history.end;
     _currentLength = config.defaultLength;
     if (start != null && end != null) {
@@ -118,11 +125,27 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
     return _distance;
   }
 
+  /// GPS quality for covered intervals, stride consistency for the gaps.
+  @override
+  DistanceConfidence get confidence {
+    _calculate();
+    return ConfidenceHeuristics.combine(
+      total: _distance,
+      gpsDistance: _gpsMeters,
+      gpsQuality: ConfidenceHeuristics.gpsQuality(
+        accuracySum: _history.gpsAccuracySum,
+        accepted: _history.gps.length,
+        rejected: _history.rejectedGps,
+      ),
+      otherQuality: ConfidenceHeuristics.strideQuality(_strides),
+    );
+  }
+
   @override
   Map<String, String> get additionalInfo {
     _calculate();
     return {
-      'Estimate': 'Provisional; gaps may be revised up or down',
+      'Estimate': 'Provisional; gaps may be revised up or down; adaptiveuu6mwt',
       'Recent step length': '${_currentLength.toStringAsFixed(3)} m',
       'Calibration windows': '$_windowCount',
       'GPS distance': '${_gpsMeters.toStringAsFixed(2)} m',
@@ -133,6 +156,7 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
       'Uncovered duration': '${_uncovered.toStringAsFixed(1)} s',
       'Correction from following calibration':
           '${_correction.toStringAsFixed(2)} m',
+      'version': 'UULM-6MWT-AGSDE-v1',
       'GPS rejected': '${_history.rejectedGps}',
       'Step counter resets': '${_history.resets}',
       'GPS source': _history.gpsSource ?? 'None',
@@ -153,5 +177,6 @@ class AdaptiveGpsStepDistanceEstimator extends DistanceEstimator {
         _correction = 0;
     _currentLength = config.defaultLength;
     _windowCount = _gapCount = _pending = 0;
+    _strides = const [];
   }
 }

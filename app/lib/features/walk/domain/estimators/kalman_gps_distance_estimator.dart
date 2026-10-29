@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
 
 /// Initial experimental parameters, not a guarantee of measurement accuracy.
@@ -52,8 +53,11 @@ class KalmanGpsConfig {
 /// Causal, GPS-only comparison estimator. No wall clock, step data, or reference
 /// trajectory is used. Predictions never add distance without an accepted fix.
 class KalmanGpsDistanceEstimator extends DistanceEstimator {
-  KalmanGpsDistanceEstimator({KalmanGpsConfig? config})
+  KalmanGpsDistanceEstimator({super.name, KalmanGpsConfig? config})
     : config = config ?? KalmanGpsConfig();
+
+  @override
+  String get defaultName => 'Kalman GPS';
 
   final KalmanGpsConfig config;
   String? _source;
@@ -67,12 +71,28 @@ class KalmanGpsDistanceEstimator extends DistanceEstimator {
   double _gapDistance = 0;
   double _gapDuration = 0;
   int _accepted = 0;
+  double _accuracySum = 0;
   int _gaps = 0;
   int _rejectedConnections = 0;
   final Map<String, int> _rejected = {};
 
   @override
   double get totalDistance => _distance;
+
+  /// Straight-line gap bridges are rated separately from filtered GPS.
+  @override
+  DistanceConfidence get confidence => ConfidenceHeuristics.combine(
+    total: _distance,
+    gpsDistance: _distance - _gapDistance,
+    gpsQuality: ConfidenceHeuristics.gpsQuality(
+      accuracySum: _accuracySum,
+      accepted: _accepted,
+      rejected: _rejected.entries
+          .where((e) => e.key != 'timestamp')
+          .fold(0, (sum, e) => sum + e.value),
+    ),
+    otherQuality: ConfidenceHeuristics.gapBridgeQuality,
+  );
 
   @override
   Map<String, String> get additionalInfo => {
@@ -135,7 +155,7 @@ class KalmanGpsDistanceEstimator extends DistanceEstimator {
     final last = _last;
     if (last == null) {
       _initialize(fix);
-      _accepted++;
+      _accept(fix);
       return;
     }
     final dt = fix.secondsSince(last);
@@ -169,8 +189,13 @@ class KalmanGpsDistanceEstimator extends DistanceEstimator {
     }
     _state = updated;
     _last = fix;
-    _accepted++;
+    _accept(fix);
     _book(_state!.position, fix.accuracy);
+  }
+
+  void _accept(_Fix fix) {
+    _accepted++;
+    _accuracySum += fix.accuracy;
   }
 
   double _measurementVariance(_Fix fix) =>
@@ -227,7 +252,8 @@ class KalmanGpsDistanceEstimator extends DistanceEstimator {
       _rejectedConnections++;
     }
     _initialize(pending);
-    _accepted += 2;
+    _accept(pending);
+    _accept(fix);
     _pending = null;
     if (fix.secondsSince(pending) > config.gapSeconds) {
       // Sparse sampling can place both confirmed fixes after separate gaps.
@@ -305,6 +331,7 @@ class KalmanGpsDistanceEstimator extends DistanceEstimator {
     _gapDistance = 0;
     _gapDuration = 0;
     _accepted = 0;
+    _accuracySum = 0;
     _gaps = 0;
     _rejectedConnections = 0;
     _rejected.clear();

@@ -32,6 +32,11 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+    // Confidence is visible without expanding the diagnostics.
+    expect(
+      find.textContaining('Confidence: '),
+      findsNWidgets(createEstimators().length),
+    );
     expect(find.textContaining('Rejected GPS:'), findsNothing);
     final index = createEstimators().indexWhere(
       (e) => e.additionalInfo.containsKey('Rejected GPS'),

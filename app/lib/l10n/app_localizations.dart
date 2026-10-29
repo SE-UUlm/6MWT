@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @home_instruction.
   ///
   /// In de, this message translates to:
-  /// **'Über den 6 Minuten Test'**
+  /// **'Über den 6-Minuten-Test'**
   String get home_instruction;
 
   /// No description provided for @home_instructionsb.
@@ -221,20 +221,26 @@ abstract class AppLocalizations {
   /// No description provided for @bulletPoint_2.
   ///
   /// In de, this message translates to:
-  /// **'Test starten'**
+  /// **'Kurzanleitung lesen'**
   String get bulletPoint_2;
 
   /// No description provided for @bulletPoint_3.
   ///
   /// In de, this message translates to:
-  /// **'Gehen Sie 6 Minuten lang'**
+  /// **'Test starten'**
   String get bulletPoint_3;
 
   /// No description provided for @bulletPoint_4.
   ///
   /// In de, this message translates to:
-  /// **'Ergebnisse'**
+  /// **'6 Minuten gehen'**
   String get bulletPoint_4;
+
+  /// No description provided for @bulletPoint_5.
+  ///
+  /// In de, this message translates to:
+  /// **'Ergebnis ansehen'**
+  String get bulletPoint_5;
 
   /// No description provided for @instructions_2_text.
   ///
@@ -242,17 +248,17 @@ abstract class AppLocalizations {
   /// **'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.'**
   String get instructions_2_text;
 
-  /// No description provided for @instructions_3_welc.
-  ///
-  /// In de, this message translates to:
-  /// **'Personenbezogene Daten'**
-  String get instructions_3_welc;
-
   /// No description provided for @instructions_3_text.
   ///
   /// In de, this message translates to:
-  /// **'Für eine möglichst präzise Analyse benötigen wir einige Angaben wie Alter, Körpergröße, Gewicht und Geschlecht. Diese Daten dienen dazu, Ihre Ergebnisse besser einordnen zu können.'**
+  /// **'Um Ihre Fitness bewerten zu können, benötigen wir einige Angaben wie Alter, Geschlecht, Körpergröße und Gewicht. Ihre Gehstrecke wird dann mit Referenzwerten von Menschen mit ähnlichem Profil verglichen.'**
   String get instructions_3_text;
+
+  /// No description provided for @instructions_3_range.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Referenzwerte gelten für Erwachsene zwischen 40 und 100 Jahren mit einer Körpergröße von 150 bis 210 cm. Außerhalb dieser Bereiche ist die Bewertung weniger aussagekräftig.'**
+  String get instructions_3_range;
 
   /// No description provided for @instructions_4_welc.
   ///
@@ -260,59 +266,71 @@ abstract class AppLocalizations {
   /// **'Während des Tests'**
   String get instructions_4_welc;
 
-  /// No description provided for @instructions_4_text.
+  /// No description provided for @instructions_4_outdoor.
   ///
   /// In de, this message translates to:
-  /// **'Gehen Sie sechs Minuten lang in Ihrem normalen, zügigen Tempo. Die App zeigt die verbleibende Zeit und die bereits zurückgelegte Strecke an.'**
-  String get instructions_4_text;
+  /// **'Gehen Sie nach draußen auf eine ebene Strecke ohne Gefälle und ohne Hindernisse wie Ampeln oder Treppen.'**
+  String get instructions_4_outdoor;
 
-  /// No description provided for @instructions_4_text_2.
+  /// No description provided for @instructions_4_pocket.
   ///
   /// In de, this message translates to:
-  /// **'Brechen Sie den Test ab, wenn bei Ihnen Brustschmerzen, Schwindel oder starke Atemnot auftreten.'**
-  String get instructions_4_text_2;
+  /// **'Stecken Sie das Handy nach dem Start in die Tasche – so wird am genauesten gemessen.'**
+  String get instructions_4_pocket;
+
+  /// No description provided for @instructions_4_walk.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen.'**
+  String get instructions_4_walk;
+
+  /// No description provided for @instructions_4_timer.
+  ///
+  /// In de, this message translates to:
+  /// **'Auf dem Bildschirm sehen Sie, wie viel Zeit noch übrig ist.'**
+  String get instructions_4_timer;
+
+  /// No description provided for @instructions_4_pause.
+  ///
+  /// In de, this message translates to:
+  /// **'Sie dürfen langsamer werden oder stehen bleiben, wenn Sie eine Pause brauchen.'**
+  String get instructions_4_pause;
 
   /// No description provided for @instructions_5_welc.
   ///
   /// In de, this message translates to:
-  /// **'Den Test abbrechen'**
+  /// **'Ihre Sicherheit'**
   String get instructions_5_welc;
 
   /// No description provided for @instructions_5_text.
   ///
   /// In de, this message translates to:
-  /// **'Bei Bedarf können Sie den Test jederzeit abbrechen und anschließend entscheiden, wie Sie fortfahren möchten:'**
+  /// **'Ihre Gesundheit geht vor. Brechen Sie den Test sofort ab, wenn eines dieser Anzeichen auftritt:'**
   String get instructions_5_text;
 
-  /// No description provided for @instructions_5_c1.
+  /// No description provided for @instructions_5_chest.
   ///
   /// In de, this message translates to:
-  /// **'Zwischenergebnisse werden gespeichert'**
-  String get instructions_5_c1;
+  /// **'Brustschmerzen'**
+  String get instructions_5_chest;
 
-  /// No description provided for @instructions_5_c2.
+  /// No description provided for @instructions_5_dizzy.
   ///
   /// In de, this message translates to:
-  /// **'Die Ergebnisse werden angezeigt'**
-  String get instructions_5_c2;
+  /// **'Schwindel'**
+  String get instructions_5_dizzy;
 
-  /// No description provided for @instructions_5_c3.
+  /// No description provided for @instructions_5_breath.
   ///
   /// In de, this message translates to:
-  /// **'Der Informationswert mag begrenzt sein'**
-  String get instructions_5_c3;
+  /// **'Starke Atemnot'**
+  String get instructions_5_breath;
 
-  /// No description provided for @instructions_5_f1.
+  /// No description provided for @instructions_5_doctor.
   ///
   /// In de, this message translates to:
-  /// **'Alle bisherigen Daten werden verworfen'**
-  String get instructions_5_f1;
-
-  /// No description provided for @instructions_5_f2.
-  ///
-  /// In de, this message translates to:
-  /// **'Sie können den Test erneut starten'**
-  String get instructions_5_f2;
+  /// **'Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt.'**
+  String get instructions_5_doctor;
 
   /// No description provided for @instructions_6_welc.
   ///
@@ -323,7 +341,7 @@ abstract class AppLocalizations {
   /// No description provided for @instructions_6_text.
   ///
   /// In de, this message translates to:
-  /// **'Your walking distance is classified based on reference values and you get an overview of your performance and values reached.'**
+  /// **'Ihre Gehstrecke wird mit Referenzwerten von Menschen gleichen Alters und gleicher Körpergröße verglichen. Sie sehen, wie viel Prozent der erwarteten Strecke Sie erreicht haben und in welche Kategorie Sie fallen:'**
   String get instructions_6_text;
 
   /// No description provided for @instructions_7_welc.
@@ -335,31 +353,43 @@ abstract class AppLocalizations {
   /// No description provided for @instructions_7_text.
   ///
   /// In de, this message translates to:
-  /// **'Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!'**
+  /// **'Sie wissen jetzt alles, was Sie für den Test brauchen. Suchen Sie sich eine ebene Strecke im Freien und legen Sie los!'**
   String get instructions_7_text;
+
+  /// No description provided for @instructions_7_back.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück zur Kurzanleitung'**
+  String get instructions_7_back;
+
+  /// No description provided for @instructions_7_home.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück zum Startbildschirm'**
+  String get instructions_7_home;
 
   /// No description provided for @profile_title.
   ///
   /// In de, this message translates to:
-  /// **'Vorkalibrierung'**
+  /// **'Persönliche Daten'**
   String get profile_title;
 
   /// No description provided for @profile_text.
   ///
   /// In de, this message translates to:
-  /// **'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein'**
+  /// **'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein.'**
   String get profile_text;
 
   /// No description provided for @profile_sub1.
   ///
   /// In de, this message translates to:
-  /// **'Patienteninformationen'**
+  /// **'Allgemeine Angaben'**
   String get profile_sub1;
 
   /// No description provided for @profile_sub2.
   ///
   /// In de, this message translates to:
-  /// **'Anthropometrie'**
+  /// **'Körpermaße'**
   String get profile_sub2;
 
   /// No description provided for @profile_info.
@@ -419,7 +449,7 @@ abstract class AppLocalizations {
   /// No description provided for @field4.
   ///
   /// In de, this message translates to:
-  /// **'Höhe'**
+  /// **'Körpergröße'**
   String get field4;
 
   /// No description provided for @field5.
@@ -431,26 +461,50 @@ abstract class AppLocalizations {
   /// No description provided for @profile_footer.
   ///
   /// In de, this message translates to:
-  /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.'**
+  /// **'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden ausschließlich zur Bewertung Ihrer Fitness verwendet und nicht für andere Zwecke.'**
   String get profile_footer;
 
-  /// No description provided for @video_title.
+  /// No description provided for @quickGuide_title.
   ///
   /// In de, this message translates to:
-  /// **'Testvorbereitung'**
-  String get video_title;
+  /// **'So funktioniert’s'**
+  String get quickGuide_title;
 
-  /// No description provided for @video_text.
+  /// No description provided for @quickGuide_step_outdoor.
   ///
   /// In de, this message translates to:
-  /// **'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.'**
-  String get video_text;
+  /// **'Gehen Sie nach draußen auf einen ebenen Weg.'**
+  String get quickGuide_step_outdoor;
 
-  /// No description provided for @walk_info.
+  /// No description provided for @quickGuide_step_pocket.
   ///
   /// In de, this message translates to:
-  /// **'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.'**
-  String get walk_info;
+  /// **'Starten Sie den Test und stecken Sie das Handy in die Tasche – so wird am genauesten gemessen.'**
+  String get quickGuide_step_pocket;
+
+  /// No description provided for @quickGuide_step_walk.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen. Pausen sind erlaubt.'**
+  String get quickGuide_step_walk;
+
+  /// No description provided for @quickGuide_step_end.
+  ///
+  /// In de, this message translates to:
+  /// **'Ein Ton und eine Vibration signalisieren das Ende des Tests.'**
+  String get quickGuide_step_end;
+
+  /// No description provided for @quickGuide_more_info.
+  ///
+  /// In de, this message translates to:
+  /// **'Mehr Informationen zum Test'**
+  String get quickGuide_more_info;
+
+  /// No description provided for @quickGuide_disclaimer.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.'**
+  String get quickGuide_disclaimer;
 
   /// No description provided for @walk_idstance.
   ///
@@ -470,12 +524,6 @@ abstract class AppLocalizations {
   /// **'Bewertung'**
   String get walk_assessment;
 
-  /// No description provided for @walk_start.
-  ///
-  /// In de, this message translates to:
-  /// **'Noch nicht gestartet'**
-  String get walk_start;
-
   /// No description provided for @walk_position.
   ///
   /// In de, this message translates to:
@@ -494,17 +542,107 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get walk_profile;
 
-  /// No description provided for @walk_test_start.
+  /// No description provided for @walkPleaseGoFar.
   ///
   /// In de, this message translates to:
-  /// **'Starte Test'**
-  String get walk_test_start;
+  /// **'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.'**
+  String get walkPleaseGoFar;
 
-  /// No description provided for @walk_reset.
+  /// No description provided for @walkNotStarted.
   ///
   /// In de, this message translates to:
-  /// **'Zurücksetzen'**
-  String get walk_reset;
+  /// **'Noch nicht gestartet'**
+  String get walkNotStarted;
+
+  /// No description provided for @walkWaitingForGps.
+  ///
+  /// In de, this message translates to:
+  /// **'Warte auf GPS …'**
+  String get walkWaitingForGps;
+
+  /// No description provided for @walkWalking.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehen'**
+  String get walkWalking;
+
+  /// No description provided for @walkFinished.
+  ///
+  /// In de, this message translates to:
+  /// **'Abgeschlossen'**
+  String get walkFinished;
+
+  /// No description provided for @walkStopped.
+  ///
+  /// In de, this message translates to:
+  /// **'Abgebrochen'**
+  String get walkStopped;
+
+  /// No description provided for @walkNotStartedYet.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch nicht gestartet'**
+  String get walkNotStartedYet;
+
+  /// No description provided for @walkLoading.
+  ///
+  /// In de, this message translates to:
+  /// **'Wird geladen …'**
+  String get walkLoading;
+
+  /// No description provided for @walkSlideToStop.
+  ///
+  /// In de, this message translates to:
+  /// **'Zum Beenden schieben'**
+  String get walkSlideToStop;
+
+  /// No description provided for @walkBackBlocked.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Test läuft noch. Zum Beenden den Schieberegler nutzen.'**
+  String get walkBackBlocked;
+
+  /// No description provided for @walkResultCouldNotBeLoaded.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Ergebnis konnte nicht geladen werden.'**
+  String get walkResultCouldNotBeLoaded;
+
+  /// No description provided for @walkNoPositionYet.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch keine Position verfügbar'**
+  String get walkNoPositionYet;
+
+  /// No description provided for @walkAccuracy.
+  ///
+  /// In de, this message translates to:
+  /// **'Genauigkeit: {accuracy} m'**
+  String walkAccuracy(String accuracy);
+
+  /// No description provided for @walkOfSixMinutes.
+  ///
+  /// In de, this message translates to:
+  /// **'von 6:00 min'**
+  String get walkOfSixMinutes;
+
+  /// No description provided for @walkYears.
+  ///
+  /// In de, this message translates to:
+  /// **'{age} Jahre'**
+  String walkYears(int age);
+
+  /// No description provided for @walkHeightCm.
+  ///
+  /// In de, this message translates to:
+  /// **'{height} cm'**
+  String walkHeightCm(int height);
+
+  /// No description provided for @walkOfExpectedDistance.
+  ///
+  /// In de, this message translates to:
+  /// **'der erwarteten Gehstrecke'**
+  String get walkOfExpectedDistance;
 
   /// No description provided for @aboutTitle.
   ///
@@ -515,7 +653,7 @@ abstract class AppLocalizations {
   /// No description provided for @aboutProject.
   ///
   /// In de, this message translates to:
-  /// **'Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.'**
+  /// **'Diese 6MWT-App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.'**
   String get aboutProject;
 
   /// No description provided for @aboutVersion.
@@ -571,6 +709,384 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Der Link konnte nicht geöffnet werden.'**
   String get aboutLinkError;
+
+  /// No description provided for @deleteSession.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest löschen'**
+  String get deleteSession;
+
+  /// No description provided for @deleteSessionDialogTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest löschen?'**
+  String get deleteSessionDialogTitle;
+
+  /// No description provided for @deleteSessionDialogMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchten Sie diesen aufgezeichneten Gehtest wirklich löschen? Dies kann nicht rückgängig gemacht werden.'**
+  String get deleteSessionDialogMessage;
+
+  /// No description provided for @cancel.
+  ///
+  /// In de, this message translates to:
+  /// **'Abbrechen'**
+  String get cancel;
+
+  /// No description provided for @delete.
+  ///
+  /// In de, this message translates to:
+  /// **'Löschen'**
+  String get delete;
+
+  /// No description provided for @sessionDeleted.
+  ///
+  /// In de, this message translates to:
+  /// **'Gehtest gelöscht'**
+  String get sessionDeleted;
+
+  /// No description provided for @cannotDeleteActiveSession.
+  ///
+  /// In de, this message translates to:
+  /// **'Ein aktiver Gehtest kann nicht gelöscht werden.'**
+  String get cannotDeleteActiveSession;
+
+  /// No description provided for @resultTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Testergebnisse'**
+  String get resultTitle;
+
+  /// No description provided for @resultIntro.
+  ///
+  /// In de, this message translates to:
+  /// **'Hier sind Ihre Ergebnisse aus dem 6-Minuten-Gehtest.'**
+  String get resultIntro;
+
+  /// No description provided for @resultPerformance.
+  ///
+  /// In de, this message translates to:
+  /// **'Leistung'**
+  String get resultPerformance;
+
+  /// No description provided for @resultExpectedDistance.
+  ///
+  /// In de, this message translates to:
+  /// **'der erwarteten Gehstrecke'**
+  String get resultExpectedDistance;
+
+  /// No description provided for @resultNoAssessment.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Bewertung möglich'**
+  String get resultNoAssessment;
+
+  /// No description provided for @resultEarlyStopExplanation.
+  ///
+  /// In de, this message translates to:
+  /// **'Eine Bewertung ist nicht möglich, da der Test vorzeitig abgebrochen wurde.'**
+  String get resultEarlyStopExplanation;
+
+  /// No description provided for @resultPerformanceExplanation.
+  ///
+  /// In de, this message translates to:
+  /// **'Ihre Leistung wird anhand Ihres Alters, Ihrer Körpergröße und Ihrer Gehstrecke beurteilt.'**
+  String get resultPerformanceExplanation;
+
+  /// No description provided for @resultTestDetails.
+  ///
+  /// In de, this message translates to:
+  /// **'Testdetails'**
+  String get resultTestDetails;
+
+  /// No description provided for @resultDistanceWalked.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurückgelegte Strecke'**
+  String get resultDistanceWalked;
+
+  /// No description provided for @resultDistanceConfidence.
+  ///
+  /// In de, this message translates to:
+  /// **'Zuverlässigkeit der Distanzmessung'**
+  String get resultDistanceConfidence;
+
+  /// No description provided for @resultTestDuration.
+  ///
+  /// In de, this message translates to:
+  /// **'Testdauer'**
+  String get resultTestDuration;
+
+  /// No description provided for @resultTestStatus.
+  ///
+  /// In de, this message translates to:
+  /// **'Teststatus'**
+  String get resultTestStatus;
+
+  /// No description provided for @resultStoppedEarly.
+  ///
+  /// In de, this message translates to:
+  /// **'Vorzeitig abgebrochen'**
+  String get resultStoppedEarly;
+
+  /// No description provided for @resultCompleted.
+  ///
+  /// In de, this message translates to:
+  /// **'Abgeschlossen'**
+  String get resultCompleted;
+
+  /// No description provided for @resultYourProfile.
+  ///
+  /// In de, this message translates to:
+  /// **'Ihr Profil'**
+  String get resultYourProfile;
+
+  /// No description provided for @resultName.
+  ///
+  /// In de, this message translates to:
+  /// **'Name'**
+  String get resultName;
+
+  /// No description provided for @resultAge.
+  ///
+  /// In de, this message translates to:
+  /// **'Alter'**
+  String get resultAge;
+
+  /// No description provided for @resultAgeYears.
+  ///
+  /// In de, this message translates to:
+  /// **'{age} Jahre'**
+  String resultAgeYears(int age);
+
+  /// No description provided for @resultHeight.
+  ///
+  /// In de, this message translates to:
+  /// **'Körpergröße'**
+  String get resultHeight;
+
+  /// No description provided for @resultHeightCm.
+  ///
+  /// In de, this message translates to:
+  /// **'{height} cm'**
+  String resultHeightCm(int height);
+
+  /// No description provided for @resultWeight.
+  ///
+  /// In de, this message translates to:
+  /// **'Gewicht'**
+  String get resultWeight;
+
+  /// No description provided for @resultWeightKg.
+  ///
+  /// In de, this message translates to:
+  /// **'{weight} kg'**
+  String resultWeightKg(String weight);
+
+  /// No description provided for @resultGender.
+  ///
+  /// In de, this message translates to:
+  /// **'Geschlecht'**
+  String get resultGender;
+
+  /// No description provided for @resultDistanceComparison.
+  ///
+  /// In de, this message translates to:
+  /// **'Streckenvergleich'**
+  String get resultDistanceComparison;
+
+  /// No description provided for @resultCalculatingDistanceComparisons.
+  ///
+  /// In de, this message translates to:
+  /// **'Streckenvergleiche werden berechnet …'**
+  String get resultCalculatingDistanceComparisons;
+
+  /// No description provided for @resultDistanceComparisonFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Streckenvergleiche konnten nicht berechnet werden.'**
+  String get resultDistanceComparisonFailed;
+
+  /// No description provided for @resultLowConfidenceWarning.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Distanzmessung war bei diesem Test ungenau. Die Bewertung ist daher nur eingeschränkt aussagekräftig.'**
+  String get resultLowConfidenceWarning;
+
+  /// No description provided for @resultDisclaimer.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Ergebnis dient nur zur Orientierung und ersetzt keine ärztliche Beratung. Die Gehstrecke wird geschätzt und kann auch bei hoher Zuverlässigkeit abweichen. Für Folgen oder Entscheidungen auf Grundlage der Ergebnisse übernehmen wir keine Haftung.'**
+  String get resultDisclaimer;
+
+  /// No description provided for @resultExportFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Export fehlgeschlagen: {error}'**
+  String resultExportFailed(String error);
+
+  /// No description provided for @resultDeleteFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Fehler beim Löschen des Tests: {error}'**
+  String resultDeleteFailed(String error);
+
+  /// No description provided for @historyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Verlauf'**
+  String get historyTitle;
+
+  /// No description provided for @historyNoEntries.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Einträge vorhanden'**
+  String get historyNoEntries;
+
+  /// No description provided for @historyFit.
+  ///
+  /// In de, this message translates to:
+  /// **'fit'**
+  String get historyFit;
+
+  /// A whole-number percentage. German puts a narrow no-break space before the sign, English none.
+  ///
+  /// In de, this message translates to:
+  /// **'{value} %'**
+  String percentValue(int value);
+
+  /// No description provided for @historyToday.
+  ///
+  /// In de, this message translates to:
+  /// **'Heute'**
+  String get historyToday;
+
+  /// No description provided for @historyYesterday.
+  ///
+  /// In de, this message translates to:
+  /// **'Gestern'**
+  String get historyYesterday;
+
+  /// No description provided for @historyExportFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Export fehlgeschlagen: {error}'**
+  String historyExportFailed(String error);
+
+  /// No description provided for @historyLoadFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Fehler: {error}'**
+  String historyLoadFailed(String error);
+
+  /// No description provided for @instructions_3_heading.
+  ///
+  /// In de, this message translates to:
+  /// **'Persönliche Daten'**
+  String get instructions_3_heading;
+
+  /// No description provided for @confidenceHigh.
+  ///
+  /// In de, this message translates to:
+  /// **'Hoch'**
+  String get confidenceHigh;
+
+  /// No description provided for @confidenceMedium.
+  ///
+  /// In de, this message translates to:
+  /// **'Mittel'**
+  String get confidenceMedium;
+
+  /// No description provided for @confidenceLow.
+  ///
+  /// In de, this message translates to:
+  /// **'Niedrig'**
+  String get confidenceLow;
+
+  /// No description provided for @comparisonConfidence.
+  ///
+  /// In de, this message translates to:
+  /// **'Zuverlässigkeit: {value}'**
+  String comparisonConfidence(String value);
+
+  /// No description provided for @comparisonUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Streckenschätzer nicht verfügbar: {error}'**
+  String comparisonUnavailable(String error);
+
+  /// No description provided for @estimatorMain.
+  ///
+  /// In de, this message translates to:
+  /// **'Haupt ({name})'**
+  String estimatorMain(String name);
+
+  /// No description provided for @fitnessReducedPhysicalPerformance.
+  ///
+  /// In de, this message translates to:
+  /// **'Verminderte körperliche Leistungs­fähigkeit'**
+  String get fitnessReducedPhysicalPerformance;
+
+  /// No description provided for @fitnessLowNormal.
+  ///
+  /// In de, this message translates to:
+  /// **'Niedrig-normal'**
+  String get fitnessLowNormal;
+
+  /// No description provided for @fitnessNormalPopulationMean.
+  ///
+  /// In de, this message translates to:
+  /// **'Bevölkerungs­durchschnitt'**
+  String get fitnessNormalPopulationMean;
+
+  /// No description provided for @fitnessHighNormal.
+  ///
+  /// In de, this message translates to:
+  /// **'Hoch-normal'**
+  String get fitnessHighNormal;
+
+  /// No description provided for @fitnessTopPerformance.
+  ///
+  /// In de, this message translates to:
+  /// **'Spitzenleistung'**
+  String get fitnessTopPerformance;
+
+  /// No description provided for @walkErrorLocation.
+  ///
+  /// In de, this message translates to:
+  /// **'Standortberechtigung verweigert oder GPS deaktiviert'**
+  String get walkErrorLocation;
+
+  /// No description provided for @walkLocationRequiredTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Standortzugriff erforderlich'**
+  String get walkLocationRequiredTitle;
+
+  /// No description provided for @walkLocationRequiredText.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Test misst die Gehstrecke per GPS und funktioniert ohne Standortzugriff nicht. Bitte erlauben Sie der App den Zugriff auf Ihren Standort, schalten Sie GPS ein und starten Sie den Test erneut.'**
+  String get walkLocationRequiredText;
+
+  /// No description provided for @walkErrorActivityRecognition.
+  ///
+  /// In de, this message translates to:
+  /// **'Berechtigung zur Aktivitätserkennung verweigert'**
+  String get walkErrorActivityRecognition;
+
+  /// No description provided for @walkErrorSensorUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Sensoren konnten nicht gestartet werden: {error}'**
+  String walkErrorSensorUnavailable(String error);
+
+  /// No description provided for @walkErrorSensor.
+  ///
+  /// In de, this message translates to:
+  /// **'Sensorfehler: {error}'**
+  String walkErrorSensor(String error);
 }
 
 class _AppLocalizationsDelegate

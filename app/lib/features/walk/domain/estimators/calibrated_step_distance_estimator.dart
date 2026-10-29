@@ -1,23 +1,30 @@
 import '../../../../core/domain/sensor_sample.dart';
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
 import 'step_calibration_history.dart';
 
 /// All observed steps use the current session median, including earlier steps.
 class CalibratedStepDistanceEstimator extends DistanceEstimator {
-  CalibratedStepDistanceEstimator({StepCalibrationConfig? config})
+  CalibratedStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Calibrated steps';
+
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;
   bool _dirty = true;
   double _distance = 0, _length = 0;
   int _windows = 0;
+  List<double> _strides = const [];
 
   void _calculate() {
     if (!_dirty) return;
     final windows = _history.windows();
     _windows = windows.length;
+    _strides = [for (final w in windows) w.length];
     _length = windows.isEmpty
         ? config.defaultLength
         : StepCalibrationHistory.median(windows.map((w) => w.length));
@@ -29,6 +36,18 @@ class CalibratedStepDistanceEstimator extends DistanceEstimator {
   double get totalDistance {
     _calculate();
     return _distance;
+  }
+
+  /// All distance comes from steps; GPS only calibrates the stride.
+  @override
+  DistanceConfidence get confidence {
+    _calculate();
+    return ConfidenceHeuristics.combine(
+      total: _distance,
+      gpsDistance: 0,
+      gpsQuality: 0,
+      otherQuality: ConfidenceHeuristics.strideQuality(_strides),
+    );
   }
 
   @override
@@ -58,5 +77,6 @@ class CalibratedStepDistanceEstimator extends DistanceEstimator {
     _distance = 0;
     _length = config.defaultLength;
     _windows = 0;
+    _strides = const [];
   }
 }

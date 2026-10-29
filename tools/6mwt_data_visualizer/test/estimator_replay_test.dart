@@ -7,6 +7,7 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/domain/sensor_sample.dart';
+import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimators.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
@@ -14,6 +15,51 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/experimenta
 import 'support/replay_fixtures.dart';
 
 void main() {
+  test(
+    'replay uses optional exported gender and clears previous profile data',
+    () {
+      final estimator = GpsStepDistanceEstimator(stepSourceId: 'pedometer');
+      for (final (gender, expected) in <(String?, double)>[
+        ('male', 7.47),
+        ('female', 7.434),
+        ('other', 7.452),
+        (null, 7.452),
+      ]) {
+        final profile = Profile.fromJson({
+          'id': 1,
+          'name': null,
+          'timestamp': start.toIso8601String(),
+          'height': 180,
+          'age': 30,
+          'gender': ?gender,
+        });
+        final result = EstimatorReplay(
+          session([steps(0, 1000), steps(10, 1010)], profile: profile),
+        ).run(estimator);
+        expect(result.error, isNull);
+        expect(result.distance, closeTo(expected, 1e-6));
+        expect(result.additionalInfo['Calibration'], 'Default');
+      }
+
+      final withoutProfile = EstimatorReplay(
+        session([steps(0, 1000), steps(10, 1010)]),
+      ).run(estimator);
+      expect(withoutProfile.distance, closeTo(7, 1e-6));
+
+      final missingHeight = Profile.fromJson({
+        'id': 1,
+        'name': null,
+        'timestamp': start.toIso8601String(),
+        'age': 30,
+        'gender': 'female',
+      });
+      final missingHeightResult = EstimatorReplay(
+        session([steps(0, 1000), steps(10, 1010)], profile: missingHeight),
+      ).run(estimator);
+      expect(missingHeightResult.distance, closeTo(7, 1e-6));
+    },
+  );
+
   test('lab compares 5, 10 and 15 s GPS intervals with distinct labels', () {
     final variants = createEstimators()
         .whereType<GpsStepDistanceEstimator>()
@@ -34,6 +80,27 @@ void main() {
     expect(results.first.distance, closeTo(7, 1e-6));
     expect(results[1].distance, closeTo(5.56, 0.01));
     expect(results[2].distance, closeTo(results[1].distance!, 1e-6));
+  });
+
+  test('replay snapshots the confidence of the final distance', () {
+    final estimator = GpsDistanceEstimator();
+    final replay = EstimatorReplay(
+      session([for (var i = 0; i <= 10; i++) gps(i, i * 0.00001)]),
+    );
+    final result = replay.run(estimator);
+    expect(result.confidence, isNotNull);
+    expect(result.confidence!.score, estimator.confidence.score);
+    expect(result.confidence!.score, greaterThan(0));
+    // Later runs reset the estimator but must not change the earlier result.
+    final score = result.confidence!.score;
+    replay.run(estimator..reset());
+    expect(result.confidence!.score, score);
+    expect(
+      EstimatorReplay(
+        session([gps(0, 0), gps(1, double.nan)]),
+      ).run(_ThrowingEstimator()).confidence,
+      isNull,
+    );
   });
 
   test('chart connects distance updates without unrelated sensor plateaus', () {
@@ -249,13 +316,16 @@ void main() {
         recordings.map((s) => s.recordingLabel).toSet(),
         hasLength(recordings.length),
       );
+      // The loader reads one folder level; data/synthetic/ is benchmarked separately.
       final files = data
           .listSync(recursive: true)
           .whereType<File>()
           .where(
-            (file) => RegExp(
-              r'^session.*\.json$',
-            ).hasMatch(file.uri.pathSegments.last),
+            (file) =>
+                RegExp(
+                  r'^session.*\.json$',
+                ).hasMatch(file.uri.pathSegments.last) &&
+                file.parent.parent.absolute.path == data.absolute.path,
           );
       expect(
         recordings.map((s) => File(s.sourcePath!).absolute.path).toSet(),
@@ -288,4 +358,9 @@ void main() {
       }
     },
   );
+}
+
+class _ThrowingEstimator extends GpsDistanceEstimator {
+  @override
+  void addSample(app.SensorSample sample) => throw StateError('broken');
 }

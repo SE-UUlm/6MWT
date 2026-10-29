@@ -1,34 +1,17 @@
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
-import 'dart:async';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
-import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 
-// ---------------------------------------------------------------------------
-// Test doubles (same as walk_session_test.dart)
-// ---------------------------------------------------------------------------
-
-class FakeSensorSource extends SensorSource {
-  final StreamController<SensorSample> controller =
-      StreamController<SensorSample>.broadcast();
-
-  @override
-  String get sourceId => 'fake';
-  @override
-  Stream<SensorSample> get samples => controller.stream;
-  @override
-  Future<void> start() async {}
-  @override
-  Future<void> stop() async {}
-}
+import '../../../helpers/fake_sensors.dart';
 
 SensorSample _position(double lat, double lng) => SensorSample(
   timestamp: DateTime.now(),
@@ -46,6 +29,85 @@ SensorSample _position(double lat, double lng) => SensorSample(
 // ---------------------------------------------------------------------------
 
 void main() {
+  test(
+    'profile default follows test profile changes but not an active walk',
+    () {
+      fakeAsync((async) {
+        final source = FakeSensorSource();
+        final estimator = GpsStepDistanceEstimator(stepSourceId: 'fake');
+        final session = WalkSession(
+          sources: [source],
+          distanceEstimator: estimator,
+        );
+        final firstProfile = Profile(
+          id: 1,
+          timestamp: DateTime.utc(2026),
+          height: 180,
+          age: 30,
+          weight: 70,
+          gender: Gender.other,
+        );
+        final secondProfile = Profile(
+          id: 2,
+          timestamp: DateTime.utc(2026),
+          height: 160,
+          age: 60,
+          weight: 90,
+          gender: Gender.female,
+        );
+        void steps(int second, double count) {
+          source.controller.add(
+            SensorSample(
+              timestamp: DateTime.utc(2026).add(Duration(seconds: second)),
+              sourceId: 'fake',
+              type: SampleType.steps,
+              values: {StepKeys.cumulativeSteps: count},
+            ),
+          );
+          async.flushMicrotasks();
+        }
+
+        session.setProfile(
+          id: firstProfile.id,
+          heightCm: firstProfile.height,
+          gender: firstProfile.gender.name,
+        );
+        session.start();
+        async.flushMicrotasks();
+        steps(0, 1000);
+        steps(10, 1010);
+        expect(session.state.distance, closeTo(7.452, 1e-6));
+        expect(estimator.hasLearnedStepLength, isFalse);
+
+        session.setProfile(
+          id: secondProfile.id,
+          heightCm: secondProfile.height,
+          gender: secondProfile.gender.name,
+        );
+        expect(session.profileId, 1);
+        expect(estimator.stepLength, closeTo(0.7452, 1e-9));
+
+        session.abort();
+        async.flushMicrotasks();
+        session.setProfile(
+          id: secondProfile.id,
+          heightCm: secondProfile.height,
+          gender: secondProfile.gender.name,
+        );
+        session.start();
+        async.flushMicrotasks();
+        steps(20, 2000);
+        steps(30, 2002);
+        expect(session.profileId, 2);
+        expect(session.state.distance, closeTo(1.3216, 1e-6));
+        session.dispose();
+        async.flushMicrotasks();
+        source.controller.close();
+        async.flushMicrotasks();
+      });
+    },
+  );
+
   group('deduplicatedSaves', () {
     test('persists optional phone steps and a downward stride correction', () {
       fakeAsync((async) {
@@ -80,6 +142,11 @@ void main() {
         steps(10, 1010);
         expect(session.state.distance, closeTo(7, 1e-6));
         expect(rows.last.distance, closeTo(7, 1e-6));
+        // Steps with the uncalibrated default stride only.
+        expect(
+          rows.last.distanceConfidence,
+          ConfidenceHeuristics.defaultStrideQuality,
+        );
 
         for (var i = 0; i <= 17; i++) {
           gps.controller.add(
@@ -103,6 +170,13 @@ void main() {
         expect(estimator.stepLength, closeTo(0.6, 1e-6));
         expect(session.state.distance, closeTo(16.2, 1e-6));
         expect(rows.last.distance, closeTo(16.2, 1e-6));
+        final confidence = estimator.confidence.score;
+        expect(
+          confidence,
+          greaterThan(ConfidenceHeuristics.defaultStrideQuality),
+        );
+        expect(session.state.confidence?.score, confidence);
+        expect(rows.last.distanceConfidence, confidence);
         expect(rows[rows.length - 2].distance, closeTo(17.2, 1e-6));
         expect(session.state.lastSamples[SampleType.steps], isNotNull);
 
@@ -110,6 +184,7 @@ void main() {
         async.flushMicrotasks();
         expect(rows.last.phase, WalkPhase.aborted);
         expect(rows.last.distance, closeTo(16.2, 1e-6));
+        expect(rows.last.distanceConfidence, confidence);
         session.start();
         async.flushMicrotasks();
         expect(estimator.hasLearnedStepLength, isFalse);

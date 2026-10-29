@@ -304,6 +304,104 @@ void main() {
 
     expect(result, isEmpty);
   });
+
+  group('deleteSession', () {
+    test('deletes session and its sensor samples', () async {
+      await repository.saveSession(
+        WalkSessionRow(
+          id: 'session-to-delete',
+          startedAt: _july1,
+          duration: const Duration(minutes: 6),
+          distance: 400,
+          phase: WalkPhase.finished,
+          profileId: 1,
+        ),
+      );
+      await db
+          .into(db.sensorSamples)
+          .insert(
+            SensorSamplesCompanion.insert(
+              sessionId: 'session-to-delete',
+              timestamp: _july1,
+              type: 'position',
+              sourceId: 'gps',
+              values: '{}',
+            ),
+          );
+
+      await repository.deleteSession('session-to-delete');
+
+      final sessions = await db.select(db.walkSessions).get();
+      expect(sessions.where((s) => s.id == 'session-to-delete'), isEmpty);
+
+      final samples = await db.select(db.sensorSamples).get();
+      expect(samples.where((s) => s.sessionId == 'session-to-delete'), isEmpty);
+    });
+
+    test(
+      'retains shared profile when another session still references it',
+      () async {
+        final sharedProfileId = await insertProfile(height: 175, age: 30);
+        await repository.saveSession(
+          WalkSessionRow(
+            id: 'session-1',
+            startedAt: _july1,
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: sharedProfileId,
+          ),
+        );
+        await repository.saveSession(
+          WalkSessionRow(
+            id: 'session-2',
+            startedAt: _july2,
+            duration: const Duration(minutes: 6),
+            distance: 420,
+            phase: WalkPhase.finished,
+            profileId: sharedProfileId,
+          ),
+        );
+
+        await repository.deleteSession('session-1');
+
+        // Profile must still exist because session-2 references it
+        final profile = await (db.select(
+          db.profiles,
+        )..where((p) => p.id.equals(sharedProfileId))).getSingleOrNull();
+        expect(profile, isNotNull);
+        expect(profile!.id, sharedProfileId);
+      },
+    );
+
+    test(
+      'deletes unreferenced profile when no other session references it',
+      () async {
+        final unsharedProfileId = await insertProfile(height: 185, age: 50);
+        await repository.saveSession(
+          WalkSessionRow(
+            id: 'sole-session',
+            startedAt: _july1,
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: unsharedProfileId,
+          ),
+        );
+
+        await repository.deleteSession('sole-session');
+
+        final profile = await (db.select(
+          db.profiles,
+        )..where((p) => p.id.equals(unsharedProfileId))).getSingleOrNull();
+        expect(profile, isNull);
+      },
+    );
+
+    test('handles non-existent session gracefully', () async {
+      await expectLater(repository.deleteSession('non-existent'), completes);
+    });
+  });
 }
 
 // Shared test dates — DateTime can't be const, but top-level finals keep

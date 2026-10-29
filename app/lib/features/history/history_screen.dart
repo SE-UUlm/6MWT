@@ -1,3 +1,4 @@
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -6,49 +7,35 @@ import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
+import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 class HistoryScreen extends ConsumerWidget {
   const HistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final walkSessions = ref.watch(walkSessionsWithProfilesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Row(
-          spacing: 8,
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color(0xFF9BB8F0),
-              ),
-              child: const Icon(
-                Icons.directions_walk_rounded,
-                size: 40,
-                color: Colors.black87,
-              ),
-            ),
-            const Text('History'),
-          ],
-        ),
+      backgroundColor: Colors.white,
+      appBar: AppTitleBar(
+        title: l10n.historyTitle,
         actions: [
-          IconButton(
-            onPressed: () {
-              _exportAllSessions(context, ref);
-            },
-            icon: const Icon(Icons.share),
+          Builder(
+            builder: (shareContext) => IconButton(
+              onPressed: () {
+                _exportAllSessions(shareContext, ref);
+              },
+              icon: const Icon(Icons.share),
+            ),
           ),
         ],
       ),
       body: walkSessions.when(
         data: (sessions) {
           if (sessions.isEmpty) {
-            return const Center(child: Text('Keine Einträge vorhanden'));
+            return Center(child: Text(l10n.historyNoEntries));
           }
 
           return ListView.builder(
@@ -78,7 +65,7 @@ class HistoryScreen extends ConsumerWidget {
                     Expanded(child: Text(profile.name.toString())),
                     if (assessment != null)
                       Text(
-                        "${assessment.percentOfExpected.toStringAsFixed(0)} % fit",
+                        "${l10n.percentValue(assessment.percentOfExpected.round())} ${l10n.historyFit}",
                       ),
                   ],
                 ),
@@ -90,19 +77,26 @@ class HistoryScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Fehler: $err')),
+        error: (err, stack) =>
+            Center(child: Text(l10n.historyLoadFailed(err.toString()))),
       ),
     );
   }
 
   Future<void> _exportAllSessions(BuildContext context, WidgetRef ref) async {
     try {
-      await ref.read(sessionExportServiceProvider).shareAllSessions();
+      await ref
+          .read(sessionExportServiceProvider)
+          .shareAllSessions(context: context);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.historyExportFailed(e.toString()),
+            ),
+          ),
+        );
       }
     }
   }
@@ -123,16 +117,18 @@ extension RelativeDateTimeExtension on DateTime {
     ); // z.B. 14:50 (de) oder 2:50 PM (en)
     final timeString = timeFormat.format(local);
 
+    final l10n = AppLocalizations.of(context)!;
+
     if (dateToCompare == today) {
-      return 'Heute, $timeString';
+      return '${l10n.historyToday}, $timeString';
     } else if (dateToCompare == yesterday) {
-      return 'Gestern, $timeString';
+      return '${l10n.historyYesterday}, $timeString';
     } else if (dateToCompare.year == now.year) {
       // z. B. "12. Mai, 14:50"
-      return DateFormat('d. MMM, ', locale).format(local) + timeString;
+      return '${DateFormat.MMMd(locale).format(local)}, $timeString';
     } else {
       // z. B. "12.05.2023, 14:50"
-      return DateFormat('dd.MM.yyyy, ', locale).format(local) + timeString;
+      return '${DateFormat.yMd(locale).format(local)}, $timeString';
     }
   }
 }

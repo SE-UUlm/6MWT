@@ -2,10 +2,12 @@ import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../app/log.dart';
 import '../domain/export_metadata.dart';
 import '../data/profile_repository.dart';
 import '../data/providers.dart';
@@ -13,6 +15,8 @@ import '../data/sample_repository.dart';
 import '../data/walk_session_repository.dart';
 
 part 'session_export_service.g.dart';
+
+final _log = appLogger('SessionExportService');
 
 @Riverpod(keepAlive: true)
 SessionExportService sessionExportService(Ref ref) => SessionExportService(
@@ -68,28 +72,47 @@ class SessionExportService {
     ...await metadata.getMetadata(),
   };
 
-  Future<void> shareSession(String sessionId) async {
+  Future<void> shareSession(
+    String sessionId, {
+    required BuildContext context,
+  }) async {
     final export = await buildSessionExport(sessionId);
     final shortId = sessionId.length > 8
         ? sessionId.substring(0, 8)
         : sessionId;
-    await _share(export, prefix: '6mwt_export_session_$shortId');
+    if (!context.mounted) return;
+    await _share(
+      export,
+      prefix: '6mwt_export_session_$shortId',
+      context: context,
+    );
   }
 
-  Future<void> shareAllSessions() async {
+  Future<void> shareAllSessions({required BuildContext context}) async {
     final export = await buildAllSessionsExport();
-    await _share(export, prefix: '6mwt_export');
+    if (!context.mounted) return;
+    await _share(export, prefix: '6mwt_export', context: context);
   }
 
   Future<void> _share(
     Map<String, dynamic> export, {
     required String prefix,
+    required BuildContext context,
   }) async {
     final dir = await getTemporaryDirectory();
     final file = File(
       '${dir.path}/${prefix}_${DateTime.now().millisecondsSinceEpoch}.json',
     );
     await file.writeAsString(jsonEncode(export));
-    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)]));
+    _log.i('Exporting data to ${file.path}');
+    if (!context.mounted) return;
+    // iOS needs the share button's current bounds to anchor the share sheet.
+    final box = context.findRenderObject() as RenderBox;
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [XFile(file.path)],
+        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+      ),
+    );
   }
 }

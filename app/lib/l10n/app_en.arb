@@ -3,9 +3,18 @@
 
   "appTitle": "6-Minute Walk Test",
   "appSubTitle": "Standardized assessment of functional exercise capacity",
-  "appProfile": "Patient profile setup",
-  "appCountdown": "6-minute countdown",
-  "appResult": "Results and values",
+
+  "home_walk": "Walk",
+  "home_walksb": "Walk as far as possible in 6 minutes",
+  "home_performance": "Performance",
+  "home_performancesb": "Measure your endurance objectively",
+  "home_progress": "Progress",
+  "home_progresssb": "Compare results",
+  "home_result": "My Results",
+  "home_resultsb": "View previous tests",
+  "home_instruction": "About the 6-minute test",
+  "home_instructionsb": "Detailed instructions",
+
   "startTest": "Start test",
   "settings": "Settings",
   "continueButton": "Continue",
@@ -16,33 +25,110 @@
 
   "instructions_2_welc": "Test procedure",
   "bulletPoint_1": "Enter personal data",
-  "bulletPoint_2": "Start the test",
-  "bulletPoint_3": "Walk for 6 minutes",
-  "bulletPoint_4": "Results",
-  "instructions_2_text": "The test only takes six minutes. During this time, the app measures the distance covered and the remaining time.",
+  "bulletPoint_2": "Read the quick guide",
+  "bulletPoint_3": "Start the test",
+  "bulletPoint_4": "Walk for 6 minutes",
+  "bulletPoint_5": "View your result",
+  "instructions_2_text": "The test takes only six minutes. During this time, the app measures the distance covered and the remaining time.",
 
-  "instructions_3_welc": "Personal data",
-  "instructions_3_text": "For the most accurate analysis possible, we need some information such as age, height, weight, and sex. This data helps us better interpret your results.",
+  "instructions_3_text": "To assess your fitness, we need some information such as your age, gender, height and weight. Your walking distance is then compared with reference values of people with a similar profile.",
+  "instructions_3_range": "The reference values apply to adults aged 40 to 100 with a height of 150 to 210 cm. Outside these ranges, the assessment is less meaningful.",
 
   "instructions_4_welc": "During the test",
-  "instructions_4_text": "Walk for six minutes at your normal, brisk pace. The app displays the remaining time and the distance you have already covered.",
-  "instructions_4_text_2": "Stop the test if you experience chest pain, dizziness, or severe shortness of breath.",
+  "instructions_4_outdoor": "Go outside to a flat route without slopes or obstacles such as traffic lights or stairs.",
+  "instructions_4_pocket": "After starting, put your phone in your pocket for the most accurate measurement.",
+  "instructions_4_walk": "Walk as far as you can in 6 minutes – walk, don't run.",
+  "instructions_4_timer": "The screen shows how much time is left.",
+  "instructions_4_pause": "You may slow down or stop if you need a break.",
 
-  "instructions_5_welc": "Stopping the test",
-  "instructions_5_text": "If necessary, you can stop the test at any time and then decide how you would like to proceed:",
-  "instructions_5_c1": "Interim results will be saved",
-  "instructions_5_c2": "The results will be displayed",
-  "instructions_5_c3": "The informational value may be limited",
-  "instructions_5_f1": "All previous data will be discarded",
-  "instructions_5_f2": "You can start the test again",
+  "instructions_5_welc": "Your safety",
+  "instructions_5_text": "Your health comes first. Stop the test immediately if you notice any of these signs:",
+  "instructions_5_chest": "Chest pain",
+  "instructions_5_dizzy": "Dizziness",
+  "instructions_5_breath": "Severe shortness of breath",
+  "instructions_5_doctor": "If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand.",
 
-  "instructions_6_welc": "Overview of results",
-  "instructions_6_text": "Your walking distance is classified based on reference values, and you get an overview of your performance and the values achieved.",
+  "instructions_6_welc": "Results overview",
+  "instructions_6_text": "Your walking distance is compared with reference values of people of the same age and height. You see what percentage of the expected distance you reached and which category you fall into:",
 
-  "instructions_7_welc": "You are ready!",
-  "instructions_7_text": "Now that you know how it works, you can start and complete a test at any time!",
+  "instructions_7_welc": "You're ready!",
+  "instructions_7_text": "You now know everything you need for the test. Find a flat route outdoors and get started!",
+  "instructions_7_back": "Back to the quick guide",
+  "instructions_7_home": "Back to the home screen",
+
+  "profile_title": "Personal data",
+  "profile_text": "To obtain the most accurate test results, please enter all information correctly.",
+  "profile_sub1": "General information",
+  "profile_sub2": "Body measurements",
+  "profile_info": "Please enter your age, gender, height and weight.",
+  "profileAgeOutOfRange": "Please enter an age between 1 and 120 years.",
+  "profileHeightOutOfRange": "Please enter a height between 50 and 250 cm.",
+  "profileWeightOutOfRange": "Please enter a weight between 1 and 400 kg.",
+  "field1": "Name",
+  "field2": "Age in years",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderOther": "Other/Prefer not to say",
+  "field4": "Height",
+  "field5": "Weight",
+  "profile_footer": "Your privacy is important to us. This information is used solely to assess your fitness and for no other purpose.",
+
+  "quickGuide_title": "How it works",
+  "quickGuide_step_outdoor": "Go outside to a flat path.",
+  "quickGuide_step_pocket": "Start the test and put your phone in your pocket for the most accurate measurement.",
+  "quickGuide_step_walk": "Walk as far as you can in 6 minutes – walk, don't run. You may take breaks.",
+  "quickGuide_step_end": "A sound and vibration signal the end of the test.",
+  "quickGuide_more_info": "More information about the test",
+  "quickGuide_disclaimer": "You perform the test at your own risk. If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand. Stop the test immediately if you experience chest pain, dizziness or severe shortness of breath.",
+
+  "walk_idstance": "Distance",
+  "walk_status": "Status",
+  "walk_assessment": "Assessment",
+  "walk_position": "Current Position",
+  "walk_duration": "Duration",
+  "walk_profile": "Profile",
+
+  "walkPleaseGoFar": "Please go as far as possible in 6 minutes.",
+  "walkNotStarted": "Not started",
+  "walkWaitingForGps": "Waiting for GPS...",
+  "walkWalking": "Walking",
+  "walkFinished": "Finished",
+  "walkStopped": "Stopped",
+  "walkNotStartedYet": "Not started yet",
+  "walkLoading": "Loading...",
+  "walkSlideToStop": "Slide to stop",
+  "walkBackBlocked": "The test is still running. Use the slider to stop it.",
+  "walkResultCouldNotBeLoaded": "Result could not be loaded.",
+  "walkNoPositionYet": "No position yet",
+  "walkAccuracy": "Accuracy: {accuracy} m",
+  "@walkAccuracy": {
+    "placeholders": {
+      "accuracy": {
+        "type": "String"
+      }
+    }
+  },
+  "walkOfSixMinutes": "of 6:00 min",
+  "walkYears": "{age} years",
+  "@walkYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "walkHeightCm": "{height} cm",
+  "@walkHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "walkOfExpectedDistance": "of expected distance",
+
   "aboutTitle": "About the app",
-  "aboutProject": "This 6mwt app was developed as part of a Software Engineering project during the summer semester of 2026 at Ulm University.",
+  "aboutProject": "This 6MWT app was developed as part of a software engineering project during the summer semester of 2026 at Ulm University.",
   "aboutVersion": "App version",
   "aboutBuild": "Build number",
   "aboutCommit": "Commit hash",
@@ -51,5 +137,164 @@
   "aboutRepository": "GitHub repository",
   "aboutProjectLicense": "Project license",
   "aboutLicenses": "Open-source licenses",
-  "aboutLinkError": "The link could not be opened."
+  "aboutLinkError": "The link could not be opened.",
+
+  "deleteSession": "Delete walk test",
+  "deleteSessionDialogTitle": "Delete walk test?",
+  "deleteSessionDialogMessage": "Are you sure you want to delete this recorded walk test? This action cannot be undone.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "sessionDeleted": "Walk test deleted",
+  "cannotDeleteActiveSession": "An active walk test cannot be deleted.",
+
+  "resultTitle": "Test Results",
+  "resultIntro": "Here are your results from the 6-minute walk test.",
+  "resultPerformance": "Performance",
+  "resultExpectedDistance": "of expected distance",
+  "resultNoAssessment": "No assessment possible",
+  "resultEarlyStopExplanation": "No assessment is possible because the test was stopped early.",
+  "resultPerformanceExplanation": "Your performance is based on your age, height and walking distance.",
+  "resultTestDetails": "Test Details",
+  "resultDistanceWalked": "Distance walked",
+  "resultDistanceConfidence": "Distance confidence",
+  "resultTestDuration": "Test duration",
+  "resultTestStatus": "Test status",
+  "resultStoppedEarly": "Stopped early",
+  "resultCompleted": "Completed",
+  "resultYourProfile": "Your Profile",
+  "resultName": "Name",
+  "resultAge": "Age",
+  "resultAgeYears": "{age} years",
+  "@resultAgeYears": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
+  "resultHeight": "Height",
+  "resultHeightCm": "{height} cm",
+  "@resultHeightCm": {
+    "placeholders": {
+      "height": {
+        "type": "int"
+      }
+    }
+  },
+  "resultWeight": "Weight",
+  "resultWeightKg": "{weight} kg",
+  "@resultWeightKg": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      }
+    }
+  },
+  "resultGender": "Gender",
+  "resultDistanceComparison": "Distance comparison",
+  "resultCalculatingDistanceComparisons": "Calculating distance comparisons...",
+  "resultDistanceComparisonFailed": "Could not calculate distance comparisons.",
+  "resultLowConfidenceWarning": "The distance measurement for this test was inaccurate. The assessment is therefore of limited significance.",
+  "resultDisclaimer": "The result is for guidance only and does not replace medical advice. The walking distance is estimated and may be inaccurate, even if a high reliability is shown. We accept no liability for consequences or decisions based on the results.",
+  "resultExportFailed": "Export failed: {error}",
+  "@resultExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "resultDeleteFailed": "Error deleting test: {error}",
+  "@resultDeleteFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "historyTitle": "History",
+  "historyNoEntries": "No entries available",
+  "historyFit": "fit",
+  "percentValue": "{value}%",
+  "@percentValue": {
+    "description": "A whole-number percentage. German puts a narrow no-break space before the sign, English none.",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "historyToday": "Today",
+  "historyYesterday": "Yesterday",
+  "historyExportFailed": "Export failed: {error}",
+  "@historyExportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "historyLoadFailed": "Error: {error}",
+  "@historyLoadFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "instructions_3_heading": "Personal data",
+  "confidenceHigh": "High",
+  "confidenceMedium": "Medium",
+  "confidenceLow": "Low",
+  "comparisonConfidence": "Confidence: {value}",
+  "@comparisonConfidence": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "comparisonUnavailable": "Estimator unavailable: {error}",
+  "@comparisonUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "estimatorMain": "Main ({name})",
+  "@estimatorMain": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "fitnessReducedPhysicalPerformance": "Reduced physical performance",
+  "fitnessLowNormal": "Low normal",
+  "fitnessNormalPopulationMean": "Population mean",
+  "fitnessHighNormal": "High normal",
+  "fitnessTopPerformance": "Top performance",
+  "walkErrorLocation": "Location permission denied or GPS disabled",
+  "walkLocationRequiredTitle": "Location access required",
+  "walkLocationRequiredText": "The test measures the walking distance by GPS and does not work without location access. Please allow the app to access your location, turn on GPS and start the test again.",
+  "walkErrorActivityRecognition": "Activity recognition permission denied",
+  "walkErrorSensorUnavailable": "Could not start the sensors: {error}",
+  "@walkErrorSensorUnavailable": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "walkErrorSensor": "Sensor error: {error}",
+  "@walkErrorSensor": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

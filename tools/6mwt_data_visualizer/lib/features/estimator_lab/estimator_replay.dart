@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart' as app;
+import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 
 import '../../core/domain/haversine.dart';
 import '../../core/domain/sensor_sample.dart';
@@ -22,11 +22,15 @@ class ReplayResult {
     this.points, {
     this.error,
     this.additionalInfo = const {},
+    this.confidence,
   });
   final String name;
   final List<DistancePoint> points;
   final String? error;
   final Map<String, String> additionalInfo;
+
+  /// The estimator's own assessment of its final distance, if it reports one.
+  final DistanceConfidence? confidence;
   double? get distance =>
       error == null && points.isNotEmpty ? points.last.meters : null;
 
@@ -49,6 +53,7 @@ class ReplayResult {
 /// Reference samples are used for comparison only and never enter that stream.
 class EstimatorReplay {
   EstimatorReplay(Session session) {
+    _profile = session.profile;
     // Stable tie-breaking preserves file order for simultaneous events.
     final indexed = session.samples.indexed.toList();
     indexed.sort((a, b) {
@@ -83,6 +88,7 @@ class EstimatorReplay {
   }
 
   late final List<app.SensorSample> samples;
+  late final Profile? _profile;
   late final DateTime start;
   late final double duration;
 
@@ -92,12 +98,13 @@ class EstimatorReplay {
 
   /// Runs synchronously using recorded timestamps, without wall-clock delays.
   ReplayResult run(DistanceEstimator estimator) {
-    final name = estimator is GpsStepDistanceEstimator
-        ? '${estimator.runtimeType} (GPS <= '
-              '${estimator.maxGpsInterval.inMicroseconds / 1e6} s)'
-        : estimator.runtimeType.toString();
+    final name = estimator.name;
     final points = <DistancePoint>[];
     try {
+      estimator.configureProfile(
+        heightCm: _profile?.height,
+        gender: _profile?.gender,
+      );
       estimator.reset();
       for (final sample in samples) {
         estimator.addSample(sample);
@@ -116,6 +123,7 @@ class EstimatorReplay {
         name,
         List.unmodifiable(points),
         additionalInfo: Map.unmodifiable(estimator.additionalInfo),
+        confidence: estimator.confidence,
       );
     } catch (error) {
       // A broken experimental variant must not prevent other variants from running.

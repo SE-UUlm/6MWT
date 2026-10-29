@@ -1,10 +1,18 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
 
 /// Experimental, causal GPS filter. Rejected fixes never become the anchor.
 class FilteredGpsEstimator extends DistanceEstimator {
-  FilteredGpsEstimator({required this.maxAccuracy, required this.maxSpeed});
+  FilteredGpsEstimator({
+    super.name,
+    required this.maxAccuracy,
+    required this.maxSpeed,
+  });
+
+  @override
+  String get defaultName => 'Filtered GPS';
 
   /// Largest accepted reported GPS accuracy radius, in meters.
   final double maxAccuracy;
@@ -13,6 +21,8 @@ class FilteredGpsEstimator extends DistanceEstimator {
   final double maxSpeed;
   SensorSample? _previous;
   double _distance = 0;
+  double _accuracySum = 0;
+  int _accepted = 0;
   int rejected = 0;
 
   @override
@@ -24,6 +34,18 @@ class FilteredGpsEstimator extends DistanceEstimator {
 
   @override
   double get totalDistance => _distance;
+
+  @override
+  DistanceConfidence get confidence => ConfidenceHeuristics.combine(
+    total: _distance,
+    gpsDistance: _distance,
+    gpsQuality: ConfidenceHeuristics.gpsQuality(
+      accuracySum: _accuracySum,
+      accepted: _accepted,
+      rejected: rejected,
+    ),
+    otherQuality: 0,
+  );
 
   @override
   void addSample(SensorSample sample) {
@@ -60,6 +82,8 @@ class FilteredGpsEstimator extends DistanceEstimator {
         return;
       }
       _distance += distance;
+      _accepted++;
+      _accuracySum += accuracy ?? ConfidenceHeuristics.missingGpsAccuracy;
     }
     // The first accepted fix establishes the anchor without adding distance.
     _previous = sample;
@@ -69,13 +93,18 @@ class FilteredGpsEstimator extends DistanceEstimator {
   void reset() {
     _previous = null;
     _distance = 0;
+    _accuracySum = 0;
+    _accepted = 0;
     rejected = 0;
   }
 }
 
 /// Uses the first cumulative-step source; counter resets establish a new baseline.
 class StepDistanceEstimator extends DistanceEstimator {
-  StepDistanceEstimator({required this.stepLength});
+  StepDistanceEstimator({super.name, required this.stepLength});
+
+  @override
+  String get defaultName => 'Steps';
 
   /// Fixed distance per step in meters; no reference-based calibration is used.
   final double stepLength;
@@ -91,6 +120,15 @@ class StepDistanceEstimator extends DistanceEstimator {
 
   @override
   double get totalDistance => _distance;
+
+  /// A fixed, uncalibrated stride.
+  @override
+  DistanceConfidence get confidence => ConfidenceHeuristics.combine(
+    total: _distance,
+    gpsDistance: 0,
+    gpsQuality: 0,
+    otherQuality: ConfidenceHeuristics.defaultStrideQuality,
+  );
 
   @override
   void addSample(SensorSample sample) {

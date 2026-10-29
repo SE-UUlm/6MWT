@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:geolocator/geolocator.dart';
 
 import '../../../../core/domain/sensor_sample.dart';
+import 'distance_confidence.dart';
 import 'distance_estimator.dart';
 
 /// Step odometry with a scalar Kalman estimate of distance per step.
@@ -11,17 +12,21 @@ import 'distance_estimator.dart';
 /// own their distance (including zero-step pauses); GPS fills only missing ones.
 /// Results are provisional: learning the session's step length revises history.
 class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
-  KalmanGpsStepDistanceEstimator({StepCalibrationConfig? config})
+  KalmanGpsStepDistanceEstimator({super.name, StepCalibrationConfig? config})
     : config = config ?? StepCalibrationConfig() {
     reset();
   }
+
+  @override
+  String get defaultName => 'Kalman GPS + steps';
 
   final StepCalibrationConfig config;
   late StepCalibrationHistory _history;
   final _fixes = <double, SensorSample>{};
   bool _dirty = true;
   double _distance = 0, _length = 0, _variance = 0, _gpsDistance = 0;
-  int _updates = 0, _rejectedWindows = 0;
+  int _updates = 0, _rejectedWindows = 0, _inconsistentWindows = 0;
+  final _observedStrides = <double>[];
 
   @override
   void addSample(SensorSample sample) {
@@ -40,7 +45,8 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
     if (!_dirty) return;
     _length = config.defaultLength;
     _variance = .25 * .25;
-    _updates = _rejectedWindows = 0;
+    _updates = _rejectedWindows = _inconsistentWindows = 0;
+    _observedStrides.clear();
     double? start, end, lastUpdate;
     var path = 0.0;
     var skipEdge = false;
@@ -91,8 +97,10 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
           _variance = (1 - gain) * predicted;
           lastUpdate = end;
           _updates++;
+          _observedStrides.add(observed);
         } else {
           _rejectedWindows++;
+          _inconsistentWindows++;
         }
       } else {
         _rejectedWindows++;
@@ -137,6 +145,26 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
     return _distance;
   }
 
+  /// Only gate failures count against the stride; turns and unresolved
+  /// windows are merely unusable for calibration.
+  @override
+  DistanceConfidence get confidence {
+    _calculate();
+    return ConfidenceHeuristics.combine(
+      total: _distance,
+      gpsDistance: _gpsDistance,
+      gpsQuality: ConfidenceHeuristics.gpsQuality(
+        accuracySum: _history.gpsAccuracySum,
+        accepted: _history.gps.length,
+        rejected: _history.rejectedGps,
+      ),
+      otherQuality: ConfidenceHeuristics.strideQuality(
+        _observedStrides,
+        rejected: _inconsistentWindows,
+      ),
+    );
+  }
+
   @override
   Map<String, String> get additionalInfo {
     _calculate();
@@ -147,6 +175,7 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
       'Calibration windows': '$_updates',
       'Rejected calibration windows': '$_rejectedWindows',
       'Default length active': '${_updates == 0}',
+      'Odometry profile': 'SEUU-6MWT-Gait-v1',
       'GPS fallback distance': '${_gpsDistance.toStringAsFixed(2)} m',
       'GPS rejected': '${_history.rejectedGps}',
       'Step counter resets': '${_history.resets}',
@@ -162,7 +191,8 @@ class KalmanGpsStepDistanceEstimator extends DistanceEstimator {
     _distance = _gpsDistance = 0;
     _length = config.defaultLength;
     _variance = .25 * .25;
-    _updates = _rejectedWindows = 0;
+    _updates = _rejectedWindows = _inconsistentWindows = 0;
+    _observedStrides.clear();
     _dirty = true;
   }
 }

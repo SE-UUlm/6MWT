@@ -488,6 +488,17 @@ class $WalkSessionsTable extends WalkSessions
     type: DriftSqlType.double,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _distanceConfidenceMeta =
+      const VerificationMeta('distanceConfidence');
+  @override
+  late final GeneratedColumn<double> distanceConfidence =
+      GeneratedColumn<double>(
+        'distance_confidence',
+        aliasedName,
+        true,
+        type: DriftSqlType.double,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<WalkPhase, String> phase =
       GeneratedColumn<String>(
@@ -517,6 +528,7 @@ class $WalkSessionsTable extends WalkSessions
     startedAt,
     duration,
     distance,
+    distanceConfidence,
     phase,
     profileId,
   ];
@@ -553,6 +565,15 @@ class $WalkSessionsTable extends WalkSessions
     } else if (isInserting) {
       context.missing(_distanceMeta);
     }
+    if (data.containsKey('distance_confidence')) {
+      context.handle(
+        _distanceConfidenceMeta,
+        distanceConfidence.isAcceptableOrUnknown(
+          data['distance_confidence']!,
+          _distanceConfidenceMeta,
+        ),
+      );
+    }
     if (data.containsKey('profile_id')) {
       context.handle(
         _profileIdMeta,
@@ -588,6 +609,10 @@ class $WalkSessionsTable extends WalkSessions
         DriftSqlType.double,
         data['${effectivePrefix}distance'],
       )!,
+      distanceConfidence: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}distance_confidence'],
+      ),
       phase: $WalkSessionsTable.$converterphase.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -617,6 +642,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
   final DateTime startedAt;
   final Duration duration;
   final double distance;
+  final double? distanceConfidence;
   final WalkPhase phase;
   final int profileId;
   const WalkSessionRow({
@@ -624,6 +650,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     required this.startedAt,
     required this.duration,
     required this.distance,
+    this.distanceConfidence,
     required this.phase,
     required this.profileId,
   });
@@ -638,6 +665,9 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
       );
     }
     map['distance'] = Variable<double>(distance);
+    if (!nullToAbsent || distanceConfidence != null) {
+      map['distance_confidence'] = Variable<double>(distanceConfidence);
+    }
     {
       map['phase'] = Variable<String>(
         $WalkSessionsTable.$converterphase.toSql(phase),
@@ -653,6 +683,9 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
       startedAt: Value(startedAt),
       duration: Value(duration),
       distance: Value(distance),
+      distanceConfidence: distanceConfidence == null && nullToAbsent
+          ? const Value.absent()
+          : Value(distanceConfidence),
       phase: Value(phase),
       profileId: Value(profileId),
     );
@@ -668,6 +701,9 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       duration: serializer.fromJson<Duration>(json['duration']),
       distance: serializer.fromJson<double>(json['distance']),
+      distanceConfidence: serializer.fromJson<double?>(
+        json['distanceConfidence'],
+      ),
       phase: $WalkSessionsTable.$converterphase.fromJson(
         serializer.fromJson<String>(json['phase']),
       ),
@@ -682,6 +718,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
       'startedAt': serializer.toJson<DateTime>(startedAt),
       'duration': serializer.toJson<Duration>(duration),
       'distance': serializer.toJson<double>(distance),
+      'distanceConfidence': serializer.toJson<double?>(distanceConfidence),
       'phase': serializer.toJson<String>(
         $WalkSessionsTable.$converterphase.toJson(phase),
       ),
@@ -694,6 +731,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     DateTime? startedAt,
     Duration? duration,
     double? distance,
+    Value<double?> distanceConfidence = const Value.absent(),
     WalkPhase? phase,
     int? profileId,
   }) => WalkSessionRow(
@@ -701,6 +739,9 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
     startedAt: startedAt ?? this.startedAt,
     duration: duration ?? this.duration,
     distance: distance ?? this.distance,
+    distanceConfidence: distanceConfidence.present
+        ? distanceConfidence.value
+        : this.distanceConfidence,
     phase: phase ?? this.phase,
     profileId: profileId ?? this.profileId,
   );
@@ -710,6 +751,9 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
       startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
       duration: data.duration.present ? data.duration.value : this.duration,
       distance: data.distance.present ? data.distance.value : this.distance,
+      distanceConfidence: data.distanceConfidence.present
+          ? data.distanceConfidence.value
+          : this.distanceConfidence,
       phase: data.phase.present ? data.phase.value : this.phase,
       profileId: data.profileId.present ? data.profileId.value : this.profileId,
     );
@@ -722,6 +766,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
           ..write('startedAt: $startedAt, ')
           ..write('duration: $duration, ')
           ..write('distance: $distance, ')
+          ..write('distanceConfidence: $distanceConfidence, ')
           ..write('phase: $phase, ')
           ..write('profileId: $profileId')
           ..write(')'))
@@ -729,8 +774,15 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, startedAt, duration, distance, phase, profileId);
+  int get hashCode => Object.hash(
+    id,
+    startedAt,
+    duration,
+    distance,
+    distanceConfidence,
+    phase,
+    profileId,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -739,6 +791,7 @@ class WalkSessionRow extends DataClass implements Insertable<WalkSessionRow> {
           other.startedAt == this.startedAt &&
           other.duration == this.duration &&
           other.distance == this.distance &&
+          other.distanceConfidence == this.distanceConfidence &&
           other.phase == this.phase &&
           other.profileId == this.profileId);
 }
@@ -748,6 +801,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
   final Value<DateTime> startedAt;
   final Value<Duration> duration;
   final Value<double> distance;
+  final Value<double?> distanceConfidence;
   final Value<WalkPhase> phase;
   final Value<int> profileId;
   final Value<int> rowid;
@@ -756,6 +810,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
     this.startedAt = const Value.absent(),
     this.duration = const Value.absent(),
     this.distance = const Value.absent(),
+    this.distanceConfidence = const Value.absent(),
     this.phase = const Value.absent(),
     this.profileId = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -765,6 +820,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
     required DateTime startedAt,
     required Duration duration,
     required double distance,
+    this.distanceConfidence = const Value.absent(),
     required WalkPhase phase,
     required int profileId,
     this.rowid = const Value.absent(),
@@ -779,6 +835,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
     Expression<DateTime>? startedAt,
     Expression<int>? duration,
     Expression<double>? distance,
+    Expression<double>? distanceConfidence,
     Expression<String>? phase,
     Expression<int>? profileId,
     Expression<int>? rowid,
@@ -788,6 +845,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
       if (startedAt != null) 'started_at': startedAt,
       if (duration != null) 'duration': duration,
       if (distance != null) 'distance': distance,
+      if (distanceConfidence != null) 'distance_confidence': distanceConfidence,
       if (phase != null) 'phase': phase,
       if (profileId != null) 'profile_id': profileId,
       if (rowid != null) 'rowid': rowid,
@@ -799,6 +857,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
     Value<DateTime>? startedAt,
     Value<Duration>? duration,
     Value<double>? distance,
+    Value<double?>? distanceConfidence,
     Value<WalkPhase>? phase,
     Value<int>? profileId,
     Value<int>? rowid,
@@ -808,6 +867,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
       startedAt: startedAt ?? this.startedAt,
       duration: duration ?? this.duration,
       distance: distance ?? this.distance,
+      distanceConfidence: distanceConfidence ?? this.distanceConfidence,
       phase: phase ?? this.phase,
       profileId: profileId ?? this.profileId,
       rowid: rowid ?? this.rowid,
@@ -831,6 +891,9 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
     if (distance.present) {
       map['distance'] = Variable<double>(distance.value);
     }
+    if (distanceConfidence.present) {
+      map['distance_confidence'] = Variable<double>(distanceConfidence.value);
+    }
     if (phase.present) {
       map['phase'] = Variable<String>(
         $WalkSessionsTable.$converterphase.toSql(phase.value),
@@ -852,6 +915,7 @@ class WalkSessionsCompanion extends UpdateCompanion<WalkSessionRow> {
           ..write('startedAt: $startedAt, ')
           ..write('duration: $duration, ')
           ..write('distance: $distance, ')
+          ..write('distanceConfidence: $distanceConfidence, ')
           ..write('phase: $phase, ')
           ..write('profileId: $profileId, ')
           ..write('rowid: $rowid')
@@ -1623,6 +1687,7 @@ typedef $$WalkSessionsTableCreateCompanionBuilder =
       required DateTime startedAt,
       required Duration duration,
       required double distance,
+      Value<double?> distanceConfidence,
       required WalkPhase phase,
       required int profileId,
       Value<int> rowid,
@@ -1633,6 +1698,7 @@ typedef $$WalkSessionsTableUpdateCompanionBuilder =
       Value<DateTime> startedAt,
       Value<Duration> duration,
       Value<double> distance,
+      Value<double?> distanceConfidence,
       Value<WalkPhase> phase,
       Value<int> profileId,
       Value<int> rowid,
@@ -1705,6 +1771,11 @@ class $$WalkSessionsTableFilterComposer
 
   ColumnFilters<double> get distance => $composableBuilder(
     column: $table.distance,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get distanceConfidence => $composableBuilder(
+    column: $table.distanceConfidence,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1792,6 +1863,11 @@ class $$WalkSessionsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get distanceConfidence => $composableBuilder(
+    column: $table.distanceConfidence,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get phase => $composableBuilder(
     column: $table.phase,
     builder: (column) => ColumnOrderings(column),
@@ -1841,6 +1917,11 @@ class $$WalkSessionsTableAnnotationComposer
 
   GeneratedColumn<double> get distance =>
       $composableBuilder(column: $table.distance, builder: (column) => column);
+
+  GeneratedColumn<double> get distanceConfidence => $composableBuilder(
+    column: $table.distanceConfidence,
+    builder: (column) => column,
+  );
 
   GeneratedColumnWithTypeConverter<WalkPhase, String> get phase =>
       $composableBuilder(column: $table.phase, builder: (column) => column);
@@ -1926,6 +2007,7 @@ class $$WalkSessionsTableTableManager
                 Value<DateTime> startedAt = const Value.absent(),
                 Value<Duration> duration = const Value.absent(),
                 Value<double> distance = const Value.absent(),
+                Value<double?> distanceConfidence = const Value.absent(),
                 Value<WalkPhase> phase = const Value.absent(),
                 Value<int> profileId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -1934,6 +2016,7 @@ class $$WalkSessionsTableTableManager
                 startedAt: startedAt,
                 duration: duration,
                 distance: distance,
+                distanceConfidence: distanceConfidence,
                 phase: phase,
                 profileId: profileId,
                 rowid: rowid,
@@ -1944,6 +2027,7 @@ class $$WalkSessionsTableTableManager
                 required DateTime startedAt,
                 required Duration duration,
                 required double distance,
+                Value<double?> distanceConfidence = const Value.absent(),
                 required WalkPhase phase,
                 required int profileId,
                 Value<int> rowid = const Value.absent(),
@@ -1952,6 +2036,7 @@ class $$WalkSessionsTableTableManager
                 startedAt: startedAt,
                 duration: duration,
                 distance: distance,
+                distanceConfidence: distanceConfidence,
                 phase: phase,
                 profileId: profileId,
                 rowid: rowid,

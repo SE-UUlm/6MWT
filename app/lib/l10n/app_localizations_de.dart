@@ -40,7 +40,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get home_resultsb => 'Frühere Tests ansehen';
 
   @override
-  String get home_instruction => 'Über den 6 Minuten Test';
+  String get home_instruction => 'Über den 6-Minuten-Test';
 
   @override
   String get home_instructionsb => 'Ausführliche Anleitung';
@@ -71,84 +71,104 @@ class AppLocalizationsDe extends AppLocalizations {
   String get bulletPoint_1 => 'Persönliche Daten eingeben';
 
   @override
-  String get bulletPoint_2 => 'Test starten';
+  String get bulletPoint_2 => 'Kurzanleitung lesen';
 
   @override
-  String get bulletPoint_3 => 'Gehen Sie 6 Minuten lang';
+  String get bulletPoint_3 => 'Test starten';
 
   @override
-  String get bulletPoint_4 => 'Ergebnisse';
+  String get bulletPoint_4 => '6 Minuten gehen';
+
+  @override
+  String get bulletPoint_5 => 'Ergebnis ansehen';
 
   @override
   String get instructions_2_text =>
       'Der Test dauert nur sechs Minuten. Während dieser Zeit misst die App die zurückgelegte Strecke und die verbleibende Zeit.';
 
   @override
-  String get instructions_3_welc => 'Personenbezogene Daten';
+  String get instructions_3_text =>
+      'Um Ihre Fitness bewerten zu können, benötigen wir einige Angaben wie Alter, Geschlecht, Körpergröße und Gewicht. Ihre Gehstrecke wird dann mit Referenzwerten von Menschen mit ähnlichem Profil verglichen.';
 
   @override
-  String get instructions_3_text =>
-      'Für eine möglichst präzise Analyse benötigen wir einige Angaben wie Alter, Körpergröße, Gewicht und Geschlecht. Diese Daten dienen dazu, Ihre Ergebnisse besser einordnen zu können.';
+  String get instructions_3_range =>
+      'Die Referenzwerte gelten für Erwachsene zwischen 40 und 100 Jahren mit einer Körpergröße von 150 bis 210 cm. Außerhalb dieser Bereiche ist die Bewertung weniger aussagekräftig.';
 
   @override
   String get instructions_4_welc => 'Während des Tests';
 
   @override
-  String get instructions_4_text =>
-      'Gehen Sie sechs Minuten lang in Ihrem normalen, zügigen Tempo. Die App zeigt die verbleibende Zeit und die bereits zurückgelegte Strecke an.';
+  String get instructions_4_outdoor =>
+      'Gehen Sie nach draußen auf eine ebene Strecke ohne Gefälle und ohne Hindernisse wie Ampeln oder Treppen.';
 
   @override
-  String get instructions_4_text_2 =>
-      'Brechen Sie den Test ab, wenn bei Ihnen Brustschmerzen, Schwindel oder starke Atemnot auftreten.';
+  String get instructions_4_pocket =>
+      'Stecken Sie das Handy nach dem Start in die Tasche – so wird am genauesten gemessen.';
 
   @override
-  String get instructions_5_welc => 'Den Test abbrechen';
+  String get instructions_4_walk =>
+      'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen.';
+
+  @override
+  String get instructions_4_timer =>
+      'Auf dem Bildschirm sehen Sie, wie viel Zeit noch übrig ist.';
+
+  @override
+  String get instructions_4_pause =>
+      'Sie dürfen langsamer werden oder stehen bleiben, wenn Sie eine Pause brauchen.';
+
+  @override
+  String get instructions_5_welc => 'Ihre Sicherheit';
 
   @override
   String get instructions_5_text =>
-      'Bei Bedarf können Sie den Test jederzeit abbrechen und anschließend entscheiden, wie Sie fortfahren möchten:';
+      'Ihre Gesundheit geht vor. Brechen Sie den Test sofort ab, wenn eines dieser Anzeichen auftritt:';
 
   @override
-  String get instructions_5_c1 => 'Zwischenergebnisse werden gespeichert';
+  String get instructions_5_chest => 'Brustschmerzen';
 
   @override
-  String get instructions_5_c2 => 'Die Ergebnisse werden angezeigt';
+  String get instructions_5_dizzy => 'Schwindel';
 
   @override
-  String get instructions_5_c3 => 'Der Informationswert mag begrenzt sein';
+  String get instructions_5_breath => 'Starke Atemnot';
 
   @override
-  String get instructions_5_f1 => 'Alle bisherigen Daten werden verworfen';
-
-  @override
-  String get instructions_5_f2 => 'Sie können den Test erneut starten';
+  String get instructions_5_doctor =>
+      'Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt.';
 
   @override
   String get instructions_6_welc => 'Übersicht der Ergebnisse';
 
   @override
   String get instructions_6_text =>
-      'Your walking distance is classified based on reference values and you get an overview of your performance and values reached.';
+      'Ihre Gehstrecke wird mit Referenzwerten von Menschen gleichen Alters und gleicher Körpergröße verglichen. Sie sehen, wie viel Prozent der erwarteten Strecke Sie erreicht haben und in welche Kategorie Sie fallen:';
 
   @override
   String get instructions_7_welc => 'Sie sind bereit!';
 
   @override
   String get instructions_7_text =>
-      'Jetzt, da Sie wissen, wie es funktioniert, können Sie jederzeit einen Test starten und abschließen!';
+      'Sie wissen jetzt alles, was Sie für den Test brauchen. Suchen Sie sich eine ebene Strecke im Freien und legen Sie los!';
 
   @override
-  String get profile_title => 'Vorkalibrierung';
+  String get instructions_7_back => 'Zurück zur Kurzanleitung';
+
+  @override
+  String get instructions_7_home => 'Zurück zum Startbildschirm';
+
+  @override
+  String get profile_title => 'Persönliche Daten';
 
   @override
   String get profile_text =>
-      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein';
+      'Um möglichst genaue Testergebnisse zu erhalten, geben Sie bitte alle Informationen korrekt ein.';
 
   @override
-  String get profile_sub1 => 'Patienteninformationen';
+  String get profile_sub1 => 'Allgemeine Angaben';
 
   @override
-  String get profile_sub2 => 'Anthropometrie';
+  String get profile_sub2 => 'Körpermaße';
 
   @override
   String get profile_info =>
@@ -182,25 +202,40 @@ class AppLocalizationsDe extends AppLocalizations {
   String get genderOther => 'Divers/Keine Angabe';
 
   @override
-  String get field4 => 'Höhe';
+  String get field4 => 'Körpergröße';
 
   @override
   String get field5 => 'Gewicht';
 
   @override
   String get profile_footer =>
-      'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden für keine anderen Zwecke verwendet.';
+      'Ihre Privatsphäre ist uns wichtig. Diese Informationen werden ausschließlich zur Bewertung Ihrer Fitness verwendet und nicht für andere Zwecke.';
 
   @override
-  String get video_title => 'Testvorbereitung';
+  String get quickGuide_title => 'So funktioniert’s';
 
   @override
-  String get video_text =>
-      'Gehen Sie die markierte Strecke (z. B. 6 Meter) in der Mitte beginnend hin und her. Gehen Sie in Ihrem eigenen Tempo. Wenn Sie unsicher sind, wie der Test abläuft, sehen Sie sich zur Orientierung das untenstehende Video an.';
+  String get quickGuide_step_outdoor =>
+      'Gehen Sie nach draußen auf einen ebenen Weg.';
 
   @override
-  String get walk_info =>
-      'Bitte lege in 6 Minuten eine möglichst große Strecke zurück.';
+  String get quickGuide_step_pocket =>
+      'Starten Sie den Test und stecken Sie das Handy in die Tasche – so wird am genauesten gemessen.';
+
+  @override
+  String get quickGuide_step_walk =>
+      'Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen. Pausen sind erlaubt.';
+
+  @override
+  String get quickGuide_step_end =>
+      'Ein Ton und eine Vibration signalisieren das Ende des Tests.';
+
+  @override
+  String get quickGuide_more_info => 'Mehr Informationen zum Test';
+
+  @override
+  String get quickGuide_disclaimer =>
+      'Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.';
 
   @override
   String get walk_idstance => 'Distanz';
@@ -212,9 +247,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_assessment => 'Bewertung';
 
   @override
-  String get walk_start => 'Noch nicht gestartet';
-
-  @override
   String get walk_position => 'Aktuelle Position';
 
   @override
@@ -224,17 +256,71 @@ class AppLocalizationsDe extends AppLocalizations {
   String get walk_profile => 'Profil';
 
   @override
-  String get walk_test_start => 'Starte Test';
+  String get walkPleaseGoFar =>
+      'Bitte legen Sie in 6 Minuten eine möglichst große Strecke zurück.';
 
   @override
-  String get walk_reset => 'Zurücksetzen';
+  String get walkNotStarted => 'Noch nicht gestartet';
+
+  @override
+  String get walkWaitingForGps => 'Warte auf GPS …';
+
+  @override
+  String get walkWalking => 'Gehen';
+
+  @override
+  String get walkFinished => 'Abgeschlossen';
+
+  @override
+  String get walkStopped => 'Abgebrochen';
+
+  @override
+  String get walkNotStartedYet => 'Noch nicht gestartet';
+
+  @override
+  String get walkLoading => 'Wird geladen …';
+
+  @override
+  String get walkSlideToStop => 'Zum Beenden schieben';
+
+  @override
+  String get walkBackBlocked =>
+      'Der Test läuft noch. Zum Beenden den Schieberegler nutzen.';
+
+  @override
+  String get walkResultCouldNotBeLoaded =>
+      'Das Ergebnis konnte nicht geladen werden.';
+
+  @override
+  String get walkNoPositionYet => 'Noch keine Position verfügbar';
+
+  @override
+  String walkAccuracy(String accuracy) {
+    return 'Genauigkeit: $accuracy m';
+  }
+
+  @override
+  String get walkOfSixMinutes => 'von 6:00 min';
+
+  @override
+  String walkYears(int age) {
+    return '$age Jahre';
+  }
+
+  @override
+  String walkHeightCm(int height) {
+    return '$height cm';
+  }
+
+  @override
+  String get walkOfExpectedDistance => 'der erwarteten Gehstrecke';
 
   @override
   String get aboutTitle => 'Über die App';
 
   @override
   String get aboutProject =>
-      'Diese 6mwt App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.';
+      'Diese 6MWT-App wurde im Rahmen eines Software-Engineering-Projekts während des Sommersemesters 2026 an der Universität Ulm entwickelt.';
 
   @override
   String get aboutVersion => 'App-Version';
@@ -262,4 +348,236 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get aboutLinkError => 'Der Link konnte nicht geöffnet werden.';
+
+  @override
+  String get deleteSession => 'Gehtest löschen';
+
+  @override
+  String get deleteSessionDialogTitle => 'Gehtest löschen?';
+
+  @override
+  String get deleteSessionDialogMessage =>
+      'Möchten Sie diesen aufgezeichneten Gehtest wirklich löschen? Dies kann nicht rückgängig gemacht werden.';
+
+  @override
+  String get cancel => 'Abbrechen';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get sessionDeleted => 'Gehtest gelöscht';
+
+  @override
+  String get cannotDeleteActiveSession =>
+      'Ein aktiver Gehtest kann nicht gelöscht werden.';
+
+  @override
+  String get resultTitle => 'Testergebnisse';
+
+  @override
+  String get resultIntro =>
+      'Hier sind Ihre Ergebnisse aus dem 6-Minuten-Gehtest.';
+
+  @override
+  String get resultPerformance => 'Leistung';
+
+  @override
+  String get resultExpectedDistance => 'der erwarteten Gehstrecke';
+
+  @override
+  String get resultNoAssessment => 'Keine Bewertung möglich';
+
+  @override
+  String get resultEarlyStopExplanation =>
+      'Eine Bewertung ist nicht möglich, da der Test vorzeitig abgebrochen wurde.';
+
+  @override
+  String get resultPerformanceExplanation =>
+      'Ihre Leistung wird anhand Ihres Alters, Ihrer Körpergröße und Ihrer Gehstrecke beurteilt.';
+
+  @override
+  String get resultTestDetails => 'Testdetails';
+
+  @override
+  String get resultDistanceWalked => 'Zurückgelegte Strecke';
+
+  @override
+  String get resultDistanceConfidence => 'Zuverlässigkeit der Distanzmessung';
+
+  @override
+  String get resultTestDuration => 'Testdauer';
+
+  @override
+  String get resultTestStatus => 'Teststatus';
+
+  @override
+  String get resultStoppedEarly => 'Vorzeitig abgebrochen';
+
+  @override
+  String get resultCompleted => 'Abgeschlossen';
+
+  @override
+  String get resultYourProfile => 'Ihr Profil';
+
+  @override
+  String get resultName => 'Name';
+
+  @override
+  String get resultAge => 'Alter';
+
+  @override
+  String resultAgeYears(int age) {
+    return '$age Jahre';
+  }
+
+  @override
+  String get resultHeight => 'Körpergröße';
+
+  @override
+  String resultHeightCm(int height) {
+    return '$height cm';
+  }
+
+  @override
+  String get resultWeight => 'Gewicht';
+
+  @override
+  String resultWeightKg(String weight) {
+    return '$weight kg';
+  }
+
+  @override
+  String get resultGender => 'Geschlecht';
+
+  @override
+  String get resultDistanceComparison => 'Streckenvergleich';
+
+  @override
+  String get resultCalculatingDistanceComparisons =>
+      'Streckenvergleiche werden berechnet …';
+
+  @override
+  String get resultDistanceComparisonFailed =>
+      'Die Streckenvergleiche konnten nicht berechnet werden.';
+
+  @override
+  String get resultLowConfidenceWarning =>
+      'Die Distanzmessung war bei diesem Test ungenau. Die Bewertung ist daher nur eingeschränkt aussagekräftig.';
+
+  @override
+  String get resultDisclaimer =>
+      'Das Ergebnis dient nur zur Orientierung und ersetzt keine ärztliche Beratung. Die Gehstrecke wird geschätzt und kann auch bei hoher Zuverlässigkeit abweichen. Für Folgen oder Entscheidungen auf Grundlage der Ergebnisse übernehmen wir keine Haftung.';
+
+  @override
+  String resultExportFailed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
+
+  @override
+  String resultDeleteFailed(String error) {
+    return 'Fehler beim Löschen des Tests: $error';
+  }
+
+  @override
+  String get historyTitle => 'Verlauf';
+
+  @override
+  String get historyNoEntries => 'Keine Einträge vorhanden';
+
+  @override
+  String get historyFit => 'fit';
+
+  @override
+  String percentValue(int value) {
+    final intl.NumberFormat valueNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String valueString = valueNumberFormat.format(value);
+
+    return '$valueString %';
+  }
+
+  @override
+  String get historyToday => 'Heute';
+
+  @override
+  String get historyYesterday => 'Gestern';
+
+  @override
+  String historyExportFailed(String error) {
+    return 'Export fehlgeschlagen: $error';
+  }
+
+  @override
+  String historyLoadFailed(String error) {
+    return 'Fehler: $error';
+  }
+
+  @override
+  String get instructions_3_heading => 'Persönliche Daten';
+
+  @override
+  String get confidenceHigh => 'Hoch';
+
+  @override
+  String get confidenceMedium => 'Mittel';
+
+  @override
+  String get confidenceLow => 'Niedrig';
+
+  @override
+  String comparisonConfidence(String value) {
+    return 'Zuverlässigkeit: $value';
+  }
+
+  @override
+  String comparisonUnavailable(String error) {
+    return 'Streckenschätzer nicht verfügbar: $error';
+  }
+
+  @override
+  String estimatorMain(String name) {
+    return 'Haupt ($name)';
+  }
+
+  @override
+  String get fitnessReducedPhysicalPerformance =>
+      'Verminderte körperliche Leistungs­fähigkeit';
+
+  @override
+  String get fitnessLowNormal => 'Niedrig-normal';
+
+  @override
+  String get fitnessNormalPopulationMean => 'Bevölkerungs­durchschnitt';
+
+  @override
+  String get fitnessHighNormal => 'Hoch-normal';
+
+  @override
+  String get fitnessTopPerformance => 'Spitzenleistung';
+
+  @override
+  String get walkErrorLocation =>
+      'Standortberechtigung verweigert oder GPS deaktiviert';
+
+  @override
+  String get walkLocationRequiredTitle => 'Standortzugriff erforderlich';
+
+  @override
+  String get walkLocationRequiredText =>
+      'Der Test misst die Gehstrecke per GPS und funktioniert ohne Standortzugriff nicht. Bitte erlauben Sie der App den Zugriff auf Ihren Standort, schalten Sie GPS ein und starten Sie den Test erneut.';
+
+  @override
+  String get walkErrorActivityRecognition =>
+      'Berechtigung zur Aktivitätserkennung verweigert';
+
+  @override
+  String walkErrorSensorUnavailable(String error) {
+    return 'Sensoren konnten nicht gestartet werden: $error';
+  }
+
+  @override
+  String walkErrorSensor(String error) {
+    return 'Sensorfehler: $error';
+  }
 }

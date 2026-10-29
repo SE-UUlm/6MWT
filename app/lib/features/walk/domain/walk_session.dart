@@ -7,10 +7,20 @@ import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 
+import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
 import 'estimator_comparison.dart';
 
 final _log = appLogger('WalkSession');
+
+class WalkError {
+  const WalkError(this.issue, this.detail);
+
+  final SensorIssue issue;
+
+  // Technical description, e.g. the exception text; not translated.
+  final String detail;
+}
 
 // Immutable snapshot of a walk test at one point in time.
 class WalkSessionState {
@@ -18,9 +28,10 @@ class WalkSessionState {
     required this.phase,
     required this.remainingTime,
     this.distance = 0, // In meters
+    this.confidence,
     this.comparisons = const [],
     this.lastSamples = const {},
-    this.errorMessage,
+    this.error,
     this.sessionId,
     this.startedAt,
   });
@@ -28,12 +39,15 @@ class WalkSessionState {
   final WalkPhase phase;
   final Duration remainingTime;
   final double distance;
+
+  // Trust in [distance], as reported by the primary estimator.
+  final DistanceConfidence? confidence;
   final List<EstimatorComparison> comparisons;
 
   // Latest sample per sample type, for display purposes.
   final Map<SampleType, SensorSample> lastSamples;
 
-  final String? errorMessage;
+  final WalkError? error;
 
   // Set while a test is running or after it ended; links the recorded raw
   // samples and the stored result to this run.
@@ -62,7 +76,7 @@ class WalkSession {
     required this._distanceEstimator,
     this._sampleSink,
     this._optionalSources = const [],
-    List<NamedDistanceEstimator> comparisonEstimators = const [],
+    List<DistanceEstimator> comparisonEstimators = const [],
     this.walkDuration = const Duration(minutes: 6),
     DateTime Function()? now,
   }) : _now = now ?? DateTime.now,
@@ -83,7 +97,7 @@ class WalkSession {
   final List<SensorSource> _optionalSources;
 
   final DistanceEstimator _distanceEstimator;
-  final List<NamedDistanceEstimator> _comparisonEstimators;
+  final List<DistanceEstimator> _comparisonEstimators;
   final Map<int, String> _comparisonErrors = {};
   final SampleSink? _sampleSink;
 
@@ -102,6 +116,16 @@ class WalkSession {
   Future<void>? _warmUpFuture;
 
   int? profileId;
+
+  /// Configure the next test without changing a walk that is already running.
+  void setProfile({required int id, required num heightCm, String? gender}) {
+    if (_state.isRunning) return;
+    profileId = id;
+    _distanceEstimator.configureProfile(heightCm: heightCm, gender: gender);
+    for (final estimator in _comparisonEstimators) {
+      estimator.configureProfile(heightCm: heightCm, gender: gender);
+    }
+  }
 
   WalkSessionState get state => _state;
 
@@ -135,12 +159,13 @@ class WalkSession {
     try {
       await _startSources();
     } on Exception catch (exception) {
+      _log.e('Cannot warm up sensors', error: exception);
       await _stopSources();
       _emit(
         WalkSessionState(
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
-          errorMessage: exception.toString(),
+          error: _errorOf(exception),
         ),
       );
     }
@@ -178,6 +203,7 @@ class WalkSession {
 
     final startedAt = _now().toUtc();
     final sessionId = _generateSessionId();
+    _log.i('Starting walk test (session $sessionId)');
 
     _distanceEstimator.reset();
     _resetComparisons();
@@ -186,6 +212,7 @@ class WalkSession {
       WalkSessionState(
         phase: WalkPhase.running,
         remainingTime: walkDuration,
+        confidence: _distanceEstimator.confidence,
         sessionId: sessionId,
         startedAt: startedAt,
         comparisons: _snapshotComparisons(),
@@ -195,13 +222,14 @@ class WalkSession {
     try {
       await _startSources();
     } on Exception catch (exception) {
+      _log.e('Cannot start walk test (session $sessionId)', error: exception);
       await _stopTracking();
 
       _emit(
         WalkSessionState(
           phase: WalkPhase.idle,
           remainingTime: walkDuration,
-          errorMessage: exception.toString(),
+          error: _errorOf(exception),
         ),
       );
       return;
@@ -233,6 +261,10 @@ class WalkSession {
       return;
     }
 
+    _log.i(
+      'Aborting walk test (session ${_state.sessionId}), '
+      '${remaining.inSeconds}s remaining',
+    );
     await _stopTracking();
 
     _emit(
@@ -241,6 +273,7 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: remaining,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -249,6 +282,7 @@ class WalkSession {
   }
 
   Future<void> reset() async {
+    _log.d('Resetting walk session');
     if (_state.isRunning ||
         _activeSources.isNotEmpty ||
         _sampleSubscriptions.isNotEmpty) {
@@ -294,6 +328,7 @@ class WalkSession {
         remainingTime: remaining,
         comparisons: _state.comparisons,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -319,10 +354,7 @@ class WalkSession {
     _sampleSink?.addSample(sessionId, sample);
     _distanceEstimator.addSample(sample);
     for (var i = 0; i < _comparisonEstimators.length; i++) {
-      _runComparison(
-        i,
-        () => _comparisonEstimators[i].estimator.addSample(sample),
-      );
+      _runComparison(i, () => _comparisonEstimators[i].addSample(sample));
     }
 
     _emit(
@@ -330,6 +362,7 @@ class WalkSession {
         phase: WalkPhase.running,
         remainingTime: remaining,
         distance: _distanceEstimator.totalDistance,
+        confidence: _distanceEstimator.confidence,
         comparisons: _snapshotComparisons(),
         lastSamples: {..._state.lastSamples, sample.type: sample},
         sessionId: sessionId,
@@ -337,6 +370,13 @@ class WalkSession {
       ),
     );
   }
+
+  static WalkError _errorOf(Exception exception) => WalkError(
+    exception is SensorUnavailableException
+        ? exception.issue
+        : SensorIssue.unavailable,
+    exception.toString(),
+  );
 
   void _onSampleError(Object error) {
     _log.w('Sample error', error: error);
@@ -353,8 +393,9 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: remaining,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
-        errorMessage: 'Sensor error: $error',
+        error: WalkError(SensorIssue.streamError, error.toString()),
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
       ),
@@ -366,6 +407,10 @@ class WalkSession {
       return;
     }
 
+    _log.i(
+      'Walk test finished (session ${_state.sessionId}), '
+      'distance ${_state.distance.toStringAsFixed(1)} m',
+    );
     final stopTracking = _stopTracking();
 
     // finished marks the end of measurement, not completed persistence: source
@@ -376,6 +421,7 @@ class WalkSession {
         comparisons: _state.comparisons,
         remainingTime: Duration.zero,
         distance: _state.distance,
+        confidence: _state.confidence,
         lastSamples: _state.lastSamples,
         sessionId: _state.sessionId,
         startedAt: _state.startedAt,
@@ -411,6 +457,7 @@ class WalkSession {
 
       await source.start();
       _activeSources.add(source);
+      _log.i('Started source ${source.sourceId}');
     }
 
     for (final source in _optionalSources) {
@@ -421,6 +468,7 @@ class WalkSession {
       try {
         await source.start();
         _activeSources.add(source);
+        _log.i('Started optional source ${source.sourceId}');
       } on Exception catch (e) {
         _log.w('Cannot start optional source ${source.sourceId}', error: e);
         // Optional sources may be missing (no wearable, no permission,
@@ -459,8 +507,10 @@ class WalkSession {
     for (final source in sourcesToStop) {
       try {
         await source.stop();
-      } on Exception {
+        _log.d('Stopped source ${source.sourceId}');
+      } on Exception catch (exception) {
         // Stopping one source must not prevent stopping the others.
+        _log.w('Cannot stop source ${source.sourceId}', error: exception);
       }
     }
   }
@@ -482,37 +532,40 @@ class WalkSession {
   void _resetComparisons() {
     _comparisonErrors.clear();
     for (var i = 0; i < _comparisonEstimators.length; i++) {
-      _runComparison(i, _comparisonEstimators[i].estimator.reset);
+      _runComparison(i, _comparisonEstimators[i].reset);
     }
   }
 
+  /// The primary estimator leads, as on the result screen.
   List<EstimatorComparison> _snapshotComparisons() {
     return List.unmodifiable([
+      _snapshotPrimary(),
       for (var i = 0; i < _comparisonEstimators.length; i++)
         _snapshotComparison(i),
     ]);
   }
 
+  // Primary failures surface through the session itself; this only reports.
+  EstimatorComparison _snapshotPrimary() {
+    try {
+      return EstimatorComparison.of(_distanceEstimator, primary: true);
+    } catch (error) {
+      return EstimatorComparison.failed(
+        _distanceEstimator,
+        error,
+        primary: true,
+      );
+    }
+  }
+
   EstimatorComparison _snapshotComparison(int index) {
-    final entry = _comparisonEstimators[index];
+    final estimator = _comparisonEstimators[index];
     EstimatorComparison? result;
     _runComparison(index, () {
-      final distance = entry.estimator.totalDistance;
-      if (!distance.isFinite || distance < 0) {
-        throw StateError('Invalid comparison distance');
-      }
-      result = EstimatorComparison(
-        name: entry.name,
-        distance: distance,
-        additionalInfo: entry.estimator.additionalInfo,
-      );
+      result = EstimatorComparison.of(estimator);
     });
     return result ??
-        EstimatorComparison(
-          name: entry.name,
-          distance: 0,
-          error: _comparisonErrors[index],
-        );
+        EstimatorComparison.failed(estimator, _comparisonErrors[index]!);
   }
 
   // Calculates the remaining time until the walk test deadline based on the

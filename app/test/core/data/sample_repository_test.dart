@@ -3,12 +3,59 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/sample_repository.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
+import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 
 void main() {
   late AppDatabase db;
 
-  setUp(() {
+  setUp(() async {
     db = AppDatabase(NativeDatabase.memory());
+    await db
+        .into(db.profiles)
+        .insert(
+          ProfilesCompanion.insert(
+            height: 175,
+            age: 30,
+            weight: 70,
+            gender: Gender.male,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'session-1',
+            startedAt: DateTime.utc(2026, 7, 1),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'session-2',
+            startedAt: DateTime.utc(2026, 7, 2),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
+    await db
+        .into(db.walkSessions)
+        .insert(
+          WalkSessionsCompanion.insert(
+            id: 'old-session',
+            startedAt: DateTime.utc(2026, 6, 1),
+            duration: const Duration(minutes: 6),
+            distance: 400,
+            phase: WalkPhase.finished,
+            profileId: 1,
+          ),
+        );
   });
 
   tearDown(() async {
@@ -61,6 +108,31 @@ void main() {
     expect((result.first['values'] as Map<String, dynamic>)['latitude'], 48.5);
     expect(result.first['timestamp'], isA<String>());
     expect(result.first['id'], isA<int>());
+  });
+
+  test('loads session samples ordered by timestamp', () async {
+    final repository = SampleRepository(db);
+    final t1 = DateTime.utc(2026, 7, 1, 12, 0, 1);
+    final t2 = DateTime.utc(2026, 7, 1, 12, 0, 2);
+
+    repository.addSample('session-1', createSample(t1, 48.1));
+    repository.addSample(
+      'session-1',
+      SensorSample(
+        timestamp: t2,
+        sourceId: 'pedometer',
+        type: SampleType.steps,
+        values: {StepKeys.cumulativeSteps: 10.0},
+      ),
+    );
+    repository.addSample('session-2', createSample(t1, 49.0));
+
+    final samples = await repository.loadSessionSamples('session-1');
+    expect(samples, hasLength(2));
+    expect(samples[0].type, SampleType.position);
+    expect(samples[0].values[PositionKeys.latitude], 48.1);
+    expect(samples[1].type, SampleType.steps);
+    expect(samples[1].values[StepKeys.cumulativeSteps], 10.0);
   });
 
   test(

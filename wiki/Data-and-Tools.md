@@ -61,7 +61,7 @@ About screen. Models and metadata interfaces live in `core/domain`; provider com
 
 ## Privacy and contributions
 
-Record on public routes; avoid exposing homes or private start/end locations. GPS tracks and profile data remain sensitive even after health telemetry is removed. Review JSON before sharing. Raw FIT files are ignored by Git and must not be committed. Use synthetic profiles for screenshots; keep images centrally in `wiki/assets/`.
+Record on public routes; avoid exposing homes or private start/end locations. GPS tracks and profile data remain sensitive even after health telemetry is removed. Review JSON before sharing. Raw FIT files are ignored by Git and must not be committed. Use synthetic profiles for screenshots; keep images centrally in `wiki/assets/`. To regenerate the app screenshots, see [App screenshots](#app-screenshots).
 
 ## FIT converter
 
@@ -84,6 +84,37 @@ The converter preserves GPS coordinates, altitude, speed, cumulative distance, s
 | `--first-span-only` | `False` | Optional: Only include the first continuous timer span |
 | `--trim-after-vehicle` | `False` | Optional: Trim records after speed exceeds `--max-speed` |
 
+## Synthetic data
+
+Generate deterministic six-minute walks with exact ground truth to probe distance estimators in situations that are rare or hard to record. Requires Python 3.10+ and no packages. From the repository root:
+
+```sh
+python3 tools/synthetic_data/generate.py
+```
+
+**Replaces `data/synthetic/` completely.** `-o <dir>` writes elsewhere; `--only <name> ...` regenerates selected scenarios without deleting the others or rewriting the README. Each scenario folder contains an app-style `session.json` (GPS `position` and pedometer `steps` samples, starting with a counter baseline) and a `reference.json` with the simulated route as 1 Hz positions and cumulative `distance`. The generated `data/synthetic/README.md` lists every scenario with its true distance, steps, mean stride and GPS fix count. Coordinates and the profile are synthetic.
+
+### Scenarios
+
+Scenarios are defined in `scenarios()` at the end of the script; names are prefixed by the aspect they test. Unless stated otherwise, a walk uses good 1 Hz GPS, a counter reading every second, 0.72 m stride and 1.85 steps/s.
+
+| Prefix | Covers |
+| --- | --- |
+| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), multipath jumps, one fix every ~5 s (older app versions) |
+| `route_` | Zigzag, circles, 30 m and 10 m shuttles with slowdown at turns, stops with GPS jitter |
+| `steps_` | Counter readings per step, every 10 steps, in 30 s batches or 10 s late; broken counters (undercounting, overcounting, frozen, erratic, counting while standing, missing) |
+| `stride_` | Short (0.45 m) and long (0.95 m) strides, fatigue during a GPS outage, stride changes measured by GPS before a gap, alternating stride with intermittent GPS |
+
+### Models
+
+The walker follows a polyline with cadence and stride profiles plus small cadence variation; true distance and steps are integrated every 50 ms. GPS presets (`GOOD`, `MEDIUM`, `BAD`, `VERY_BAD`, `OUTAGE`, `INACCURATE_STABLE`) model fused phone positions: a slowly wandering offset driven by a correlated error velocity, little independent per-fix noise and a reported accuracy radius. They are loosely calibrated against the 1 Hz recordings in `data/`: good conditions add about 1–3 % to a raw GPS sum, medium ones roughly 12–16 %. Reported speed reads about 10 % low, as observed on real devices. Step counter output is derived from the true step count with optional factors, freezes, delays, ghost steps and delivery modes.
+
+### Evaluating estimators
+
+Open `data/synthetic/` in the [Visualizer](Visualizer.md); the Estimator Lab compares each estimator against the ground-truth reference. For tables across all scenarios, load the folder in a Visualizer test with `loadBenchmarkRecordings('../../data/synthetic')` from `tool/benchmark_support.dart` and reuse `compareReferences` and `summaryLines`, as in `test/gps_step_benchmark_test.dart`. The existing benchmarks read only the top level of `data/`, so synthetic walks never mix with real recordings.
+
+Use synthetic results to find failure modes and check that a change does not break other situations, not to claim real-world accuracy. The sensor models are simplified, scenarios are hand-picked, and parameters tuned only on them will overfit. Confirm improvements on real recordings, keeping 1 Hz and 5 s GPS recordings apart. Scenarios without steps and GPS, or with a stride change during an outage, have no recoverable answer and test graceful degradation only.
+
 ## Timestamp converter
 
 Normalize older recordings whose step timestamps use local time while GPS uses UTC. Not really needed anymore.
@@ -95,3 +126,16 @@ python3 tools/session_timestamps_to_utc/convert.py
 ```
 
 **Overwrites changed `data/**/session.json` files without backups or options.** Back up files and inspect the diff afterward. It infers a local-time offset from `startedAt` and the first UTC GPS sample, rounded to 15 minutes, assuming they refer to approximately the same moment. Existing UTC timestamps and references are unchanged. Insufficient information causes a skip with an error. This repairs older local step timestamps; it is not a general timezone conversion tool and does not process every `session_*.json` automatically.
+
+## App screenshots
+
+Regenerate the six app screenshots in the repository README (`wiki/assets/app-*.png`). Requires Python 3.10+, ImageMagick 7, Flutter and exactly one running Android emulator. From `app/`:
+
+```sh
+python3 tool/screenshots/take_screenshots.py            # all screens
+python3 tool/screenshots/take_screenshots.py walk home  # selected screens
+```
+
+**Overwrites the screenshots in `wiki/assets/`.** For each screen, the script builds `tool/screenshots/main.dart` as a release APK, installs it and captures the emulator screen. The entry point runs the real app in English with an in-memory database, a synthetic profile (Demo, 30 years, 170 cm, 65 kg), five history entries and a simulated walk on the Uni Ulm campus instead of real sensors. The script fills in the profile form, swipes the walk screen to its detail view, rounds the corners and adds a thin outline.
+
+Android's demo mode gives the status bar a fixed time, full battery and Wi-Fi and no notifications. The emulator does not draw the mobile signal icon in demo mode, so it is hidden. Afterward, the script leaves demo mode and uninstalls the release app. It stops if a release build (`de.uniulm.in.se.sixmwt`) is already installed, so that build is not replaced; the debug build is not affected. Window size and corner radius are tuned for a Pixel 9 Pro XL emulator.

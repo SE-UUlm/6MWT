@@ -9,7 +9,8 @@ import 'package:six_minute_walk_test/app/router.dart';
 import 'package:six_minute_walk_test/core/domain/app_info.dart';
 import 'package:six_minute_walk_test/features/about/about_screen.dart';
 import 'package:six_minute_walk_test/features/home/home_screen.dart';
-import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../helpers/localized_app.dart';
 
 const buildInfo = AppInfo(
   version: '2.1.0',
@@ -42,10 +43,8 @@ void main() {
             (ref) => load?.call() ?? Future.value(buildInfo),
           ),
         ],
-        child: MaterialApp(
+        child: localizedApp(
           locale: Locale(language),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(
               context,
@@ -67,12 +66,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [appInfoProvider.overrideWith((ref) async => buildInfo)],
-        child: MaterialApp.router(
-          routerConfig: router,
-          locale: const Locale('en'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-        ),
+        child: localizedRouterApp(router: router, locale: const Locale('en')),
       ),
     );
     await tester.pumpAndSettle();
@@ -207,5 +201,37 @@ void main() {
       find.widgetWithText(TextButton, 'Open-Source-Lizenzen'),
     );
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('authors switch to one column before names would wrap', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(320, 640);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    await showAbout(tester, textScale: 1.5);
+    await scrollTo(tester, find.text('Luca-Marie Jamrosy'));
+    expect(find.byType(Table), findsNothing);
+    final first = tester.getRect(find.text('Moritz Beck'));
+    final second = tester.getRect(find.text('Lea-Marie Kindermann'));
+    expect(second.left, first.left);
+    expect(second.top, greaterThan(first.bottom));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('wide screen keeps the last author column at content width', (
+    tester,
+  ) async {
+    // The square test font is wider than real fonts, so scale it down to
+    // leave room for both names in one row.
+    await showAbout(tester, textScale: 0.8);
+    await scrollTo(tester, find.text('Luca-Marie Jamrosy'));
+    final table = tester.getRect(find.byType(Table));
+    final right = tester.getRect(find.text('Lea-Marie Kindermann'));
+    expect(right.right, moreOrLessEquals(table.right));
+    expect(right.width, lessThan(table.width / 2));
+    // One line of the bodyLarge style is about 16 * 0.8 * 1.5 high.
+    expect(right.height, lessThan(16 * 0.8 * 1.5 * 1.5));
   });
 }

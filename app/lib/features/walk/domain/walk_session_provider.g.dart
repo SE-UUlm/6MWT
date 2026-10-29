@@ -48,7 +48,7 @@ final class WalkSessionProvider
   }
 }
 
-String _$walkSessionHash() => r'efe89fc38c8b329fd26503b5f544a1b19c358096';
+String _$walkSessionHash() => r'b85b2092214ad631b7066c9b6915bcd540644c5b';
 
 @ProviderFor(walkSessionState)
 final walkSessionStateProvider = WalkSessionStateProvider._();
@@ -88,3 +88,98 @@ final class WalkSessionStateProvider
 }
 
 String _$walkSessionStateHash() => r'3d26b6e8e1a02f2dc5e0a92e38cfee295c1821af';
+
+@ProviderFor(sessionEstimatorComparisons)
+final sessionEstimatorComparisonsProvider =
+    SessionEstimatorComparisonsFamily._();
+
+final class SessionEstimatorComparisonsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<EstimatorComparison>>,
+          List<EstimatorComparison>,
+          FutureOr<List<EstimatorComparison>>
+        >
+    with
+        $FutureModifier<List<EstimatorComparison>>,
+        $FutureProvider<List<EstimatorComparison>> {
+  SessionEstimatorComparisonsProvider._({
+    required SessionEstimatorComparisonsFamily super.from,
+    required (String, {num? heightCm, String? gender}) super.argument,
+  }) : super(
+         retry: null,
+         name: r'sessionEstimatorComparisonsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$sessionEstimatorComparisonsHash();
+
+  @override
+  String toString() {
+    return r'sessionEstimatorComparisonsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<EstimatorComparison>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<EstimatorComparison>> create(Ref ref) {
+    final argument = this.argument as (String, {num? heightCm, String? gender});
+    return sessionEstimatorComparisons(
+      ref,
+      argument.$1,
+      heightCm: argument.heightCm,
+      gender: argument.gender,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SessionEstimatorComparisonsProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$sessionEstimatorComparisonsHash() =>
+    r'6130d2b773493fa8311f21f210b37e47c0b2df86';
+
+final class SessionEstimatorComparisonsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<EstimatorComparison>>,
+          (String, {num? heightCm, String? gender})
+        > {
+  SessionEstimatorComparisonsFamily._()
+    : super(
+        retry: null,
+        name: r'sessionEstimatorComparisonsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  SessionEstimatorComparisonsProvider call(
+    String sessionId, {
+    num? heightCm,
+    String? gender,
+  }) => SessionEstimatorComparisonsProvider._(
+    argument: (sessionId, heightCm: heightCm, gender: gender),
+    from: this,
+  );
+
+  @override
+  String toString() => r'sessionEstimatorComparisonsProvider';
+}

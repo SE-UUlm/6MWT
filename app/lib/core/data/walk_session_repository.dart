@@ -1,6 +1,9 @@
 import 'package:drift/drift.dart';
 
+import '../../app/log.dart';
 import 'database.dart';
+
+final _log = appLogger('WalkSessionRepository');
 
 /// A history entry with the profile that was active during the walk session.
 class WalkSessionWithProfile {
@@ -53,6 +56,7 @@ class WalkSessionRepository {
     'startedAt': row.startedAt.toUtc().toIso8601String(),
     'duration': row.duration.inSeconds,
     'distance': row.distance,
+    'distanceConfidence': row.distanceConfidence,
     'phase': row.phase.name,
     'profileId': row.profileId,
   };
@@ -68,5 +72,46 @@ class WalkSessionRepository {
   Future<List<Map<String, dynamic>>> exportAllSessions() async {
     final rows = await _db.select(_db.walkSessions).get();
     return [for (final row in rows) _rowToMap(row)];
+  }
+
+  /// Deletes a session and its associated sensor samples atomically.
+  /// If the associated profile is not used by any other session, it is also cleaned up.
+  Future<void> deleteSession(String sessionId) async {
+    await _db.transaction(() async {
+      final session = await (_db.select(
+        _db.walkSessions,
+      )..where((row) => row.id.equals(sessionId))).getSingleOrNull();
+
+      if (session == null) {
+        _log.w('Cannot delete session $sessionId: not found');
+        return;
+      }
+
+      final profileId = session.profileId;
+
+      // Delete associated sensor samples
+      await (_db.delete(
+        _db.sensorSamples,
+      )..where((row) => row.sessionId.equals(sessionId))).go();
+
+      // Delete walk session row
+      await (_db.delete(
+        _db.walkSessions,
+      )..where((row) => row.id.equals(sessionId))).go();
+
+      // Keep shared profiles, clean up unreferenced profiles
+      final remainingWithProfile = await (_db.select(
+        _db.walkSessions,
+      )..where((row) => row.profileId.equals(profileId))).get();
+
+      if (remainingWithProfile.isEmpty) {
+        await (_db.delete(
+          _db.profiles,
+        )..where((row) => row.id.equals(profileId))).go();
+        _log.i('Deleted profile $profileId: no sessions reference it anymore');
+      }
+
+      _log.i('Deleted session $sessionId');
+    });
   }
 }

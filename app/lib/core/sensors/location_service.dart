@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../app/log.dart';
+
+final _log = appLogger('LocationService');
+
 class LocationService {
   // Checks if location services are enabled and requests permission if needed.
   Future<bool> requestLocationPermission() async {
@@ -9,6 +13,7 @@ class LocationService {
 
     // If location services are disabled, GPS cannot be used.
     if (!serviceEnabled) {
+      _log.w('Location services are disabled');
       return false;
     }
 
@@ -17,12 +22,15 @@ class LocationService {
 
     // If permission is denied, ask the user for permission.
     if (permission == LocationPermission.denied) {
+      _log.i('Requesting location permission');
       permission = await Geolocator.requestPermission();
+      _log.i('Location permission result: ${permission.name}');
     }
 
     // If permission is still denied or permanently denied, stop here.
     if (permission == LocationPermission.denied ||
         permission == LocationPermission.deniedForever) {
+      _log.w('Location permission not granted: ${permission.name}');
       return false;
     }
 

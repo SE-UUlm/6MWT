@@ -1,3 +1,6 @@
+import 'package:six_minute_walk_test/app/app_colors.dart';
+import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
+import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,30 +8,31 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:six_minute_walk_test/core/data/database.dart';
+import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/presentation/session_export_service.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart';
 import 'package:six_minute_walk_test/features/walk/domain/fitness_assessment.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
-import '../domain/estimator_comparison.dart';
+import '../domain/estimators/distance_confidence.dart';
+import '../domain/walk_session_provider.dart';
+import 'distance_confidence_format.dart';
+import 'number_format.dart';
+import 'performance_bar.dart';
 import 'estimator_comparison_card.dart';
+import 'fitness_category_label.dart';
+
+final _log = appLogger('ResultScreen');
 
 class ResultScreen extends ConsumerWidget {
-  ResultScreen({
-    super.key,
-    required WalkSessionWithProfile session,
-    this.comparisons = const [],
-  }) : session = session.session,
-       profile = session.profile;
+  ResultScreen({super.key, required WalkSessionWithProfile session})
+    : session = session.session,
+      profile = session.profile;
 
   final WalkSessionRow session;
   final Profile profile;
-  final List<EstimatorComparison> comparisons;
 
-  static const Color primaryBlue = Color(0xFF347FE5);
-  static const Color circleBlue = Color(0xFF9BB8F0);
-
-  static const maxValue = 140;
-  static const labelCount = 7;
+  // Colors.red.shade700, as plain red is too light for text on white.
+  static const Color deleteRed = Color(0xFFD32F2F);
 
   String _formatDuration(Duration duration) {
     final minutes = duration.inMinutes;
@@ -37,75 +41,22 @@ class ResultScreen extends ConsumerWidget {
     return '$minutes:${seconds.toString().padLeft(2, '0')} min';
   }
 
-  Widget _buildPerformanceBar(double percentage) {
-    return Column(
+  // The localized percentage with a smaller percent sign.
+  TextSpan _percentSpan(AppLocalizations l10n, int value) {
+    final number = NumberFormat.decimalPattern(l10n.localeName).format(value);
+    final formatted = l10n.percentValue(value);
+    final numberStart = formatted.indexOf(number);
+
+    TextSpan sign(String text) => TextSpan(
+      text: text,
+      style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w600),
+    );
+
+    return TextSpan(
       children: [
-        SizedBox(
-          height: 24,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final progress = percentage.clamp(0, maxValue);
-              final position = constraints.maxWidth * progress / maxValue;
-
-              return Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFFf94144),
-                            Color(0xFFf8961e),
-                            Color(0xFF90be6d),
-                            Color(0xFF43aa8b),
-                            Color(0xFF577590),
-                          ],
-                          stops: [
-                            0.0 / maxValue,
-                            80 / maxValue,
-                            90 / maxValue,
-                            110 / maxValue,
-                            120 / maxValue,
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  Positioned(
-                    left: position - 2,
-                    top: -6,
-                    child: Container(
-                      width: 4,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-        ),
-
-        const SizedBox(height: 8),
-
-        Row(
-          children: [
-            for (int i = 0; i < labelCount; i++)
-              Expanded(
-                child: Text(
-                  '${(maxValue / labelCount * (i + 0.5)).toStringAsFixed(0)} %',
-                  style: TextStyle(fontSize: 11, color: Colors.black54),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
-        ),
+        sign(formatted.substring(0, numberStart)),
+        TextSpan(text: number),
+        sign(formatted.substring(numberStart + number.length)),
       ],
     );
   }
@@ -142,6 +93,7 @@ class ResultScreen extends ConsumerWidget {
     required IconData icon,
     required String label,
     required String value,
+    Color valueColor = Colors.black,
     bool showDivider = true,
   }) {
     return Column(
@@ -163,10 +115,10 @@ class ResultScreen extends ConsumerWidget {
 
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black,
+                  color: valueColor,
                 ),
               ),
             ],
@@ -184,18 +136,90 @@ class ResultScreen extends ConsumerWidget {
 
   Future<void> _exportSession(BuildContext context, WidgetRef ref) async {
     try {
-      await ref.read(sessionExportServiceProvider).shareSession(session.id);
+      await ref
+          .read(sessionExportServiceProvider)
+          .shareSession(session.id, context: context);
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Export failed: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)!.resultExportFailed(e.toString()),
+            ),
+          ),
+        );
       }
+    }
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final activeSession = ref.read(walkSessionProvider);
+    final l10n = AppLocalizations.of(context)!;
+
+    if (activeSession.state.isRunning &&
+        activeSession.state.sessionId == session.id) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.cannotDeleteActiveSession)));
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.deleteSessionDialogTitle),
+        content: Text(l10n.deleteSessionDialogMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: TextButton.styleFrom(foregroundColor: deleteRed),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) {
+      return;
+    }
+
+    try {
+      await ref.read(walkSessionRepositoryProvider).deleteSession(session.id);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.sessionDeleted)));
+      if (context.canPop()) {
+        context.pop();
+      } else {
+        context.go('/');
+      }
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.resultDeleteFailed(e.toString()),
+          ),
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final comparisonsAsync = ref.watch(
+      sessionEstimatorComparisonsProvider(
+        session.id,
+        heightCm: profile.height,
+        gender: profile.gender.name,
+      ),
+    );
+
     final l10n = AppLocalizations.of(context)!;
     final genderLabel = switch (profile.gender) {
       Gender.male => l10n.genderMale,
@@ -208,8 +232,21 @@ class ResultScreen extends ConsumerWidget {
 
     final durationText = _formatDuration(session.duration);
 
-    var percentage = 0.0;
-    String category = 'No assessment';
+    // Null for sessions recorded before confidence was stored.
+    final storedConfidence = session.distanceConfidence;
+    final confidence = storedConfidence == null
+        ? null
+        : DistanceConfidence(storedConfidence);
+
+    final expectedDistance = expectedSixMinuteDistance(
+      ageInYears: profile.age,
+      heightInCm: profile.height.toDouble(),
+    );
+    double? percentage;
+    String category = l10n.resultNoAssessment;
+    // A session still marked as running after the app restarted was
+    // interrupted as well, e.g. by a crash.
+    var explanation = l10n.resultEarlyStopExplanation;
 
     if (session.phase == WalkPhase.finished) {
       final assessment = assessFitness(
@@ -219,275 +256,385 @@ class ResultScreen extends ConsumerWidget {
         heightInCm: profile.height.toDouble(),
       );
 
+      _log.t('Calculated fitness: $assessment');
+
       percentage = assessment.percentOfExpected;
-      category = assessment.category.name;
+      category = fitnessCategoryLabel(l10n, assessment.category);
+      explanation = l10n.resultPerformanceExplanation;
     }
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppTitleBar(
+        title: l10n.resultTitle,
+        actions: [
+          Builder(
+            builder: (shareContext) => IconButton(
+              onPressed: () {
+                _exportSession(shareContext, ref);
+              },
+              icon: const Icon(Icons.share),
+            ),
+          ),
+        ],
+      ),
 
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(28, 8, 28, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              IconButton(
-                onPressed: () => context.pop(),
-                padding: EdgeInsets.zero,
-                alignment: Alignment.centerLeft,
-                constraints: const BoxConstraints(),
-                icon: const Icon(
-                  Icons.arrow_back_ios_new,
-                  size: 20,
-                  color: Colors.black,
-                ),
+      // The bottom inset is part of the scroll padding instead of a SafeArea,
+      // so content scrolls behind the system navigation. The top inset is
+      // already handled by the app bar.
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(
+          28,
+          24,
+          28,
+          30 + MediaQuery.paddingOf(context).bottom,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              l10n.resultIntro,
+              style: const TextStyle(
+                fontSize: 15,
+                height: 1.3,
+                color: Colors.black87,
               ),
+            ),
 
-              const SizedBox(height: 18),
+            const SizedBox(height: 24),
 
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Text(
+                    l10n.resultPerformance,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  // The percent sign is smaller than the number, so it does
+                  // not compete with the value itself.
+                  Text.rich(
+                    percentage == null
+                        ? const TextSpan(text: '—')
+                        : _percentSpan(l10n, percentage.round()),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 56,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+
+                  Text(
+                    l10n.resultExpectedDistance,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15, color: Colors.black54),
+                  ),
+
+                  const SizedBox(height: 22),
+
+                  PerformanceBar(
+                    expectedDistance: expectedDistance,
+                    percentage: percentage,
+                  ),
+
+                  const SizedBox(height: 20),
+
                   Container(
-                    width: 70,
-                    height: 70,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: circleBlue,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
                     ),
-                    child: const Icon(
-                      Icons.directions_walk_rounded,
-                      size: 50,
-                      color: Colors.black87,
+                    decoration: BoxDecoration(
+                      color: AppColors.circleBlue.withValues(alpha: 0.25),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          category,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryBlue,
+                          ),
+                        ),
+
+                        const SizedBox(height: 6),
+
+                        Text(
+                          explanation,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            height: 1.3,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
 
-                  const SizedBox(width: 18),
-
-                  const Expanded(
-                    child: Text(
-                      'Test Results',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {
-                      _exportSession(context, ref);
-                    },
-                    icon: const Icon(Icons.share),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
-              const Text(
-                'Here are your results from the\n'
-                '6-minute walk test.',
-                style: TextStyle(
-                  fontSize: 15,
-                  height: 1.3,
-                  color: Colors.black87,
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              Container(
-                padding: const EdgeInsets.all(18),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Performance',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    Text(
-                      '${percentage.round()}%',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 46,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
-                      ),
-                    ),
-
-                    const Text(
-                      'of expected distance',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15, color: Colors.black54),
-                    ),
-
-                    const SizedBox(height: 22),
-
-                    _buildPerformanceBar(percentage),
-
-                    const SizedBox(height: 20),
+                  // Without an assessment there is nothing the warning could
+                  // qualify.
+                  if (percentage != null &&
+                      confidence?.level == ConfidenceLevel.low) ...[
+                    const SizedBox(height: 12),
 
                     Container(
+                      key: const ValueKey('low-confidence-warning'),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
+                        horizontal: 14,
+                        vertical: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: circleBlue.withValues(alpha: 0.25),
+                        color: Colors.red.shade50,
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: Column(
+                      child: Row(
                         children: [
-                          Text(
-                            category,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: primaryBlue,
-                            ),
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            size: 30,
+                            color: Colors.red.shade700,
                           ),
 
-                          const SizedBox(height: 6),
+                          const SizedBox(width: 12),
 
-                          const Text(
-                            'Your performance is based on your '
-                            'age, height and walking distance.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 13,
-                              height: 1.3,
-                              color: Colors.black54,
+                          Expanded(
+                            child: Text(
+                              l10n.resultLowConfidenceWarning,
+                              style: TextStyle(
+                                fontSize: 13,
+                                height: 1.3,
+                                color: Colors.red.shade900,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ],
-                ),
-              ),
-
-              const SizedBox(height: 14),
-
-              _buildDetailsCard(
-                title: 'Test Details',
-                children: [
-                  _buildDetailRow(
-                    icon: Icons.swap_horiz_rounded,
-                    label: 'Distance walked',
-                    value: '${session.distance.toStringAsFixed(1)} m',
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.access_time_rounded,
-                    label: 'Test duration',
-                    value: durationText,
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.flag_rounded,
-                    label: 'Test status',
-                    value: session.phase == WalkPhase.aborted
-                        ? 'Stopped early'
-                        : 'Completed',
-                    showDivider: false,
-                  ),
                 ],
               ),
+            ),
 
-              if (comparisons.isNotEmpty) ...[
-                const SizedBox(height: 14),
-                EstimatorComparisonCard(comparisons: comparisons),
+            const SizedBox(height: 12),
+
+            Text(
+              l10n.resultDisclaimer,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 12,
+                height: 1.35,
+                color: Colors.black54,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            _buildDetailsCard(
+              title: l10n.resultTestDetails,
+              children: [
+                _buildDetailRow(
+                  icon: Icons.swap_horiz_rounded,
+                  label: l10n.resultDistanceWalked,
+                  value: '${formatDecimal(l10n, session.distance, 1)} m',
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.verified_outlined,
+                  label: l10n.resultDistanceConfidence,
+                  value: formatConfidence(l10n, confidence),
+                  valueColor: confidenceColor(confidence),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.access_time_rounded,
+                  label: l10n.resultTestDuration,
+                  value: durationText,
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.flag_rounded,
+                  label: l10n.resultTestStatus,
+                  value: session.phase == WalkPhase.aborted
+                      ? l10n.resultStoppedEarly
+                      : l10n.resultCompleted,
+                  showDivider: false,
+                ),
               ],
-              const SizedBox(height: 14),
+            ),
 
-              _buildDetailsCard(
-                title: 'Your Profile',
-                children: [
-                  _buildDetailRow(
-                    icon: Icons.person_outline_rounded,
-                    label: 'Name',
-                    value: profile.name ?? '-',
+            const SizedBox(height: 14),
+            _buildDetailsCard(
+              title: l10n.resultYourProfile,
+              children: [
+                _buildDetailRow(
+                  icon: Icons.person_outline_rounded,
+                  label: l10n.resultName,
+                  value: profile.name ?? '—',
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.cake_outlined,
+                  label: l10n.resultAge,
+                  value: l10n.resultAgeYears(profile.age),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.height_rounded,
+                  label: l10n.resultHeight,
+                  value: l10n.resultHeightCm(profile.height),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.monitor_weight_outlined,
+                  label: l10n.resultWeight,
+                  value: l10n.resultWeightKg(weightText),
+                ),
+
+                _buildDetailRow(
+                  icon: Icons.person_outline_rounded,
+                  label: l10n.resultGender,
+                  value: genderLabel,
+                  showDivider: false,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 14),
+
+            comparisonsAsync.when(
+              data: (comparisons) {
+                if (comparisons.isEmpty) return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 14),
+                  child: EstimatorComparisonCard(comparisons: comparisons),
+                );
+              },
+              loading: () => Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(16),
                   ),
-
-                  _buildDetailRow(
-                    icon: Icons.cake_outlined,
-                    label: 'Age',
-                    value: '${profile.age} years',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l10n.resultDistanceComparison,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: AppColors.primaryBlue,
+                            ),
+                          ),
+                          const SizedBox(width: 14),
+                          Text(
+                            l10n.resultCalculatingDistanceComparisons,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-
-                  _buildDetailRow(
-                    icon: Icons.height_rounded,
-                    label: 'Height',
-                    value: '${profile.height} cm',
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.monitor_weight_outlined,
-                    label: 'Weight',
-                    value: '$weightText kg',
-                  ),
-
-                  _buildDetailRow(
-                    icon: Icons.person_outline_rounded,
-                    label: 'Gender',
-                    value: genderLabel,
-                    showDivider: false,
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 18),
-
-              const Text(
-                'The result provides an orientation based on '
-                'your recorded walking distance and personal data.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12,
-                  height: 1.35,
-                  color: Colors.black54,
                 ),
               ),
-
-              const SizedBox(height: 24),
-
-              SizedBox(
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go('/');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryBlue,
-                    foregroundColor: Colors.white,
-                    elevation: 3,
-                    shadowColor: Colors.black.withValues(alpha: 0.25),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
+              error: (error, st) => Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: Container(
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.red.shade200),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Colors.red.shade50.withValues(alpha: 0.5),
                   ),
-                  child: const Text(
-                    'Back to Home',
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.error_outline_rounded,
+                            color: Colors.red.shade700,
+                            size: 22,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            l10n.resultDistanceComparison,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        l10n.resultDistanceComparisonFailed,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.red.shade900,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 10),
+
+            OutlinedButton.icon(
+              onPressed: () => _confirmDelete(context, ref),
+              icon: const Icon(Icons.delete_outline, color: deleteRed),
+              label: Text(
+                l10n.deleteSession,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: deleteRed,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: deleteRed,
+                side: const BorderSide(color: deleteRed),
+                minimumSize: const Size.fromHeight(54),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

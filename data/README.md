@@ -4,7 +4,7 @@ Recorded six-minute walk tests and reference routes for inspecting sensor data, 
 
 Each folder groups a walk or comparison scenario. A typical folder contains an app recording (`session.json`) and optional references (`reference.json` or files under `references/`). Folders with several `session_*.json` files group recordings from multiple devices.
 
-Open a folder in the Visualizer to inspect its tracks and replay estimators. **Uni 1** includes both a device reference and a manually drawn route; **Uni together 1** demonstrates a comparison across devices. References can contain measurement error, and manually drawn routes use assumed timing.
+Open a folder in the Visualizer to inspect its tracks and replay estimators. **Uni 1** includes both a device reference and a manually drawn route; **Uni together 1** demonstrates a comparison across devices. `synthetic/` contains generated walks with exact ground truth; see [Synthetic Data](../tools/synthetic_data/README.md). References can contain measurement error, and manually drawn routes use assumed timing.
 
 
 > [!WARNING]
