@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:six_minute_walk_test/app/app_colors.dart';
 import 'package:six_minute_walk_test/app/metadata_providers.dart';
 import 'package:flutter/material.dart';
@@ -139,23 +141,12 @@ class AboutScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _TwoColumns(
-                      fitLastColumn: true,
-                      children: [
-                        for (final name in [
-                          'Moritz Beck',
-                          'Lea-Marie Kindermann',
-                          'Serhat Kan',
-                          'Luca-Marie Jamrosy',
-                        ])
-                          Text(
-                            name,
-                            style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(
-                                  color: const Color(0xFF15356D),
-                                  height: 1.5,
-                                ),
-                          ),
+                    const _AuthorColumns(
+                      names: [
+                        'Moritz Beck',
+                        'Lea-Marie Kindermann',
+                        'Serhat Kan',
+                        'Luca-Marie Jamrosy',
                       ],
                     ),
                   ],
@@ -255,10 +246,9 @@ class _InfoField extends StatelessWidget {
 }
 
 class _TwoColumns extends StatelessWidget {
-  const _TwoColumns({required this.children, this.fitLastColumn = false});
+  const _TwoColumns({required this.children});
 
   final List<Widget> children;
-  final bool fitLastColumn;
 
   @override
   Widget build(BuildContext context) => LayoutBuilder(
@@ -266,29 +256,6 @@ class _TwoColumns extends StatelessWidget {
       final twoColumns =
           constraints.maxWidth >= 220 &&
           MediaQuery.textScalerOf(context).scale(16) <= 24;
-      if (twoColumns && fitLastColumn) {
-        return Table(
-          columnWidths: const {0: FlexColumnWidth(), 1: IntrinsicColumnWidth()},
-          defaultVerticalAlignment: TableCellVerticalAlignment.top,
-          children: [
-            for (var i = 0; i < children.length; i += 2)
-              TableRow(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 20, top: i == 0 ? 0 : 12),
-                    child: children[i],
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: i == 0 ? 0 : 12),
-                    child: i + 1 < children.length
-                        ? children[i + 1]
-                        : const SizedBox.shrink(),
-                  ),
-                ],
-              ),
-          ],
-        );
-      }
       return Wrap(
         spacing: 20,
         runSpacing: 12,
@@ -304,6 +271,81 @@ class _TwoColumns extends StatelessWidget {
       );
     },
   );
+}
+
+/// Shows names in two columns, or in a single one as soon as any name would
+/// have to wrap.
+class _AuthorColumns extends StatelessWidget {
+  const _AuthorColumns({required this.names});
+
+  final List<String> names;
+
+  static const _gap = 20.0;
+  static const _rowSpacing = 12.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = DefaultTextStyle.of(context).style.merge(
+      Theme.of(context).textTheme.bodyLarge?.copyWith(
+        color: const Color(0xFF15356D),
+        height: 1.5,
+      ),
+    );
+    final textScaler = MediaQuery.textScalerOf(context);
+    final textDirection = Directionality.of(context);
+    double widestIn(int column) {
+      var widest = 0.0;
+      for (var i = column; i < names.length; i += 2) {
+        final painter = TextPainter(
+          text: TextSpan(text: names[i], style: style),
+          textDirection: textDirection,
+          textScaler: textScaler,
+          maxLines: 1,
+        )..layout();
+        widest = max(widest, painter.width);
+        painter.dispose();
+      }
+      return widest;
+    }
+
+    final requiredWidth = widestIn(0) + _gap + widestIn(1);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (requiredWidth > constraints.maxWidth) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: _rowSpacing,
+            children: [for (final name in names) Text(name, style: style)],
+          );
+        }
+        // The last column fits its content and the first one takes the rest.
+        return Table(
+          columnWidths: const {0: FlexColumnWidth(), 1: IntrinsicColumnWidth()},
+          defaultVerticalAlignment: TableCellVerticalAlignment.top,
+          children: [
+            for (var i = 0; i < names.length; i += 2)
+              TableRow(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: _gap,
+                      top: i == 0 ? 0 : _rowSpacing,
+                    ),
+                    child: Text(names[i], style: style),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: i == 0 ? 0 : _rowSpacing),
+                    child: i + 1 < names.length
+                        ? Text(names[i + 1], style: style)
+                        : const SizedBox.shrink(),
+                  ),
+                ],
+              ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class _AboutAction extends StatelessWidget {
