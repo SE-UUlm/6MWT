@@ -13,6 +13,7 @@ import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart
 
 import '../../../helpers/fake_sensors.dart';
 import '../../../helpers/localized_app.dart';
+import '../../../helpers/logs.dart';
 
 class _FixedProfileRepository extends ProfileRepository {
   _FixedProfileRepository(super.db, this.profile);
@@ -42,6 +43,7 @@ void main() {
   testWidgets('without location access the test shows a large error', (
     tester,
   ) async {
+    silenceLogs();
     tester.view.physicalSize = const Size(1000, 2000);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.resetPhysicalSize);

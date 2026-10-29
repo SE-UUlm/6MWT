@@ -8,6 +8,7 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_es
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
 import '../../../helpers/fake_sensors.dart';
+import '../../../helpers/logs.dart';
 
 class TestClock {
   TestClock(this.now);
@@ -51,6 +52,7 @@ void main() {
   });
 
   test('stays idle with an error message when a source is unavailable', () {
+    silenceLogs();
     fakeAsync((async) {
       final session = WalkSession(
         sources: [FakeSensorSource(available: false)],
