@@ -6,6 +6,9 @@ import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
+import 'package:six_minute_walk_test/core/domain/notification_scheduler.dart';
+
+import 'walk_completion_notification.dart';
 
 import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
@@ -74,6 +77,7 @@ class WalkSession {
   WalkSession({
     required this._sources,
     required this._distanceEstimator,
+    this.notificationScheduler,
     this._sampleSink,
     this._optionalSources = const [],
     List<DistanceEstimator> comparisonEstimators = const [],
@@ -88,6 +92,8 @@ class WalkSession {
   }
 
   final Duration walkDuration;
+
+  final NotificationScheduler? notificationScheduler;
 
   // The test cannot start when one of these is unavailable (e.g. GPS).
   final List<SensorSource> _sources;
@@ -187,7 +193,9 @@ class WalkSession {
     await _stopSources();
   }
 
-  Future<void> start() async {
+  Future<void> start({
+    WalkCompletionNotification? completionNotification,
+  }) async {
     if (_state.isRunning) {
       return;
     }

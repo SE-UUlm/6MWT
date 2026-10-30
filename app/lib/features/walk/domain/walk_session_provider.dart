@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:six_minute_walk_test/app/log.dart';
+import 'package:six_minute_walk_test/app/notification_providers.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/gps_source.dart';
@@ -97,6 +98,7 @@ WalkSession walkSession(Ref ref) {
     optionalSources: [PedometerSource()],
     distanceEstimator: createPrimaryDistanceEstimator(),
     comparisonEstimators: createComparisonEstimators(),
+    notificationScheduler: ref.watch(notificationSchedulerProvider),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 

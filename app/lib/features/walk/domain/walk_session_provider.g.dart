@@ -48,7 +48,7 @@ final class WalkSessionProvider
   }
 }
 
-String _$walkSessionHash() => r'b85b2092214ad631b7066c9b6915bcd540644c5b';
+String _$walkSessionHash() => r'2c30e88592e8e5d917f61a0f20d28cdd63ca315d';
 
 @ProviderFor(walkSessionState)
 final walkSessionStateProvider = WalkSessionStateProvider._();
