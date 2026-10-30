@@ -580,4 +580,30 @@ class AppLocalizationsDe extends AppLocalizations {
   String walkErrorSensor(String error) {
     return 'Sensorfehler: $error';
   }
+
+  @override
+  String get notificationChannelName => 'Testabschluss';
+
+  @override
+  String get notificationChannelDescription =>
+      'Benachrichtigungen zum Ende eines Gehtests';
+
+  @override
+  String get walkCompletedNotificationTitle => 'Test abgeschlossen';
+
+  @override
+  String get walkCompletedNotificationBody =>
+      'Die sechs Minuten sind vorbei. Bitte stehen bleiben.';
+
+  @override
+  String get notificationPermissionExplanation =>
+      'Erlaube Mitteilungen, damit dich die App auch bei gesperrtem Bildschirm über das Testende informieren kann.';
+
+  @override
+  String get notificationUnavailableWarning =>
+      'Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.';
+
+  @override
+  String get exactAlarmPermissionExplanation =>
+      'Erlaube präzise Alarme, damit die App die Mitteilung zum Testende auch im Energiesparmodus möglichst pünktlich auslösen kann.';
 }

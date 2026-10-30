@@ -296,5 +296,13 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "notificationChannelName": "Test completion",
+  "notificationChannelDescription": "Notifications when a walk test ends",
+  "walkCompletedNotificationTitle": "Test completed",
+  "walkCompletedNotificationBody": "The six minutes are over. Please stop walking.",
+  "notificationPermissionExplanation": "Allow notifications so the app can notify you when the test ends, even when your screen is locked.",
+  "notificationUnavailableWarning": "The end-of-test notification is currently unavailable. You can still start the test and monitor the remaining time in the app.",
+  "exactAlarmPermissionExplanation": "Allow exact alarms so the app can deliver the end-of-test notification as promptly as possible, even in power-saving mode."
 }

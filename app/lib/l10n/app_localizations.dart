@@ -1087,6 +1087,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Sensorfehler: {error}'**
   String walkErrorSensor(String error);
+
+  /// No description provided for @notificationChannelName.
+  ///
+  /// In de, this message translates to:
+  /// **'Testabschluss'**
+  String get notificationChannelName;
+
+  /// No description provided for @notificationChannelDescription.
+  ///
+  /// In de, this message translates to:
+  /// **'Benachrichtigungen zum Ende eines Gehtests'**
+  String get notificationChannelDescription;
+
+  /// No description provided for @walkCompletedNotificationTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Test abgeschlossen'**
+  String get walkCompletedNotificationTitle;
+
+  /// No description provided for @walkCompletedNotificationBody.
+  ///
+  /// In de, this message translates to:
+  /// **'Die sechs Minuten sind vorbei. Bitte stehen bleiben.'**
+  String get walkCompletedNotificationBody;
+
+  /// No description provided for @notificationPermissionExplanation.
+  ///
+  /// In de, this message translates to:
+  /// **'Erlaube Mitteilungen, damit dich die App auch bei gesperrtem Bildschirm über das Testende informieren kann.'**
+  String get notificationPermissionExplanation;
+
+  /// No description provided for @notificationUnavailableWarning.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.'**
+  String get notificationUnavailableWarning;
+
+  /// No description provided for @exactAlarmPermissionExplanation.
+  ///
+  /// In de, this message translates to:
+  /// **'Erlaube präzise Alarme, damit die App die Mitteilung zum Testende auch im Energiesparmodus möglichst pünktlich auslösen kann.'**
+  String get exactAlarmPermissionExplanation;
 }
 
 class _AppLocalizationsDelegate
