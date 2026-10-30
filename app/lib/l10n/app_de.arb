@@ -296,5 +296,13 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "notificationChannelName": "Testabschluss",
+  "notificationChannelDescription": "Benachrichtigungen zum Ende eines Gehtests",
+  "walkCompletedNotificationTitle": "Test abgeschlossen",
+  "walkCompletedNotificationBody": "Die sechs Minuten sind vorbei. Bitte stehen bleiben.",
+  "notificationPermissionExplanation": "Erlaube Mitteilungen, damit dich die App auch bei gesperrtem Bildschirm über das Testende informieren kann.",
+  "notificationUnavailableWarning": "Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.",
+  "exactAlarmPermissionExplanation": "Erlaube präzise Alarme, damit die App die Mitteilung zum Testende auch im Energiesparmodus möglichst pünktlich auslösen kann."
 }
