@@ -1,4 +1,5 @@
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/fused_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_step_distance_estimator.dart';
 
@@ -72,7 +73,7 @@ void main() {
         CalibratedStepDistanceEstimator(),
         AdaptiveGpsStepDistanceEstimator(),
         KalmanGpsStepDistanceEstimator(),
-        FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
+        GpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
       ];
       for (final estimator in estimators) {
         final result = replay.run(estimator);

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 
 import '../tool/benchmark_support.dart';
@@ -47,8 +46,8 @@ void main() {
   test('production factory uses the phone source and production defaults', () {
     final estimator = createProductionEstimator();
     expect(estimator.stepSourceId, PedometerSource.id);
-    expect(estimator.maxGpsInterval, GpsStepDistanceEstimator.maxGpsGap);
-    expect(estimator.gpsFallbackTimeout, GpsStepDistanceEstimator.maxGpsGap);
+    expect(estimator.capStrideFactor, 1.15);
+    expect(estimator.bridgeMaxSeconds, 60);
   });
 
   const result = ReplayResult('test estimator', [

@@ -72,12 +72,12 @@ Stream<WalkSessionRow> deduplicatedSaves(WalkSession session) {
 
 /// Creates the primary distance estimator used to calculate the session distance.
 DistanceEstimator createPrimaryDistanceEstimator() =>
-    GpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
+    FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
 
 /// Creates the secondary distance estimators used for comparisons during the walk.
 List<DistanceEstimator> createComparisonEstimators() => [
   GpsDistanceEstimator(),
-  FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
+  GpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
   KalmanGpsStepDistanceEstimator(),
   AdaptiveGpsStepDistanceEstimator(),
   CalibratedStepDistanceEstimator(),
