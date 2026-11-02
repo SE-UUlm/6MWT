@@ -162,6 +162,12 @@ class Scenario:
     step_delay: float = 0.0  # counter reports the state of t - delay
     step_frozen: list[tuple[float, float]] = field(default_factory=list)
     ghost_steps_per_second: float = 0.0  # counted while standing
+    # Real counters start late: both test phones miss the first steps after
+    # the start and report nothing (except the earlier baseline) until later.
+    # Nothing: counts from ~7 s, first report ~8 s with a single step.
+    # OnePlus: counts from ~6 s, first report ~12 s with ~11 steps at once.
+    step_count_start: float = 7.0  # steps before this are never counted (s)
+    step_first_report: float = 8.0  # no readings before this, except the baseline (s)
     seed: int = 1
 
 
@@ -392,6 +398,8 @@ def generate_steps(sc: Scenario, truth: Truth) -> list[dict]:
     for i in range(1, len(truth.t)):
         t = truth.t[i]
         inc = (truth.steps[i] - truth.steps[i - 1]) * sc.step_factor(t)
+        if t < sc.step_count_start:
+            inc = 0.0
         if truth.speed[i] == 0:
             inc += sc.ghost_steps_per_second * SIM_DT
         if any(a <= t < b for a, b in sc.step_frozen):
@@ -430,6 +438,7 @@ def generate_steps(sc: Scenario, truth: Truth) -> list[dict]:
     else:
         raise ValueError(sc.step_mode)
 
+    times = [t for t in times if t >= sc.step_first_report]
     last_value = None
     for t in times:
         value = count_at(t)
@@ -575,6 +584,8 @@ def scenarios() -> list[Scenario]:
             loop(),
             gps_quality=const(GpsQuality(3.0, 0.15, 0.10, 7.0)),  # type: ignore[arg-type]
             gps_underreport=0.7,
+            step_count_start=6.0,
+            step_first_report=12.0,
         ),
         Scenario(
             "gps_multipath_jumps",
@@ -590,6 +601,8 @@ def scenarios() -> list[Scenario]:
             # third of the sub-second intervals exceed 3.5 m/s.
             gps_quality=const(GpsQuality(2.5, 0.2, 0.8, 5.5)),  # type: ignore[arg-type]
             gps_irregular_timestamps=True,
+            step_count_start=6.0,
+            step_first_report=12.0,
         ),
         Scenario(
             "gps_irregular_underreporting",
@@ -604,6 +617,8 @@ def scenarios() -> list[Scenario]:
             gps_underreport=0.6,
             gps_partial_catchup=0.05,
             gps_catchup_error=20.0,
+            step_count_start=6.0,
+            step_first_report=12.0,
         ),
         Scenario(
             "gps_rate_5s",
