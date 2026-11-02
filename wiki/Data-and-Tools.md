@@ -100,7 +100,7 @@ Scenarios are defined in `scenarios()` at the end of the script; names are prefi
 
 | Prefix | Covers |
 | --- | --- |
-| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), multipath jumps, one fix every ~5 s (older app versions) |
+| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), noisy 1 Hz positions with timestamps arriving in sub-second bursts (also OnePlus), both combined (closest to the real OnePlus recordings), multipath jumps, one fix every ~5 s (older app versions) |
 | `route_` | Zigzag, circles, 30 m and 10 m shuttles with slowdown at turns, stops with GPS jitter |
 | `steps_` | Counter readings per step, every 10 steps, in 30 s batches or 10 s late; broken counters (undercounting, overcounting, frozen, erratic, counting while standing, missing) |
 | `stride_` | Short (0.45 m) and long (0.95 m) strides, fatigue during a GPS outage, stride changes measured by GPS before a gap, alternating stride with intermittent GPS |

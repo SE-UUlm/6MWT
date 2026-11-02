@@ -148,7 +148,13 @@ class Scenario:
     gps_interval: float = 1.0
     gps_underreport: float = 1.0  # <1: positions advance too slowly
     gps_catchup_error: float = 25.0  # jump back to truth beyond this lag (m)
+    # Per-fix probability of a partial catch-up that removes 30-80 % of the lag.
+    gps_partial_catchup: float = 0.0
     gps_jumps: list[tuple[float, float]] = field(default_factory=list)
+    # Positions stay on the regular schedule, but reported timestamps arrive
+    # early in short bursts (OnePlus-like): sub-second intervals that still
+    # contain about a second of movement, followed by a longer interval.
+    gps_irregular_timestamps: bool = False
     step_mode: str = "interval"  # interval | per_step | every_n | none
     step_interval: float = 1.0
     step_every_n: int = 10
@@ -298,12 +304,34 @@ def generate_gps(sc: Scenario, path: Route, truth: Truth) -> list[dict]:
     previous_true_s = 0.0
     t = -1.0 + rng.random() * 0.5  # first fix shortly before the start
     error_time = t - 120  # warm the error process up
+    # Separate generator, so enabling irregular timestamps changes nothing else.
+    timing = random.Random(sc.seed * 7919 + 3)
+    offset = 0.0  # reported timestamp minus position time
+    burst = 0  # remaining fixes whose timestamps move further forward
     while t < WALK_SECONDS:
+        stamp = t
+        dropped = False
+        if sc.gps_irregular_timestamps:
+            if burst > 0:
+                offset -= timing.uniform(0.25, 0.55)
+                burst -= 1
+            elif offset != 0.0:
+                offset = 0.0  # back on schedule: one longer interval
+            else:
+                r = timing.random()
+                if r < 0.10:
+                    burst = timing.randint(1, 4)
+                    offset -= timing.uniform(0.25, 0.55)
+                    burst -= 1
+                elif r < 0.18:
+                    offset = timing.uniform(-0.3, 0.3)
+                dropped = timing.random() < 0.03
+            stamp = t + offset
         q = sc.gps_quality(max(0.0, t))
         error.advance(q, t - error_time)
         error_time = t
         true_s = sample_truth(truth, max(0.0, t), truth.s)
-        if q.available:
+        if q.available and not dropped:
             if sc.gps_underreport < 1:
                 if reported_s is None:
                     reported_s = true_s
@@ -312,6 +340,8 @@ def generate_gps(sc: Scenario, path: Route, truth: Truth) -> list[dict]:
                     reported_s += sc.gps_underreport * (true_s - previous_true_s)
                     if true_s - reported_s > sc.gps_catchup_error:
                         reported_s = true_s  # sudden catch-up jump
+                    elif sc.gps_partial_catchup and timing.random() < sc.gps_partial_catchup:
+                        reported_s += timing.uniform(0.3, 0.8) * (true_s - reported_s)
                 previous_true_s = true_s
                 x, y = path.at(reported_s)
             else:
@@ -330,7 +360,7 @@ def generate_gps(sc: Scenario, path: Route, truth: Truth) -> list[dict]:
             accuracy = max(1.0, q.accuracy * math.exp(rng.gauss(0, 0.15)))
             samples.append(
                 {
-                    "timestamp": t,
+                    "timestamp": stamp,
                     "type": "position",
                     "sourceId": "gps",
                     "values": {
@@ -343,7 +373,7 @@ def generate_gps(sc: Scenario, path: Route, truth: Truth) -> list[dict]:
                     },
                 }
             )
-        else:
+        elif not q.available:
             reported_s = None
         jitter = rng.gauss(0, 0.03) if sc.gps_interval <= 1.5 else rng.gauss(0, 0.25)
         t += max(0.2, sc.gps_interval + jitter)
@@ -551,6 +581,29 @@ def scenarios() -> list[Scenario]:
             "Good GPS with occasional 25 m jumps at small reported accuracy",
             loop(),
             gps_jumps=[(50, 25), (140, -20), (230, 30), (300, -25)],
+        ),
+        Scenario(
+            "gps_irregular_timestamps",
+            "1 Hz GPS with per-fix noise; timestamps arrive in sub-second bursts (OnePlus-like)",
+            loop(),
+            # Noise calibrated so that, as on the real OnePlus recordings, about a
+            # third of the sub-second intervals exceed 3.5 m/s.
+            gps_quality=const(GpsQuality(2.5, 0.2, 0.8, 5.5)),  # type: ignore[arg-type]
+            gps_irregular_timestamps=True,
+        ),
+        Scenario(
+            "gps_irregular_underreporting",
+            "Irregular timestamps plus positions lagging at 70 % with catch-ups (closest to the real OnePlus)",
+            loop(),
+            # Calibrated against the real OnePlus tracks: they lag the Nothing
+            # tracks by a median of 6-11 s in a sawtooth, while most per-second
+            # steps stay close to walking speed and a heavy tail of 3-6 m jumps
+            # catches up partially. Raw GPS sums 1.1-1.4x the reference.
+            gps_quality=const(GpsQuality(2.5, 0.2, 0.7, 5.5)),  # type: ignore[arg-type]
+            gps_irregular_timestamps=True,
+            gps_underreport=0.6,
+            gps_partial_catchup=0.05,
+            gps_catchup_error=20.0,
         ),
         Scenario(
             "gps_rate_5s",
