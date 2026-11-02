@@ -6,6 +6,7 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_confidence.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/experimental_estimators.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/fused_gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_step_distance_estimator.dart';
@@ -48,6 +49,8 @@ void _stepsOnly(DistanceEstimator estimator, int seconds) {
 
 final _estimators = <String, DistanceEstimator Function()>{
   'Main': () => GpsStepDistanceEstimator(stepSourceId: 'pedometer'),
+  'Fused GPS + steps': () =>
+      FusedGpsStepDistanceEstimator(stepSourceId: 'pedometer'),
   'Plain GPS': GpsDistanceEstimator.new,
   'Filtered GPS': () => FilteredGpsEstimator(maxAccuracy: 20, maxSpeed: 3),
   'Kalman GPS': KalmanGpsDistanceEstimator.new,
@@ -145,6 +148,7 @@ void main() {
 
     for (final name in [
       'Main',
+      'Fused GPS + steps',
       'Plain GPS',
       'Filtered GPS',
       'Kalman GPS',
@@ -172,6 +176,7 @@ void main() {
 
     for (final name in [
       'Main',
+      'Fused GPS + steps',
       'Kalman GPS + steps',
       'Adaptive GPS + steps',
       'Calibrated steps',

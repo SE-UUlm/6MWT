@@ -11,6 +11,7 @@ import 'estimators/gps_step_distance_estimator.dart';
 import 'estimators/distance_estimator.dart';
 import 'estimators/calibrated_step_distance_estimator.dart';
 import 'estimators/adaptive_gps_step_distance_estimator.dart';
+import 'estimators/fused_gps_step_distance_estimator.dart';
 import 'estimator_comparison.dart';
 import 'estimators/experimental_estimators.dart';
 import 'estimators/kalman_gps_distance_estimator.dart';
@@ -76,6 +77,7 @@ DistanceEstimator createPrimaryDistanceEstimator() =>
 /// Creates the secondary distance estimators used for comparisons during the walk.
 List<DistanceEstimator> createComparisonEstimators() => [
   GpsDistanceEstimator(),
+  FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
   KalmanGpsStepDistanceEstimator(),
   AdaptiveGpsStepDistanceEstimator(),
   CalibratedStepDistanceEstimator(),
