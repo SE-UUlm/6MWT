@@ -52,7 +52,7 @@ Run: `flutter test tool/compare_gps_gaps.dart --reporter expanded`
 
 All ${sessions.length} repository recordings, using the production estimator and
 the Lab replay. Fallback remains at 5 s in every variant. GPS accuracy <= 10 m,
-speed <= 3 m/s, calibration >= 15 s / 10 steps / 10 m. Default step length uses
+speed <= 3.5 m/s, calibration >= 15 s / 10 steps / 10 m. Default step length uses
 profile height / 100 times 0.415 (male), 0.413 (female), or 0.414 (other/missing).
 Missing or invalid height falls back to 0.70 m.
 Only the maximum accepted GPS interval changes. Recorded reference samples never

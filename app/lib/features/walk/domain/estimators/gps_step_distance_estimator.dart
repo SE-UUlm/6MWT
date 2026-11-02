@@ -41,7 +41,7 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
   static const defaultStepLength = 0.7;
   static const maxStepLength = 1.5;
   static const maxGpsAccuracy = 10.0;
-  static const maxGpsSpeed = 3.0;
+  static const maxGpsSpeed = 3.5;
   static const maxGpsGap = Duration(seconds: 5);
   static const minCalibrationTime = Duration(seconds: 15);
   static const minCalibrationSteps = 10;
@@ -186,8 +186,10 @@ class GpsStepDistanceEstimator extends DistanceEstimator {
       );
       if (distance / _seconds(duration) > maxGpsSpeed) {
         _rejectedGpsSpeed++;
-        // Do not use an outlier as the next segment's starting point.
-        _gpsAnchor = null;
+        // Skip only the outlier and keep the last good fix as the anchor.
+        // Dropping the anchor would also discard the next segment; with
+        // sub-second fixes, jitter alone often exceeds the speed limit, and
+        // the lost segments both shorten the distance and bias the stride.
         return;
       }
       _gpsIntervals.add((
