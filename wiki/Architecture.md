@@ -37,7 +37,7 @@ Arrows indicate allowed dependencies (A → B means A may use B). Riverpod compo
 
 1. `WalkSession` starts required GPS and optional pedometer sources. Warm-up acquires sensors without recording or feeding estimators.
 2. Initial and live samples use the shared `SensorSample` representation. Active recording sends them to the sample sink and to separate primary/comparison estimator instances.
-3. The primary `GpsStepDistanceEstimator` supplies the displayed/persisted distance. Comparison failures are isolated; comparison results remain in memory for the current result and are not exported or stored in history.
+3. The primary `FusedGpsStepDistanceEstimator` supplies the displayed/persisted distance. Comparison failures are isolated; comparison results remain in memory for the current result and are not exported or stored in history.
 4. Repositories persist profiles, sessions and raw samples in SQLite. Result/history export adds current device and app metadata to JSON.
 
 See [Data and Tools](Data-and-Tools.md) for the export contract and [Distance Estimators](Distance-Estimators.md) for algorithm behavior.

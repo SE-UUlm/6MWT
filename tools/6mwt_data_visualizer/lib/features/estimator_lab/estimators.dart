@@ -9,6 +9,7 @@ import 'package:six_minute_walk_test/features/walk/domain/estimators/kalman_gps_
 import 'package:six_minute_walk_test/features/walk/domain/estimators/calibrated_step_distance_estimator.dart';
 
 import 'package:six_minute_walk_test/features/walk/domain/estimators/adaptive_gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/fused_gps_step_distance_estimator.dart';
 
 /// Edit this list to choose algorithms and parameters shown in the tool.
 /// Each session gets new instances; multiple configurations of a class are allowed.
@@ -25,5 +26,6 @@ List<DistanceEstimator> createEstimators() => [
     ),
   CalibratedStepDistanceEstimator(),
   AdaptiveGpsStepDistanceEstimator(),
+  FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id),
   KalmanGpsStepDistanceEstimator(),
 ];

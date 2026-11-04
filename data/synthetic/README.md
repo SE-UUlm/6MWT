@@ -15,6 +15,8 @@ for models and usage.
 | `gps_inaccurate_long_straight` | Inaccurate (~30 m) but stable GPS on a long straight line | 478 m | 664 | 0.72 m | 360 |
 | `gps_underreporting` | Positions advance at 70 % of true speed with catch-up jumps (OnePlus-like) | 471 m | 654 | 0.72 m | 360 |
 | `gps_multipath_jumps` | Good GPS with occasional 25 m jumps at small reported accuracy | 471 m | 654 | 0.72 m | 360 |
+| `gps_irregular_timestamps` | 1 Hz GPS with per-fix noise; timestamps arrive in sub-second bursts (OnePlus-like) | 471 m | 654 | 0.72 m | 355 |
+| `gps_irregular_underreporting` | Irregular timestamps plus positions lagging at 70 % with catch-ups (closest to the real OnePlus) | 471 m | 654 | 0.72 m | 351 |
 | `gps_rate_5s` | Good GPS but only one fix every ~5 s (older app versions) | 471 m | 654 | 0.72 m | 75 |
 | `route_zigzag` | Zigzag with 15 m legs and 90° turns | 449 m | 623 | 0.72 m | 360 |
 | `route_curvy` | Repeated circle with 25 m radius | 478 m | 664 | 0.72 m | 360 |

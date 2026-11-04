@@ -349,7 +349,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(EstimatorComparisonCard), findsOneWidget);
-      expect(find.text('Main (GPS + steps)'), findsOneWidget);
+      expect(find.text('Main (Fused GPS + steps)'), findsOneWidget);
+      expect(find.text('GPS + steps'), findsOneWidget);
       expect(find.text('Plain GPS'), findsOneWidget);
       expect(find.text('Kalman GPS + steps'), findsOneWidget);
       expect(find.text('Adaptive GPS + steps'), findsOneWidget);

@@ -100,14 +100,14 @@ Scenarios are defined in `scenarios()` at the end of the script; names are prefi
 
 | Prefix | Covers |
 | --- | --- |
-| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), multipath jumps, one fix every ~5 s (older app versions) |
+| `gps_` | Good, medium, intermittently bad with an outage, mostly bad, indoor (rare 60 m fixes), inaccurate (~30 m) but stable on a long straight, positions advancing too slowly with catch-up jumps (seen on a OnePlus), noisy 1 Hz positions with timestamps arriving in sub-second bursts (also OnePlus), both combined (closest to the real OnePlus recordings), multipath jumps, one fix every ~5 s (older app versions) |
 | `route_` | Zigzag, circles, 30 m and 10 m shuttles with slowdown at turns, stops with GPS jitter |
 | `steps_` | Counter readings per step, every 10 steps, in 30 s batches or 10 s late; broken counters (undercounting, overcounting, frozen, erratic, counting while standing, missing) |
 | `stride_` | Short (0.45 m) and long (0.95 m) strides, fatigue during a GPS outage, stride changes measured by GPS before a gap, alternating stride with intermittent GPS |
 
 ### Models
 
-The walker follows a polyline with cadence and stride profiles plus small cadence variation; true distance and steps are integrated every 50 ms. GPS presets (`GOOD`, `MEDIUM`, `BAD`, `VERY_BAD`, `OUTAGE`, `INACCURATE_STABLE`) model fused phone positions: a slowly wandering offset driven by a correlated error velocity, little independent per-fix noise and a reported accuracy radius. They are loosely calibrated against the 1 Hz recordings in `data/`: good conditions add about 1–3 % to a raw GPS sum, medium ones roughly 12–16 %. Reported speed reads about 10 % low, as observed on real devices. Step counter output is derived from the true step count with optional factors, freezes, delays, ghost steps and delivery modes.
+The walker follows a polyline with cadence and stride profiles plus small cadence variation; true distance and steps are integrated every 50 ms. GPS presets (`GOOD`, `MEDIUM`, `BAD`, `VERY_BAD`, `OUTAGE`, `INACCURATE_STABLE`) model fused phone positions: a slowly wandering offset driven by a correlated error velocity, little independent per-fix noise and a reported accuracy radius. They are loosely calibrated against the 1 Hz recordings in `data/`: good conditions add about 1–3 % to a raw GPS sum, medium ones roughly 12–16 %. Reported speed reads about 10 % low, as observed on real devices. Step counter output is derived from the true step count with optional factors, freezes, delays, ghost steps and delivery modes. As on both test phones, counters start late: by default (Nothing-like) steps before 7 s are never counted and the first reading after the baseline arrives at 8 s; the OnePlus-like scenarios count from 6 s and report about 11 steps at once at 12 s.
 
 ### Evaluating estimators
 

@@ -9,7 +9,8 @@ The app and Visualizer share implementations in `app/lib/features/walk/domain/es
 | `GpsDistanceEstimator` | Sum consecutive GPS geographic distances; raw baseline | GPS jitter and jumps inflate distance; gaps cut corners |
 | `FilteredGpsEstimator` | Reject invalid coordinates, excessive accuracy radius, nonpositive intervals and excessive speed; app comparison uses 20 m / 3 m/s | Missing accuracy is accepted; rejected fixes leave the previous anchor, including a potentially bad initial fix |
 | `StepDistanceEstimator` | Step increments × fixed length (default comparison: 0.75 m) | Gait varies; first counter is a baseline; counter resets do not imply traveled steps |
-| `GpsStepDistanceEstimator` | Accepted GPS segments plus calibrated step fallback; app primary uses 5-second GPS/fallback defaults | Calibration inherits GPS error; missing steps limit fallback; later GPS replaces overlapping provisional steps |
+| `GpsStepDistanceEstimator` | Accepted GPS segments (accuracy ≤10 m, speed ≤3.5 m/s) plus calibrated step fallback; 5-second GPS/fallback defaults; former primary, now a comparison | Calibration inherits GPS error; missing steps limit fallback; later GPS replaces overlapping provisional steps; dense (sub-second) fixes accumulate more jitter |
+| `FusedGpsStepDistanceEstimator` | **App primary.** GPS + steps with two bounds: GPS ≤ steps × 1.15 × learned stride per 5 s window (but ≥ straight line); gaps ≤60 s count ≥ straight line minus half the endpoint accuracies | Total can decrease while caps and bridges are revised; slightly overestimates with ~10 m GPS |
 | `CalibratedStepDistanceEstimator` | Session median GPS-calibrated stride × observed steps; 10-second windows at 5-second strides | Revises earlier distance and may decrease; noisy GPS biases stride; uniform step rate assumed between batches |
 | `AdaptiveGpsStepDistanceEstimator` | Accepted GPS edges plus steps only over gaps; stride interpolated from nearby good runs | Provisional tails can decrease; no route geometry inside gaps; raw GPS edges can still drift |
 | `KalmanGpsDistanceEstimator` | Constant-velocity position filter, accuracy/speed/innovation gates and displacement threshold | Tight turns can lose distance; subthreshold final movement is not flushed; correlated drift and multipath may pass gates |
@@ -17,7 +18,7 @@ The app and Visualizer share implementations in `app/lib/features/walk/domain/es
 
 ## App integration
 
-`app/lib/features/walk/domain/walk_session_provider.dart` configures a separate primary `GpsStepDistanceEstimator` and the comparison instances. Each estimator has a display `name`, its class's default unless a constructor `name` overrides it; the primary is shown as `Main (<name>)`. They receive the same initial/live samples, excluding warm-up. Comparison errors disable that comparison for the run.
+`app/lib/features/walk/domain/walk_session_provider.dart` configures a separate primary `FusedGpsStepDistanceEstimator` and the comparison instances, including the former primary `GpsStepDistanceEstimator`. Each estimator has a display `name`, its class's default unless a constructor `name` overrides it; the primary is shown as `Main (<name>)`. They receive the same initial/live samples, excluding warm-up. Comparison errors disable that comparison for the run.
 
 Only primary distance drives assessment and persistence. Diagnostics appear in the detailed walk and current result, including release builds, but do not persist in history or JSON. Both list the primary estimator first, followed by the comparisons. No comparison is automatically promoted to primary.
 
@@ -25,7 +26,7 @@ Only primary distance drives assessment and persistence. Diagnostics appear in t
 
 ### Initial step length from profile data
 
-`GpsStepDistanceEstimator` estimates the initial step length as
+`GpsStepDistanceEstimator` and `FusedGpsStepDistanceEstimator` estimate the initial step length as
 `heightCm / 100 * factor`. The factor is 0.415 for `male`, 0.413 for `female`,
 and 0.414 for other or unspecified gender. Missing or invalid height (e.g. in older exports) uses
 0.70 m. Age and weight are not used.
@@ -65,6 +66,7 @@ values are comparable:
 | `KalmanGpsDistanceEstimator` | Distance without gap bridges | Accepted and rejected fixes (excluding stale timestamps) | 0.3 for straight-line gap bridges |
 | `KalmanGpsStepDistanceEstimator` | GPS fallback distance | Shared history segments and rejections | Accepted Kalman observations; innovation-gate failures count against it, turns do not |
 | `AdaptiveGpsStepDistanceEstimator` | GPS distance | Shared history segments and rejections | Strides of all calibration windows |
+| `FusedGpsStepDistanceEstimator` | Capped GPS distance | Accepted segments; coordinate, accuracy and speed rejections | As `GpsStepDistanceEstimator`; bridge additions count as non-GPS distance |
 | `CalibratedStepDistanceEstimator` | 0 | – | Strides of all (overlapping) calibration windows |
 | `StepDistanceEstimator` | 0 | – | 0.3 (fixed stride) |
 
@@ -74,6 +76,8 @@ Levels: high ≥0.75, medium ≥0.5, low otherwise.
 
 Configure Lab instances in `tools/6mwt_data_visualizer/lib/features/estimator_lab/estimators.dart`, then hot restart. Give variants of the same class distinct `name`s. The GUI displays the configured variants; it does not edit parameters. GPS/step variants compare 5, 10 and 15-second maximum GPS intervals, all with a 5-second fallback delay. Consult constructor/config defaults in the shared implementation when changing a parameter.
 
+- GPS + steps skips fixes faster than 3.5 m/s but keeps the last good fix as anchor. Previously (3 m/s, anchor dropped) jitter between sub-second OnePlus fixes also discarded the next segment and biased the stride low (up to −47 %). MAPE over all recordings: 7.4 → 5.7 %; the 5 s interval stays better than 10 s or 15 s.
+- Fused GPS + steps: the step cap removes jitter (dense noisy fixes, standing); relative to the learned stride it tolerates consistently miscounting counters, and the straight-line bound keeps the distance when a counter freezes. Bridges recover catch-up jumps and help short strides under poor GPS. MAPE against the main estimator: real 1 Hz 5.75 → 4.92 %, synthetic 8.09 → 7.49 %, 5 s recordings (not used for tuning) 5.69 → 5.18 %. All tested parameters around the defaults also beat the former main estimator. The gain is small relative to reference uncertainty; compare both on new recordings.
 - Calibrated steps requires full GPS/step coverage, at least 6 steps and 5 m per window; accepted GPS has positive accuracy ≤10 m, speed ≤4 m/s and spacing ≤10 s. Stride ratios outside 0.25–2 m are rejected; median stride is clamped to 0.35–1.35 m, default 0.75 m.
 - Adaptive fusion uses calibration windows wholly within adjacent good GPS runs and within 60 seconds of a gap boundary. With one side, hold that stride; with neither, use 0.75 m. No coverage from either sensor means no invented distance.
 - GPS Kalman uses a local east/north plane and constant-velocity state. Reported accuracy supplies a heuristic measurement variance, not calibrated certainty. After a gap of more than 15 seconds without an accepted fix, two new plausible positions are required before resuming — this recovers from a bad initial fix without bridging the missing geometry. Default parameters:

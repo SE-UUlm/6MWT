@@ -1,12 +1,12 @@
 import 'package:six_minute_walk_test/core/sensors/pedometer_source.dart';
-import 'package:six_minute_walk_test/features/walk/domain/estimators/gps_step_distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/estimators/fused_gps_step_distance_estimator.dart';
 import 'package:six_mwt_visualizer/core/data/session_loader.dart';
 import 'package:six_mwt_visualizer/core/domain/session.dart';
 import 'package:six_mwt_visualizer/features/estimator_lab/estimator_replay.dart';
 
 /// Mirrors the production configuration in walk_session_provider.dart.
-GpsStepDistanceEstimator createProductionEstimator() =>
-    GpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
+FusedGpsStepDistanceEstimator createProductionEstimator() =>
+    FusedGpsStepDistanceEstimator(stepSourceId: PedometerSource.id);
 
 List<Session> benchmarkRecordings(Iterable<Session> sessions) =>
     sessions.expand((session) => session.recordings).toList()

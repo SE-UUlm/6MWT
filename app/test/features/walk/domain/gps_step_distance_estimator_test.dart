@@ -456,17 +456,41 @@ void main() {
     expect(estimator.totalDistance, closeTo(5.9, 1e-6));
   });
 
-  test('rejects position jumps without using them as the next anchor', () {
+  test('rejects position jumps and keeps the previous fix as anchor', () {
     estimator.addSample(_gps(0, 0));
     estimator.addSample(_steps(0, 1000));
     estimator.addSample(_gps(1, 100));
     estimator.addSample(_steps(1, 1001));
-    expect(estimator.totalDistance, closeTo(0.7, 1e-6));
+    // GPS from the last good fix is still pending within the fallback timeout.
+    expect(estimator.totalDistance, 0);
     estimator.addSample(_gps(2, 2));
     estimator.addSample(_steps(2, 1002));
     estimator.addSample(_gps(3, 3));
     estimator.addSample(_steps(3, 1003));
-    expect(estimator.totalDistance, closeTo(2.4, 1e-6));
+    expect(estimator.totalDistance, closeTo(3, 1e-6));
+    expect(estimator.additionalInfo['Rejected GPS speed'], '1');
+    expect(estimator.additionalInfo['Accepted GPS intervals'], '2');
+  });
+
+  test('sub-second GPS jitter does not discard the following segment', () {
+    SensorSample at(int ms, double metres) => SensorSample(
+      timestamp: _epoch.add(Duration(milliseconds: ms)),
+      sourceId: 'gps',
+      type: SampleType.position,
+      values: {
+        PositionKeys.latitude: 0,
+        PositionKeys.longitude: metres / _metresPerDegree,
+        PositionKeys.accuracy: 3,
+      },
+    );
+    estimator.addSample(at(0, 0));
+    // 2.5 m in 0.5 s exceeds the speed limit only because of jitter.
+    estimator.addSample(at(500, 2.5));
+    estimator.addSample(at(1000, 1));
+    estimator.addSample(at(2000, 2));
+    expect(estimator.totalDistance, closeTo(2, 1e-6));
+    expect(estimator.additionalInfo['Rejected GPS speed'], '1');
+    expect(estimator.additionalInfo['Accepted GPS intervals'], '2');
   });
 
   for (final accuracy in <double?>[null, -1, double.nan, double.infinity, 11]) {

@@ -18,6 +18,12 @@ The existing GPS Kalman estimator smooths positions with a motion model and gate
 
 Evaluate separately measured routes with straight segments, gentle curves, sharp turns, stops, slow walking and poor reception. Report distance error and turning-point behavior, not only smoother-looking maps. Keep device references and manually drawn routes separate because neither is exact ground truth.
 
+## Stride calibration with lagging GPS (OnePlus)
+
+Most remaining error on the 1 Hz recordings comes from the OnePlus. Its positions lag the Nothing's by 6–11 s in a sawtooth with partial catch-up jumps. Because the speed gate rejects those jumps, calibration only sees phases of growing lag and learns a stride about 25 % too short, although both counters register the same steps. This is currently offset by chance: the missed steps at the start make the first calibration window too long.
+
+Fixing only one of the two errors (excluding the first interval, longer or thinned-out calibration windows, faster bridges, Doppler speed) helped the synthetic scenarios but worsened the real recordings (Fused 4.92 % → 5.4–6.3 % MAPE). A solution probably needs calibration that detects the lag and includes the catch-up phases. Validate it on further OnePlus recordings with device references; the two underpass recordings have only manual references and swing by up to 15 percentage points.
+
 ## Experiment: distanceFilter 0
 
 The current `LocationService` requests `distanceFilter: 1` on Android, iOS and other platforms. Compare it with `0` in a separate experiment; platform delivery intervals and power management still apply.
