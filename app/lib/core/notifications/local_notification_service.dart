@@ -4,6 +4,10 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../domain/notification_scheduler.dart';
 
+/// Schedules and cancels local notifications independently of the platform.
+///
+/// Permission requests are separate from scheduling so a walk can start without
+/// opening a permission dialog.
 class LocalNotificationService implements NotificationScheduler {
   LocalNotificationService({
     required this.channelName,
@@ -18,6 +22,7 @@ class LocalNotificationService implements NotificationScheduler {
 
   bool _initialized = false;
 
+  // Initializes the notification plugin without requesting permissions.
   Future<void> initialize() async {
     if (kIsWeb ||
         (defaultTargetPlatform != TargetPlatform.android &&
@@ -45,6 +50,7 @@ class LocalNotificationService implements NotificationScheduler {
     _initialized = true;
   }
 
+  // Requests notification permission and returns whether notifications are enabled.
   Future<bool> requestNotificationPermission() async {
     await initialize();
 
@@ -74,6 +80,8 @@ class LocalNotificationService implements NotificationScheduler {
     return await android.areNotificationsEnabled() == true;
   }
 
+  // Checks if the app can schedule exact notifications, which is required
+  // on Android for precise scheduling.
   Future<bool> canSchedulePrecisely() async {
     await initialize();
 
@@ -89,6 +97,7 @@ class LocalNotificationService implements NotificationScheduler {
     return await android.canScheduleExactNotifications() == true;
   }
 
+  // Requests exact alarm permission on Android for precise scheduling.
   Future<bool> requestPreciseSchedulingPermission() async {
     await initialize();
 
@@ -106,6 +115,7 @@ class LocalNotificationService implements NotificationScheduler {
     return await android.canScheduleExactNotifications() == true;
   }
 
+  // Schedules a local notification at the specified time with the given title, body, and optional payload.
   @override
   Future<void> schedule({
     required int id,
@@ -178,6 +188,7 @@ class LocalNotificationService implements NotificationScheduler {
     );
   }
 
+  // Cancels the pending or displayed notification identified by [id].
   @override
   Future<void> cancel({required int id}) async {
     await initialize();

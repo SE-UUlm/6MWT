@@ -7,6 +7,8 @@ import '../l10n/app_localizations.dart';
 
 part 'notification_providers.g.dart';
 
+/// Provides the shared notification service with channel metadata localized to the user's preferred locale.
+/// The service is initialized lazily on first use.
 @Riverpod(keepAlive: true)
 LocalNotificationService localNotificationService(Ref ref) {
   final locale = basicLocaleListResolution(
@@ -22,6 +24,8 @@ LocalNotificationService localNotificationService(Ref ref) {
   );
 }
 
+/// Exposes the notification service through the NotificationScheduler interface,
+/// allowing other parts of the app to schedule notifications without depending on the concrete implementation.
 @Riverpod(keepAlive: true)
 NotificationScheduler notificationScheduler(Ref ref) {
   return ref.watch(localNotificationServiceProvider);
