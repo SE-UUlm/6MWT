@@ -168,9 +168,9 @@ class LocalNotificationService implements NotificationScheduler {
           enableVibration: true,
         ),
         iOS: const DarwinNotificationDetails(
-          presentAlert: true,
-          presentBanner: true,
-          presentList: true,
+          presentAlert: false,
+          presentBanner: false,
+          presentList: false,
           presentSound: true,
           presentBadge: false,
         ),
