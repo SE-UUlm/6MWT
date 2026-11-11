@@ -16,6 +16,7 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
+import '../domain/walk_completion_notification.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 import 'number_format.dart';
@@ -23,7 +24,9 @@ import 'number_format.dart';
 final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
-  const WalkScreen({super.key});
+  const WalkScreen({super.key, this.notificationReady = false});
+
+  final bool notificationReady;
 
   @override
   ConsumerState<WalkScreen> createState() => _WalkScreenState();
@@ -38,6 +41,46 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   bool _resultNavigationTriggered = false;
 
   final PageController _pageController = PageController();
+
+  bool _starting = false;
+  bool _notificationSchedulingFailed = false;
+
+  /// Handles the start button and passes localized notification content to
+  /// the session when enabled. Prevents duplicate starts and updates the
+  /// notification failure hint without requesting permissions.
+  Future<void> _startTest() async {
+    if (_starting || _session.state.isRunning) return;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    setState(() {
+      _starting = true;
+      _notificationSchedulingFailed = false;
+    });
+
+    try {
+      await _session.start(
+        completionNotification: widget.notificationReady
+            ? WalkCompletionNotification(
+                title: l10n.walkCompletedNotificationTitle,
+                body: l10n.walkCompletedNotificationBody,
+              )
+            : null,
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        _notificationSchedulingFailed = _session.notificationFailed;
+      });
+    } finally {
+      if (mounted) {
+        setState(() {
+          _starting = false;
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -541,6 +584,21 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                           ),
                   ),
 
+                  // TODO: maybe wieder löschen
+                  if (!widget.notificationReady ||
+                      _notificationSchedulingFailed)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        l10n.notificationUnavailableWarning,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+
                   if (state.isRunning)
                     _buildStopSlider()
                   else
@@ -548,11 +606,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                       width: double.infinity,
                       height: 60,
                       child: ElevatedButton(
-                        onPressed: _profile == null
+                        onPressed: _profile == null || _starting
                             ? null
-                            : () async {
-                                await session.start();
-                              },
+                            : _startTest,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,

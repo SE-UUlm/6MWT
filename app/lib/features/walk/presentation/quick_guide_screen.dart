@@ -3,9 +3,69 @@ import 'package:six_minute_walk_test/core/presentation/app_title_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class QuickGuideScreen extends StatelessWidget {
+import '../../../app/log.dart';
+import '../../../app/notification_providers.dart';
+
+final _log = appLogger('QuickGuideScreen');
+
+class QuickGuideScreen extends ConsumerStatefulWidget {
   const QuickGuideScreen({super.key});
+
+  @override
+  ConsumerState<QuickGuideScreen> createState() => _QuickGuideScreenState();
+}
+
+class _QuickGuideScreenState extends ConsumerState<QuickGuideScreen> {
+  bool _preparing = false;
+
+  /// Prepares notifications and passes their availability to the walk screen.
+  /// Permission denial or notification errors do not prevent continuing.
+  Future<void> _continue() async {
+    if (_preparing) return;
+
+    setState(() {
+      _preparing = true;
+    });
+
+    try {
+      var notificationReady = false;
+
+      try {
+        final service = ref.read(localNotificationServiceProvider);
+
+        notificationReady = await service.requestNotificationPermission();
+
+        if (!mounted) return;
+        if (ModalRoute.of(context)?.isCurrent != true) return;
+
+        if (notificationReady) {
+          notificationReady = await service
+              .requestPreciseSchedulingPermission();
+        }
+      } catch (error, stackTrace) {
+        notificationReady = false;
+
+        _log.w(
+          'Could not prepare notifications',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
+
+      if (!mounted) return;
+      if (ModalRoute.of(context)?.isCurrent != true) return;
+
+      await context.push<void>('/walk', extra: notificationReady);
+    } finally {
+      if (mounted) {
+        setState(() {
+          _preparing = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +170,7 @@ class QuickGuideScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
-                      onPressed: () {
-                        context.push('/walk');
-                      },
+                      onPressed: _preparing ? null : _continue,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryBlue,
                         foregroundColor: Colors.white,
