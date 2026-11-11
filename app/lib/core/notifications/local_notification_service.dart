@@ -40,13 +40,7 @@ class LocalNotificationService implements NotificationScheduler {
       ),
     );
 
-    final initialized = await _plugin.initialize(
-      settings: initialisationSettings,
-    );
-
-    if (initialized != true) {
-      throw StateError('Notification initialization failed.');
-    }
+    await _plugin.initialize(settings: initialisationSettings);
 
     _initialized = true;
   }
