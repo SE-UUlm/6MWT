@@ -98,7 +98,9 @@ WalkSession walkSession(Ref ref) {
     optionalSources: [PedometerSource()],
     distanceEstimator: createPrimaryDistanceEstimator(),
     comparisonEstimators: createComparisonEstimators(),
-    notificationSender: ref.watch(notificationSenderProvider),
+    // Passed as NotificationSender, so WalkSession stays independent of the
+    // notification plugin.
+    notificationSender: ref.watch(localNotificationServiceProvider),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 

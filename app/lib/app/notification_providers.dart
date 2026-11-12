@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../core/domain/notification_sender.dart';
 import '../core/notifications/local_notification_service.dart';
 import '../l10n/app_localizations.dart';
 
@@ -22,11 +21,4 @@ LocalNotificationService localNotificationService(Ref ref) {
     channelName: l10n.notificationChannelName,
     channelDescription: l10n.notificationChannelDescription,
   );
-}
-
-/// Exposes the notification service through the NotificationSender interface,
-/// allowing other parts of the app to show notifications without depending on the concrete implementation.
-@Riverpod(keepAlive: true)
-NotificationSender notificationSender(Ref ref) {
-  return ref.watch(localNotificationServiceProvider);
 }
