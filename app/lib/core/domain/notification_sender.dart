@@ -10,7 +10,6 @@ abstract interface class NotificationSender {
     required int id,
     required String title,
     required String body,
-    String? payload,
   });
 
   /// Dismisses the notification identified by [id].

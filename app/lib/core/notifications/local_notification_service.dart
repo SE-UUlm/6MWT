@@ -128,7 +128,6 @@ class LocalNotificationService implements NotificationSender {
     required int id,
     required String title,
     required String body,
-    String? payload,
   }) async {
     await initialize();
 
@@ -153,7 +152,6 @@ class LocalNotificationService implements NotificationSender {
       id: id,
       title: title,
       body: body,
-      payload: payload,
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
           _channelId,

@@ -29,7 +29,7 @@ class FakeNotificationSender implements NotificationSender {
   FakeNotificationSender({this.failing = false});
 
   final bool failing;
-  final List<({int id, String title, String body, String? payload})> shown = [];
+  final List<({int id, String title, String body})> shown = [];
   final List<int> cancelled = [];
 
   @override
@@ -37,12 +37,11 @@ class FakeNotificationSender implements NotificationSender {
     required int id,
     required String title,
     required String body,
-    String? payload,
   }) async {
     if (failing) {
       throw StateError('show failed');
     }
-    shown.add((id: id, title: title, body: body, payload: payload));
+    shown.add((id: id, title: title, body: body));
   }
 
   @override
@@ -539,7 +538,6 @@ void main() {
 
         session.start(completionNotification: _completionNotification);
         async.flushMicrotasks();
-        final sessionId = session.state.sessionId;
 
         elapse(async, const Duration(seconds: 2));
         expect(sender.shown, isEmpty);
@@ -551,7 +549,6 @@ void main() {
         expect(sender.shown, hasLength(1));
         expect(sender.shown.single.title, _completionNotification.title);
         expect(sender.shown.single.body, _completionNotification.body);
-        expect(sender.shown.single.payload, sessionId);
       });
     });
 

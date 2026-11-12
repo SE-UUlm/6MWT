@@ -275,7 +275,7 @@ class WalkSession {
 
   /// Signals the end of the test (sound depending on ringer mode, vibration).
   /// Failures are logged and never affect the measurement.
-  Future<void> _sendCompletionNotification(String? sessionId) async {
+  Future<void> _sendCompletionNotification() async {
     final notification = _completionNotification;
     final sender = notificationSender;
     _completionNotification = null;
@@ -289,7 +289,6 @@ class WalkSession {
         id: _completionNotificationId,
         title: notification.title,
         body: notification.body,
-        payload: sessionId,
       );
     } catch (error, stackTrace) {
       _log.w(
@@ -487,7 +486,7 @@ class WalkSession {
       'Walk test finished (session ${_state.sessionId}), '
       'distance ${_state.distance.toStringAsFixed(1)} m',
     );
-    unawaited(_sendCompletionNotification(_state.sessionId));
+    unawaited(_sendCompletionNotification());
     final stopTracking = _stopTracking();
 
     // finished marks the end of measurement, not completed persistence: source
