@@ -20,8 +20,9 @@ class QuickGuideScreen extends ConsumerStatefulWidget {
 class _QuickGuideScreenState extends ConsumerState<QuickGuideScreen> {
   bool _preparing = false;
 
-  /// Prepares notifications and passes their availability to the walk screen.
-  /// Permission denial or notification errors do not prevent continuing.
+  /// Asks for notification permission before the walk screen opens, so the
+  /// end of the test can be signalled. Permission denial or notification
+  /// errors do not prevent continuing; the walk screen shows a hint then.
   Future<void> _continue() async {
     if (_preparing) return;
 
@@ -30,15 +31,11 @@ class _QuickGuideScreenState extends ConsumerState<QuickGuideScreen> {
     });
 
     try {
-      var notificationReady = false;
-
       try {
-        final service = ref.read(localNotificationServiceProvider);
-
-        notificationReady = await service.requestNotificationPermission();
+        await ref
+            .read(localNotificationServiceProvider)
+            .requestNotificationPermission();
       } catch (error, stackTrace) {
-        notificationReady = false;
-
         _log.w(
           'Could not prepare notifications',
           error: error,
@@ -49,7 +46,7 @@ class _QuickGuideScreenState extends ConsumerState<QuickGuideScreen> {
       if (!mounted) return;
       if (ModalRoute.of(context)?.isCurrent != true) return;
 
-      await context.push<void>('/walk', extra: notificationReady);
+      await context.push<void>('/walk');
     } finally {
       if (mounted) {
         setState(() {

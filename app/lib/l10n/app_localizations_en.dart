@@ -226,7 +226,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quickGuide_step_end =>
-      'A sound and vibration signal the end of the test.';
+      'Vibration and sound signal the end of the test.';
 
   @override
   String get quickGuide_more_info => 'More information about the test';
@@ -591,10 +591,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The six minutes are over. Please stop walking.';
 
   @override
-  String get notificationPermissionExplanation =>
-      'Allow notifications so the app can notify you when the test ends, even when your screen is locked.';
+  String get notificationsDisabledWarningAndroid =>
+      'Notifications are turned off, so the end of the test is signaled by vibration only, without sound. You can turn on notifications in the settings.';
 
   @override
-  String get notificationUnavailableWarning =>
-      'The end-of-test notification is currently unavailable. You can still start the test and monitor the remaining time in the app.';
+  String get notificationsDisabledWarningIos =>
+      'Notifications are turned off, so there will be no sound or vibration at the end of the test. You can turn on notifications in the settings.';
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,7 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
 import '../domain/walk_completion_notification.dart';
+import '../../../app/notification_providers.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 import 'number_format.dart';
@@ -24,9 +26,7 @@ import 'number_format.dart';
 final _log = appLogger('WalkScreen');
 
 class WalkScreen extends ConsumerStatefulWidget {
-  const WalkScreen({super.key, this.notificationReady = false});
-
-  final bool notificationReady;
+  const WalkScreen({super.key});
 
   @override
   ConsumerState<WalkScreen> createState() => _WalkScreenState();
@@ -43,6 +43,12 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   final PageController _pageController = PageController();
 
   bool _starting = false;
+
+  // Null while unknown (not yet checked or check failed): no hint is shown.
+  bool? _notificationsEnabled;
+
+  // Rechecks notification permission when returning from the system settings.
+  late final AppLifecycleListener _lifecycleListener;
 
   /// Handles the start button and passes localized notification content to
   /// the session. Prevents duplicate starts and does not request permissions.
@@ -80,10 +86,16 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
     _session = ref.read(walkSessionProvider);
     _loadProfile();
     _session.warmUp();
+
+    _lifecycleListener = AppLifecycleListener(
+      onResume: _checkNotificationsEnabled,
+    );
+    _checkNotificationsEnabled();
   }
 
   @override
   void dispose() {
+    _lifecycleListener.dispose();
     _pageController.dispose();
     unawaited(_stopWarmUp());
     super.dispose();
@@ -99,6 +111,29 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         stackTrace: stackTrace,
       );
     }
+  }
+
+  /// Reads the current notification permission without asking the user.
+  Future<void> _checkNotificationsEnabled() async {
+    bool? enabled;
+
+    try {
+      enabled = await ref
+          .read(localNotificationServiceProvider)
+          .areNotificationsEnabled();
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not check notification permission',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _notificationsEnabled = enabled;
+    });
   }
 
   // The router only opens this screen once the information screen has set the
@@ -576,12 +611,15 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                           ),
                   ),
 
-                  // TODO: maybe wieder löschen
-                  if (!widget.notificationReady)
+                  // Without notification permission there is no sound at the
+                  // end (Android still vibrates, iOS gives no signal at all).
+                  if (_notificationsEnabled == false)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Text(
-                        l10n.notificationUnavailableWarning,
+                        defaultTargetPlatform == TargetPlatform.iOS
+                            ? l10n.notificationsDisabledWarningIos
+                            : l10n.notificationsDisabledWarningAndroid,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 13,

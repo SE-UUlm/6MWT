@@ -96,26 +96,32 @@ class LocalNotificationService implements NotificationSender {
         IOSFlutterLocalNotificationsPlugin
       >()!;
 
-  // Requests notification permission and returns whether notifications are enabled.
-  Future<bool> requestNotificationPermission() async {
+  // Returns whether notifications are currently enabled, without asking the
+  // user. The user can change this in the system settings at any time.
+  Future<bool> areNotificationsEnabled() async {
     await initialize();
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      final ios = _ios;
-      await ios.requestPermissions(alert: true, sound: true, badge: false);
-
-      final permissions = await ios.checkPermissions();
+      final permissions = await _ios.checkPermissions();
       return permissions?.isEnabled == true;
     }
 
-    final android = _android;
-    if (await android.areNotificationsEnabled() == true) {
+    return await _android.areNotificationsEnabled() == true;
+  }
+
+  // Requests notification permission and returns whether notifications are enabled.
+  Future<bool> requestNotificationPermission() async {
+    if (await areNotificationsEnabled()) {
       return true;
     }
 
-    await android.requestNotificationsPermission();
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      await _ios.requestPermissions(alert: true, sound: true, badge: false);
+    } else {
+      await _android.requestNotificationsPermission();
+    }
 
-    return await android.areNotificationsEnabled() == true;
+    return areNotificationsEnabled();
   }
 
   // Shows the notification immediately. On Android the vibration is triggered
@@ -135,17 +141,11 @@ class LocalNotificationService implements NotificationSender {
       // Vibration does not need the notification permission, so it runs even
       // if the notification itself cannot be shown.
       await _vibrateAndroid();
+    }
 
-      if (await _android.areNotificationsEnabled() != true) {
-        _log.i('Notifications disabled, only vibrating');
-        return;
-      }
-    } else {
-      final permissions = await _ios.checkPermissions();
-      if (permissions?.isEnabled != true) {
-        _log.i('Notifications disabled, skipping notification');
-        return;
-      }
+    if (!await areNotificationsEnabled()) {
+      _log.i('Notifications disabled, skipping notification');
+      return;
     }
 
     await _plugin.show(

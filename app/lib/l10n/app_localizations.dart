@@ -491,7 +491,7 @@ abstract class AppLocalizations {
   /// No description provided for @quickGuide_step_end.
   ///
   /// In de, this message translates to:
-  /// **'Ein Ton und eine Vibration signalisieren das Ende des Tests.'**
+  /// **'Das Ende des Tests wird per Vibration und Ton signalisiert.'**
   String get quickGuide_step_end;
 
   /// No description provided for @quickGuide_more_info.
@@ -1112,17 +1112,17 @@ abstract class AppLocalizations {
   /// **'Die sechs Minuten sind vorbei. Bitte stehen bleiben.'**
   String get walkCompletedNotificationBody;
 
-  /// No description provided for @notificationPermissionExplanation.
+  /// No description provided for @notificationsDisabledWarningAndroid.
   ///
   /// In de, this message translates to:
-  /// **'Erlaube Mitteilungen, damit dich die App auch bei gesperrtem Bildschirm über das Testende informieren kann.'**
-  String get notificationPermissionExplanation;
+  /// **'Benachrichtigungen sind deaktiviert, daher gibt es am Testende nur eine Vibration und keinen Ton. Sie können Benachrichtigungen in den Einstellungen aktivieren.'**
+  String get notificationsDisabledWarningAndroid;
 
-  /// No description provided for @notificationUnavailableWarning.
+  /// No description provided for @notificationsDisabledWarningIos.
   ///
   /// In de, this message translates to:
-  /// **'Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.'**
-  String get notificationUnavailableWarning;
+  /// **'Mitteilungen sind deaktiviert, daher gibt es am Testende weder Ton noch Vibration. Sie können Mitteilungen in den Einstellungen aktivieren.'**
+  String get notificationsDisabledWarningIos;
 }
 
 class _AppLocalizationsDelegate

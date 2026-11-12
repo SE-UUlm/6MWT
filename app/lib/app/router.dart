@@ -40,8 +40,7 @@ final router = GoRouter(
             _log.w('No profile set on the walk session, returning home');
             return '/';
           },
-          builder: (context, state) =>
-              WalkScreen(notificationReady: state.extra == true),
+          builder: (context, state) => const WalkScreen(),
         ),
         GoRoute(
           path: 'profile',
