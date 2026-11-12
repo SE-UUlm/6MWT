@@ -35,9 +35,7 @@ class LocalNotificationService implements NotificationScheduler {
     if (_initialized) return;
 
     const initialisationSettings = InitializationSettings(
-      android: AndroidInitializationSettings(
-        '@mipmap/ic_launcher',
-      ), //TODO: richtiges icon wählen
+      android: AndroidInitializationSettings('ic_notification_walk'),
       iOS: DarwinInitializationSettings(
         requestAlertPermission: false,
         requestSoundPermission: false,

@@ -59,6 +59,10 @@ class LocationService {
         foregroundNotificationConfig: const ForegroundNotificationConfig(
           notificationTitle: 'Walk test in progress',
           notificationText: 'Location tracking is active.',
+          notificationIcon: AndroidResource(
+            name: 'ic_notification_walk',
+            defType: 'drawable',
+          ),
           setOngoing: true,
           enableWakeLock: true,
         ),
