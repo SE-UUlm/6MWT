@@ -45,8 +45,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   bool _starting = false;
 
   /// Handles the start button and passes localized notification content to
-  /// the session when enabled. Prevents duplicate starts and does not request
-  /// permissions.
+  /// the session. Prevents duplicate starts and does not request permissions.
+  ///
+  /// The content is passed even without notification permission: the end
+  /// signal also vibrates (Android), which does not require the permission.
   Future<void> _startTest() async {
     if (_starting || _session.state.isRunning) return;
 
@@ -58,12 +60,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     try {
       await _session.start(
-        completionNotification: widget.notificationReady
-            ? WalkCompletionNotification(
-                title: l10n.walkCompletedNotificationTitle,
-                body: l10n.walkCompletedNotificationBody,
-              )
-            : null,
+        completionNotification: WalkCompletionNotification(
+          title: l10n.walkCompletedNotificationTitle,
+          body: l10n.walkCompletedNotificationBody,
+        ),
       );
     } finally {
       if (mounted) {

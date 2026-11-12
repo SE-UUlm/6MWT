@@ -120,6 +120,9 @@ class LocalNotificationService implements NotificationSender {
 
   // Shows the notification immediately. On Android the vibration is triggered
   // separately so it also happens in silent mode (see class documentation).
+  //
+  // Without notification permission only the vibration happens (Android);
+  // this is an expected user choice, not an error.
   @override
   Future<void> show({
     required int id,
@@ -135,12 +138,14 @@ class LocalNotificationService implements NotificationSender {
       await _vibrateAndroid();
 
       if (await _android.areNotificationsEnabled() != true) {
-        throw StateError('Notification permission is missing.');
+        _log.i('Notifications disabled, only vibrating');
+        return;
       }
     } else {
       final permissions = await _ios.checkPermissions();
       if (permissions?.isEnabled != true) {
-        throw StateError('Notification permission is missing.');
+        _log.i('Notifications disabled, skipping notification');
+        return;
       }
     }
 
