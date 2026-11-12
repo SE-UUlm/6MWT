@@ -48,6 +48,8 @@ The keep-alive walk provider owns the active session independently of a screen. 
 
 Android location uses a foreground notification and wake lock; iOS enables background location. These support recording and generally work but do not guarantee execution or sensor delivery under OS restrictions. GPS currently requests high accuracy with `distanceFilter: 1` (and a one-second requested Android interval).
 
+Because the app keeps running in the background during a test, `WalkSession` shows the end-of-test notification when the test finishes instead of scheduling it in advance, which avoids Android's exact alarm permission (`SCHEDULE_EXACT_ALARM`) that users would have to grant in the system settings. Android also vibrates with `USAGE_ALARM`, which needs no permission and also works in silent mode.
+
 Domain modules use shared interfaces; concrete platform metadata access lives in `app/`. UI-specific lifecycle behavior belongs in presentation. Database upgrades follow [Database Migrations](Database-Migrations.md).
 
 ## Visualizer replay
