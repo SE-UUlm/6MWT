@@ -43,11 +43,10 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
   final PageController _pageController = PageController();
 
   bool _starting = false;
-  bool _notificationSchedulingFailed = false;
 
   /// Handles the start button and passes localized notification content to
-  /// the session when enabled. Prevents duplicate starts and updates the
-  /// notification failure hint without requesting permissions.
+  /// the session when enabled. Prevents duplicate starts and does not request
+  /// permissions.
   Future<void> _startTest() async {
     if (_starting || _session.state.isRunning) return;
 
@@ -55,7 +54,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
     setState(() {
       _starting = true;
-      _notificationSchedulingFailed = false;
     });
 
     try {
@@ -67,12 +65,6 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
               )
             : null,
       );
-
-      if (!mounted) return;
-
-      setState(() {
-        _notificationSchedulingFailed = _session.notificationFailed;
-      });
     } finally {
       if (mounted) {
         setState(() {
@@ -585,8 +577,7 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                   ),
 
                   // TODO: maybe wieder löschen
-                  if (!widget.notificationReady ||
-                      _notificationSchedulingFailed)
+                  if (!widget.notificationReady)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
                       child: Text(

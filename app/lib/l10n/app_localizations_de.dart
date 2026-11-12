@@ -602,8 +602,4 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get notificationUnavailableWarning =>
       'Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.';
-
-  @override
-  String get exactAlarmPermissionExplanation =>
-      'Erlaube präzise Alarme, damit die App die Mitteilung zum Testende auch im Energiesparmodus möglichst pünktlich auslösen kann.';
 }

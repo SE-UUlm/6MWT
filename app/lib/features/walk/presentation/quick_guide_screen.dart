@@ -36,14 +36,6 @@ class _QuickGuideScreenState extends ConsumerState<QuickGuideScreen> {
         final service = ref.read(localNotificationServiceProvider);
 
         notificationReady = await service.requestNotificationPermission();
-
-        if (!mounted) return;
-        if (ModalRoute.of(context)?.isCurrent != true) return;
-
-        if (notificationReady) {
-          notificationReady = await service
-              .requestPreciseSchedulingPermission();
-        }
       } catch (error, stackTrace) {
         notificationReady = false;
 

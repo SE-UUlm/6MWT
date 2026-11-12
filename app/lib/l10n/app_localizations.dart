@@ -1123,12 +1123,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Das Endsignal per Mitteilung ist derzeit nicht verfügbar. Du kannst den Test trotzdem starten und die verbleibende Zeit in der App verfolgen.'**
   String get notificationUnavailableWarning;
-
-  /// No description provided for @exactAlarmPermissionExplanation.
-  ///
-  /// In de, this message translates to:
-  /// **'Erlaube präzise Alarme, damit die App die Mitteilung zum Testende auch im Energiesparmodus möglichst pünktlich auslösen kann.'**
-  String get exactAlarmPermissionExplanation;
 }
 
 class _AppLocalizationsDelegate

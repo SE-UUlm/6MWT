@@ -98,7 +98,7 @@ WalkSession walkSession(Ref ref) {
     optionalSources: [PedometerSource()],
     distanceEstimator: createPrimaryDistanceEstimator(),
     comparisonEstimators: createComparisonEstimators(),
-    notificationScheduler: ref.watch(notificationSchedulerProvider),
+    notificationSender: ref.watch(notificationSenderProvider),
     sampleSink: ref.watch(sampleRepositoryProvider),
   );
 

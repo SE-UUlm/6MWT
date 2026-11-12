@@ -1,14 +1,32 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/timezone.dart' as tz;
 
-import '../domain/notification_scheduler.dart';
+import '../../app/log.dart';
+import '../domain/notification_sender.dart';
 
-/// Schedules and cancels local notifications independently of the platform.
+final _log = appLogger('LocalNotificationService');
+
+/// Shows and dismisses local notifications on iOS and Android.
 ///
-/// Permission requests are separate from scheduling so a walk can start without
-/// opening a permission dialog.
-class LocalNotificationService implements NotificationScheduler {
+/// Notifications are shown immediately rather than scheduled ahead of time:
+/// the walk test keeps the app running in the background (location
+/// foreground service on Android, location background mode on iOS), so the
+/// app can post the notification itself when the test ends. This avoids the
+/// exact alarm permission on Android.
+///
+/// Sound follows the device's ringer mode on both platforms. Vibration also
+/// happens in silent mode:
+/// - Android: the notification channel itself does not vibrate. Instead the
+///   app triggers a vibration with alarm usage, which Android also plays in
+///   silent and vibrate-only mode.
+/// - iOS: the notification sound produces the haptic feedback. In silent mode
+///   iOS only vibrates, provided haptics in silent mode are enabled in the
+///   system settings (the default).
+///
+/// Permission requests are separate from showing notifications so a walk can
+/// start without opening a permission dialog.
+class LocalNotificationService implements NotificationSender {
   LocalNotificationService({
     required this.channelName,
     required this.channelDescription,
@@ -16,6 +34,19 @@ class LocalNotificationService implements NotificationScheduler {
 
   final String channelName;
   final String channelDescription;
+
+  static const _channelId = 'walk_test_end';
+
+  // Earlier channel that vibrated itself. Android keeps channel settings
+  // after creation, so it is removed instead of reused.
+  static const _legacyChannelIds = ['walk_test_completion'];
+
+  static const _vibrationChannel = MethodChannel(
+    'six_minute_walk_test/vibration',
+  );
+
+  // Pause, vibrate, pause, vibrate (milliseconds).
+  static const _vibrationPattern = [0, 500, 300, 500];
 
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -45,30 +76,39 @@ class LocalNotificationService implements NotificationScheduler {
 
     await _plugin.initialize(settings: initialisationSettings);
 
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      final android = _android;
+      for (final channelId in _legacyChannelIds) {
+        await android.deleteNotificationChannel(channelId: channelId);
+      }
+    }
+
     _initialized = true;
   }
+
+  AndroidFlutterLocalNotificationsPlugin get _android => _plugin
+      .resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin
+      >()!;
+
+  IOSFlutterLocalNotificationsPlugin get _ios => _plugin
+      .resolvePlatformSpecificImplementation<
+        IOSFlutterLocalNotificationsPlugin
+      >()!;
 
   // Requests notification permission and returns whether notifications are enabled.
   Future<bool> requestNotificationPermission() async {
     await initialize();
 
     if (defaultTargetPlatform == TargetPlatform.iOS) {
-      final ios = _plugin
-          .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin
-          >()!;
-
+      final ios = _ios;
       await ios.requestPermissions(alert: true, sound: true, badge: false);
 
       final permissions = await ios.checkPermissions();
       return permissions?.isEnabled == true;
     }
 
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()!;
-
+    final android = _android;
     if (await android.areNotificationsEnabled() == true) {
       return true;
     }
@@ -78,46 +118,11 @@ class LocalNotificationService implements NotificationScheduler {
     return await android.areNotificationsEnabled() == true;
   }
 
-  // Checks if the app can schedule exact notifications, which is required
-  // on Android for precise scheduling.
-  Future<bool> canSchedulePrecisely() async {
-    await initialize();
-
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      return true;
-    }
-
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()!;
-
-    return await android.canScheduleExactNotifications() == true;
-  }
-
-  // Requests exact alarm permission on Android for precise scheduling.
-  Future<bool> requestPreciseSchedulingPermission() async {
-    await initialize();
-
-    if (await canSchedulePrecisely()) {
-      return true;
-    }
-
-    final android = _plugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()!;
-
-    await android.requestExactAlarmsPermission();
-
-    return await android.canScheduleExactNotifications() == true;
-  }
-
-  // Schedules a local notification at the specified time with the given title, body, and optional payload.
+  // Shows the notification immediately. On Android the vibration is triggered
+  // separately so it also happens in silent mode (see class documentation).
   @override
-  Future<void> schedule({
+  Future<void> show({
     required int id,
-    required DateTime scheduledAt,
     required String title,
     required String body,
     String? payload,
@@ -125,56 +130,39 @@ class LocalNotificationService implements NotificationScheduler {
     await initialize();
 
     if (defaultTargetPlatform == TargetPlatform.android) {
-      final android = _plugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >()!;
+      // Vibration does not need the notification permission, so it runs even
+      // if the notification itself cannot be shown.
+      await _vibrateAndroid();
 
-      if (await android.areNotificationsEnabled() != true) {
+      if (await _android.areNotificationsEnabled() != true) {
         throw StateError('Notification permission is missing.');
       }
-
-      if (await android.canScheduleExactNotifications() != true) {
-        throw StateError('Exact alarm permission is missing.');
-      }
     } else {
-      final ios = _plugin
-          .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin
-          >()!;
-
-      final permissions = await ios.checkPermissions();
-
+      final permissions = await _ios.checkPermissions();
       if (permissions?.isEnabled != true) {
         throw StateError('Notification permission is missing.');
       }
     }
 
-    if (!scheduledAt.isAfter(DateTime.now())) {
-      throw ArgumentError.value(
-        scheduledAt,
-        'scheduledAt',
-        'Must be in the future.',
-      );
-    }
-
-    await _plugin.zonedSchedule(
+    await _plugin.show(
       id: id,
       title: title,
       body: body,
       payload: payload,
-      scheduledDate: tz.TZDateTime.from(scheduledAt, tz.UTC),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
-          'walk_test_completion',
+          _channelId,
           channelName,
           channelDescription: channelDescription,
           importance: Importance.high,
           priority: Priority.high,
           playSound: true,
-          enableVibration: true,
+          enableVibration: false,
         ),
+        // Only affects presentation while the app is in the foreground: no
+        // banner, but the sound (and with it the haptic feedback) still plays.
+        // In the background iOS presents the notification according to the
+        // user's notification settings.
         iOS: const DarwinNotificationDetails(
           presentAlert: false,
           presentBanner: false,
@@ -186,7 +174,18 @@ class LocalNotificationService implements NotificationScheduler {
     );
   }
 
-  // Cancels the pending or displayed notification identified by [id].
+  Future<void> _vibrateAndroid() async {
+    try {
+      await _vibrationChannel.invokeMethod<void>('vibrateAlarm', {
+        'pattern': _vibrationPattern,
+      });
+    } on PlatformException catch (error, stackTrace) {
+      // A missing vibration must not prevent the notification.
+      _log.w('Vibration failed', error: error, stackTrace: stackTrace);
+    }
+  }
+
+  // Dismisses the displayed notification identified by [id].
   @override
   Future<void> cancel({required int id}) async {
     await initialize();

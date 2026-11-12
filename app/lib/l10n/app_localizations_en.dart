@@ -597,8 +597,4 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationUnavailableWarning =>
       'The end-of-test notification is currently unavailable. You can still start the test and monitor the remaining time in the app.';
-
-  @override
-  String get exactAlarmPermissionExplanation =>
-      'Allow exact alarms so the app can deliver the end-of-test notification as promptly as possible, even in power-saving mode.';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../core/domain/notification_scheduler.dart';
+import '../core/domain/notification_sender.dart';
 import '../core/notifications/local_notification_service.dart';
 import '../l10n/app_localizations.dart';
 
@@ -24,9 +24,9 @@ LocalNotificationService localNotificationService(Ref ref) {
   );
 }
 
-/// Exposes the notification service through the NotificationScheduler interface,
-/// allowing other parts of the app to schedule notifications without depending on the concrete implementation.
+/// Exposes the notification service through the NotificationSender interface,
+/// allowing other parts of the app to show notifications without depending on the concrete implementation.
 @Riverpod(keepAlive: true)
-NotificationScheduler notificationScheduler(Ref ref) {
+NotificationSender notificationSender(Ref ref) {
   return ref.watch(localNotificationServiceProvider);
 }

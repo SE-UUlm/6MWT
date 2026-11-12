@@ -6,7 +6,7 @@ import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
-import 'package:six_minute_walk_test/core/domain/notification_scheduler.dart';
+import 'package:six_minute_walk_test/core/domain/notification_sender.dart';
 
 import 'walk_completion_notification.dart';
 
@@ -77,7 +77,7 @@ class WalkSession {
   WalkSession({
     required this._sources,
     required this._distanceEstimator,
-    this.notificationScheduler,
+    this.notificationSender,
     this._sampleSink,
     this._optionalSources = const [],
     List<DistanceEstimator> comparisonEstimators = const [],
@@ -93,23 +93,12 @@ class WalkSession {
 
   final Duration walkDuration;
 
-  final NotificationScheduler? notificationScheduler;
+  final NotificationSender? notificationSender;
 
   static const _completionNotificationId = 6001;
 
-  // Serializes scheduling and cancellation for the shared notification ID.
-  Future<void>? _notificationQueue;
-
-  // Invalidates pending work when a run starts or cancellation is requested.
-  int _notificationRevision = 0;
-
-  // Includes queued and in-flight scheduling attempts.
-  bool _notificationRequested = false;
-  bool _notificationFailed = false;
-
-  /// Whether a notification operation failed for the current revision.
-  /// Updated without emitting a new session state.
-  bool get notificationFailed => _notificationFailed;
+  // Content of the end signal for the current run; null when disabled.
+  WalkCompletionNotification? _completionNotification;
 
   // The test cannot start when one of these is unavailable (e.g. GPS).
   final List<SensorSource> _sources;
@@ -227,8 +216,8 @@ class WalkSession {
       return;
     }
 
-    final notificationRevision = ++_notificationRevision;
-    _notificationFailed = false;
+    _completionNotification = completionNotification;
+    _dismissCompletionNotification();
 
     final startedAt = _now().toUtc();
     final sessionId = _generateSessionId();
@@ -264,9 +253,8 @@ class WalkSession {
       return;
     }
 
-    if (notificationRevision != _notificationRevision ||
-        !_state.isRunning ||
-        _state.sessionId != sessionId) {
+    // The session may have been aborted while the sources were starting.
+    if (!_state.isRunning || _state.sessionId != sessionId) {
       return;
     }
 
@@ -274,9 +262,7 @@ class WalkSession {
     await _recordInitialSamples();
 
     // The session may have been aborted while an initial sample was awaited.
-    if (notificationRevision != _notificationRevision ||
-        !_state.isRunning ||
-        _state.sessionId != sessionId) {
+    if (!_state.isRunning || _state.sessionId != sessionId) {
       return;
     }
 
@@ -285,105 +271,53 @@ class WalkSession {
         source.samples.listen(_onSample, onError: _onSampleError),
       );
     }
-
-    // Keep the deadline tied to the test start.
-    if (completionNotification != null) {
-      await _scheduleCompletionNotification(
-        notification: completionNotification,
-        endsAt: startedAt.add(walkDuration),
-        sessionId: sessionId,
-        revision: notificationRevision,
-      );
-    }
   }
 
-  /// Runs notification operations in order and records failures without
-  /// interrupting the measurement or subsequent notification operations.
-  Future<void> _queueNotificationOperation(
-    Future<void> Function() operation,
-    int revision,
-  ) {
-    final previous = _notificationQueue ?? Future<void>.value();
-    final pending = previous.then((_) async {
-      try {
-        await operation();
-      } catch (error, stackTrace) {
-        if (_notificationRevision == revision) {
-          _notificationFailed = true;
-        }
+  /// Signals the end of the test (sound depending on ringer mode, vibration).
+  /// Failures are logged and never affect the measurement.
+  Future<void> _sendCompletionNotification(String? sessionId) async {
+    final notification = _completionNotification;
+    final sender = notificationSender;
+    _completionNotification = null;
 
-        _log.w(
-          'Notification operation failed',
-          error: error,
-          stackTrace: stackTrace,
-        );
-      }
-    });
-
-    _notificationQueue = pending;
-    return pending;
-  }
-
-  /// Schedules the end signal for the given run, checking that it is still
-  /// active before enqueueing and again before scheduling.
-  Future<void> _scheduleCompletionNotification({
-    required WalkCompletionNotification notification,
-    required DateTime endsAt,
-    required String sessionId,
-    required int revision,
-  }) {
-    final scheduler = notificationScheduler;
-
-    if (revision != _notificationRevision ||
-        !_state.isRunning ||
-        _state.sessionId != sessionId) {
-      return Future<void>.value();
+    if (notification == null || sender == null) {
+      return;
     }
 
-    if (scheduler == null) {
-      _notificationFailed = true;
-      return Future<void>.value();
-    }
-
-    _notificationRequested = true;
-
-    return _queueNotificationOperation(() async {
-      // An abort or reset may have happened while this operation was queued.
-      if (revision != _notificationRevision ||
-          !_state.isRunning ||
-          _state.sessionId != sessionId) {
-        return;
-      }
-
-      if (!endsAt.isAfter(_now())) {
-        throw StateError('The notification deadline has already passed.');
-      }
-
-      await scheduler.schedule(
+    try {
+      await sender.show(
         id: _completionNotificationId,
-        scheduledAt: endsAt,
         title: notification.title,
         body: notification.body,
         payload: sessionId,
       );
-    }, revision);
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not show completion notification',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
-  /// Invalidates pending scheduling and queues cancellation if needed.
-  /// Returns null when there is no notification work to await.
-  Future<void>? _cancelCompletionNotification() {
-    final revision = ++_notificationRevision;
-    final requested = _notificationRequested;
-    _notificationRequested = false;
-
-    final scheduler = notificationScheduler;
-    if (!requested || scheduler == null) {
-      return null;
+  /// Removes the end signal of a previous test from the notification list.
+  void _dismissCompletionNotification() {
+    final sender = notificationSender;
+    if (sender == null) {
+      return;
     }
 
-    return _queueNotificationOperation(
-      () => scheduler.cancel(id: _completionNotificationId),
-      revision,
+    unawaited(
+      sender.cancel(id: _completionNotificationId).catchError((
+        Object error,
+        StackTrace stackTrace,
+      ) {
+        _log.w(
+          'Could not dismiss completion notification',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }),
     );
   }
 
@@ -398,7 +332,7 @@ class WalkSession {
       return;
     }
 
-    final cancelNotification = _cancelCompletionNotification();
+    _completionNotification = null;
 
     _log.i(
       'Aborting walk test (session ${_state.sessionId}), '
@@ -418,19 +352,11 @@ class WalkSession {
         startedAt: _state.startedAt,
       ),
     );
-
-    if (cancelNotification != null) {
-      await cancelNotification;
-    }
   }
 
   Future<void> reset() async {
     _log.d('Resetting walk session');
-
-    // Preserve the completion notification when resetting a finished test.
-    final cancelNotification = _state.isRunning
-        ? _cancelCompletionNotification()
-        : null;
+    _completionNotification = null;
 
     if (_state.isRunning ||
         _activeSources.isNotEmpty ||
@@ -441,28 +367,11 @@ class WalkSession {
     _resetComparisons();
 
     _emit(WalkSessionState(phase: WalkPhase.idle, remainingTime: walkDuration));
-
-    if (cancelNotification != null) {
-      await cancelNotification;
-    }
   }
 
   Future<void> dispose() async {
-    final cancelNotification = _state.isRunning
-        ? _cancelCompletionNotification()
-        : null;
-
+    _completionNotification = null;
     await _stopTracking();
-
-    if (cancelNotification != null) {
-      await cancelNotification;
-    }
-
-    final pendingNotifications = _notificationQueue;
-    if (pendingNotifications != null) {
-      await pendingNotifications;
-    }
-
     await _stateController.close();
   }
 
@@ -578,6 +487,7 @@ class WalkSession {
       'Walk test finished (session ${_state.sessionId}), '
       'distance ${_state.distance.toStringAsFixed(1)} m',
     );
+    unawaited(_sendCompletionNotification(_state.sessionId));
     final stopTracking = _stopTracking();
 
     // finished marks the end of measurement, not completed persistence: source
