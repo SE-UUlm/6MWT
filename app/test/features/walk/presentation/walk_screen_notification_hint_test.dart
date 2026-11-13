@@ -3,34 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:six_minute_walk_test/app/notification_providers.dart';
-import 'package:six_minute_walk_test/core/notifications/local_notification_service.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session_provider.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
 
+import '../../../helpers/fake_notifications.dart';
 import '../../../helpers/fake_sensors.dart';
 import '../../../helpers/localized_app.dart';
 import '../../../helpers/logs.dart';
-
-/// Reports a configurable permission state instead of asking the platform.
-class FakeNotificationService extends LocalNotificationService {
-  FakeNotificationService({this.enabled = true, this.failing = false})
-    : super(channelName: 'test', channelDescription: 'test');
-
-  bool enabled;
-  final bool failing;
-  int checks = 0;
-
-  @override
-  Future<bool> areNotificationsEnabled() async {
-    checks++;
-    if (failing) {
-      throw StateError('check failed');
-    }
-    return enabled;
-  }
-}
 
 const _androidHint =
     'Notifications are turned off, so the end of the test is signaled by '
