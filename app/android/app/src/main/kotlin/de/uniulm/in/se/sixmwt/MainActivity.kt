@@ -39,10 +39,9 @@ class MainActivity : FlutterActivity() {
             when (call.method) {
                 "vibrateAlarm" -> {
                     try {
-                        val pattern = call.argument<List<Number>>("pattern")
-                            ?.map { it.toLong() }
-                            ?.toLongArray()
-                            ?: longArrayOf(0, 500)
+                        val pattern = requireNotNull(call.argument<LongArray>("pattern")) {
+                            "Missing vibration pattern"
+                        }
                         vibrateAlarm(pattern)
                         result.success(null)
                     } catch (exception: Exception) {
