@@ -23,6 +23,7 @@ Arrows indicate allowed dependencies (A → B means A may use B). Riverpod compo
 - **`core/domain/`** — shared sample types, phase definitions, export models and interfaces
 - **`core/data/`** — Drift/SQLite database, repositories for profiles, sessions and raw samples; see [Database Migrations](Database-Migrations.md)
 - **`core/sensors/`** — GPS and pedometer sources, permission handling and platform integration
+- **`core/notifications/`** — local notifications (end-of-test signal) and their permission handling
 - **`core/presentation/`** — shared widgets and presentation utilities
 
 ## App
