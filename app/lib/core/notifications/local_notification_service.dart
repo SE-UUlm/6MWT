@@ -35,11 +35,9 @@ class LocalNotificationService implements NotificationSender {
   final String channelName;
   final String channelDescription;
 
-  static const _channelId = 'walk_test_end';
-
-  // Earlier channel that vibrated itself. Android keeps channel settings
-  // after creation, so it is removed instead of reused.
-  static const _legacyChannelIds = ['walk_test_completion'];
+  // Android keeps a channel's settings (e.g. vibration) once it is created.
+  // Changing them requires a new channel ID or reinstalling the app.
+  static const _channelId = 'walk_test_completion';
 
   static const _vibrationChannel = MethodChannel(
     'six_minute_walk_test/vibration',
@@ -76,13 +74,6 @@ class LocalNotificationService implements NotificationSender {
     );
 
     await _plugin.initialize(settings: initialisationSettings);
-
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      final android = _android;
-      for (final channelId in _legacyChannelIds) {
-        await android.deleteNotificationChannel(channelId: channelId);
-      }
-    }
 
     _initialized = true;
   }
