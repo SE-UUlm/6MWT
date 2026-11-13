@@ -43,9 +43,13 @@ class LocalNotificationService implements NotificationSender {
     'six_minute_walk_test/vibration',
   );
 
-  // Pause, vibrate, pause, vibrate (milliseconds). Sent as Int64List so it
-  // arrives as a LongArray on Android without conversion.
-  static final _vibrationPattern = Int64List.fromList([0, 500, 300, 500]);
+  // Alternating pause and vibration in milliseconds: five long pulses
+  // (about 5 s) that are noticeable with the phone in a trouser pocket.
+  // Sent as Int64List so it arrives as a LongArray on Android without
+  // conversion.
+  static final _vibrationPattern = Int64List.fromList([
+    0, 800, 250, 800, 250, 800, 250, 800, 250, 800, //
+  ]);
 
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
