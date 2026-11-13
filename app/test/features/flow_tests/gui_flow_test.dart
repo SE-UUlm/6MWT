@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:six_minute_walk_test/app/notification_providers.dart';
 import 'package:six_minute_walk_test/core/data/database.dart';
 import 'package:six_minute_walk_test/core/data/providers.dart';
 import 'package:six_minute_walk_test/core/data/walk_session_repository.dart'; // WalkSessionWithProfile
@@ -20,6 +21,8 @@ import 'package:six_minute_walk_test/features/walk/presentation/quick_guide_scre
 import 'package:six_minute_walk_test/features/walk/presentation/result_screen.dart';
 import 'package:six_minute_walk_test/features/walk/presentation/walk_screen.dart';
 import 'package:six_minute_walk_test/l10n/app_localizations.dart';
+
+import '../../helpers/fake_notifications.dart';
 
 /// Sensor that never delivers data; it only replaces the GPS plugin.
 class FakeSensorSource implements SensorSource {
@@ -44,10 +47,10 @@ class FakeSensorSource implements SensorSource {
 GoRouter _testRouter() => GoRouter(
   initialLocation: '/', // start = HomeScreen
   routes: [
-    GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
-    GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
-    GoRoute(path: '/quick-guide', builder: (_, __) => const QuickGuideScreen()),
-    GoRoute(path: '/walk', builder: (_, __) => const WalkScreen()),
+    GoRoute(path: '/', builder: (_, _) => const HomeScreen()),
+    GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
+    GoRoute(path: '/quick-guide', builder: (_, _) => const QuickGuideScreen()),
+    GoRoute(path: '/walk', builder: (_, _) => const WalkScreen()),
     GoRoute(
       path: '/result',
       builder: (_, state) =>
@@ -100,10 +103,14 @@ void main() {
     final db = AppDatabase(NativeDatabase.memory());
     addTearDown(db.close);
 
+    // Notification plugin replaced by a fake that records its calls.
+    final notifications = FakeNotificationService();
+
     // Real WalkSession, but with the fake sensor instead of GPS/pedometer.
     final session = WalkSession(
       sources: [FakeSensorSource()],
       distanceEstimator: createPrimaryDistanceEstimator(),
+      notificationSender: notifications,
     );
     addTearDown(session.dispose);
 
@@ -112,6 +119,7 @@ void main() {
         overrides: [
           databaseProvider.overrideWithValue(db),
           walkSessionProvider.overrideWithValue(session),
+          localNotificationServiceProvider.overrideWithValue(notifications),
         ],
         child: MaterialApp.router(
           routerConfig: _testRouter(),
@@ -174,6 +182,12 @@ void main() {
     await _tapVisible(tester, find.text(l10n.continueButton));
     await _realWait(tester); // WalkScreen loads the profile
 
+    // Continuing asks for notification permission (end-of-test signal); the
+    // walk screen checks it again and shows no hint because it was granted.
+    expect(notifications.permissionRequests, 1);
+    expect(notifications.checks, greaterThanOrEqualTo(2));
+    expect(find.text(l10n.notificationsDisabledWarningAndroid), findsNothing);
+
     // ---------- 4) Walk: simple view ----------
     expect(find.text(l10n.startTest), findsOneWidget);
     expect(find.byType(PageView), findsOneWidget);
@@ -203,6 +217,11 @@ void main() {
       const Offset(600, 0),
     );
     await _realWait(tester, 500); // abort + navigation
+
+    // Starting removed any previous end-of-test notification; stopping early
+    // must not signal the end of the test.
+    expect(notifications.cancelledIds, hasLength(1));
+    expect(notifications.shownTitles, isEmpty);
 
     // ---------- 5) Result ----------
     expect(find.text(l10n.resultTitle), findsOneWidget);

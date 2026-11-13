@@ -6,6 +6,9 @@ import 'package:six_minute_walk_test/core/domain/sample_sink.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
+import 'package:six_minute_walk_test/core/domain/notification_sender.dart';
+
+import 'walk_completion_notification.dart';
 
 import 'estimators/distance_confidence.dart';
 import 'estimators/distance_estimator.dart';
@@ -74,6 +77,7 @@ class WalkSession {
   WalkSession({
     required this._sources,
     required this._distanceEstimator,
+    this.notificationSender,
     this._sampleSink,
     this._optionalSources = const [],
     List<DistanceEstimator> comparisonEstimators = const [],
@@ -88,6 +92,13 @@ class WalkSession {
   }
 
   final Duration walkDuration;
+
+  final NotificationSender? notificationSender;
+
+  static const _completionNotificationId = 6001;
+
+  // Content of the end signal for the current run; null when disabled.
+  WalkCompletionNotification? _completionNotification;
 
   // The test cannot start when one of these is unavailable (e.g. GPS).
   final List<SensorSource> _sources;
@@ -187,7 +198,11 @@ class WalkSession {
     await _stopSources();
   }
 
-  Future<void> start() async {
+  /// Starts a walk with an optional completion notification.
+  /// Permissions must be handled before starting the test.
+  Future<void> start({
+    WalkCompletionNotification? completionNotification,
+  }) async {
     if (_state.isRunning) {
       return;
     }
@@ -200,6 +215,9 @@ class WalkSession {
     if (_state.isRunning) {
       return;
     }
+
+    _completionNotification = completionNotification;
+    _dismissCompletionNotification();
 
     final startedAt = _now().toUtc();
     final sessionId = _generateSessionId();
@@ -235,6 +253,11 @@ class WalkSession {
       return;
     }
 
+    // The session may have been aborted while the sources were starting.
+    if (!_state.isRunning || _state.sessionId != sessionId) {
+      return;
+    }
+
     _ticker = Timer.periodic(const Duration(seconds: 1), _onTick);
     await _recordInitialSamples();
 
@@ -250,6 +273,53 @@ class WalkSession {
     }
   }
 
+  /// Signals the end of the test (sound depending on ringer mode, vibration).
+  /// Failures are logged and never affect the measurement.
+  Future<void> _sendCompletionNotification() async {
+    final notification = _completionNotification;
+    final sender = notificationSender;
+    _completionNotification = null;
+
+    if (notification == null || sender == null) {
+      return;
+    }
+
+    try {
+      await sender.show(
+        id: _completionNotificationId,
+        title: notification.title,
+        body: notification.body,
+      );
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not show completion notification',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  /// Removes the end signal of a previous test from the notification list.
+  void _dismissCompletionNotification() {
+    final sender = notificationSender;
+    if (sender == null) {
+      return;
+    }
+
+    unawaited(
+      sender.cancel(id: _completionNotificationId).catchError((
+        Object error,
+        StackTrace stackTrace,
+      ) {
+        _log.w(
+          'Could not dismiss completion notification',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }),
+    );
+  }
+
   Future<void> abort() async {
     if (!_state.isRunning) {
       return;
@@ -260,6 +330,8 @@ class WalkSession {
       await _finish();
       return;
     }
+
+    _completionNotification = null;
 
     _log.i(
       'Aborting walk test (session ${_state.sessionId}), '
@@ -283,6 +355,8 @@ class WalkSession {
 
   Future<void> reset() async {
     _log.d('Resetting walk session');
+    _completionNotification = null;
+
     if (_state.isRunning ||
         _activeSources.isNotEmpty ||
         _sampleSubscriptions.isNotEmpty) {
@@ -295,6 +369,7 @@ class WalkSession {
   }
 
   Future<void> dispose() async {
+    _completionNotification = null;
     await _stopTracking();
     await _stateController.close();
   }
@@ -411,6 +486,7 @@ class WalkSession {
       'Walk test finished (session ${_state.sessionId}), '
       'distance ${_state.distance.toStringAsFixed(1)} m',
     );
+    unawaited(_sendCompletionNotification());
     final stopTracking = _stopTracking();
 
     // finished marks the end of measurement, not completed persistence: source

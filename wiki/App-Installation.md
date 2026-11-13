@@ -45,7 +45,7 @@ With a free Apple account the signature normally lasts seven days; re-sign befor
 
 During the 6-minute walk test:
 - The phone may be locked and should preferably be carried in a pocket for reliable step detection.
-- An acoustic signal and vibration notify you when the six minutes are up.
+- Vibration and a sound signal the end of the test (vibration only in silent mode). Allow notifications when asked; without them, Android only vibrates and iOS gives no signal.
 
 ## Updates and problems
 

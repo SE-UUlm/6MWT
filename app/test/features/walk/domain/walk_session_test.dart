@@ -2,9 +2,11 @@ import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
 
 import 'package:fake_async/fake_async.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:six_minute_walk_test/core/domain/notification_sender.dart';
 import 'package:six_minute_walk_test/core/domain/sensor_sample.dart';
 import 'package:six_minute_walk_test/core/sensors/sensor_source.dart';
 import 'package:six_minute_walk_test/features/walk/domain/estimators/distance_estimator.dart';
+import 'package:six_minute_walk_test/features/walk/domain/walk_completion_notification.dart';
 import 'package:six_minute_walk_test/features/walk/domain/walk_session.dart';
 
 import '../../../helpers/fake_sensors.dart';
@@ -21,6 +23,40 @@ class TestClock {
     now = now.add(duration);
   }
 }
+
+/// Records shown and dismissed notifications; can be made to fail.
+class FakeNotificationSender implements NotificationSender {
+  FakeNotificationSender({this.failing = false});
+
+  final bool failing;
+  final List<({int id, String title, String body})> shown = [];
+  final List<int> cancelled = [];
+
+  @override
+  Future<void> show({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
+    if (failing) {
+      throw StateError('show failed');
+    }
+    shown.add((id: id, title: title, body: body));
+  }
+
+  @override
+  Future<void> cancel({required int id}) async {
+    if (failing) {
+      throw StateError('cancel failed');
+    }
+    cancelled.add(id);
+  }
+}
+
+const _completionNotification = WalkCompletionNotification(
+  title: 'Test completed',
+  body: 'The six minutes are over.',
+);
 
 SensorSample createPositionSample({
   required double latitude,
@@ -469,6 +505,175 @@ void main() {
       expect(session.state.phase, WalkPhase.idle);
       expect(session.state.remainingTime, const Duration(seconds: 3));
       expect(session.state.distance, 0);
+    });
+  });
+
+  group('completion notification', () {
+    late TestClock clock;
+    late FakeNotificationSender sender;
+
+    WalkSession createSession({FakeSensorSource? source}) {
+      return WalkSession(
+        sources: [source ?? FakeSensorSource()],
+        distanceEstimator: GpsDistanceEstimator(),
+        notificationSender: sender,
+        walkDuration: const Duration(seconds: 3),
+        now: clock.call,
+      );
+    }
+
+    void elapse(FakeAsync async, Duration duration) {
+      clock.advance(duration);
+      async.elapse(duration);
+    }
+
+    setUp(() {
+      clock = TestClock(DateTime(2026));
+      sender = FakeNotificationSender();
+    });
+
+    test('is shown once when the test ends regularly', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+
+        elapse(async, const Duration(seconds: 2));
+        expect(sender.shown, isEmpty);
+
+        // Keep elapsing past the deadline: further ticks must not repeat it.
+        elapse(async, const Duration(seconds: 3));
+
+        expect(session.state.phase, WalkPhase.finished);
+        expect(sender.shown, hasLength(1));
+        expect(sender.shown.single.title, _completionNotification.title);
+        expect(sender.shown.single.body, _completionNotification.body);
+      });
+    });
+
+    test('is shown when a late sample detects the end first', () {
+      fakeAsync((async) {
+        final source = FakeSensorSource();
+        final session = createSession(source: source);
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+
+        // The clock passes the deadline before the next timer tick.
+        clock.advance(const Duration(seconds: 4));
+        source.controller.add(createPositionSample(latitude: 0, longitude: 0));
+        async.flushMicrotasks();
+
+        expect(session.state.phase, WalkPhase.finished);
+        expect(sender.shown, hasLength(1));
+
+        async.elapse(const Duration(seconds: 1));
+        expect(sender.shown, hasLength(1));
+      });
+    });
+
+    test('is not shown when the test is aborted', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 1));
+
+        session.abort();
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 5));
+
+        expect(session.state.phase, WalkPhase.aborted);
+        expect(sender.shown, isEmpty);
+      });
+    });
+
+    test('is not shown when a running test is reset', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 1));
+
+        session.reset();
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 5));
+
+        expect(session.state.phase, WalkPhase.idle);
+        expect(sender.shown, isEmpty);
+      });
+    });
+
+    test('is shown when stopping exactly at the deadline', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+
+        // The deadline has passed, but no tick has detected it yet.
+        clock.advance(const Duration(seconds: 3));
+        session.abort();
+        async.flushMicrotasks();
+
+        expect(session.state.phase, WalkPhase.finished);
+        expect(sender.shown, hasLength(1));
+      });
+    });
+
+    test('is not shown without notification content', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start();
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 4));
+
+        expect(session.state.phase, WalkPhase.finished);
+        expect(sender.shown, isEmpty);
+      });
+    });
+
+    test('dismisses the previous notification when a new test starts', () {
+      fakeAsync((async) {
+        final session = createSession();
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+        elapse(async, const Duration(seconds: 4));
+        expect(sender.cancelled, hasLength(1));
+
+        session.reset();
+        async.flushMicrotasks();
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+
+        expect(sender.cancelled, hasLength(2));
+        expect(sender.cancelled.last, sender.shown.single.id);
+      });
+    });
+
+    test('failures do not affect the measurement', () {
+      silenceLogs();
+
+      fakeAsync((async) {
+        sender = FakeNotificationSender(failing: true);
+        final source = FakeSensorSource();
+        final session = createSession(source: source);
+
+        session.start(completionNotification: _completionNotification);
+        async.flushMicrotasks();
+        expect(session.state.phase, WalkPhase.running);
+
+        elapse(async, const Duration(seconds: 4));
+
+        expect(session.state.phase, WalkPhase.finished);
+        expect(session.state.error, isNull);
+        expect(source.stopped, isTrue);
+      });
     });
   });
 }

@@ -2,7 +2,7 @@ name: six_minute_walk_test
 description: "Six-minute walk test with sensor-based distance measurement."
 publish_to: "none"
 
-version: 1.4.0+1
+version: 1.5.0+1
 
 environment:
   sdk: ^3.12.0
@@ -32,6 +32,7 @@ dependencies:
   device_info_plus: ^12.4.0
   package_info_plus: ^9.0.1
   url_launcher: ^6.3.2
+  flutter_local_notifications: ^22.3.3
 
 dev_dependencies:
   flutter_test:

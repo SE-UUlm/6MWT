@@ -228,7 +228,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quickGuide_step_end =>
-      'Ein Ton und eine Vibration signalisieren das Ende des Tests.';
+      'Das Ende des Tests wird per Vibration und Ton signalisiert.';
 
   @override
   String get quickGuide_more_info => 'Mehr Informationen zum Test';
@@ -580,4 +580,26 @@ class AppLocalizationsDe extends AppLocalizations {
   String walkErrorSensor(String error) {
     return 'Sensorfehler: $error';
   }
+
+  @override
+  String get notificationChannelName => 'Testabschluss';
+
+  @override
+  String get notificationChannelDescription =>
+      'Benachrichtigungen zum Ende eines Gehtests';
+
+  @override
+  String get walkCompletedNotificationTitle => 'Test abgeschlossen';
+
+  @override
+  String get walkCompletedNotificationBody =>
+      'Die sechs Minuten sind vorbei. Bitte stehen bleiben.';
+
+  @override
+  String get notificationsDisabledWarningAndroid =>
+      'Benachrichtigungen sind deaktiviert, daher gibt es am Testende nur eine Vibration und keinen Ton. Sie können Benachrichtigungen in den Einstellungen aktivieren.';
+
+  @override
+  String get notificationsDisabledWarningIos =>
+      'Mitteilungen sind deaktiviert, daher gibt es am Testende weder Ton noch Vibration. Sie können Mitteilungen in den Einstellungen aktivieren.';
 }
