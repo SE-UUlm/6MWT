@@ -47,10 +47,10 @@ class FakeSensorSource implements SensorSource {
 GoRouter _testRouter() => GoRouter(
   initialLocation: '/', // start = HomeScreen
   routes: [
-    GoRoute(path: '/', builder: (_, __) => const HomeScreen()),
-    GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
-    GoRoute(path: '/quick-guide', builder: (_, __) => const QuickGuideScreen()),
-    GoRoute(path: '/walk', builder: (_, __) => const WalkScreen()),
+    GoRoute(path: '/', builder: (_, _) => const HomeScreen()),
+    GoRoute(path: '/profile', builder: (_, _) => const ProfileScreen()),
+    GoRoute(path: '/quick-guide', builder: (_, _) => const QuickGuideScreen()),
+    GoRoute(path: '/walk', builder: (_, _) => const WalkScreen()),
     GoRoute(
       path: '/result',
       builder: (_, state) =>
