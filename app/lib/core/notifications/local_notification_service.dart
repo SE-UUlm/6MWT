@@ -131,13 +131,14 @@ class LocalNotificationService implements NotificationSender {
     required String title,
     required String body,
   }) async {
-    await initialize();
-
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      // Vibration does not need the notification permission, so it runs even
-      // if the notification itself cannot be shown.
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
+      // Vibration uses its own method channel and needs neither the plugin
+      // nor the notification permission, so it runs first and even if the
+      // notification itself cannot be shown.
       await _vibrateAndroid();
     }
+
+    await initialize();
 
     if (!await areNotificationsEnabled()) {
       _log.i('Notifications disabled, skipping notification');
