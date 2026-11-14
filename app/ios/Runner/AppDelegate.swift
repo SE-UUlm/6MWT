@@ -7,11 +7,19 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+      if #available(iOS 17.0, *) {
+          // Clear leftover activities because sessions are not restored after termination.
+          Task { @MainActor in await WalkLiveActivityService().end()
+          }
+      }
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+      
+    WalkLiveActivityChannel.register(with: engineBridge.pluginRegistry.registrar(forPlugin: "WalkLiveActivity")!)
+      
     let registrar = engineBridge.pluginRegistry.registrar(forPlugin: "PlatformMetadata")!
     let channel = FlutterMethodChannel(
       name: "six_minute_walk_test/platform_metadata",
