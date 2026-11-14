@@ -23,6 +23,7 @@ Arrows indicate allowed dependencies (A → B means A may use B). Riverpod compo
 - **`core/domain/`** — shared sample types, phase definitions, export models and interfaces
 - **`core/data/`** — Drift/SQLite database, repositories for profiles, sessions and raw samples; see [Database Migrations](Database-Migrations.md)
 - **`core/sensors/`** — GPS and pedometer sources, permission handling and platform integration
+- **`core/notifications/`** — local notifications (end-of-test signal) and their permission handling
 - **`core/presentation/`** — shared widgets and presentation utilities
 
 ## App
@@ -47,6 +48,8 @@ See [Data and Tools](Data-and-Tools.md) for the export contract and [Distance Es
 The keep-alive walk provider owns the active session independently of a screen. `WalkSessionLifecycle`, mounted above navigation, synchronizes an existing session when the app resumes. Deadlines use wall-clock time; an active test is not restored after process termination.
 
 Android location uses a foreground notification and wake lock; iOS enables background location. These support recording and generally work but do not guarantee execution or sensor delivery under OS restrictions. GPS currently requests high accuracy with `distanceFilter: 1` (and a one-second requested Android interval).
+
+Because the app keeps running in the background during a test, `WalkSession` shows the end-of-test notification when the test finishes instead of scheduling it in advance, which avoids Android's exact alarm permission (`SCHEDULE_EXACT_ALARM`) that users would have to grant in the system settings. Android also vibrates with `USAGE_ALARM`, which needs no permission and also works in silent mode.
 
 Domain modules use shared interfaces; concrete platform metadata access lives in `app/`. UI-specific lifecycle behavior belongs in presentation. Database upgrades follow [Database Migrations](Database-Migrations.md).
 

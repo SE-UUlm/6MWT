@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:six_minute_walk_test/app/log.dart';
 import 'package:six_minute_walk_test/core/domain/walk_phase.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,8 @@ import 'package:six_minute_walk_test/l10n/app_localizations.dart';
 
 import '../domain/walk_session.dart';
 import '../domain/walk_session_provider.dart';
+import '../domain/walk_completion_notification.dart';
+import '../../../app/notification_providers.dart';
 import 'estimator_comparison_card.dart';
 import 'fitness_category_label.dart';
 import 'number_format.dart';
@@ -39,16 +42,60 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
 
   final PageController _pageController = PageController();
 
+  bool _starting = false;
+
+  // Null while unknown (not yet checked or check failed): no hint is shown.
+  bool? _notificationsEnabled;
+
+  // Rechecks notification permission when returning from the system settings.
+  late final AppLifecycleListener _lifecycleListener;
+
+  /// Handles the start button and passes localized notification content to
+  /// the session. Prevents duplicate starts and does not request permissions.
+  ///
+  /// The content is passed even without notification permission: the end
+  /// signal also vibrates (Android), which does not require the permission.
+  Future<void> _startTest() async {
+    if (_starting || _session.state.isRunning) return;
+
+    final l10n = AppLocalizations.of(context)!;
+
+    setState(() {
+      _starting = true;
+    });
+
+    try {
+      await _session.start(
+        completionNotification: WalkCompletionNotification(
+          title: l10n.walkCompletedNotificationTitle,
+          body: l10n.walkCompletedNotificationBody,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _starting = false;
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _session = ref.read(walkSessionProvider);
     _loadProfile();
     _session.warmUp();
+
+    _lifecycleListener = AppLifecycleListener(
+      onResume: _checkNotificationsEnabled,
+    );
+    _checkNotificationsEnabled();
   }
 
   @override
   void dispose() {
+    _lifecycleListener.dispose();
     _pageController.dispose();
     unawaited(_stopWarmUp());
     super.dispose();
@@ -64,6 +111,29 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
         stackTrace: stackTrace,
       );
     }
+  }
+
+  /// Reads the current notification permission without asking the user.
+  Future<void> _checkNotificationsEnabled() async {
+    bool? enabled;
+
+    try {
+      enabled = await ref
+          .read(localNotificationServiceProvider)
+          .areNotificationsEnabled();
+    } catch (error, stackTrace) {
+      _log.w(
+        'Could not check notification permission',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      _notificationsEnabled = enabled;
+    });
   }
 
   // The router only opens this screen once the information screen has set the
@@ -541,6 +611,23 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                           ),
                   ),
 
+                  // Without notification permission there is no sound at the
+                  // end (Android still vibrates, iOS gives no signal at all).
+                  if (_notificationsEnabled == false)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        defaultTargetPlatform == TargetPlatform.iOS
+                            ? l10n.notificationsDisabledWarningIos
+                            : l10n.notificationsDisabledWarningAndroid,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ),
+
                   if (state.isRunning)
                     _buildStopSlider()
                   else
@@ -548,11 +635,9 @@ class _WalkScreenState extends ConsumerState<WalkScreen> {
                       width: double.infinity,
                       height: 60,
                       child: ElevatedButton(
-                        onPressed: _profile == null
+                        onPressed: _profile == null || _starting
                             ? null
-                            : () async {
-                                await session.start();
-                              },
+                            : _startTest,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryBlue,
                           foregroundColor: Colors.white,
