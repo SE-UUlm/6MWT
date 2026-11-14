@@ -17,6 +17,7 @@ import 'estimators/experimental_estimators.dart';
 import 'estimators/kalman_gps_distance_estimator.dart';
 import 'estimators/kalman_gps_step_distance_estimator.dart';
 import 'walk_session.dart';
+import '../presentation/walk_live_activity_service.dart';
 
 part 'walk_session_provider.g.dart';
 
@@ -108,7 +109,44 @@ WalkSession walkSession(Ref ref) {
         _log.e('Cannot save walk session', error: error, stackTrace: stack),
   );
 
+  // Keeps the Live Activity synchronized with the session independently of the active screen.
+  // Only session identity and running status trigger updates.
+  final liveActivityService = WalkLiveActivityService();
+
+  final liveActivitySubscription = session.states
+      .map(
+        (state) => (
+          sessionId: state.isRunning ? state.sessionId : null,
+          startedAt: state.isRunning ? state.startedAt : null,
+        ),
+      )
+      .distinct()
+      // Processes start/end operations sequentially to prevent overlapping calls.
+      .asyncMap((activityState) async {
+        // Clear any previous activity before starting a new one.
+        await liveActivityService.end();
+
+        final startedAt = activityState.startedAt;
+        if (startedAt == null) return;
+
+        await liveActivityService.start(
+          startedAt: startedAt,
+          endsAt: startedAt.add(session.walkDuration),
+        );
+      })
+      .listen(
+        (_) {},
+        onError: (Object error, StackTrace stack) {
+          _log.w(
+            'Cannot synchronize Live Activity',
+            error: error,
+            stackTrace: stack,
+          );
+        },
+      );
+
   ref.onDispose(() {
+    liveActivitySubscription.cancel();
     subscription.cancel();
     session.dispose();
   });
