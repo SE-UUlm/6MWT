@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Release builds remove resources that are not referenced from code or
+     XML. The notification icon is only referenced by name from Dart
+     (flutter_local_notifications, geolocator), so it must be kept
+     explicitly. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_notification_walk" />

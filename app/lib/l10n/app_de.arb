@@ -77,7 +77,7 @@
   "quickGuide_step_outdoor": "Gehen Sie nach draußen auf einen ebenen Weg.",
   "quickGuide_step_pocket": "Starten Sie den Test und stecken Sie das Handy in die Tasche – so wird am genauesten gemessen.",
   "quickGuide_step_walk": "Gehen Sie 6 Minuten lang so weit wie möglich – gehen, nicht rennen. Pausen sind erlaubt.",
-  "quickGuide_step_end": "Ein Ton und eine Vibration signalisieren das Ende des Tests.",
+  "quickGuide_step_end": "Das Ende des Tests wird per Vibration und Ton signalisiert.",
   "quickGuide_more_info": "Mehr Informationen zum Test",
   "quickGuide_disclaimer": "Die Durchführung des Tests erfolgt auf eigene Verantwortung. Wenn Sie an einer Herz- oder Lungenerkrankung leiden oder unsicher sind, ob der Test für Sie geeignet ist, sprechen Sie vorher mit Ihrer Ärztin oder Ihrem Arzt. Brechen Sie den Test sofort ab, wenn Brustschmerzen, Schwindel oder starke Atemnot auftreten.",
 
@@ -296,5 +296,12 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "notificationChannelName": "Testabschluss",
+  "notificationChannelDescription": "Benachrichtigungen zum Ende eines Gehtests",
+  "walkCompletedNotificationTitle": "Test abgeschlossen",
+  "walkCompletedNotificationBody": "Die sechs Minuten sind vorbei. Bitte stehen bleiben.",
+  "notificationsDisabledWarningAndroid": "Benachrichtigungen sind deaktiviert, daher gibt es am Testende nur eine Vibration und keinen Ton. Sie können Benachrichtigungen in den Einstellungen aktivieren.",
+  "notificationsDisabledWarningIos": "Mitteilungen sind deaktiviert, daher gibt es am Testende weder Ton noch Vibration. Sie können Mitteilungen in den Einstellungen aktivieren."
 }

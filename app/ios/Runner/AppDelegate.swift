@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+import UserNotifications
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
@@ -7,11 +8,14 @@ import UIKit
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-      if #available(iOS 17.0, *) {
-          // Clear leftover activities because sessions are not restored after termination.
-          Task { @MainActor in await WalkLiveActivityService().end()
-          }
+    UNUserNotificationCenter.current().delegate = self
+    
+    if #available(iOS 17.0, *) {
+        // Clear leftover activities because sessions are not restored after termination.
+        Task { @MainActor in await WalkLiveActivityService().end()
+        }
       }
+
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 

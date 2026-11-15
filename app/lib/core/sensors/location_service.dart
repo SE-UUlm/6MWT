@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../app/log.dart';
 
@@ -60,6 +59,10 @@ class LocationService {
         foregroundNotificationConfig: const ForegroundNotificationConfig(
           notificationTitle: 'Walk test in progress',
           notificationText: 'Location tracking is active.',
+          notificationIcon: AndroidResource(
+            name: 'ic_notification_walk',
+            defType: 'drawable',
+          ),
           setOngoing: true,
           enableWakeLock: true,
         ),
@@ -84,19 +87,5 @@ class LocationService {
     }
 
     return Geolocator.getPositionStream(locationSettings: locationSettings);
-  }
-
-  // Ask Android users to allow ongoing tracking notification (not ongoing tracking itself).
-  // Denying nofitications does not block the location tracking.
-  Future<void> requestNotificationPermission() async {
-    if (defaultTargetPlatform != TargetPlatform.android) {
-      return;
-    }
-
-    final notificationStatus = await Permission.notification.status;
-
-    if (notificationStatus.isDenied) {
-      await Permission.notification.request();
-    }
   }
 }

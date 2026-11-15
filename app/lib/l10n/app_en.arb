@@ -77,7 +77,7 @@
   "quickGuide_step_outdoor": "Go outside to a flat path.",
   "quickGuide_step_pocket": "Start the test and put your phone in your pocket for the most accurate measurement.",
   "quickGuide_step_walk": "Walk as far as you can in 6 minutes – walk, don't run. You may take breaks.",
-  "quickGuide_step_end": "A sound and vibration signal the end of the test.",
+  "quickGuide_step_end": "Vibration and sound signal the end of the test.",
   "quickGuide_more_info": "More information about the test",
   "quickGuide_disclaimer": "You perform the test at your own risk. If you have a heart or lung condition or are unsure whether the test is suitable for you, talk to your doctor beforehand. Stop the test immediately if you experience chest pain, dizziness or severe shortness of breath.",
 
@@ -296,5 +296,12 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "notificationChannelName": "Test completion",
+  "notificationChannelDescription": "Notifications when a walk test ends",
+  "walkCompletedNotificationTitle": "Test completed",
+  "walkCompletedNotificationBody": "The six minutes are over. Please stop walking.",
+  "notificationsDisabledWarningAndroid": "Notifications are turned off, so the end of the test is signaled by vibration only, without sound. You can turn on notifications in the settings.",
+  "notificationsDisabledWarningIos": "Notifications are turned off, so there will be no sound or vibration at the end of the test. You can turn on notifications in the settings."
 }
