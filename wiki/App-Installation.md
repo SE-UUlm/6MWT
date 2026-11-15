@@ -7,7 +7,7 @@ Download the installation package for your platform from the **Assets** section 
 | Platform | Configured baseline | Hardware and permissions |
 | --- | --- | --- |
 | Android | Android 7.0 / API 24 (Flutter 3.44.4 default); universal APK for ARM 32-bit, ARM64 and x86-64 | Phone with location/GPS; precise location enabled; physical activity permission for steps |
-| iOS | iOS 13.0 deployment target; ARM64 device IPA | iPhone with location; Location and Motion & Fitness permissions; Windows or Mac computer, Apple account and cable for initial signing/install |
+| iOS | iOS 15.0 deployment target (Live Activity on Lock Screen/Dynamic Island requires iOS 17.6+); ARM64 device IPA | iPhone with location; Location and Motion & Fitness permissions; Windows or Mac computer, Apple account and cable for initial signing/install |
 
 These are build targets, not a tested device matrix. The current release packages and native settings were inspected during the documentation revision. Step sensors are optional: unavailable steps reduce fallback options, while unavailable GPS prevents starting a test. Allow notification/background location prompts where shown. OS power management can interrupt recording.
 
@@ -40,6 +40,8 @@ The download is unsigned and cannot be installed by opening it on the phone.
 7. Open **6MWT** and grant location and Motion & Fitness access.
 
 With a free Apple account the signature normally lasts seven days; re-sign before expiry or configure Sideloadly's automatic refresh. Keep the same account and app identity for updates. See the [Sideloadly FAQ](https://sideloadly.io/faq) for current account limits, renewal and connection troubleshooting.
+
+The IPA contains a widget extension for the Live Activity (countdown on the Lock Screen and in the Dynamic Island), so signing registers **two App IDs** (the app and `…WalkTestWidgets`). Free Apple accounts can currently register about 10 App IDs per 7 days and have only 3 sideloaded apps active per device at a time, where the extension may count as an additional app. If the limit is reached, wait for it to reset or let Sideloadly strip app extensions: the app then works normally, only without the Live Activity.
 
 ## Conducting a walk test
 
