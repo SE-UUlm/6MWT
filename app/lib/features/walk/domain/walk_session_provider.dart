@@ -87,6 +87,34 @@ List<DistanceEstimator> createComparisonEstimators() => [
   StepDistanceEstimator(stepLength: 0.75),
 ];
 
+/// Synchronizes Live Activity operations with session state changes.
+Stream<void> synchronizeLiveActivity(
+  WalkSession session,
+  WalkLiveActivityService service,
+) {
+  return session.states
+      .map(
+        (state) => (
+          sessionId: state.isRunning ? state.sessionId : null,
+          startedAt: state.isRunning ? state.startedAt : null,
+        ),
+      )
+      .distinct()
+      // Processes start/end operations sequentially to prevent overlapping calls.
+      .asyncMap((activityState) async {
+        // Clear any previous activity before starting a new one.
+        await service.end();
+
+        final startedAt = activityState.startedAt;
+        if (startedAt == null) return;
+
+        await service.start(
+          startedAt: startedAt,
+          endsAt: startedAt.add(session.walkDuration),
+        );
+      });
+}
+
 // Kept alive for the whole app lifetime, so a running walk test survives
 // navigating between screens.
 @Riverpod(keepAlive: true)
@@ -113,28 +141,8 @@ WalkSession walkSession(Ref ref) {
   // Only session identity and running status trigger updates.
   final liveActivityService = WalkLiveActivityService();
 
-  final liveActivitySubscription = session.states
-      .map(
-        (state) => (
-          sessionId: state.isRunning ? state.sessionId : null,
-          startedAt: state.isRunning ? state.startedAt : null,
-        ),
-      )
-      .distinct()
-      // Processes start/end operations sequentially to prevent overlapping calls.
-      .asyncMap((activityState) async {
-        // Clear any previous activity before starting a new one.
-        await liveActivityService.end();
-
-        final startedAt = activityState.startedAt;
-        if (startedAt == null) return;
-
-        await liveActivityService.start(
-          startedAt: startedAt,
-          endsAt: startedAt.add(session.walkDuration),
-        );
-      })
-      .listen(
+  final liveActivitySubscription =
+      synchronizeLiveActivity(session, liveActivityService).listen(
         (_) {},
         onError: (Object error, StackTrace stack) {
           _log.w(
