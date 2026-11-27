@@ -15,7 +15,7 @@
 
 The six-minute walk test (6MWT) measures how far a person can walk in six minutes and is commonly used to assess functional exercise capacity.
 
-This repository was developed as part of a Software Engineering project at Ulm University during the 2026 summer semester. Its mobile app records six-minute walk tests, estimates the distance covered and presents the result directly on the device.
+This repository contains a mobile app that was developed as part of a Software Engineering project at Ulm University in the 2026 summer semester, supervised by [Carsten Vogel](https://www.med.uni-wuerzburg.de/epidemiologie/institut/mitarbeitende/carsten-vogel/). It records six-minute walk tests, estimates the distance walked and shows the result directly on the device.
 
 Start, instructions and profile entry
 
@@ -40,7 +40,8 @@ The desktop Visualizer is a development tool for inspecting exported sensor data
 
 [Latest Release](https://github.com/SE-UUlm/6MWT/releases/latest) · [Wiki](https://github.com/SE-UUlm/6MWT/wiki)
 
-Authors: **[Moritz Beck](https://github.com/Birkenstab), [Lea-Marie Kindermann](https://github.com/LeaMarieKindermann), [Luca-Marie Jamrosy](https://github.com/lucamariej), [Serhat Kan](https://github.com/Serhat310)**.
+Authors: **[Moritz Beck](https://github.com/Birkenstab), [Lea-Marie Kindermann](https://github.com/LeaMarieKindermann), [Luca-Marie Jamrosy](https://github.com/lucamariej), [Serhat Kan](https://github.com/Serhat310)**.\
+Supervisor: [Carsten Vogel (ICE-B, University of Würzburg)](https://www.med.uni-wuerzburg.de/epidemiologie/institut/mitarbeitende/carsten-vogel/).
 
 Licensed under [GPL-3.0-or-later](LICENSE). UI illustrations and app icons were generated using AI.
 Screenshots show the actual interface.
